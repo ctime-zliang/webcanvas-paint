@@ -73,7 +73,7 @@ export class Color {
 	public static createByAlpha(alpha: number, color: Color = Color.WHITE): Color {
 		alpha = alpha <= 0 ? 0 : alpha
 		alpha = alpha >= 1 ? 1 : alpha
-		return new Color(color.r, color.g, color.b, alpha)
+		return new Color(color.r * 255, color.g * 255, color.b * 255, alpha)
 	}
 
 	/**

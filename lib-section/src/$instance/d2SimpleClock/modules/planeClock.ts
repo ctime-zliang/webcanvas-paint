@@ -156,8 +156,13 @@ function drawPlaneClock(
 		)
 		d2ElementController.updateD2ElementShapeItemByJSONData(rippleCircleElementId, {
 			elementItemName: `波纹圆`,
-			strokeColor: new Color(Color.YELLOW_GREEN.r, Color.YELLOW_GREEN.g, Color.YELLOW_GREEN.b, setRippleCircleStrokeColorAlpha),
-			fillColor: new Color(Color.YELLOW_GREEN.r, Color.YELLOW_GREEN.g, Color.YELLOW_GREEN.b, setRippleCircleFillColorAlpha),
+			strokeColor: new Color(
+				Color.YELLOW_GREEN.r * 255,
+				Color.YELLOW_GREEN.g * 255,
+				Color.YELLOW_GREEN.b * 255,
+				setRippleCircleStrokeColorAlpha
+			),
+			fillColor: new Color(Color.YELLOW_GREEN.r * 255, Color.YELLOW_GREEN.g * 255, Color.YELLOW_GREEN.b * 255, setRippleCircleFillColorAlpha),
 		})
 	}
 
