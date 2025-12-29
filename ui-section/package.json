@@ -1,0 +1,55 @@
+{
+	"name": "webcanvas-kit",
+	"version": "1.0.0",
+	"description": "React Application",
+	"scripts": {
+		"prettier:write-all": "prettier --write .",
+		"prettier:check-all": "prettier --check .",
+		"eslint:check-src": "eslint --ext .js,.ts,.jsx,.tsx src",
+		"eslint:fix-src": "eslint --fix --ext .js,.ts,.jsx,.tsx src",
+		"tsc:check": "tsc --noEmit",
+		"esbuild:dev": "cross-env NODE_ENV=development node ./build/esbuild/development.builder.js",
+		"app:dev": "cross-env NODE_ENV=development webpack --watch --progress --config ./config/webpack-ui.dev.config.js",
+		"app:prod": "cross-env NODE_ENV=production webpack --watch --progress --config ./config/webpack-ui.prod.config.js"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"axios": "^0.24.0",
+		"chalk": "^4.1.2",
+		"prop-types": "^15.8.1",
+		"react": "^18.1.0",
+		"react-dom": "^18.1.0",
+		"react-toastify": "^11.0.2",
+		"uuid": "^8.3.2",
+		"valtio": "^1.7.0"
+	},
+	"devDependencies": {
+		"@types/react": "^18.0.12",
+		"@types/react-dom": "^18.0.5",
+		"@types/react-helmet-async": "^1.0.3",
+		"@types/react-i18next": "^8.1.0",
+		"@types/react-router-dom": "^5.3.3",
+		"@types/styled-components": "^5.1.26",
+		"@types/uuid": "^8.3.4",
+		"@typescript-eslint/parser": "^8.47.0",
+		"chokidar": "^4.0.3",
+		"cross-env": "^7.0.3",
+		"esbuild": "^0.27.0",
+		"esbuild-style-plugin": "^1.6.3",
+		"eslint": "^8.1.0",
+		"eslint-plugin-import": "^2.25.3",
+		"eslint-plugin-react": "^7.27.1",
+		"eslint-plugin-react-hooks": "^4.3.0",
+		"fs-extra": "^11.3.2",
+		"husky": "^7.0.4",
+		"less": "^4.4.2",
+		"prettier": "^2.2.1",
+		"rimraf": "^3.0.2",
+		"typescript": "^4.4.4"
+	},
+	"resolutions": {
+		"@types/react": "^18.0.12",
+		"@types/react-dom": "^18.0.5"
+	}
+}

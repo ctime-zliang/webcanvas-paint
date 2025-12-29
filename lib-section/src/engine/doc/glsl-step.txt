@@ -1,0 +1,11 @@
+float result = step(edge, x)
+    if x < edge, then return 0.0
+    if x >= edge, then return 1.0
+
+float result = step(x, 0.0)
+    if x > 0.0, then return 0.0
+    if x <= 0.0, then return 1.0
+
+bool isLess(float x, float edge) {
+    return step(x, edge) == 1.0;
+}

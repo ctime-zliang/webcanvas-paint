@@ -1,0 +1,80 @@
+// vs
+precision mediump float;
+attribute vec3 a_position;  // [x, y, vertical | hori | point(0|1|2)]
+uniform vec2 u_antialias;  // [antialias, coreGPU]
+uniform mat4 u_matrix;
+uniform vec3 u_gridSize;
+uniform vec2 u_deltaSize;
+uniform vec2 u_origin;
+uniform vec4 u_gridColor;
+uniform vec4 u_boldColor;
+uniform vec4 u_axisColor;
+uniform float u_viewState;  // 1.0 - only-axis; 2.0 - set-bold; 3.0 - grid; 4.0 - bold + grid
+varying vec4 v_color;
+
+bool nearZero(float n) {
+    return abs(n) <= 0.0000001;
+}
+
+void main() {
+    if (u_antialias.x == 0.5) {
+        gl_PointSize = 1.0 * (1.0 - u_antialias.y) + 1.5 * u_antialias.y;
+    } else {
+        gl_PointSize = 2.0 * u_antialias.x;
+    }
+    vec4 position = u_matrix * vec4(a_position, 1.0);
+    vec2 pos = vec2(position.xy) - u_origin;
+    bool isTest = false;
+    bool isAxis = false;
+    bool isBold = false;
+    float gridX = u_gridSize.x;
+    float gridY = u_gridSize.y;
+    float deltaX = u_deltaSize.x;
+    float deltaY = u_deltaSize.y;
+    float multiRatio = u_gridSize.z;
+    float delX = a_position.x / gridX;
+    float delY = a_position.y / gridY;
+    float dx = floor((delX - deltaX) + 0.5);
+    float dy = floor((delY - deltaY) + 0.5);
+    if (dx > 0.0) {
+        dx = -dx;
+    }
+    if (dy > 0.0) {
+        dy = -dy;
+    }
+    if (a_position.z == 0.0) {
+        isAxis = nearZero(pos.x);
+        isBold = nearZero(mod(dx, multiRatio));
+    } else if (a_position.z == 1.0) {
+        isAxis = nearZero(pos.y) || nearZero(pos.x);
+        isBold = nearZero(mod(dy, multiRatio));
+    } else {
+        isAxis = nearZero(pos.x) || nearZero(pos.y);
+        isBold = nearZero(mod(dx, multiRatio)) || nearZero(mod(dy, multiRatio));
+    }
+    if (u_viewState == 1.0 || isAxis) {
+        if (!isAxis) {
+            return;
+        }
+        v_color = u_axisColor;
+    } else if (u_viewState == 2.0) {
+        if (isBold) {
+            return;
+        }
+        v_color = u_boldColor;
+    } else if (u_viewState == 3.0) {
+        v_color = u_gridColor;
+    } else {
+        v_color = isBold ? u_boldColor : u_gridColor;
+    }
+    gl_Position = position;
+}
+
+
+// fs 
+precision mediump float;
+varying vec4 v_color;
+
+void main () {
+    gl_FragColor = v_color;
+}

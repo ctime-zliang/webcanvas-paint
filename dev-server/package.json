@@ -1,0 +1,30 @@
+{
+	"name": "webcanvas-kit",
+	"version": "1.0.0",
+	"description": "React Application",
+	"scripts": {
+		"prettier:write-all": "prettier --write .",
+		"prettier:check-all": "prettier --check .",
+		"eslint:check-src": "eslint --ext .js,.ts,.jsx,.tsx src",
+		"eslint:fix-src": "eslint --fix --ext .js,.ts,.jsx,.tsx src",
+		"tsc:check": "tsc --noEmit",
+		"dev:webcanvas": "node ./src/app dev ui-section lib-section"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"http-proxy": "^1.18.1",
+		"koa": "^2.14.1",
+		"koa-body": "^6.0.1",
+		"koa-bodyparser": "^4.3.0",
+		"koa-compose": "^4.1.0",
+		"koa-cors": "^0.0.16"
+	},
+	"devDependencies": {
+		"cross-env": "^7.0.3",
+		"eslint": "^8.1.0",
+		"eslint-plugin-import": "^2.25.3",
+		"prettier": "^2.2.1",
+		"rimraf": "^3.0.2"
+	}
+}
