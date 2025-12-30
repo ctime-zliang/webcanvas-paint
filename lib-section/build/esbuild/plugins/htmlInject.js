@@ -1,7 +1,17 @@
 const fs = require('fs-extra')
 const path = require('path')
 
-module.exports = function () {
+module.exports = function (publicPath, templatePath, optional = {}) {
+	const jsFilesFilter =
+		optional.jsFilesFilter ||
+		(jsFile => {
+			return true
+		})
+	const cssFilesFilter =
+		optional.cssFilesFilter ||
+		(cssFile => {
+			return true
+		})
 	return {
 		name: 'html-inject',
 		setup(build) {
@@ -10,9 +20,7 @@ module.exports = function () {
 				if (result.errors.length > 0) {
 					return
 				}
-				const templatePath = path.resolve('./template/index.html')
 				let html = await fs.readFile(templatePath, 'utf8')
-				console.log(options.outdir)
 				const outputFiles = result.metafile?.outputs || {}
 				const jsFiles = []
 				const cssFiles = []
@@ -23,16 +31,23 @@ module.exports = function () {
 						cssFiles.push(path.basename(filePath))
 					}
 				}
-				const scriptTags = jsFiles
-					.filter(jsFile => !jsFile.includes('D2CanvasPixel2Svg'))
-					.map(jsFile => `<script src="./${jsFile}"></script>`)
-					.join('\n    ')
-				const linkTags = cssFiles.map(cssFile => `<link rel="stylesheet" href="./${cssFile}">`).join('\n    ')
+				const linkTagList = []
+				for (let i = 0; i < cssFiles.length; i++) {
+					if (cssFilesFilter(cssFiles[i])) {
+						linkTagList.push(`<link rel="stylesheet" href="${publicPath}${cssFiles[i]}">`)
+					}
+				}
+				const scriptTagList = []
+				for (let i = 0; i < jsFiles.length; i++) {
+					if (jsFilesFilter(jsFiles[i])) {
+						scriptTagList.push(`<script src="${publicPath}${jsFiles[i]}"></script>`)
+					}
+				}
 				if (html.includes('</head>')) {
-					html = html.replace('</head>', `  ${linkTags}\n  </head>`)
+					html = html.replace('</head>', `  ${linkTagList.join('\n    ')}\n  </head>`)
 				}
 				if (html.includes('</body>')) {
-					html = html.replace('</body>', `  ${scriptTags}\n  </body>`)
+					html = html.replace('</body>', `  ${scriptTagList.join('\n    ')}\n  </body>`)
 				}
 				await fs.writeFile(path.join(options.outdir, 'index.html'), html)
 			})
