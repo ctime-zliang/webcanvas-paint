@@ -111,7 +111,7 @@ export class D2ArcShapeSelectionTool extends D2SelectionTool {
 	public mouseMoveHandler(inputInfo: InputInfo): void {
 		const diffX: number = inputInfo.moveScenePhysicsX - this.moveScenePhysicsX
 		const diffY: number = inputInfo.moveScenePhysicsY - this.moveScenePhysicsY
-		const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslate(new Vector3(diffX, diffY, 0))
+		const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector3(diffX, diffY, 0))
 		if (this._isSelectedPointCenter) {
 			this.moveSelectedItem(diffX, diffY)
 			this.updatePointsPosition()
@@ -156,7 +156,7 @@ export class D2ArcShapeSelectionTool extends D2SelectionTool {
 				((A.x * B.x + A.y * B.y) * B.x) / (B.x * B.x + B.y * B.y),
 				((A.x * B.x + A.y * B.y) * B.y) / (B.x * B.x + B.y * B.y)
 			)
-			const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslate(new Vector3(C.x, C.y, 0))
+			const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector3(C.x, C.y, 0))
 			const newMiddlePoint: Vector2 = this._pointMiddle.centerPoint.multiplyMatrix4(translateMatrix4)
 			const arcResult: TD2ArcProfile = D2ArcTransitions.calculateD2ArcProfileByThreePoint(
 				this._pointStart.centerPoint,
@@ -242,7 +242,7 @@ export class D2ArcShapeSelectionTool extends D2SelectionTool {
 	}
 
 	private moveSelectedItem(diffX: number, diffY: number): void {
-		const moveMatrix4: Matrix4 = CanvasMatrix4.setTranslate(new Vector3(diffX, diffY, 0))
+		const moveMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector3(diffX, diffY, 0))
 		this._selectedItem.transform(moveMatrix4)
 	}
 }

@@ -1,3 +1,4 @@
+import { D2RotationCalculator } from '../../../../algorithm/geometry/utils/D2RotationCalculator'
 import { ED2ElementType } from '../../../../config/D2ElementProfile'
 import { BBox2 } from '../../../../engine/algorithm/geometry/bbox/BBox2'
 import { CanvasMatrix4 } from '../../../../engine/algorithm/geometry/matrix/CanvasMatrix4'
@@ -106,7 +107,7 @@ export abstract class ElementModelItemBase extends ElementModelBase {
 	}
 	public set position(value: Vector2) {
 		const prevPosition: Vector2 = this._position
-		this.matrix = this.matrix.multiply4(CanvasMatrix4.setTranslate(new Vector3(value.x - prevPosition.x, value.y - prevPosition.y, 0)))
+		this.matrix = this.matrix.multiply4(CanvasMatrix4.setTranslateByVector3(new Vector3(value.x - prevPosition.x, value.y - prevPosition.y, 0)))
 		this._position = value
 	}
 
@@ -114,10 +115,9 @@ export abstract class ElementModelItemBase extends ElementModelBase {
 		return this._rotation
 	}
 	public set rotation(value: number) {
-		const prevRation2: number = this._rotation
-		this._rotation = value % (Math.PI * 2)
-		const distV: number = this._rotation - prevRation2
-		this.matrix = this.matrix.multiply4(CanvasMatrix4.setRotate(distV, new Vector3(0, 0, 1)))
+		const { rotation, matrix } = D2RotationCalculator.d2ElementRotation(this, value)
+		this._rotation = rotation
+		this._matrix = matrix
 	}
 
 	public get isFlipX(): boolean {

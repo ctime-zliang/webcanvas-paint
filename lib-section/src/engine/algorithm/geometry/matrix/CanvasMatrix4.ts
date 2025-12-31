@@ -27,12 +27,6 @@ export class CanvasMatrix4 {
 		return matrix4
 	}
 
-	/**
-	 * @description 创建旋转变换矩阵: 基于欧拉角
-	 * @function setRotationFromEuler
-	 * @param {Euler} euler 欧拉角
-	 * @return {Matrix4}
-	 */
 	public static setRotationFromEuler(euler: Euler): Matrix4 {
 		const matrix4: Matrix4 = new Matrix4()
 		const { x, y, z, order } = euler
@@ -137,12 +131,6 @@ export class CanvasMatrix4 {
 		return matrix4
 	}
 
-	/**
-	 * @description 创建旋转变换矩阵: 基于四元数
-	 * @function setRotationFromQuaternion
-	 * @param {Quaternion} quaternion 四元数
-	 * @return {Matrix4}
-	 */
 	public static setRotationFromQuaternion(quaternion: Quaternion): Matrix4 {
 		const matrix4: Matrix4 = new Matrix4()
 		const { x, y, z, w } = quaternion
@@ -177,14 +165,65 @@ export class CanvasMatrix4 {
 		return matrix4
 	}
 
-	/**
-	 * @description 创建变换矩阵: 旋转矩阵
-	 * @function setRotate
-	 * @param {number} radian 旋转弧度
-	 * @param {Vector3} axisVector3 旋转轴(向量)
-	 * @return {Matrix4}
-	 */
-	public static setRotate(radian: number, axisVector3: Vector3): Matrix4 {
+	public static setFlipByLine(PA: Vector3, PB: Vector3): Matrix4 {
+		const ax: number = PA.x
+		const ay: number = PA.y
+		const az: number = PA.z
+		const bx: number = PB.x
+		const by: number = PB.y
+		const bz: number = PB.z
+		let dx: number = bx - ax
+		let dy: number = by - ay
+		let dz: number = bz - az
+		const len: number = Math.hypot(dx, dy, dz)
+		dx /= len
+		dy /= len
+		dz /= len
+		const r00: number = 2 * dx * dx - 1
+		const r01: number = 2 * dx * dy
+		const r02: number = 2 * dx * dz
+		const r10: number = 2 * dy * dx
+		const r11: number = 2 * dy * dy - 1
+		const r12: number = 2 * dy * dz
+		const r20: number = 2 * dz * dx
+		const r21: number = 2 * dz * dy
+		const r22: number = 2 * dz * dz - 1
+		const tx: number = ax - (r00 * ax + r01 * ay + r02 * az)
+		const ty: number = ay - (r10 * ax + r11 * ay + r12 * az)
+		const tz: number = az - (r20 * ax + r21 * ay + r22 * az)
+		return new Matrix4([r00, r10, r20, 0, r01, r11, r21, 0, r02, r12, r22, 0, tx, ty, tz, 1])
+	}
+
+	public static setRotationByLine(radian: number, PA: Vector3, PB: Vector3): Matrix4 {
+		const ax: number = PA.x
+		const ay: number = PA.y
+		const az: number = PA.z
+		let ux: number = PB.x - PA.x
+		let uy: number = PB.y - PA.y
+		let uz: number = PB.z - PA.z
+		const len: number = Math.hypot(ux, uy, uz)
+		ux /= len
+		uy /= len
+		uz /= len
+		const c: number = Math.cos(radian)
+		const s: number = Math.sin(radian)
+		const t: number = 1 - c
+		const r00: number = c + ux * ux * t
+		const r01: number = ux * uy * t - uz * s
+		const r02: number = ux * uz * t + uy * s
+		const r10: number = uy * ux * t + uz * s
+		const r11: number = c + uy * uy * t
+		const r12: number = uy * uz * t - ux * s
+		const r20: number = uz * ux * t - uy * s
+		const r21: number = uz * uy * t + ux * s
+		const r22: number = c + uz * uz * t
+		const tx: number = ax - (r00 * ax + r01 * ay + r02 * az)
+		const ty: number = ay - (r10 * ax + r11 * ay + r12 * az)
+		const tz: number = az - (r20 * ax + r21 * ay + r22 * az)
+		return new Matrix4([r00, r10, r20, 0, r01, r11, r21, 0, r02, r12, r22, 0, tx, ty, tz, 1])
+	}
+
+	public static setRotationByVector3(radian: number, axisVector3: Vector3): Matrix4 {
 		const matrix4: Matrix4 = new Matrix4()
 		const { x, y, z } = axisVector3
 		if (x === 0 && y === 0 && z === 0) {
@@ -302,13 +341,7 @@ export class CanvasMatrix4 {
 		return matrix4
 	}
 
-	/**
-	 * @description 创建变换矩阵: 平移矩阵
-	 * @function setTranslate
-	 * @param {Vector3} directionVector3 位移(向量)
-	 * @return {Matrix4}
-	 */
-	public static setTranslate(directionVector3: Vector3): Matrix4 {
+	public static setTranslateByVector3(directionVector3: Vector3): Matrix4 {
 		const matrix4: Matrix4 = new Matrix4()
 		const { x, y, z } = directionVector3
 		matrix4.data[0] = 1
@@ -330,15 +363,7 @@ export class CanvasMatrix4 {
 		return matrix4
 	}
 
-	/**
-	 * @description 创建变换矩阵: 缩放矩阵
-	 * @function setScale
-	 * @param {number} x X 轴缩放倍率
-	 * @param {number} y Y 轴缩放倍率
-	 * @param {number} z Z 轴缩放倍率
-	 * @return {Matrix4}
-	 */
-	public static setScale(x: number, y: number, z: number): Matrix4 {
+	public static setScaleByValue(x: number, y: number, z: number): Matrix4 {
 		const matrix4: Matrix4 = new Matrix4()
 		matrix4.data[0] = x
 		matrix4.data[4] = 0
@@ -536,7 +561,7 @@ export class CanvasMatrix4 {
 		matrix4.data[13] = 0
 		matrix4.data[14] = 0
 		matrix4.data[15] = 1
-		return CanvasMatrix4.setTranslate(new Vector3(-eyeX, -eyeY, -eyeZ)).multiply4(matrix4)
+		return CanvasMatrix4.setTranslateByVector3(new Vector3(-eyeX, -eyeY, -eyeZ)).multiply4(matrix4)
 	}
 
 	/**

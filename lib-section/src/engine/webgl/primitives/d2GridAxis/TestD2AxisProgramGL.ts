@@ -119,10 +119,10 @@ export class TestD2AxisProgramGL extends ProgramGL {
 		if (this._ratio < 1) {
 			this._ratio = 1
 		}
-		const c: Matrix4 = CanvasMatrix4.setScale(this._ratio, this._ratio, 1.0)
-			.multiply4(CanvasMatrix4.setTranslate(new Vector3(axisParamOrigin.x, axisParamOrigin.y, 0)))
-			.multiply4(camera.getLookMatrix4().multiply4(CanvasMatrix4.setScale(scale, scale, 1.0)))
-		const c2: Matrix4 = CanvasMatrix4.setScale(this._ratio, this._ratio, 1.0).multiply4(CanvasMatrix4.setScale(scale, scale, 1.0))
+		const c: Matrix4 = CanvasMatrix4.setScaleByValue(this._ratio, this._ratio, 1.0)
+			.multiply4(CanvasMatrix4.setTranslateByVector3(new Vector3(axisParamOrigin.x, axisParamOrigin.y, 0)))
+			.multiply4(camera.getLookMatrix4().multiply4(CanvasMatrix4.setScaleByValue(scale, scale, 1.0)))
+		const c2: Matrix4 = CanvasMatrix4.setScaleByValue(this._ratio, this._ratio, 1.0).multiply4(CanvasMatrix4.setScaleByValue(scale, scale, 1.0))
 		const f: number = this._ratio * scale
 		const h: Vector2 = Vector2.ORIGIN.multiplyMatrix4(c)
 		const _: number = axisParam.axisStepX * f
@@ -132,7 +132,7 @@ export class TestD2AxisProgramGL extends ProgramGL {
 		const O: Matrix4 = camera.getRectProjectionMatrix4()
 		const s: Vector2 = h.multiplyMatrix4(O)
 		this._origin = new Vector3(s.x, s.y, 0.0)
-		const x: Matrix4 = c.multiply4(CanvasMatrix4.setTranslate(new Vector3(-m, -g, 0))).multiply4(O)
+		const x: Matrix4 = c.multiply4(CanvasMatrix4.setTranslateByVector3(new Vector3(-m, -g, 0))).multiply4(O)
 		const LL = new Vector2(axisParam.axisStepX, axisParam.axisStepY).multiplyMatrix4(c2.multiply4(O))
 		return {
 			matrix: x,

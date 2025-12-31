@@ -139,20 +139,20 @@ export class D2ImageShapeSelectionTool extends D2SelectionTool {
 		const diffX: number = inputInfo.moveScenePhysicsX - this.moveScenePhysicsX
 		const diffY: number = inputInfo.moveScenePhysicsY - this.moveScenePhysicsY
 		if (this._isSelectedPointLeftUp) {
-			const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslate(new Vector3(diffX, diffY, 0))
+			const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector3(diffX, diffY, 0))
 			this._selectedItem.position = this._selectedItem.position.multiplyMatrix4(translateMatrix4)
 			this._selectedItem.width -= diffX
 			this._selectedItem.height += diffY
 			this._selectedItem.updateBBox2()
 			this.updatePointsPosition()
 		} else if (this._isSelectedPointUp) {
-			const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslate(new Vector3(0, diffY, 0))
+			const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector3(0, diffY, 0))
 			this._selectedItem.position = this._selectedItem.position.multiplyMatrix4(translateMatrix4)
 			this._selectedItem.height += diffY
 			this._selectedItem.updateBBox2()
 			this.updatePointsPosition()
 		} else if (this._isSelectedPointRightUp) {
-			const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslate(new Vector3(0, diffY, 0))
+			const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector3(0, diffY, 0))
 			this._selectedItem.position = this._selectedItem.position.multiplyMatrix4(translateMatrix4)
 			this._selectedItem.width += diffX
 			this._selectedItem.height += diffY
@@ -172,14 +172,14 @@ export class D2ImageShapeSelectionTool extends D2SelectionTool {
 			this._selectedItem.updateBBox2()
 			this.updatePointsPosition()
 		} else if (this._isSelectedPointLeftBottom) {
-			const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslate(new Vector3(diffX, 0, 0))
+			const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector3(diffX, 0, 0))
 			this._selectedItem.position = this._selectedItem.position.multiplyMatrix4(translateMatrix4)
 			this._selectedItem.height -= diffY
 			this._selectedItem.width -= diffX
 			this._selectedItem.updateBBox2()
 			this.updatePointsPosition()
 		} else if (this._isSelectedPointLeft) {
-			const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslate(new Vector3(diffX, 0, 0))
+			const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector3(diffX, 0, 0))
 			this._selectedItem.position = this._selectedItem.position.multiplyMatrix4(translateMatrix4)
 			this._selectedItem.width -= diffX
 			this._selectedItem.updateBBox2()
@@ -300,7 +300,7 @@ export class D2ImageShapeSelectionTool extends D2SelectionTool {
 	}
 
 	private moveSelectedItem(diffX: number, diffY: number): void {
-		const moveMatrix4: Matrix4 = CanvasMatrix4.setTranslate(new Vector3(diffX, diffY, 0))
+		const moveMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector3(diffX, diffY, 0))
 		this._selectedItem.transform(moveMatrix4)
 	}
 }

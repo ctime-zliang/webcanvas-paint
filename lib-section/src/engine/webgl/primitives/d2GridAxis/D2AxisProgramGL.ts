@@ -123,18 +123,20 @@ export class D2AxisProgramGL extends ProgramGL {
 		if (this._ratio < 1) {
 			this._ratio = 1
 		}
-		const baseMatrix4: Matrix4 = CanvasMatrix4.setScale(this._ratio, this._ratio, 1.0)
-			.multiply4(CanvasMatrix4.setTranslate(new Vector3(axisParamOrigin.x, axisParamOrigin.y, 0)))
+		const baseMatrix4: Matrix4 = CanvasMatrix4.setScaleByValue(this._ratio, this._ratio, 1.0)
+			.multiply4(CanvasMatrix4.setTranslateByVector3(new Vector3(axisParamOrigin.x, axisParamOrigin.y, 0)))
 			.multiply4(camera.getLookMatrix4().multiply4(camera.getZoomMatrix4()))
 		const scaleRatio: number = this._ratio * scale
 		const baseOrigin: Vector2 = Vector2.ORIGIN.multiplyMatrix4(baseMatrix4)
 		const distX: number = baseOrigin.x - (baseOrigin.x % (this._axisParamInstance.axisStepX * scaleRatio))
 		const distY: number = baseOrigin.y - (baseOrigin.y % (this._axisParamInstance.axisStepY * scaleRatio))
 		this._origin = baseOrigin.multiplyMatrix4(camraProjectionMatrix4)
-		const transform: Matrix4 = baseMatrix4.multiply4(CanvasMatrix4.setTranslate(new Vector3(-distX, -distY, 0))).multiply4(camraProjectionMatrix4)
+		const transform: Matrix4 = baseMatrix4
+			.multiply4(CanvasMatrix4.setTranslateByVector3(new Vector3(-distX, -distY, 0)))
+			.multiply4(camraProjectionMatrix4)
 		const axisStepTransform: Vector2 = new Vector2(this._axisParamInstance.axisStepX, this._axisParamInstance.axisStepY).multiplyMatrix4(
-			CanvasMatrix4.setScale(this._ratio, this._ratio, 1.0)
-				.multiply4(CanvasMatrix4.setScale(scale, scale, 1.0))
+			CanvasMatrix4.setScaleByValue(this._ratio, this._ratio, 1.0)
+				.multiply4(CanvasMatrix4.setScaleByValue(scale, scale, 1.0))
 				.multiply4(camraProjectionMatrix4)
 		)
 		return {

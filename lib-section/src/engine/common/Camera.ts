@@ -122,12 +122,12 @@ export class Camera {
 
 	public getZoomMatrix4(): Matrix4 {
 		const scale: number = this.getZoomRatio()
-		return CanvasMatrix4.setScale(scale, scale, scale)
+		return CanvasMatrix4.setScaleByValue(scale, scale, scale)
 	}
 
 	public getInverseZoomMatrix4(): Matrix4 {
 		const scale: number = this.getZoomRatio()
-		return CanvasMatrix4.setScale(1 / scale, 1 / scale, 1 / scale)
+		return CanvasMatrix4.setScaleByValue(1 / scale, 1 / scale, 1 / scale)
 	}
 
 	public setZoomRatio(value: number): void {
@@ -171,7 +171,7 @@ export class Camera {
 		let projectionMatrix4: Matrix4 = null!
 		if (this._projectionType === EProjectionType.ORTH) {
 			projectionMatrix4 = this.getRectProjectionMatrix4()
-			const scaleMatrix4: Matrix4 = CanvasMatrix4.setScale(this._scaleRatio, this._scaleRatio, this._scaleRatio)
+			const scaleMatrix4: Matrix4 = CanvasMatrix4.setScaleByValue(this._scaleRatio, this._scaleRatio, this._scaleRatio)
 			projectionMatrix4 = projectionMatrix4.multiply4(scaleMatrix4)
 		} else {
 			projectionMatrix4 = CanvasMatrix4.setPerspective(

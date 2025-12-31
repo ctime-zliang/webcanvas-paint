@@ -58,7 +58,7 @@ export class DrawD2TextShape extends DrawD2Shape {
 
 	public updateShapes(inputInfo: InputInfo, diffX: number, diffY: number): void {
 		for (let i: number = 0; i < this.shapeInstances.length; i++) {
-			const diffMatrix4: Matrix4 = CanvasMatrix4.setTranslate(new Vector3(diffX, diffY, 0))
+			const diffMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector3(diffX, diffY, 0))
 			this.shapeInstances[i].transform(diffMatrix4)
 		}
 	}
@@ -84,7 +84,7 @@ export class DrawD2TextShape extends DrawD2Shape {
 			(elementShapeItem: D2TextShape): void => {
 				const x: number = this.inputInfo ? this.inputInfo.moveRealScenePhysicsX : 0
 				const y: number = this.inputInfo ? this.inputInfo.moveRealScenePhysicsY : 0
-				elementShapeItem.transform(CanvasMatrix4.setTranslate(new Vector3(x, y, 0)))
+				elementShapeItem.transform(CanvasMatrix4.setTranslateByVector3(new Vector3(x, y, 0)))
 				Constant.messageTool.messageBus.publish(EFrameCommand.RENDER_FRAME, null)
 			}
 		)

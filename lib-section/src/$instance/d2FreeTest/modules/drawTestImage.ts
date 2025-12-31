@@ -91,7 +91,7 @@ export async function drawTestImage(webCanvas: WebCanvas, layerItemId: string): 
 	// 	intervalId = window.setInterval(async (): Promise<void> => {
 	// 		degree += degreeStep
 	// 		d2ElementController.updateD2ElementShapeItemByJSONData(shapeElementItemId1, { rotation: Angles.degreeToRadian(degree) })
-	// 	}, 500)
+	// 	}, 300)
 	// }, 1000)
 	nextFrameTick(async (): Promise<void> => {
 		d2ElementController.updateD2ElementShapeItemByJSONData(shapeElementItemId1, { rotation: Angles.degreeToRadian(45) })

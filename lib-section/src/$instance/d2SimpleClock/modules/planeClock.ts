@@ -109,7 +109,7 @@ function drawPlaneClock(
 		const baseEndPosition: Vector3 = new Vector3(0, outCircleRadius2 * 0.84, 0)
 		for (let i: number = 0; i < RUN_PROFILE.scaleTextVertexs.length; i++) {
 			const { d2TextVertexData } = RUN_PROFILE.scaleTextVertexs[i]
-			const rotationMatrix4: Matrix4 = CanvasMatrix4.setRotate(-Angles.degreeToRadian(30 * (i + 1)), new Vector3(0, 0, 1))
+			const rotationMatrix4: Matrix4 = CanvasMatrix4.setRotationByVector3(-Angles.degreeToRadian(30 * (i + 1)), new Vector3(0, 0, 1))
 			const endPosition: Vector3 = baseEndPosition.multiplyMatrix4(rotationMatrix4)
 			d2TextElementController.createD2TextElementItemByVertexData(
 				layerItemId1,
@@ -177,8 +177,8 @@ function drawPlaneClock(
 		for (let i: number = 1; i <= 12; i++) {
 			const baseStartPosition: Vector3 = new Vector3(0, 0, 0)
 			const baseEndPosition: Vector3 = new Vector3(0, 8, 0)
-			const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslate(new Vector3(0, outCircleRadius2 - 8, 0))
-			const rotationMatrix4: Matrix4 = CanvasMatrix4.setRotate(-Angles.degreeToRadian(30 * i), new Vector3(0, 0, 1))
+			const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector3(0, outCircleRadius2 - 8, 0))
+			const rotationMatrix4: Matrix4 = CanvasMatrix4.setRotationByVector3(-Angles.degreeToRadian(30 * i), new Vector3(0, 0, 1))
 			const startPosition: Vector3 = baseStartPosition.multiplyMatrix4(translateMatrix4.multiply4(rotationMatrix4))
 			const endPosition: Vector3 = baseEndPosition.multiplyMatrix4(translateMatrix4.multiply4(rotationMatrix4))
 			const lineElementId: string = d2ElementController.createD2LineElementShapeItem(
@@ -209,8 +209,8 @@ function drawPlaneClock(
 			}
 			const baseStartPosition: Vector3 = new Vector3(0, 0, 0)
 			const baseEndPosition: Vector3 = new Vector3(0, 5, 0)
-			const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslate(new Vector3(0, outCircleRadius2 - 5, 0))
-			const rotationMatrix4: Matrix4 = CanvasMatrix4.setRotate(-Angles.degreeToRadian(6 * i), new Vector3(0, 0, 1))
+			const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector3(0, outCircleRadius2 - 5, 0))
+			const rotationMatrix4: Matrix4 = CanvasMatrix4.setRotationByVector3(-Angles.degreeToRadian(6 * i), new Vector3(0, 0, 1))
 			const startPosition: Vector3 = baseStartPosition.multiplyMatrix4(translateMatrix4.multiply4(rotationMatrix4))
 			const endPosition: Vector3 = baseEndPosition.multiplyMatrix4(translateMatrix4.multiply4(rotationMatrix4))
 			const lineElementId: string = d2ElementController.createD2LineElementShapeItem(
@@ -239,36 +239,36 @@ function drawPlaneClock(
 	let endPosition: Vector3 = null!
 	let lineElementId: string = null!
 	if (RUN_PROFILE.isShowHourHand) {
-		rotationMatrix4 = CanvasMatrix4.setRotate(rotationOfHou, new Vector3(0, 0, 1))
+		rotationMatrix4 = CanvasMatrix4.setRotationByVector3(rotationOfHou, new Vector3(0, 0, 1))
 		startPosition = new Vector3(0, 0, 0).multiplyMatrix4(rotationMatrix4)
 		endPosition = new Vector3(0, outCircleRadius2 - 40, 0).multiplyMatrix4(rotationMatrix4)
 		lineElementId = d2ElementController.createD2LineElementShapeItem(layerItemId2, startPosition.toVector2(), endPosition.toVector2(), 3.5)
 		d2ElementController.updateD2ElementShapeItemByJSONData(lineElementId, { elementItemName: `时针`, strokeColor: Color.GREEN })
-		rotationMatrix4 = CanvasMatrix4.setRotate(rotationOfHou + Math.PI, new Vector3(0, 0, 1))
+		rotationMatrix4 = CanvasMatrix4.setRotationByVector3(rotationOfHou + Math.PI, new Vector3(0, 0, 1))
 		startPosition = new Vector3(0, 0, 0).multiplyMatrix4(rotationMatrix4)
 		endPosition = new Vector3(0, 18, 0).multiplyMatrix4(rotationMatrix4)
 		lineElementId = d2ElementController.createD2LineElementShapeItem(layerItemId2, startPosition.toVector2(), endPosition.toVector2(), 3.5)
 		d2ElementController.updateD2ElementShapeItemByJSONData(lineElementId, { elementItemName: `时针尾`, strokeColor: Color.GREEN })
 	}
 	if (RUN_PROFILE.isShowMinuteHand) {
-		rotationMatrix4 = CanvasMatrix4.setRotate(rotationOfMin, new Vector3(0, 0, 1))
+		rotationMatrix4 = CanvasMatrix4.setRotationByVector3(rotationOfMin, new Vector3(0, 0, 1))
 		startPosition = new Vector3(0, 0, 0).multiplyMatrix4(rotationMatrix4)
 		endPosition = new Vector3(0, outCircleRadius2 - 25, 0).multiplyMatrix4(rotationMatrix4)
 		lineElementId = d2ElementController.createD2LineElementShapeItem(layerItemId2, startPosition.toVector2(), endPosition.toVector2(), 3.5)
 		d2ElementController.updateD2ElementShapeItemByJSONData(lineElementId, { elementItemName: `分针`, strokeColor: Color.YELLOW })
-		rotationMatrix4 = CanvasMatrix4.setRotate(rotationOfMin + Math.PI, new Vector3(0, 0, 1))
+		rotationMatrix4 = CanvasMatrix4.setRotationByVector3(rotationOfMin + Math.PI, new Vector3(0, 0, 1))
 		startPosition = new Vector3(0, 0, 0).multiplyMatrix4(rotationMatrix4)
 		endPosition = new Vector3(0, 25, 0).multiplyMatrix4(rotationMatrix4)
 		lineElementId = d2ElementController.createD2LineElementShapeItem(layerItemId2, startPosition.toVector2(), endPosition.toVector2(), 3.5)
 		d2ElementController.updateD2ElementShapeItemByJSONData(lineElementId, { elementItemName: `分针尾`, strokeColor: Color.YELLOW })
 	}
 	if (RUN_PROFILE.isShowSecondHand) {
-		rotationMatrix4 = CanvasMatrix4.setRotate(rotationOfSec, new Vector3(0, 0, 1))
+		rotationMatrix4 = CanvasMatrix4.setRotationByVector3(rotationOfSec, new Vector3(0, 0, 1))
 		startPosition = new Vector3(0, 0, 0).multiplyMatrix4(rotationMatrix4)
 		endPosition = new Vector3(0, outCircleRadius2 - 10, 0).multiplyMatrix4(rotationMatrix4)
 		lineElementId = d2ElementController.createD2LineElementShapeItem(layerItemId2, startPosition.toVector2(), endPosition.toVector2(), 2.5)
 		d2ElementController.updateD2ElementShapeItemByJSONData(lineElementId, { elementItemName: `秒针`, strokeColor: Color.RED })
-		rotationMatrix4 = CanvasMatrix4.setRotate(rotationOfSec + Math.PI, new Vector3(0, 0, 1))
+		rotationMatrix4 = CanvasMatrix4.setRotationByVector3(rotationOfSec + Math.PI, new Vector3(0, 0, 1))
 		startPosition = new Vector3(0, 0, 0).multiplyMatrix4(rotationMatrix4)
 		endPosition = new Vector3(0, 32, 0).multiplyMatrix4(rotationMatrix4)
 		lineElementId = d2ElementController.createD2LineElementShapeItem(layerItemId2, startPosition.toVector2(), endPosition.toVector2(), 2.5)

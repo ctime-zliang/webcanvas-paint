@@ -210,7 +210,7 @@ export class D2CircleShapeSelectionTool extends D2SelectionTool {
 	}
 
 	private moveSelectedItem(diffX: number, diffY: number): void {
-		const moveMatrix4: Matrix4 = CanvasMatrix4.setTranslate(new Vector3(diffX, diffY, 0))
+		const moveMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector3(diffX, diffY, 0))
 		this._selectedItem.transform(moveMatrix4)
 	}
 }

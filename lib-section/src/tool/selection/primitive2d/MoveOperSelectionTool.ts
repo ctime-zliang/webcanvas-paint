@@ -103,7 +103,7 @@ export class MoveOperSelectionTool extends BaseSelectionTool {
 
 	private moveSelectedItems(diffX: number, diffY: number): void {
 		const allSelectItems: Array<ElementShapeItemBase> = Constant.selectManager.getAllSelectItems()
-		const moveMatrix4: Matrix4 = CanvasMatrix4.setTranslate(new Vector3(diffX, diffY, 0))
+		const moveMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector3(diffX, diffY, 0))
 		for (let i: number = 0; i < allSelectItems.length; i++) {
 			const item: ElementShapeItemBase = allSelectItems[i]
 			item.transform(moveMatrix4)

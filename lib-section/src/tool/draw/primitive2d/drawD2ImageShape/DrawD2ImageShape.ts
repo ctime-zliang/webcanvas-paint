@@ -53,7 +53,7 @@ export class DrawD2ImageShape extends DrawD2Shape {
 
 	public updateShapes(inputInfo: InputInfo, diffX: number, diffY: number): void {
 		for (let i: number = 0; i < this.shapeInstances.length; i++) {
-			const moveMatrix4: Matrix4 = CanvasMatrix4.setTranslate(new Vector3(diffX, diffY, 0))
+			const moveMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector3(diffX, diffY, 0))
 			this.shapeInstances[i].transform(moveMatrix4)
 		}
 	}
