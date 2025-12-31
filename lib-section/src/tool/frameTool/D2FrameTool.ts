@@ -19,6 +19,12 @@ export class D2FrameTool extends BaseFrameTool {
 
 	public init(): void {
 		this.nextTool = Constant.dropDragTool
+		Constant.messageTool.messageBus.subscribe(EFrameCommand.SET_STATIC_REST, (): void => {
+			this.isMouseLeftDwon = false
+			this.isMouseMiddleDwon = false
+			this.isMouseRightDwon = false
+			Constant.selectManager.clearAllSelectItems()
+		})
 	}
 
 	public viewResizeHandler(inputInfo: InputInfo, offset: { distX: number; distY: number; canvasRect: TDOMGetBoundingClientRectResult }): void {

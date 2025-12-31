@@ -8,9 +8,9 @@ import { Line } from '../../../algorithm/geometry/primitives/Line'
 import { updateDashedSegProfile } from '../../../utils/Utils'
 import { ElementModelItemBase } from './elementBase/ElementModelItemBase'
 import { Vector2 } from '../../../engine/algorithm/geometry/vector/Vector2'
-import { createD2ArcBbox2 } from '../../../algorithm/geometry/utils/bbox2Utils'
 import { D2CrossRelationShips } from '../../../algorithm/geometry/D2CrossRelationShips'
 import { Constant } from '../../../Constant'
+import { BBox2Creator } from '../../../algorithm/geometry/utils/BBox2Creator'
 
 export function buildD2ArcModel(
 	layerItemId: string,
@@ -100,7 +100,7 @@ export class D2ArcModel extends ElementModelItemBase {
 		this._gapSize = gapSize
 		this._fixedStrokeWidth = isFixedStrokeWidth
 		if (!bbox2) {
-			this.bbox2 = createD2ArcBbox2(this._centerPoint, this._radius, this._strokeWidth)
+			this.bbox2 = BBox2Creator.createD2ArcBbox2(this._centerPoint, this._radius, this._strokeWidth)
 		}
 		this.alpha = alpha
 	}
@@ -223,7 +223,7 @@ export class D2ArcModel extends ElementModelItemBase {
 	}
 
 	public updateBBox2(): BBox2 {
-		this.bbox2 = createD2ArcBbox2(this.centerPoint, this.radius, this.strokeWidth)
+		this.bbox2 = BBox2Creator.createD2ArcBbox2(this.centerPoint, this.radius, this.strokeWidth)
 		return this.bbox2
 	}
 

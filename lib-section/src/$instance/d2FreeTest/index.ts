@@ -217,7 +217,7 @@ export function main(): void {
 		// drawTestFree4(webCanvas, layerItem01Id)
 		// drawTestFree5(webCanvas, layerItem01Id)
 
-		// drawTestImage(webCanvas, layerItem01Id)
+		drawTestImage(webCanvas, layerItem01Id)
 
 		console.log(webCanvas)
 	})

@@ -1,5 +1,5 @@
 import { D2CrossRelationShips } from '../../../algorithm/geometry/D2CrossRelationShips'
-import { createD2PointBbox2 } from '../../../algorithm/geometry/utils/bbox2Utils'
+import { BBox2Creator } from '../../../algorithm/geometry/utils/BBox2Creator'
 import { ED2ElementType } from '../../../config/D2ElementProfile'
 import { Constant } from '../../../Constant'
 import { BBox2 } from '../../../engine/algorithm/geometry/bbox/BBox2'
@@ -62,7 +62,7 @@ export class D2PointModel extends ElementModelItemBase {
 		this._isEnableScale = isEnableScale
 		this._isEnableSelect = isEnableSelect
 		if (!bbox2) {
-			this.bbox2 = createD2PointBbox2(this._centerPoint, this._size)
+			this.bbox2 = BBox2Creator.createD2PointBbox2(this._centerPoint, this._size)
 		}
 	}
 
@@ -113,7 +113,7 @@ export class D2PointModel extends ElementModelItemBase {
 	}
 
 	public updateBBox2(): BBox2 {
-		this.bbox2 = createD2PointBbox2(this.centerPoint, this.size)
+		this.bbox2 = BBox2Creator.createD2PointBbox2(this.centerPoint, this.size)
 		return this.bbox2
 	}
 

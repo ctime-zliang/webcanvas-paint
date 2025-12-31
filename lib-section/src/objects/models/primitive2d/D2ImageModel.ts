@@ -1,4 +1,4 @@
-import { createD2ImageBbox2 } from '../../../algorithm/geometry/utils/bbox2Utils'
+import { BBox2Creator } from '../../../algorithm/geometry/utils/BBox2Creator'
 import { ED2ElementType } from '../../../config/D2ElementProfile'
 import { Constant } from '../../../Constant'
 import { BBox2 } from '../../../engine/algorithm/geometry/bbox/BBox2'
@@ -74,7 +74,7 @@ export class D2ImageModel extends D2ImageModelSource {
 		this.rotation = rotation
 		this.isFlipX = isFlipX
 		this.isFlipY = isFlipY
-		this.bbox2 = createD2ImageBbox2(this.position, this._width, this._height)
+		this.bbox2 = BBox2Creator.createD2ImageBbox2(this.position, this._width, this._height)
 	}
 
 	public get refreshToken(): string {
@@ -133,7 +133,7 @@ export class D2ImageModel extends D2ImageModelSource {
 	}
 
 	public updateBBox2(): BBox2 {
-		this.bbox2 = createD2ImageBbox2(this.position, this._width, this._height)
+		this.bbox2 = BBox2Creator.createD2ImageBbox2(this.position, this._width, this._height)
 		return this.bbox2
 	}
 

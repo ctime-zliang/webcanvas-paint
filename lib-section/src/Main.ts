@@ -37,6 +37,8 @@ import { TD2EdgeItem, TD2PointItem, TD2TriangleIndicesItem } from './engine/type
 import { Constant, createConstant, destoryConstant } from './Constant'
 import { EOutEventCommand, OutProfileMessage, TCanvasProfileData, TOpeartionProfileData } from './utils/OutMessage'
 import { EPointerEventName } from './manager/EventsManager'
+import { MAX_ZOOM_RATIO, MIN_ZOOM_RATIO } from './config/Config'
+import { Vector2 } from './engine/algorithm/geometry/vector/Vector2'
 
 export * from './engine/common/Color'
 export * from './engine/math/Decimals'
@@ -239,6 +241,20 @@ export class WebCanvas {
 			return null!
 		}
 		return OutProfileMessage.createCanvasProfileData({})
+	}
+
+	public setCanvasZoomRatio(ratio: number, domCanvasSourceNativePixelPosition: Vector2): void {
+		if (ratio <= MIN_ZOOM_RATIO) {
+			ratio = MIN_ZOOM_RATIO
+		}
+		if (ratio >= MAX_ZOOM_RATIO) {
+			ratio = MIN_ZOOM_RATIO
+		}
+		Constant.canvasController.setZoomCanvasBySourceNativePixelPosition(ratio, domCanvasSourceNativePixelPosition.toVector3())
+	}
+
+	public setCanvasStaticRest(): void {
+		Constant.messageTool.messageBus.publish(EFrameCommand.SET_STATIC_REST, null)
 	}
 
 	public setDrawD2ToolCommand(type: EDrawD2ToolCommand, data: { [key: string]: any } = {}): void {

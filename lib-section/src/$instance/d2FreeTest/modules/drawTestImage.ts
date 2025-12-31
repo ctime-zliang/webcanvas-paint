@@ -69,11 +69,11 @@ export async function drawTestImage(webCanvas: WebCanvas, layerItemId: string): 
 	/* ... */
 	const shapeElementItemId1: string = d2ElementController.createD2ImageElementItem(
 		defaultLayerItemId,
-		new Vector2(-50, 50),
+		new Vector2(-60, 60),
 		readResult.fileHashUuid,
 		readResult.imageDataURL,
-		readResult.width * 0.2,
-		readResult.height * 0.2
+		readResult.width * 0.1,
+		readResult.height * 0.1
 	)
 	const jsonData: Element2DImageJSONViewData = d2ElementController.getD2ElementShapeItemJSONData(shapeElementItemId1) as Element2DImageJSONViewData
 	console.log(jsonData)
@@ -94,9 +94,7 @@ export async function drawTestImage(webCanvas: WebCanvas, layerItemId: string): 
 	// 	}, 500)
 	// }, 1000)
 	nextFrameTick(async (): Promise<void> => {
-		d2ElementController.updateD2ElementShapeItemByJSONData(shapeElementItemId1, { isFlipX: true })
-		await sleep(500)
-		d2ElementController.updateD2ElementShapeItemByJSONData(shapeElementItemId1, { isFlipY: false, rotation: Angles.degreeToRadian(45) })
+		d2ElementController.updateD2ElementShapeItemByJSONData(shapeElementItemId1, { rotation: Angles.degreeToRadian(45) })
 		// await sleep(500)
 		// d2ElementController.updateD2ElementShapeItemByJSONData(shapeElementItemId1, { rotation: Angles.degreeToRadian(90) })
 	}, 1000)

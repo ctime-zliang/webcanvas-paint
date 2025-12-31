@@ -7,9 +7,9 @@ import { Primitive } from '../../../algorithm/geometry/primitives/Primitive'
 import { Line } from '../../../algorithm/geometry/primitives/Line'
 import { updateDashedSegProfile } from '../../../utils/Utils'
 import { ElementModelItemBase } from './elementBase/ElementModelItemBase'
-import { createD2LineBbox2 } from '../../../algorithm/geometry/utils/bbox2Utils'
 import { D2CrossRelationShips } from '../../../algorithm/geometry/D2CrossRelationShips'
 import { Constant } from '../../../Constant'
+import { BBox2Creator } from '../../../algorithm/geometry/utils/BBox2Creator'
 
 export function buildD2LineModel(
 	layerItemId: string,
@@ -74,7 +74,7 @@ export class D2LineModel extends ElementModelItemBase {
 		this._gapSize = gapSize
 		this._fixedStrokeWidth = isFixedStrokeWidth
 		if (!bbox2) {
-			this.bbox2 = createD2LineBbox2(this._startPoint, this._endPoint, this._strokeWidth)
+			this.bbox2 = BBox2Creator.createD2LineBbox2(this._startPoint, this._endPoint, this._strokeWidth)
 		}
 		this.alpha = alpha
 	}
@@ -173,7 +173,7 @@ export class D2LineModel extends ElementModelItemBase {
 	}
 
 	public updateBBox2(): BBox2 {
-		this.bbox2 = createD2LineBbox2(this.startPoint, this.endPoint, this.strokeWidth)
+		this.bbox2 = BBox2Creator.createD2LineBbox2(this.startPoint, this.endPoint, this.strokeWidth)
 		return this.bbox2
 	}
 

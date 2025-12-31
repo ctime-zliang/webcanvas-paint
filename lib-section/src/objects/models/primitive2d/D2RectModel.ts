@@ -5,9 +5,9 @@ import { ECanvas2DLineCap } from '../../../engine/config/PrimitiveProfile'
 import { updateDashedSegProfile } from '../../../utils/Utils'
 import { ElementModelItemBase } from './elementBase/ElementModelItemBase'
 import { Vector2 } from '../../../engine/algorithm/geometry/vector/Vector2'
-import { createD2RectBbox2 } from '../../../algorithm/geometry/utils/bbox2Utils'
 import { D2CrossRelationShips } from '../../../algorithm/geometry/D2CrossRelationShips'
 import { Constant } from '../../../Constant'
+import { BBox2Creator } from '../../../algorithm/geometry/utils/BBox2Creator'
 
 export function buildD2RectModel(
 	layerItemId: string,
@@ -99,7 +99,7 @@ export class D2RectModel extends ElementModelItemBase {
 		this.isFlipY = isFlipY
 		this.alpha = alpha
 		if (!bbox2) {
-			this.bbox2 = createD2RectBbox2(this.position, this.strokeWidth, this._width, this._height)
+			this.bbox2 = BBox2Creator.createD2RectBbox2(this.position, this.strokeWidth, this._width, this._height)
 		}
 	}
 
@@ -201,7 +201,7 @@ export class D2RectModel extends ElementModelItemBase {
 	}
 
 	public updateBBox2(): BBox2 {
-		this.bbox2 = createD2RectBbox2(this.position, this.strokeWidth, this.width, this.height)
+		this.bbox2 = BBox2Creator.createD2RectBbox2(this.position, this.strokeWidth, this.width, this.height)
 		return this.bbox2
 	}
 
