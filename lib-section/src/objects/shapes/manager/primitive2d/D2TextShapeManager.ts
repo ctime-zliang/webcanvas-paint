@@ -12,6 +12,7 @@ import { TFontTriangleVertexData } from '../../../../manager/TextGraphicsManager
 import { EFrameCommand } from '../../../../config/CommandEnum'
 import { Vector2 } from '../../../../engine/algorithm/geometry/vector/Vector2'
 import { Constant } from '../../../../Constant'
+import { TD2TextVertexData } from '../../../../types/Element'
 
 export class D2TextShapeManager extends BaseManager<D2TextShape> {
 	private static instance: D2TextShapeManager
@@ -72,8 +73,7 @@ export class D2TextShapeManager extends BaseManager<D2TextShape> {
 	public createShapeItemByVertexData(
 		elementItemId: string,
 		layerItemId: string,
-		bbox2: BBox2,
-		vertexDataArray: Array<Array<TFontTriangleVertexData>>,
+		textVertexData: TD2TextVertexData,
 		position: Vector2,
 		strokeColor: Color = Color.WHITE,
 		alpha: number = 1.0,
@@ -87,11 +87,11 @@ export class D2TextShapeManager extends BaseManager<D2TextShape> {
 			elementItemId,
 			layerItemId,
 			position,
-			undefined!,
-			undefined!,
-			undefined!,
-			undefined!,
-			undefined!,
+			textVertexData.content,
+			textVertexData.fontFamily,
+			textVertexData.fontStyle,
+			textVertexData.fontSize,
+			textVertexData.fontWeight,
 			strokeColor,
 			alpha,
 			bgColor,
@@ -103,8 +103,8 @@ export class D2TextShapeManager extends BaseManager<D2TextShape> {
 		elementModelItem.hasMeta = false
 		const elementShapeItem: D2TextShape = new D2TextShape(elementModelItem)
 		const op: boolean = this.addCache(elementShapeItem)
-		elementShapeItem.flushVertexDataArray(vertexDataArray)
-		elementShapeItem.updateBBox2(bbox2)
+		elementShapeItem.flushVertexDataArray(textVertexData.vertexDataArray)
+		elementShapeItem.updateBBox2(textVertexData.bbox2)
 		elementShapeItem.setContentReadyStatus(true)
 		elementShapeItem.updateRender()
 		if (elementShapeItem.isContentReady()) {

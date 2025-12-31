@@ -20,6 +20,7 @@ import { ED2ElementType } from './config/D2ElementProfile'
 import { ECanvas2DLineCap, ED2FontStyle, ED2PointShape } from './engine/config/PrimitiveProfile'
 
 import {
+	TD2TextVertexData,
 	TElement2DArcJSONViewData,
 	TElement2DCircleJSONViewData,
 	TElement2DImageJSONViewData,
@@ -79,6 +80,7 @@ export type FontTriangleVertexData = TFontTriangleVertexData
 export type D2PointItem = TD2PointItem
 export type D2EdgeItem = TD2EdgeItem
 export type D2TriangleIndicesItem = TD2TriangleIndicesItem
+export type D2TextVertexData = TD2TextVertexData
 
 export type ElementJSONData = TElementJSONData
 export type Element2DLineJSONViewData = TElement2DLineJSONViewData

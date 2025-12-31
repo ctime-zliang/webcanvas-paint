@@ -85,7 +85,7 @@ export class DrawD2TextShapeTool extends DrawD2ShapeTool {
 		this._drawShapeHandler.inputInfo = inputInfo
 		if (!this.isDrawing) {
 			this.isDrawing = true
-			this._drawShapeHandler.createShapes(inputInfo.moveRealScenePhysicsX, inputInfo.moveRealScenePhysicsY, this.toolData.textContent)
+			this._drawShapeHandler.createShapes(0, 0, this.toolData.textContent)
 		} else {
 			if (this._drawShapeHandler && this._drawShapeHandler.isShapeInsatncesContentReady()) {
 				this.isDrawing = false
@@ -96,7 +96,7 @@ export class DrawD2TextShapeTool extends DrawD2ShapeTool {
 				OutProfileMessage.dispatchOperationProfileChangeMessage(EOperationAction.CREATE_ELEMENT, {})
 				window.setTimeout((): void => {
 					this.isDrawing = true
-					this._drawShapeHandler.createShapes(inputInfo.moveRealScenePhysicsX, inputInfo.moveRealScenePhysicsY, this.toolData.textContent)
+					this._drawShapeHandler.createShapes(0, 0, this.toolData.textContent)
 				})
 			} else {
 				console.warn(`the data is being initialized and the element cannot be placed.`)

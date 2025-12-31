@@ -10,7 +10,7 @@ export abstract class ElementShapeBase extends Context {
 
 	public abstract refreshRender(): void
 
-	public abstract transform(matrix4: Matrix4): void
+	public abstract transform(...args: Array<any>): void
 
 	public abstract isSelect(...args: Array<any>): boolean
 

@@ -229,6 +229,7 @@ export class D2TextShape extends ElementShapeItemBase {
 		const lbv1: Vector2 = lbv0.multiplyMatrix4(value)
 		const rtv1: Vector2 = rtv0.multiplyMatrix4(value)
 		const newBbox2: BBox2 = new BBox2(lbv1.x, lbv1.y, rtv1.x, rtv1.y)
+		this.position = this.position.add(this.position.multiplyMatrix4(value))
 		this.updateBBox2(newBbox2)
 		this.updateRender()
 	}

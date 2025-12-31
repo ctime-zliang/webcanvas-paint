@@ -22,7 +22,7 @@ import { drawRandomTestLines, drawTestLineItem, drawTestLines, drawTestLines2 } 
 import { drawTestMixinItems } from './modules/drawTestMixin'
 import { drawTestPoint } from './modules/drawTestPoint'
 import { drawTestRectItem, drawTestRects } from './modules/drawTestRect'
-import { drawPresetTestTextItem, drawTestTextItem } from './modules/drawTestText'
+import { drawTestTextItem } from './modules/drawTestText'
 import { initWebSystemConfig } from './utils/initWebSystemConfig'
 
 async function initMessageHandle(webCanvas: WebCanvas): Promise<void> {
@@ -217,7 +217,7 @@ export function main(): void {
 		// drawTestFree4(webCanvas, layerItem01Id)
 		// drawTestFree5(webCanvas, layerItem01Id)
 
-		drawTestImage(webCanvas, layerItem01Id)
+		// drawTestImage(webCanvas, layerItem01Id)
 
 		console.log(webCanvas)
 	})

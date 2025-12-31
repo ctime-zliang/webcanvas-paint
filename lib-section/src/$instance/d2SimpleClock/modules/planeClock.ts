@@ -11,6 +11,7 @@ import {
 	WebCanvas,
 	D2FONT_STYLE,
 	Vector2,
+	D2TextVertexData,
 } from '../../../Main'
 import { formatDates } from '../../public/formatDates'
 
@@ -28,7 +29,10 @@ const RUN_PROFILE = {
 	outCircleRadius: 0,
 	/* ... */
 	scaleFontFamily: 'auto',
-	scaleTextVertexs: [] as Array<any>,
+	scaleTextVertexs: [] as Array<{
+		textContent: string
+		d2TextVertexData: D2TextVertexData
+	}>,
 	/* ... */
 	nowTimeStamp: 0,
 	lastTimeStamp: 0,
@@ -109,7 +113,7 @@ function drawPlaneClock(
 			const endPosition: Vector3 = baseEndPosition.multiplyMatrix4(rotationMatrix4)
 			d2TextElementController.createD2TextElementItemByVertexData(
 				layerItemId1,
-				d2TextVertexData.vertexDataArray,
+				d2TextVertexData,
 				new Vector2(
 					endPosition.x - (d2TextVertexData.bbox2.maxX - d2TextVertexData.bbox2.minX) / 2,
 					endPosition.y - (d2TextVertexData.bbox2.maxY - d2TextVertexData.bbox2.minY) / 2

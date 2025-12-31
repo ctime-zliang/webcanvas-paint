@@ -15,6 +15,7 @@ import { Vector2 } from '../engine/algorithm/geometry/vector/Vector2'
 import { BaseInterface } from './BaseInterface'
 import { Constant } from '../Constant'
 import { OutProfileMessage } from '../utils/OutMessage'
+import { TD2TextVertexData } from '../types/Element'
 
 export class D2TextElementController extends BaseInterface {
 	constructor() {
@@ -73,7 +74,7 @@ export class D2TextElementController extends BaseInterface {
 	 */
 	public createD2TextElementItemByVertexData(
 		layerItemId: string,
-		vertexDataArray: Array<Array<TFontTriangleVertexData>>,
+		textVertexData: TD2TextVertexData,
 		position: Vector2,
 		strokeColor: Color = Color.WHITE,
 		alpha: number = 1.0,
@@ -85,13 +86,12 @@ export class D2TextElementController extends BaseInterface {
 			console.error(`error: target layer does not exist or has been deleted.`)
 			return null!
 		}
-		const { bbox2: bbox22, vertexDataArray: vertexDataArray2 } = TextLayout.translateVertexData(position, vertexDataArray)
+		const { bbox2: bbox22, vertexDataArray: vertexDataArray2 } = TextLayout.translateVertexData(position, textVertexData.vertexDataArray)
 		const elementItemId: string = Constant.globalIdenManager.getElementIden()
 		const targetShapeItem: D2TextShape = D2TextShapeManager.getInstance().createShapeItemByVertexData(
 			elementItemId,
 			layerItemId,
-			bbox22,
-			vertexDataArray2,
+			{ ...textVertexData, bbox2: bbox22, vertexDataArray: vertexDataArray2 },
 			position,
 			strokeColor,
 			alpha,
@@ -112,15 +112,7 @@ export class D2TextElementController extends BaseInterface {
 		fontStyle: ED2FontStyle = ED2FontStyle.NORMAL,
 		fontSize: number = 10,
 		fontWeight: number = 100
-	): Promise<{
-		content: string
-		fontSize: number
-		fontFamily: string
-		fontStyle: ED2FontStyle
-		fontWeight: number
-		bbox2: BBox2
-		vertexDataArray: Array<Array<TFontTriangleVertexData>>
-	}> {
+	): Promise<TD2TextVertexData> {
 		return new Promise((resolve, reject): void => {
 			const hashIden: string = getHashIden()
 			Constant.textFontService.addVectorizeTextTask(
@@ -147,10 +139,6 @@ export class D2TextElementController extends BaseInterface {
 			)
 		})
 	}
-
-	/************************************************************************************************************************/
-	/************************************************************************************************************************/
-	/************************************************************************************************************************/
 
 	/**
 	 * 设置文本图元字符串内容

@@ -1,4 +1,6 @@
 import { ED2ElementType } from '../config/D2ElementProfile'
+import { BBox2 } from '../engine/algorithm/geometry/bbox/BBox2'
+import { ED2FontStyle } from '../engine/config/PrimitiveProfile'
 import {
 	TElementD2ArcJSONData,
 	TElementD2CircleJSONData,
@@ -8,6 +10,7 @@ import {
 	TElementD2TextJSONData,
 	TElementD2PointJSONData,
 } from '../engine/types/Primitive'
+import { TFontTriangleVertexData } from '../manager/TextGraphicsManager'
 import { D2AssistLineShape } from '../objects/assist/primitive2d/D2AssistLineShape'
 import { D2AssistPointShape } from '../objects/assist/primitive2d/D2AssistPointShape'
 import { D2ArcShape } from '../objects/shapes/primitive2d/D2ArcShape'
@@ -21,15 +24,17 @@ import { D2TextShape } from '../objects/shapes/primitive2d/D2TextShape'
 export type TElementShapeType = D2LineShape | D2CircleShape | D2PointShape | D2ArcShape | D2TextShape | D2ImageShape | D2RectShape
 export type TAllElementShapeType = TElementShapeType | D2AssistLineShape | D2AssistPointShape
 
-/****************************************************************************************************/
-/****************************************************************************************************/
-/****************************************************************************************************/
-
 export type TFillElementShapeType = D2CircleShape | D2ArcShape
 
-/****************************************************************************************************/
-/****************************************************************************************************/
-/****************************************************************************************************/
+export type TD2TextVertexData = {
+	content: string
+	fontSize: number
+	fontFamily: string
+	fontStyle: ED2FontStyle
+	fontWeight: number
+	bbox2: BBox2
+	vertexDataArray: Array<Array<TFontTriangleVertexData>>
+}
 
 export type TElement2DLineJSONViewData = TElementD2LineJSONData & {
 	modelType: ED2ElementType
@@ -58,10 +63,6 @@ export type TElement2DImageJSONViewData = TElementD2ImageJSONData & {
 export type TElement2DRectJSONViewData = TElementD2RectJSONData & {
 	modelType: ED2ElementType
 }
-
-/****************************************************************************************************/
-/****************************************************************************************************/
-/****************************************************************************************************/
 
 export type TElementJSONData =
 	| TElement2DLineJSONViewData
