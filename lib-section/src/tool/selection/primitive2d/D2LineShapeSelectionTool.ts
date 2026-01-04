@@ -14,7 +14,7 @@ import { CanvasMatrix4 } from '../../../engine/algorithm/geometry/matrix/CanvasM
 import { Vector3 } from '../../../engine/algorithm/geometry/vector/Vector3'
 import { D2SelectionTool } from './D2SelectionTool'
 import { Vector2 } from '../../../engine/algorithm/geometry/vector/Vector2'
-import { D2LineTransitions } from '../../../algorithm/geometry/D2LineTransitions'
+import { D2LineTransform } from '../../../algorithm/geometry/D2LineTransform'
 import { Constant } from '../../../Constant'
 import { OutProfileMessage } from '../../../utils/OutMessage'
 
@@ -118,7 +118,7 @@ export class D2LineShapeSelectionTool extends D2SelectionTool {
 			 * 计算当前鼠标的移动向量 A
 			 * 计算向量 A 在向量 B 上的投影 C
 			 */
-			const perpendicular: { v1: Vector2; v2: Vector2 } = D2LineTransitions.calculatePerpendicular(
+			const perpendicular: { v1: Vector2; v2: Vector2 } = D2LineTransform.calculatePerpendicular(
 				this._selectedItem.endPoint.sub(this._selectedItem.startPoint)
 			)
 			const B: Vector2 = perpendicular.v1

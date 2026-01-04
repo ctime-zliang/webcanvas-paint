@@ -16,13 +16,13 @@ export class RtreeService extends BaseInterface {
 	private refreshRtree(): void {
 		const updatedRtreeItems: Array<RtreeItem> = []
 		const allRtreeItems: Set<RtreeItem> = Constant.rtree.getAllItems()
-		allRtreeItems.forEach((rtreeItem: RtreeItem): void => {
+		for (let rtreeItem of allRtreeItems) {
 			const newBBox2: BBox2 = rtreeItem.target.model.updateBBox2()
 			const oldBBox2: BBox2 = rtreeItem.getBBox2()
 			if (newBBox2 && oldBBox2 && !newBBox2.equals(oldBBox2)) {
 				updatedRtreeItems.push(rtreeItem)
 			}
-		})
+		}
 		for (let i: number = 0; i < updatedRtreeItems.length; i++) {
 			const rtreeItem: RtreeItem = updatedRtreeItems[i]
 			const oldBBox2: BBox2 = rtreeItem.getBBox2()

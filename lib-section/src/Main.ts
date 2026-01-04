@@ -56,8 +56,6 @@ export * from './engine/algorithm/geometry/matrix/CanvasMatrix4'
 export { getHashIden } from './engine/utils/Utils'
 export * from './engine/algorithm/geometry/bbox/BBox2'
 
-export * from './algorithm/geometry/D2CrossRelationShips'
-export * from './algorithm/geometry/D2ArcTransitions'
 export * from './algorithm/geometry/primitives/Arc'
 export * from './algorithm/geometry/primitives/Line'
 export * from './algorithm/geometry/primitives/Polyline'

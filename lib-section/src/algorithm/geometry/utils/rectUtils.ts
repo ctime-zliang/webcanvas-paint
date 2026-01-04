@@ -190,7 +190,7 @@ export function rotationRect(
 	const bbox2Fac: BBox2Fac = new BBox2Fac()
 	bbox2Fac.extendByVector2(startPoint.multiplyMatrix4(matrix4_1)).extendByVector2(rightLow.multiplyMatrix4(matrix4_1))
 	const bbox2: BBox2 = bbox2Fac.build()
-	result.startPoint = bbox2.UpperLeftPoint.multiplyMatrix4(matrix4_2)
+	result.startPoint = bbox2.leftUp.multiplyMatrix4(matrix4_2)
 	result.rotation = newRotation
 	return result
 }

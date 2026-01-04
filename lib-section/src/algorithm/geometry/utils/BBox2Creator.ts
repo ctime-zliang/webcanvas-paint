@@ -38,11 +38,15 @@ export class BBox2Creator {
 		return new BBox2(minX, minY, maxX, maxY)
 	}
 
-	static createD2ImageBbox2(position: Vector2, width: number, height: number): BBox2 {
-		const minX: number = position.x
-		const minY: number = position.y - height
-		const maxX: number = position.x + width
-		const maxY: number = position.y
+	static createD2ImageBbox2(leftUp: Vector2, rightUp: Vector2, leftDown: Vector2, rightDown: Vector2): BBox2 {
+		let minX: number = leftUp.x
+		let maxX: number = leftUp.x
+		let minY: number = leftUp.y
+		let maxY: number = leftUp.y
+		minX = Math.min(minX, leftUp.x, leftDown.x, rightUp.x, rightDown.x)
+		maxX = Math.max(maxX, leftUp.x, leftDown.x, rightUp.x, rightDown.x)
+		minY = Math.min(minY, leftUp.y, leftDown.y, rightUp.y, rightDown.y)
+		maxY = Math.max(maxY, leftUp.y, leftDown.y, rightUp.y, rightDown.y)
 		return new BBox2(minX, minY, maxX, maxY)
 	}
 

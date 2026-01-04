@@ -240,39 +240,42 @@ export class D2ImageShapeSelectionTool extends D2SelectionTool {
 	}
 
 	private initPointsPosition(): void {
-		this._pointLeftUp = buildD2AssistPointShape(this._selectedItem.position, this._selectedItem)
+		this._pointLeftUp = buildD2AssistPointShape(this._selectedItem.model.bbox2.leftUp, this._selectedItem)
 		this._pointUp = buildD2AssistPointShape(
-			new Vector2(this._selectedItem.position.x + this._selectedItem.width / 2, this._selectedItem.position.y),
+			new Vector2(
+				(this._selectedItem.model.bbox2.leftUp.x + this._selectedItem.model.bbox2.rightUp.x) / 2,
+				(this._selectedItem.model.bbox2.leftUp.y + this._selectedItem.model.bbox2.rightUp.y) / 2
+			),
 			this._selectedItem,
 			ED2PointShape.TRIANGLE,
 			1.6
 		)
-		this._pointRightUp = buildD2AssistPointShape(
-			new Vector2(this._selectedItem.position.x + this._selectedItem.width, this._selectedItem.position.y),
-			this._selectedItem
-		)
+		this._pointRightUp = buildD2AssistPointShape(this._selectedItem.model.bbox2.rightUp, this._selectedItem)
 		this._pointRight = buildD2AssistPointShape(
-			new Vector2(this._selectedItem.position.x + this._selectedItem.width, this._selectedItem.position.y - this._selectedItem.height / 2),
+			new Vector2(
+				(this._selectedItem.model.bbox2.rightUp.x + this._selectedItem.model.bbox2.rightDown.x) / 2,
+				(this._selectedItem.model.bbox2.rightUp.y + this._selectedItem.model.bbox2.rightDown.y) / 2
+			),
 			this._selectedItem,
 			ED2PointShape.TRIANGLE,
 			1.6
 		)
-		this._pointRightBottom = buildD2AssistPointShape(
-			new Vector2(this._selectedItem.position.x + this._selectedItem.width, this._selectedItem.position.y - this._selectedItem.height),
-			this._selectedItem
-		)
+		this._pointRightBottom = buildD2AssistPointShape(this._selectedItem.model.bbox2.rightDown, this._selectedItem)
 		this._pointBottom = buildD2AssistPointShape(
-			new Vector2(this._selectedItem.position.x + this._selectedItem.width / 2, this._selectedItem.position.y - this._selectedItem.height),
+			new Vector2(
+				(this._selectedItem.model.bbox2.leftDown.x + this._selectedItem.model.bbox2.rightDown.x) / 2,
+				(this._selectedItem.model.bbox2.rightDown.y + this._selectedItem.model.bbox2.rightDown.y) / 2
+			),
 			this._selectedItem,
 			ED2PointShape.TRIANGLE,
 			1.6
 		)
-		this._pointLeftBottom = buildD2AssistPointShape(
-			new Vector2(this._selectedItem.position.x, this._selectedItem.position.y - this._selectedItem.height),
-			this._selectedItem
-		)
+		this._pointLeftBottom = buildD2AssistPointShape(this._selectedItem.model.bbox2.leftDown, this._selectedItem)
 		this._pointLeft = buildD2AssistPointShape(
-			new Vector2(this._selectedItem.position.x, this._selectedItem.position.y - this._selectedItem.height / 2),
+			new Vector2(
+				(this._selectedItem.model.bbox2.leftUp.x + this._selectedItem.model.bbox2.leftUp.x) / 2,
+				(this._selectedItem.model.bbox2.leftDown.y + this._selectedItem.model.bbox2.leftDown.y) / 2
+			),
 			this._selectedItem,
 			ED2PointShape.TRIANGLE,
 			1.6
@@ -280,23 +283,26 @@ export class D2ImageShapeSelectionTool extends D2SelectionTool {
 	}
 
 	private updatePointsPosition(): void {
-		this._pointLeftUp.centerPoint = this._selectedItem.position.copy()
-		this._pointUp.centerPoint = new Vector2(this._selectedItem.position.x + this._selectedItem.width / 2, this._selectedItem.position.y)
-		this._pointRightUp.centerPoint = new Vector2(this._selectedItem.position.x + this._selectedItem.width, this._selectedItem.position.y)
+		this._pointLeftUp.centerPoint = this._selectedItem.model.bbox2.leftUp.copy()
+		this._pointUp.centerPoint = new Vector2(
+			(this._selectedItem.model.bbox2.leftUp.x + this._selectedItem.model.bbox2.rightUp.x) / 2,
+			(this._selectedItem.model.bbox2.leftUp.y + this._selectedItem.model.bbox2.rightUp.y) / 2
+		)
+		this._pointRightUp.centerPoint = this._selectedItem.model.bbox2.rightUp.copy()
 		this._pointRight.centerPoint = new Vector2(
-			this._selectedItem.position.x + this._selectedItem.width,
-			this._selectedItem.position.y - this._selectedItem.height / 2
+			(this._selectedItem.model.bbox2.rightUp.x + this._selectedItem.model.bbox2.rightDown.x) / 2,
+			(this._selectedItem.model.bbox2.rightUp.y + this._selectedItem.model.bbox2.rightDown.y) / 2
 		)
-		this._pointRightBottom.centerPoint = new Vector2(
-			this._selectedItem.position.x + this._selectedItem.width,
-			this._selectedItem.position.y - this._selectedItem.height
-		)
+		this._pointRightBottom.centerPoint = this._selectedItem.model.bbox2.rightDown.copy()
 		this._pointBottom.centerPoint = new Vector2(
-			this._selectedItem.position.x + this._selectedItem.width / 2,
-			this._selectedItem.position.y - this._selectedItem.height
+			(this._selectedItem.model.bbox2.leftDown.x + this._selectedItem.model.bbox2.rightDown.x) / 2,
+			(this._selectedItem.model.bbox2.rightDown.y + this._selectedItem.model.bbox2.rightDown.y) / 2
 		)
-		this._pointLeftBottom.centerPoint = new Vector2(this._selectedItem.position.x, this._selectedItem.position.y - this._selectedItem.height)
-		this._pointLeft.centerPoint = new Vector2(this._selectedItem.position.x, this._selectedItem.position.y - this._selectedItem.height / 2)
+		this._pointLeftBottom.centerPoint = this._selectedItem.model.bbox2.leftDown.copy()
+		this._pointLeft.centerPoint = new Vector2(
+			(this._selectedItem.model.bbox2.leftUp.x + this._selectedItem.model.bbox2.leftUp.x) / 2,
+			(this._selectedItem.model.bbox2.leftDown.y + this._selectedItem.model.bbox2.leftDown.y) / 2
+		)
 	}
 
 	private moveSelectedItem(diffX: number, diffY: number): void {

@@ -28,10 +28,6 @@ export abstract class ElementShapeItemBase extends ElementShapeBase {
 		this._model.alpha = value
 	}
 
-	public refreshRender(): void {
-		Constant.modifyController.attachElement(this)
-	}
-
 	public get visible(): boolean {
 		return this.isStatusMatch(EPrimitiveStatus.VISIBLE)
 	}
@@ -93,5 +89,9 @@ export abstract class ElementShapeItemBase extends ElementShapeBase {
 
 	public setDelete(): void {
 		this.killed = true
+	}
+
+	public refreshRender(): void {
+		Constant.modifyController.attachElement(this)
 	}
 }

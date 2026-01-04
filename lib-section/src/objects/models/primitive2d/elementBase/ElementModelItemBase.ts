@@ -1,5 +1,5 @@
-import { D2FlipCalculator } from '../../../../algorithm/geometry/utils/D2FlipCalculator'
-import { D2RotationCalculator } from '../../../../algorithm/geometry/utils/D2RotationCalculator'
+import { D2FlipUtils } from '../utils/D2FlipUtils'
+import { D2RotationUtils } from '../utils/D2RotationUtils'
 import { ED2ElementType } from '../../../../config/D2ElementProfile'
 import { BBox2 } from '../../../../engine/algorithm/geometry/bbox/BBox2'
 import { CanvasMatrix4 } from '../../../../engine/algorithm/geometry/matrix/CanvasMatrix4'
@@ -116,9 +116,10 @@ export abstract class ElementModelItemBase extends ElementModelBase {
 		return this._rotation
 	}
 	public set rotation(value: number) {
-		const { rotation, matrix } = D2RotationCalculator.d2ElementRotation(this, value)
+		const { rotation, matrix4, bbox2 } = D2RotationUtils.d2ElementRotation(this, value)
 		this._rotation = rotation
-		this._matrix = matrix
+		this._matrix = matrix4
+		this._bbox2 = bbox2
 	}
 
 	public get isFlipX(): boolean {
@@ -127,8 +128,9 @@ export abstract class ElementModelItemBase extends ElementModelBase {
 	public set isFlipX(value: boolean) {
 		if (this._isFlipX !== value) {
 			this._isFlipX = value
-			const { matrix } = D2FlipCalculator.d2ElementFlipX(this)
-			this.matrix = matrix
+			const { matrix4, bbox2 } = D2FlipUtils.d2ElementFlipX(this)
+			this._matrix = matrix4
+			this._bbox2 = bbox2
 		}
 	}
 
@@ -138,8 +140,9 @@ export abstract class ElementModelItemBase extends ElementModelBase {
 	public set isFlipY(value: boolean) {
 		if (this._isFlipY !== value) {
 			this._isFlipY = value
-			const { matrix } = D2FlipCalculator.d2ElementFlipY(this)
-			this.matrix = matrix
+			const { matrix4, bbox2 } = D2FlipUtils.d2ElementFlipY(this)
+			this._matrix = matrix4
+			this._bbox2 = bbox2
 		}
 	}
 

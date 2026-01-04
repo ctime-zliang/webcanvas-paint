@@ -1,6 +1,6 @@
 import { Vector2 } from '../../engine/algorithm/geometry/vector/Vector2'
 
-export class D2LineTransitions {
+export class D2LineTransform {
 	/**
 	 * 计算向量的垂线向量(单位化)
 	 */

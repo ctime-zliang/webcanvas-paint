@@ -57,7 +57,7 @@ export class Polyline extends StructPrimitive<Polyline> {
 	}
 
 	public static build6(bbox2: BBox2): Polyline {
-		return Polyline.build3([bbox2.LowerLeftPoint, bbox2.LowerRightPoint, bbox2.UpperLeftPoint, bbox2.LowerLeftPoint])
+		return Polyline.build3([bbox2.leftDown, bbox2.rightDown, bbox2.leftUp, bbox2.leftDown])
 	}
 
 	private _primitives: Array<Primitive>

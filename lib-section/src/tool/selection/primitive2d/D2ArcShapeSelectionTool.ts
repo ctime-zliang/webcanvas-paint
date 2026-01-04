@@ -13,9 +13,9 @@ import { D2ArcShape } from '../../../objects/shapes/primitive2d/D2ArcShape'
 import { ED2PointShape } from '../../../engine/config/PrimitiveProfile'
 import { CanvasMatrix4 } from '../../../engine/algorithm/geometry/matrix/CanvasMatrix4'
 import { Vector3 } from '../../../engine/algorithm/geometry/vector/Vector3'
-import { D2ArcTransitions, TD2ArcProfile, TD2ArcThreePoint } from '../../../algorithm/geometry/D2ArcTransitions'
+import { D2ArcTransform } from '../../../algorithm/geometry/D2ArcTransform'
 import { D2SelectionTool } from './D2SelectionTool'
-import { D2LineTransitions } from '../../../algorithm/geometry/D2LineTransitions'
+import { D2LineTransform } from '../../../algorithm/geometry/D2LineTransform'
 import { Constant } from '../../../Constant'
 import { OutProfileMessage } from '../../../utils/OutMessage'
 
@@ -117,29 +117,29 @@ export class D2ArcShapeSelectionTool extends D2SelectionTool {
 			this.updatePointsPosition()
 		} else if (this._isSelectedPointStart) {
 			const newStartPoint: Vector2 = this._pointStart.centerPoint.multiplyMatrix4(translateMatrix4)
-			const arcResult: TD2ArcProfile = D2ArcTransitions.calculateD2ArcProfileByThreePoint(
+			const { startAngle, endAngle, radius, centerPoint, sweep } = D2ArcTransform.calculateD2ArcProfileByThreePoint(
 				newStartPoint,
 				this._pointEnd.centerPoint,
 				this._pointMiddle.centerPoint
 			)
-			this._selectedItem.radius = arcResult.radius
-			this._selectedItem.centerPoint = arcResult.centerPoint
-			this._selectedItem.startAngle = arcResult.startAngle
-			this._selectedItem.endAngle = arcResult.endAngle
-			this._selectedItem.sweep = arcResult.sweep
+			this._selectedItem.radius = radius
+			this._selectedItem.centerPoint = centerPoint
+			this._selectedItem.startAngle = startAngle
+			this._selectedItem.endAngle = endAngle
+			this._selectedItem.sweep = sweep
 			this.updatePointsPosition()
 		} else if (this._isSelectedPointEnd) {
 			const newEndPoint: Vector2 = this._pointEnd.centerPoint.multiplyMatrix4(translateMatrix4)
-			const arcResult: TD2ArcProfile = D2ArcTransitions.calculateD2ArcProfileByThreePoint(
+			const { startAngle, endAngle, radius, centerPoint, sweep } = D2ArcTransform.calculateD2ArcProfileByThreePoint(
 				this._pointStart.centerPoint,
 				newEndPoint,
 				this._pointMiddle.centerPoint
 			)
-			this._selectedItem.radius = arcResult.radius
-			this._selectedItem.centerPoint = arcResult.centerPoint
-			this._selectedItem.startAngle = arcResult.startAngle
-			this._selectedItem.endAngle = arcResult.endAngle
-			this._selectedItem.sweep = arcResult.sweep
+			this._selectedItem.radius = radius
+			this._selectedItem.centerPoint = centerPoint
+			this._selectedItem.startAngle = startAngle
+			this._selectedItem.endAngle = endAngle
+			this._selectedItem.sweep = sweep
 			this.updatePointsPosition()
 		} else if (this._isSelectedPointMiddle) {
 			/**
@@ -147,7 +147,7 @@ export class D2ArcShapeSelectionTool extends D2SelectionTool {
 			 * 计算当前鼠标的移动向量 A
 			 * 计算向量 A 在向量 B 上的投影 C
 			 */
-			const perpendicular: { v1: Vector2; v2: Vector2 } = D2LineTransitions.calculatePerpendicular(
+			const perpendicular: { v1: Vector2; v2: Vector2 } = D2LineTransform.calculatePerpendicular(
 				this._pointEnd.centerPoint.sub(this._pointStart.centerPoint)
 			)
 			const B: Vector2 = perpendicular.v1
@@ -158,16 +158,16 @@ export class D2ArcShapeSelectionTool extends D2SelectionTool {
 			)
 			const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector3(C.x, C.y, 0))
 			const newMiddlePoint: Vector2 = this._pointMiddle.centerPoint.multiplyMatrix4(translateMatrix4)
-			const arcResult: TD2ArcProfile = D2ArcTransitions.calculateD2ArcProfileByThreePoint(
+			const { startAngle, endAngle, radius, centerPoint, sweep } = D2ArcTransform.calculateD2ArcProfileByThreePoint(
 				this._pointStart.centerPoint,
 				this._pointEnd.centerPoint,
 				newMiddlePoint
 			)
-			this._selectedItem.radius = arcResult.radius
-			this._selectedItem.centerPoint = arcResult.centerPoint
-			this._selectedItem.startAngle = arcResult.startAngle
-			this._selectedItem.endAngle = arcResult.endAngle
-			this._selectedItem.sweep = arcResult.sweep
+			this._selectedItem.radius = radius
+			this._selectedItem.centerPoint = centerPoint
+			this._selectedItem.startAngle = startAngle
+			this._selectedItem.endAngle = endAngle
+			this._selectedItem.sweep = sweep
 			this.updatePointsPosition()
 		} else {
 			this.moveSelectedItem(diffX, diffY)
@@ -217,28 +217,28 @@ export class D2ArcShapeSelectionTool extends D2SelectionTool {
 
 	private initPointsPosition(): void {
 		const arcCenterPoint: Vector2 = this._selectedItem.centerPoint
-		const threePoint: TD2ArcThreePoint = D2ArcTransitions.calculateThreePointByArcProfile(
+		const { startPoint, endPoint, middlePoint } = D2ArcTransform.calculateThreePointByArcProfile(
 			this._selectedItem.radius,
 			this._selectedItem.startAngle,
 			this._selectedItem.endAngle
 		)
 		this._pointCenter = buildD2AssistPointShape(arcCenterPoint.copy(), this._selectedItem)
-		this._pointStart = buildD2AssistPointShape(arcCenterPoint.add(threePoint.startPoint), this._selectedItem)
-		this._pointEnd = buildD2AssistPointShape(arcCenterPoint.add(threePoint.endPoint), this._selectedItem)
-		this._pointMiddle = buildD2AssistPointShape(arcCenterPoint.add(threePoint.middlePoint), this._selectedItem, ED2PointShape.TRIANGLE, 1.6)
+		this._pointStart = buildD2AssistPointShape(arcCenterPoint.add(startPoint), this._selectedItem)
+		this._pointEnd = buildD2AssistPointShape(arcCenterPoint.add(endPoint), this._selectedItem)
+		this._pointMiddle = buildD2AssistPointShape(arcCenterPoint.add(middlePoint), this._selectedItem, ED2PointShape.TRIANGLE, 1.6)
 	}
 
 	private updatePointsPosition(): void {
 		const arcCenterPoint: Vector2 = this._selectedItem.centerPoint
-		const threePoint: TD2ArcThreePoint = D2ArcTransitions.calculateThreePointByArcProfile(
+		const { startPoint, endPoint, middlePoint } = D2ArcTransform.calculateThreePointByArcProfile(
 			this._selectedItem.radius,
 			this._selectedItem.startAngle,
 			this._selectedItem.endAngle
 		)
 		this._pointCenter.centerPoint = this._selectedItem.centerPoint.copy()
-		this._pointStart.centerPoint = arcCenterPoint.add(threePoint.startPoint)
-		this._pointEnd.centerPoint = arcCenterPoint.add(threePoint.endPoint)
-		this._pointMiddle.centerPoint = arcCenterPoint.add(threePoint.middlePoint)
+		this._pointStart.centerPoint = arcCenterPoint.add(startPoint)
+		this._pointEnd.centerPoint = arcCenterPoint.add(endPoint)
+		this._pointMiddle.centerPoint = arcCenterPoint.add(middlePoint)
 	}
 
 	private moveSelectedItem(diffX: number, diffY: number): void {

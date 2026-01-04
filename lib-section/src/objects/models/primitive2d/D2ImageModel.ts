@@ -74,7 +74,7 @@ export class D2ImageModel extends D2ImageModelSource {
 		this.rotation = rotation
 		this.isFlipX = isFlipX
 		this.isFlipY = isFlipY
-		this.bbox2 = BBox2Creator.createD2ImageBbox2(this.position, this._width, this._height)
+		this.bbox2 = BBox2Creator.createD2ImageBbox2(this.leftUp, this.rightUp, this.leftDown, this.rightDown)
 	}
 
 	public get refreshToken(): string {
@@ -133,7 +133,7 @@ export class D2ImageModel extends D2ImageModelSource {
 	}
 
 	public updateBBox2(): BBox2 {
-		this.bbox2 = BBox2Creator.createD2ImageBbox2(this.position, this._width, this._height)
+		this.bbox2 = BBox2Creator.createD2ImageBbox2(this.leftUp, this.rightUp, this.leftDown, this.rightDown)
 		return this.bbox2
 	}
 

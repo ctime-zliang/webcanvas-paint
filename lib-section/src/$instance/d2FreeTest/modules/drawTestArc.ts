@@ -1,5 +1,5 @@
 import { ECanvas2DLineCap } from '../../../engine/config/PrimitiveProfile'
-import { Color, D2ArcTransitions, ElementJSONData, HISTORY_CMD_ACTION, POINT_EVENT_NAME, Sweep, SWEEP, Vector2, WebCanvas } from '../../../Main'
+import { Color, ElementJSONData, HISTORY_CMD_ACTION, POINT_EVENT_NAME, Sweep, SWEEP, Vector2, WebCanvas } from '../../../Main'
 
 export function drawTestArcItems(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController, operationController } = webCanvas
@@ -18,7 +18,7 @@ export function drawTestArcItems(webCanvas: WebCanvas, layerItemId: string): voi
 	d2ElementController.updateD2ElementShapeItemByJSONData(shapeElementItemId1, { strokeColor: Color.RED, fillColor: Color.GOLDEN })
 	d2ElementController.bindD2ElementShapeItemEvent(
 		shapeElementItemId1,
-		POINT_EVENT_NAME.POINTER_DOWN,
+		POINT_EVENT_NAME.POINTER_LEFTDOWN,
 		(elementItemId: string, eventId: string): void => {
 			console.log(d2ElementController.getD2ElementShapeItemJSONData(elementItemId))
 		}
@@ -38,7 +38,7 @@ export function drawTestArcItems(webCanvas: WebCanvas, layerItemId: string): voi
 	})
 	d2ElementController.bindD2ElementShapeItemEvent(
 		shapeElementItemId2,
-		POINT_EVENT_NAME.POINTER_DOWN,
+		POINT_EVENT_NAME.POINTER_LEFTDOWN,
 		(elementItemId: string, eventId: string): void => {
 			console.log(d2ElementController.getD2ElementShapeItemJSONData(elementItemId))
 		}
@@ -58,7 +58,7 @@ export function drawTestArcItems(webCanvas: WebCanvas, layerItemId: string): voi
 	})
 	d2ElementController.bindD2ElementShapeItemEvent(
 		shapeElementItemId3,
-		POINT_EVENT_NAME.POINTER_DOWN,
+		POINT_EVENT_NAME.POINTER_LEFTDOWN,
 		(elementItemId: string, eventId: string): void => {
 			console.log(d2ElementController.getD2ElementShapeItemJSONData(elementItemId))
 		}
@@ -76,7 +76,7 @@ export function drawTestArcItems(webCanvas: WebCanvas, layerItemId: string): voi
 	d2ElementController.updateD2ElementShapeItemByJSONData(shapeElementItemId1, { strokeColor: Color.RED, fillColor: Color.GOLDEN })
 	d2ElementController.bindD2ElementShapeItemEvent(
 		shapeElementItemId4,
-		POINT_EVENT_NAME.POINTER_DOWN,
+		POINT_EVENT_NAME.POINTER_LEFTDOWN,
 		(elementItemId: string, eventId: string): void => {
 			console.log(d2ElementController.getD2ElementShapeItemJSONData(elementItemId))
 		}
@@ -96,7 +96,7 @@ export function drawTestArcItems(webCanvas: WebCanvas, layerItemId: string): voi
 	})
 	d2ElementController.bindD2ElementShapeItemEvent(
 		shapeElementItemId5,
-		POINT_EVENT_NAME.POINTER_DOWN,
+		POINT_EVENT_NAME.POINTER_LEFTDOWN,
 		(elementItemId: string, eventId: string): void => {
 			console.log(d2ElementController.getD2ElementShapeItemJSONData(elementItemId))
 		}
@@ -122,7 +122,7 @@ export function drawTestArcItems(webCanvas: WebCanvas, layerItemId: string): voi
 	})
 	d2ElementController.bindD2ElementShapeItemEvent(
 		shapeElementItemId6,
-		POINT_EVENT_NAME.POINTER_DOWN,
+		POINT_EVENT_NAME.POINTER_LEFTDOWN,
 		(elementItemId: string, eventId: string): void => {
 			console.log(d2ElementController.getD2ElementShapeItemJSONData(elementItemId))
 		}
@@ -146,7 +146,7 @@ export function drawTestArcItems(webCanvas: WebCanvas, layerItemId: string): voi
 	d2ElementController.updateD2ElementShapeItemByJSONData(shapeElementItemId1, { strokeColor: Color.RED, fillColor: Color.GOLDEN })
 	d2ElementController.bindD2ElementShapeItemEvent(
 		shapeElementItemId7,
-		POINT_EVENT_NAME.POINTER_DOWN,
+		POINT_EVENT_NAME.POINTER_LEFTDOWN,
 		(elementItemId: string, eventId: string): void => {
 			console.log(d2ElementController.getD2ElementShapeItemJSONData(elementItemId))
 		}
@@ -166,7 +166,7 @@ export function drawTestArcItems(webCanvas: WebCanvas, layerItemId: string): voi
 	})
 	d2ElementController.bindD2ElementShapeItemEvent(
 		shapeElementItemId8,
-		POINT_EVENT_NAME.POINTER_DOWN,
+		POINT_EVENT_NAME.POINTER_LEFTDOWN,
 		(elementItemId: string, eventId: string): void => {
 			console.log(d2ElementController.getD2ElementShapeItemJSONData(elementItemId))
 		}

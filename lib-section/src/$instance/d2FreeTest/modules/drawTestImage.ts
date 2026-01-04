@@ -32,7 +32,7 @@ async function readFileAsImage(file: File): Promise<{
 	width: number
 	height: number
 }> {
-	return new Promise((resolve, reject) => {
+	return new Promise((resolve, reject): void => {
 		const fileReader: FileReader = new FileReader()
 		fileReader.onload = function (e: ProgressEvent<FileReader>): void {
 			const imageDataURL: string = e.target?.result as string
@@ -78,7 +78,6 @@ export async function drawTestImage(webCanvas: WebCanvas, layerItemId: string): 
 	const jsonData: Element2DImageJSONViewData = d2ElementController.getD2ElementShapeItemJSONData(shapeElementItemId1) as Element2DImageJSONViewData
 	console.log(jsonData)
 	d2ElementController.bindD2ElementShapeItemEvent(shapeElementItemId1, POINT_EVENT_NAME.POINTER_LEFTDOWN, (event: any): void => {
-		console.log(`[D2ImageShape] click event: `, event)
 		const jsonData: Element2DImageJSONViewData = d2ElementController.getD2ElementShapeItemJSONData(
 			shapeElementItemId1
 		) as Element2DImageJSONViewData
@@ -94,7 +93,7 @@ export async function drawTestImage(webCanvas: WebCanvas, layerItemId: string): 
 		// 	d2ElementController.updateD2ElementShapeItemByJSONData(shapeElementItemId1, { rotation: Angles.degreeToRadian(degree), isFlipX: isFlipX })
 		// 	degree += degreeStep
 		// 	isFlipX = !isFlipX
-		// }, 200)
+		// }, 100)
 	}, 1000)
 	nextFrameTick(async (): Promise<void> => {
 		d2ElementController.updateD2ElementShapeItemByJSONData(shapeElementItemId1, { isFlipY: true, rotation: Angles.degreeToRadian(30) })

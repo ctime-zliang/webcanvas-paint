@@ -146,32 +146,32 @@ export function intersLL(m: Line, n: Line): number {
 		 **/
 		if (DoubleKit.eq(inters.width, 0)) {
 			if (DoubleKit.eq(inters.height, 0)) {
-				CACHE[idx++] = inters.UpperLeftPoint.x
-				CACHE[idx++] = inters.UpperLeftPoint.y
+				CACHE[idx++] = inters.leftUp.x
+				CACHE[idx++] = inters.leftUp.y
 			} else {
-				CACHE[idx++] = inters.UpperLeftPoint.x
-				CACHE[idx++] = inters.UpperLeftPoint.y
-				CACHE[idx++] = inters.LowerLeftPoint.x
-				CACHE[idx++] = inters.LowerLeftPoint.y
+				CACHE[idx++] = inters.leftUp.x
+				CACHE[idx++] = inters.leftUp.y
+				CACHE[idx++] = inters.leftDown.x
+				CACHE[idx++] = inters.leftDown.y
 			}
 		} else if (DoubleKit.eq(inters.height, 0)) {
-			CACHE[idx++] = inters.UpperLeftPoint.x
-			CACHE[idx++] = inters.UpperLeftPoint.y
-			CACHE[idx++] = inters.UpperRightPoint.x
-			CACHE[idx++] = inters.UpperRightPoint.y
+			CACHE[idx++] = inters.leftUp.x
+			CACHE[idx++] = inters.leftUp.y
+			CACHE[idx++] = inters.rightUp.x
+			CACHE[idx++] = inters.rightUp.y
 		} else {
-			const ulArea: number = Triangle.getArea(inters.UpperLeftPoint, new Vector2(x3, y3), new Vector2(x4, y4))
-			const urArea: number = Triangle.getArea(inters.UpperRightPoint, new Vector2(x3, y3), new Vector2(x4, y4))
+			const ulArea: number = Triangle.getArea(inters.leftUp, new Vector2(x3, y3), new Vector2(x4, y4))
+			const urArea: number = Triangle.getArea(inters.rightUp, new Vector2(x3, y3), new Vector2(x4, y4))
 			if (ulArea < urArea) {
-				CACHE[idx++] = inters.UpperLeftPoint.x
-				CACHE[idx++] = inters.UpperLeftPoint.y
-				CACHE[idx++] = inters.LowerRightPoint.x
-				CACHE[idx++] = inters.LowerRightPoint.y
+				CACHE[idx++] = inters.leftUp.x
+				CACHE[idx++] = inters.leftUp.y
+				CACHE[idx++] = inters.rightDown.x
+				CACHE[idx++] = inters.rightDown.y
 			} else {
-				CACHE[idx++] = inters.UpperRightPoint.x
-				CACHE[idx++] = inters.UpperRightPoint.y
-				CACHE[idx++] = inters.LowerLeftPoint.x
-				CACHE[idx++] = inters.LowerLeftPoint.y
+				CACHE[idx++] = inters.rightUp.x
+				CACHE[idx++] = inters.rightUp.y
+				CACHE[idx++] = inters.leftDown.x
+				CACHE[idx++] = inters.leftDown.y
 			}
 		}
 	} else if (DoubleKit.eq(cross1, 0)) {

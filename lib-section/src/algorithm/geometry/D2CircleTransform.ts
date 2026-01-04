@@ -1,17 +1,19 @@
 import { Vector2 } from '../../engine/algorithm/geometry/vector/Vector2'
 import { ESweep } from '../../engine/config/CommonProfile'
 
-export type TD2CircleProfile = {
-	centerPoint: Vector2
-	radius: number
-	sweep: ESweep
-}
-
-export class D2CircleTransitions {
+export class D2CircleTransform {
 	/**
 	 * 非共线三点计算圆参数
 	 */
-	static calculateCircleProfileByByThreePoint(startPoint: Vector2, endPoint: Vector2, thirdPoint: Vector2): TD2CircleProfile {
+	static calculateCircleProfileByByThreePoint(
+		startPoint: Vector2,
+		endPoint: Vector2,
+		thirdPoint: Vector2
+	): {
+		centerPoint: Vector2
+		radius: number
+		sweep: ESweep
+	} {
 		const { x: x1, y: y1 } = startPoint
 		const { x: x2, y: y2 } = endPoint
 		const { x: x3, y: y3 } = thirdPoint

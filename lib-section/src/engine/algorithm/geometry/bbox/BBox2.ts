@@ -171,28 +171,16 @@ export class BBox2 {
 		return this.width * this.height
 	}
 
-	/**
-	 * 左上
-	 */
-	public get UpperLeftPoint(): Vector2 {
+	public get leftUp(): Vector2 {
 		return new Vector2(this.minX, this.maxY)
 	}
-	/**
-	 * 右上
-	 */
-	public get UpperRightPoint(): Vector2 {
+	public get rightUp(): Vector2 {
 		return new Vector2(this.maxX, this.maxY)
 	}
-	/**
-	 * 左下
-	 */
-	public get LowerLeftPoint(): Vector2 {
+	public get leftDown(): Vector2 {
 		return new Vector2(this.minX, this.minY)
 	}
-	/**
-	 * 右下
-	 */
-	public get LowerRightPoint(): Vector2 {
+	public get rightDown(): Vector2 {
 		return new Vector2(this.maxX, this.minY)
 	}
 
