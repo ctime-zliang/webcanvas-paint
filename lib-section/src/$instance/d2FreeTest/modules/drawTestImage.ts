@@ -85,16 +85,19 @@ export async function drawTestImage(webCanvas: WebCanvas, layerItemId: string): 
 		console.log(jsonData)
 	})
 	let degree: number = 0
-	let degreeStep: number = 30
+	let degreeStep: number = 5
 	let intervalId: number = null!
-	// nextFrameTick(async (): Promise<void> => {
-	// 	intervalId = window.setInterval(async (): Promise<void> => {
-	// 		degree += degreeStep
-	// 		d2ElementController.updateD2ElementShapeItemByJSONData(shapeElementItemId1, { rotation: Angles.degreeToRadian(degree) })
-	// 	}, 300)
-	// }, 1000)
+	let isFlipX: boolean = false
+	let isFlipY: boolean = false
 	nextFrameTick(async (): Promise<void> => {
-		d2ElementController.updateD2ElementShapeItemByJSONData(shapeElementItemId1, { rotation: Angles.degreeToRadian(45) })
+		// intervalId = window.setInterval(async (): Promise<void> => {
+		// 	d2ElementController.updateD2ElementShapeItemByJSONData(shapeElementItemId1, { rotation: Angles.degreeToRadian(degree), isFlipX: isFlipX })
+		// 	degree += degreeStep
+		// 	isFlipX = !isFlipX
+		// }, 200)
+	}, 1000)
+	nextFrameTick(async (): Promise<void> => {
+		d2ElementController.updateD2ElementShapeItemByJSONData(shapeElementItemId1, { isFlipY: true, rotation: Angles.degreeToRadian(30) })
 		// await sleep(500)
 		// d2ElementController.updateD2ElementShapeItemByJSONData(shapeElementItemId1, { rotation: Angles.degreeToRadian(90) })
 	}, 1000)

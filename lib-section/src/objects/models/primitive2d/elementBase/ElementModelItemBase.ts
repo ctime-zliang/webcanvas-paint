@@ -1,3 +1,4 @@
+import { D2FlipCalculator } from '../../../../algorithm/geometry/utils/D2FlipCalculator'
 import { D2RotationCalculator } from '../../../../algorithm/geometry/utils/D2RotationCalculator'
 import { ED2ElementType } from '../../../../config/D2ElementProfile'
 import { BBox2 } from '../../../../engine/algorithm/geometry/bbox/BBox2'
@@ -126,7 +127,8 @@ export abstract class ElementModelItemBase extends ElementModelBase {
 	public set isFlipX(value: boolean) {
 		if (this._isFlipX !== value) {
 			this._isFlipX = value
-			this.matrix = this.matrix.multiply4(Matrix4.flipY())
+			const { matrix } = D2FlipCalculator.d2ElementFlipX(this)
+			this.matrix = matrix
 		}
 	}
 
@@ -136,7 +138,8 @@ export abstract class ElementModelItemBase extends ElementModelBase {
 	public set isFlipY(value: boolean) {
 		if (this._isFlipY !== value) {
 			this._isFlipY = value
-			this.matrix = this.matrix.multiply4(Matrix4.flipX())
+			const { matrix } = D2FlipCalculator.d2ElementFlipY(this)
+			this.matrix = matrix
 		}
 	}
 

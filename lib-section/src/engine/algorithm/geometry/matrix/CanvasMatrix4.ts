@@ -314,13 +314,13 @@ export class CanvasMatrix4 {
 				vy *= rlen
 				vz *= rlen
 			}
-			let nc: number = 1 - c
-			let xy: number = vx * vy
-			let yz: number = vy * vz
-			let zx: number = vz * vx
-			let xs: number = vx * s
-			let ys: number = vy * s
-			let zs: number = vz * s
+			const nc: number = 1 - c
+			const xy: number = vx * vy
+			const yz: number = vy * vz
+			const zx: number = vz * vx
+			const xs: number = vx * s
+			const ys: number = vy * s
+			const zs: number = vz * s
 			matrix4.data[0] = vx * vx * nc + c
 			matrix4.data[1] = xy * nc + zs
 			matrix4.data[2] = zx * nc - ys
@@ -445,13 +445,13 @@ export class CanvasMatrix4 {
 		if (far <= 0) {
 			throw 'far <= 0'
 		}
-		let _fovy: number = (Math.PI * fovy) / 180 / 2
-		let s: number = Math.sin(_fovy)
+		const _fovy: number = (Math.PI * fovy) / 180 / 2
+		const s: number = Math.sin(_fovy)
 		if (s === 0) {
 			throw 'null frustum'
 		}
-		let rd: number = 1 / (far - near)
-		let ct: number = Math.cos(_fovy) / s
+		const rd: number = 1 / (far - near)
+		const ct: number = Math.cos(_fovy) / s
 		matrix4.data[0] = ct / aspect
 		matrix4.data[1] = 0
 		matrix4.data[2] = 0
