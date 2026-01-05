@@ -6,7 +6,7 @@ export class D2ImageShaderGL {
 			attribute lowp float a_index;
             attribute vec4 a_leftPosition;  // [upX, upY, downX, downY]
 			attribute vec4 a_rightPosition;  // [upX, upY, downX, downY]
-            attribute vec4 a_param;  // [alpha, <un-use>, <un-use>, <un-use>]
+            attribute vec4 a_param;  // [alpha, rotation, is-flip-x, is-flip-y]
             uniform mat4 u_matrix;
 			uniform float u_zoomRatio;
 			varying vec4 v_param;

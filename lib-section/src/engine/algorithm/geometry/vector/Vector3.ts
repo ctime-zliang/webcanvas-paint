@@ -69,7 +69,7 @@ export class Vector3 extends Vector {
 	/**
 	 * 向量与标量相加
 	 */
-	public addScalar(x: number, y: number, z: number): Vector3 {
+	public addScalar(x: number, y: number = x, z: number = y): Vector3 {
 		return new Vector3(this.x + x, this.y + y, this.z + z)
 	}
 
@@ -83,7 +83,7 @@ export class Vector3 extends Vector {
 	/**
 	 * 向量与标量相减
 	 */
-	public subScalar(x: number, y: number, z: number): Vector3 {
+	public subScalar(x: number, y: number = x, z: number = y): Vector3 {
 		return new Vector3(this.x - x, this.y - y, this.z - z)
 	}
 
@@ -97,7 +97,7 @@ export class Vector3 extends Vector {
 	/**
 	 * 向量与标量的乘积
 	 */
-	public mul(x: number = 0, y: number = 0, z: number = 0): Vector3 {
+	public mul(x: number = 0, y: number = x, z: number = y): Vector3 {
 		return this.scale(x, y, z)
 	}
 

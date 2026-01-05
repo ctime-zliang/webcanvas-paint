@@ -102,6 +102,7 @@ export class D2ImageShape extends ElementShapeItemBase {
 	}
 	public set position(value: Vector2) {
 		;(this.model as D2ImageModel).position = value
+		this.updateBBox2()
 		this.refreshRender()
 	}
 
@@ -110,6 +111,7 @@ export class D2ImageShape extends ElementShapeItemBase {
 	}
 	public set width(value: number) {
 		;(this.model as D2ImageModel).width = value
+		this.updateBBox2()
 		this.refreshRender()
 	}
 
@@ -118,6 +120,7 @@ export class D2ImageShape extends ElementShapeItemBase {
 	}
 	public set height(value: number) {
 		;(this.model as D2ImageModel).height = value
+		this.updateBBox2()
 		this.refreshRender()
 	}
 
@@ -142,6 +145,7 @@ export class D2ImageShape extends ElementShapeItemBase {
 	}
 	public set rotation(value: number) {
 		;(this.model as D2ImageModel).rotation = value
+		this.updateBBox2()
 		this.refreshRender()
 	}
 
@@ -150,6 +154,7 @@ export class D2ImageShape extends ElementShapeItemBase {
 	}
 	public set isFlipX(value: boolean) {
 		;(this.model as D2ImageModel).isFlipX = value
+		this.updateBBox2()
 		this.refreshRender()
 	}
 
@@ -158,6 +163,7 @@ export class D2ImageShape extends ElementShapeItemBase {
 	}
 	public set isFlipY(value: boolean) {
 		;(this.model as D2ImageModel).isFlipY = value
+		this.updateBBox2()
 		this.refreshRender()
 	}
 

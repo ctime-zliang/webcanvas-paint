@@ -203,7 +203,7 @@ export class D2ImageView extends ShapeElementViewBase {
 
 	public hightlighting(): void {
 		if (!this._maskPrimitive) {
-			this._maskPrimitive = new BaseD2Line(EDrawLayerCode.MaskLayer, this)
+			// this._maskPrimitive = new BaseD2Line(EDrawLayerCode.MaskLayer, this)
 		}
 		this._upOutLinePrimitiveN && this._upOutLinePrimitiveN.delete()
 		this._upOutLinePrimitiveN = null!

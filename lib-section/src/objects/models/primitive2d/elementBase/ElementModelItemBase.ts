@@ -116,10 +116,9 @@ export abstract class ElementModelItemBase extends ElementModelBase {
 		return this._rotation
 	}
 	public set rotation(value: number) {
-		const { rotation, matrix4, bbox2 } = D2RotationUtils.d2ElementRotation(this, value)
+		const { rotation, matrix4 } = D2RotationUtils.d2ElementRotation(this, value)
 		this._rotation = rotation
 		this._matrix = matrix4
-		this._bbox2 = bbox2
 	}
 
 	public get isFlipX(): boolean {
@@ -128,9 +127,8 @@ export abstract class ElementModelItemBase extends ElementModelBase {
 	public set isFlipX(value: boolean) {
 		if (this._isFlipX !== value) {
 			this._isFlipX = value
-			const { matrix4, bbox2 } = D2FlipUtils.d2ElementFlipX(this)
+			const { matrix4 } = D2FlipUtils.d2ElementFlipX(this)
 			this._matrix = matrix4
-			this._bbox2 = bbox2
 		}
 	}
 
@@ -140,9 +138,8 @@ export abstract class ElementModelItemBase extends ElementModelBase {
 	public set isFlipY(value: boolean) {
 		if (this._isFlipY !== value) {
 			this._isFlipY = value
-			const { matrix4, bbox2 } = D2FlipUtils.d2ElementFlipY(this)
+			const { matrix4 } = D2FlipUtils.d2ElementFlipY(this)
 			this._matrix = matrix4
-			this._bbox2 = bbox2
 		}
 	}
 

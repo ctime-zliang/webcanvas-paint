@@ -25,6 +25,7 @@ export class D2ImageDataGL {
 			primitiveItemValueData.rotation, // 10
 			primitiveItemValueData.isFlipX ? 1 : 0, // 11
 			primitiveItemValueData.isFlipY ? 1 : 0, // 12
+			/* ... */
 			0, // 13
 		]
 		return new Float32Array(typedArray)

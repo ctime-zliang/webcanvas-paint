@@ -73,7 +73,7 @@ export class Vector2 extends Vector {
 		return new Vector2(jsonData.x, jsonData.y)
 	}
 
-	public static hypot(x: number, y: number): number {
+	public static hypot(x: number, y: number = x): number {
 		let _x: number = Math.abs(x)
 		let _y: number = Math.abs(y)
 		if (_y > _x) {
@@ -183,7 +183,7 @@ export class Vector2 extends Vector {
 	/**
 	 * 向量与标量相加
 	 */
-	public addScalar(x: number, y: number): Vector2 {
+	public addScalar(x: number, y: number = x): Vector2 {
 		return new Vector2(this.x + x, this.y + y)
 	}
 
@@ -204,14 +204,14 @@ export class Vector2 extends Vector {
 	/**
 	 * 向量缩放
 	 */
-	public scale(x: number = 0, y: number = 0): Vector2 {
+	public scale(x: number = 0, y: number = x): Vector2 {
 		return new Vector2(this.x * x, this.y * y)
 	}
 
 	/**
 	 * 向量与标量的乘积
 	 */
-	public mul(x: number = 0, y: number = 0): Vector2 {
+	public mul(x: number = 0, y: number = x): Vector2 {
 		return this.scale(x, y)
 	}
 

@@ -15,8 +15,6 @@ import { ED2PointShape } from '../../../engine/config/PrimitiveProfile'
 import { Vector2 } from '../../../engine/algorithm/geometry/vector/Vector2'
 import { Constant } from '../../../Constant'
 import { OutProfileMessage } from '../../../utils/OutMessage'
-import { buildD2AssistLineShape, D2AssistLineShape } from '../../../objects/assist/primitive2d/D2AssistLineShape'
-import { Color } from '../../../engine/common/Color'
 
 export class D2ImageShapeSelectionTool extends D2SelectionTool {
 	private _shapeItemCommand: D2ImageShapeCommand
@@ -29,10 +27,6 @@ export class D2ImageShapeSelectionTool extends D2SelectionTool {
 	private _pointBottom: D2AssistPointShape
 	private _pointLeftBottom: D2AssistPointShape
 	private _pointLeft: D2AssistPointShape
-	private _lineTop: D2AssistLineShape
-	private _lineRight: D2AssistLineShape
-	private _lineBottom: D2AssistLineShape
-	private _lineLeft: D2AssistLineShape
 	private _isSelectedPointLeftUp: boolean
 	private _isSelectedPointUp: boolean
 	private _isSelectedPointRightUp: boolean
@@ -53,10 +47,6 @@ export class D2ImageShapeSelectionTool extends D2SelectionTool {
 		this._pointBottom = null!
 		this._pointLeftBottom = null!
 		this._pointLeft = null!
-		this._lineTop = null!
-		this._lineRight = null!
-		this._lineBottom = null!
-		this._lineLeft = null!
 		this._isSelectedPointLeftUp = false
 		this._isSelectedPointUp = false
 		this._isSelectedPointRightUp = false
@@ -145,38 +135,26 @@ export class D2ImageShapeSelectionTool extends D2SelectionTool {
 	}
 
 	public mouseMoveHandler(inputInfo: InputInfo): void {
+		const isFlipX: boolean = this._selectedItem.isFlipX
+		const isFlipY: boolean = this._selectedItem.isFlipY
+		const rotation: number = this._selectedItem.rotation
 		const diffX: number = inputInfo.moveScenePhysicsX - this.moveScenePhysicsX
 		const diffY: number = inputInfo.moveScenePhysicsY - this.moveScenePhysicsY
+		this._selectedItem.isFlipX = false
+		this._selectedItem.isFlipY = false
+		this._selectedItem.rotation = 0
 		if (this._isSelectedPointLeftUp) {
-			if (diffX === 0 && diffY === 0) {
-				return
-			}
-			// /**
-			//  * 计算当前线段的垂线向量 B
-			//  * 计算当前鼠标的移动向量 A
-			//  * 计算向量 A 在向量 B 上的投影 C
-			//  */
-			// const perpendicular: { v1: Vector2; v2: Vector2 } = D2LineTransform.calculatePerpendicular(
-			// 	this._selectedItem.endPoint.sub(this._selectedItem.startPoint)
-			// )
-			// const B: Vector2 = perpendicular.v1
-			// const A: Vector2 = new Vector2(diffX, diffY)
-			// const C: Vector2 = new Vector2(
-			// 	((A.x * B.x + A.y * B.y) * B.x) / (B.x * B.x + B.y * B.y),
-			// 	((A.x * B.x + A.y * B.y) * B.y) / (B.x * B.x + B.y * B.y)
-			// )
-			// const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(C.x, C.y).toVector3())
-			const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(diffX, diffY).toVector3())
-			this._selectedItem.position = this._selectedItem.position.multiplyMatrix4(translateMatrix4)
+			const matrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(diffX, diffY).toVector3())
+			this._selectedItem.position = this._selectedItem.position.add(new Vector2(diffX, diffY))
 			this._selectedItem.width -= diffX
 			this._selectedItem.height += diffY
 		} else if (this._isSelectedPointUp) {
-			const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(0, diffY).toVector3())
-			this._selectedItem.position = this._selectedItem.position.multiplyMatrix4(translateMatrix4)
+			const matrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(0, diffY).toVector3())
+			this._selectedItem.position = this._selectedItem.position.add(new Vector2(0, diffY))
 			this._selectedItem.height += diffY
 		} else if (this._isSelectedPointRightUp) {
-			const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(0, diffY).toVector3())
-			this._selectedItem.position = this._selectedItem.position.multiplyMatrix4(translateMatrix4)
+			const matrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(0, diffY).toVector3())
+			this._selectedItem.position = this._selectedItem.position.add(new Vector2(0, diffY))
 			this._selectedItem.width += diffX
 			this._selectedItem.height += diffY
 		} else if (this._isSelectedPointRight) {
@@ -187,19 +165,22 @@ export class D2ImageShapeSelectionTool extends D2SelectionTool {
 		} else if (this._isSelectedPointBottom) {
 			this._selectedItem.height -= diffY
 		} else if (this._isSelectedPointLeftBottom) {
-			const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(diffX, 0).toVector3())
-			this._selectedItem.position = this._selectedItem.position.multiplyMatrix4(translateMatrix4)
+			const matrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(diffX, 0).toVector3())
+			this._selectedItem.position = this._selectedItem.position.add(new Vector2(diffX, 0))
 			this._selectedItem.height -= diffY
 			this._selectedItem.width -= diffX
 		} else if (this._isSelectedPointLeft) {
-			const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(diffX, 0).toVector3())
-			this._selectedItem.position = this._selectedItem.position.multiplyMatrix4(translateMatrix4)
+			const matrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(diffX, 0).toVector3())
+			this._selectedItem.position = this._selectedItem.position.add(new Vector2(diffX, 0))
 			this._selectedItem.width -= diffX
 		} else {
 			this.moveSelectedItem(diffX, diffY)
 		}
-		this._selectedItem.updateBBox2()
 		this.updateAssistShapes()
+		this._selectedItem.isFlipX = isFlipX
+		this._selectedItem.isFlipY = isFlipY
+		this._selectedItem.rotation = rotation
+		this._selectedItem.updateBBox2()
 		this.moveScenePhysicsX = inputInfo.moveScenePhysicsX
 		this.moveScenePhysicsY = inputInfo.moveScenePhysicsY
 	}
@@ -235,10 +216,6 @@ export class D2ImageShapeSelectionTool extends D2SelectionTool {
 		this._pointBottom.setDelete()
 		this._pointLeftBottom.setDelete()
 		this._pointLeft.setDelete()
-		this._lineTop.setDelete()
-		this._lineRight.setDelete()
-		this._lineBottom.setDelete()
-		this._lineLeft.setDelete()
 		this._pointLeftUp = null!
 		this._pointUp = null!
 		this._pointRightUp = null!
@@ -247,10 +224,6 @@ export class D2ImageShapeSelectionTool extends D2SelectionTool {
 		this._pointBottom = null!
 		this._pointLeftBottom = null!
 		this._pointLeft = null!
-		this._lineTop = null!
-		this._lineRight = null!
-		this._lineBottom = null!
-		this._lineLeft = null!
 	}
 
 	public quit(): void {
@@ -260,73 +233,54 @@ export class D2ImageShapeSelectionTool extends D2SelectionTool {
 	}
 
 	private initAssistShapes(): void {
-		this._pointLeftUp = buildD2AssistPointShape(this._selectedItem.model.bbox2.leftUp, this._selectedItem)
+		const isFlipX: boolean = this._selectedItem.isFlipX
+		const isFlipY: boolean = this._selectedItem.isFlipY
+		const rotation: number = this._selectedItem.rotation
+		this._selectedItem.isFlipX = false
+		this._selectedItem.isFlipY = false
+		this._selectedItem.rotation = 0
+		this._pointLeftUp = buildD2AssistPointShape(this._selectedItem.leftUp, this._selectedItem)
 		this._pointUp = buildD2AssistPointShape(
-			this._selectedItem.model.bbox2.leftUp.add(this._selectedItem.model.bbox2.rightUp).scale(0.5, 0.5),
+			this._selectedItem.leftUp.add(this._selectedItem.rightUp).mul(0.5),
 			this._selectedItem,
 			ED2PointShape.TRIANGLE,
 			1.6
 		)
-		this._pointRightUp = buildD2AssistPointShape(this._selectedItem.model.bbox2.rightUp, this._selectedItem)
+		this._pointRightUp = buildD2AssistPointShape(this._selectedItem.rightUp, this._selectedItem)
 		this._pointRight = buildD2AssistPointShape(
-			this._selectedItem.model.bbox2.rightUp.add(this._selectedItem.model.bbox2.rightDown).scale(0.5, 0.5),
+			this._selectedItem.rightUp.add(this._selectedItem.rightDown).mul(0.5),
 			this._selectedItem,
 			ED2PointShape.TRIANGLE,
 			1.6
 		)
-		this._pointRightBottom = buildD2AssistPointShape(this._selectedItem.model.bbox2.rightDown, this._selectedItem)
+		this._pointRightBottom = buildD2AssistPointShape(this._selectedItem.rightDown, this._selectedItem)
 		this._pointBottom = buildD2AssistPointShape(
-			this._selectedItem.model.bbox2.leftDown.add(this._selectedItem.model.bbox2.rightDown).scale(0.5, 0.5),
+			this._selectedItem.leftDown.add(this._selectedItem.rightDown).mul(0.5),
 			this._selectedItem,
 			ED2PointShape.TRIANGLE,
 			1.6
 		)
-		this._pointLeftBottom = buildD2AssistPointShape(this._selectedItem.model.bbox2.leftDown, this._selectedItem)
+		this._pointLeftBottom = buildD2AssistPointShape(this._selectedItem.leftDown, this._selectedItem)
 		this._pointLeft = buildD2AssistPointShape(
-			this._selectedItem.model.bbox2.leftUp.add(this._selectedItem.model.bbox2.leftDown).scale(0.5, 0.5),
+			this._selectedItem.leftUp.add(this._selectedItem.leftDown).mul(0.5),
 			this._selectedItem,
 			ED2PointShape.TRIANGLE,
 			1.6
 		)
-		this._lineTop = buildD2AssistLineShape(
-			this._selectedItem.model.bbox2.leftUp,
-			this._selectedItem.model.bbox2.rightUp,
-			Color.createByAlpha(0.5, Color.GREEN)
-		)
-		this._lineRight = buildD2AssistLineShape(
-			this._selectedItem.model.bbox2.rightUp,
-			this._selectedItem.model.bbox2.rightDown,
-			Color.createByAlpha(0.5, Color.GREEN)
-		)
-		this._lineBottom = buildD2AssistLineShape(
-			this._selectedItem.model.bbox2.rightDown,
-			this._selectedItem.model.bbox2.leftDown,
-			Color.createByAlpha(0.5, Color.GREEN)
-		)
-		this._lineLeft = buildD2AssistLineShape(
-			this._selectedItem.model.bbox2.leftDown,
-			this._selectedItem.model.bbox2.leftUp,
-			Color.createByAlpha(0.5, Color.GREEN)
-		)
+		this._selectedItem.isFlipX = isFlipX
+		this._selectedItem.isFlipY = isFlipY
+		this._selectedItem.rotation = rotation
 	}
 
 	private updateAssistShapes(): void {
-		this._pointLeftUp.centerPoint = this._selectedItem.model.bbox2.leftUp.copy()
-		this._pointUp.centerPoint = this._selectedItem.model.bbox2.leftUp.add(this._selectedItem.model.bbox2.rightUp).scale(0.5, 0.5)
-		this._pointRightUp.centerPoint = this._selectedItem.model.bbox2.rightUp.copy()
-		this._pointRight.centerPoint = this._selectedItem.model.bbox2.rightUp.add(this._selectedItem.model.bbox2.rightDown).scale(0.5, 0.5)
-		this._pointRightBottom.centerPoint = this._selectedItem.model.bbox2.rightDown.copy()
-		this._pointBottom.centerPoint = this._selectedItem.model.bbox2.leftDown.add(this._selectedItem.model.bbox2.rightDown).scale(0.5, 0.5)
-		this._pointLeftBottom.centerPoint = this._selectedItem.model.bbox2.leftDown.copy()
-		this._pointLeft.centerPoint = this._selectedItem.model.bbox2.leftUp.add(this._selectedItem.model.bbox2.leftDown).scale(0.5, 0.5)
-		this._lineTop.startPoint = this._selectedItem.model.bbox2.leftUp
-		this._lineTop.endPoint = this._selectedItem.model.bbox2.rightUp
-		this._lineRight.startPoint = this._selectedItem.model.bbox2.rightUp
-		this._lineRight.endPoint = this._selectedItem.model.bbox2.rightDown
-		this._lineBottom.startPoint = this._selectedItem.model.bbox2.rightDown
-		this._lineBottom.endPoint = this._selectedItem.model.bbox2.leftDown
-		this._lineLeft.startPoint = this._selectedItem.model.bbox2.leftDown
-		this._lineLeft.endPoint = this._selectedItem.model.bbox2.leftUp
+		this._pointLeftUp.centerPoint = this._selectedItem.leftUp.copy()
+		this._pointUp.centerPoint = this._selectedItem.leftUp.add(this._selectedItem.rightUp).mul(0.5)
+		this._pointRightUp.centerPoint = this._selectedItem.rightUp.copy()
+		this._pointRight.centerPoint = this._selectedItem.rightUp.add(this._selectedItem.rightDown).mul(0.5)
+		this._pointRightBottom.centerPoint = this._selectedItem.rightDown.copy()
+		this._pointBottom.centerPoint = this._selectedItem.leftDown.add(this._selectedItem.rightDown).mul(0.5)
+		this._pointLeftBottom.centerPoint = this._selectedItem.leftDown.copy()
+		this._pointLeft.centerPoint = this._selectedItem.leftUp.add(this._selectedItem.leftDown).mul(0.5)
 	}
 
 	private moveSelectedItem(diffX: number, diffY: number): void {
