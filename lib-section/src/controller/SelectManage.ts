@@ -210,41 +210,37 @@ export class SelectManager extends BaseManager<ElementShapeItemBase> {
 	private updateSelectionBox(inputInfo: InputInfo): void {
 		if (this._selectionBoxLines.length <= 0) {
 			const line1: D2AssistLineShape = buildD2AssistLineShape(
-				EDrawLayerCode.MaskLayer,
 				new Vector2(inputInfo.leftDownRealScenePhysicsX, inputInfo.leftDownRealScenePhysicsY),
 				new Vector2(inputInfo.moveRealScenePhysicsX, inputInfo.leftDownRealScenePhysicsY),
-				this._strokeWidth,
 				Color.LIGHT_STEE_BLUE,
+				this._strokeWidth,
 				1.0,
 				false,
 				ECanvas2DLineCap.ROUND
 			)
 			const line2: D2AssistLineShape = buildD2AssistLineShape(
-				EDrawLayerCode.MaskLayer,
 				new Vector2(inputInfo.moveRealScenePhysicsX, inputInfo.leftDownRealScenePhysicsY),
 				new Vector2(inputInfo.moveRealScenePhysicsX, inputInfo.moveRealScenePhysicsY),
-				this._strokeWidth,
 				Color.LIGHT_STEE_BLUE,
+				this._strokeWidth,
 				1.0,
 				false,
 				ECanvas2DLineCap.ROUND
 			)
 			const line3: D2AssistLineShape = buildD2AssistLineShape(
-				EDrawLayerCode.MaskLayer,
 				new Vector2(inputInfo.leftDownRealScenePhysicsX, inputInfo.moveRealScenePhysicsY),
 				new Vector2(inputInfo.moveRealScenePhysicsX, inputInfo.moveRealScenePhysicsY),
-				this._strokeWidth,
 				Color.LIGHT_STEE_BLUE,
+				this._strokeWidth,
 				1.0,
 				false,
 				ECanvas2DLineCap.ROUND
 			)
 			const line4: D2AssistLineShape = buildD2AssistLineShape(
-				EDrawLayerCode.MaskLayer,
 				new Vector2(inputInfo.leftDownRealScenePhysicsX, inputInfo.leftDownRealScenePhysicsY),
 				new Vector2(inputInfo.leftDownRealScenePhysicsX, inputInfo.moveRealScenePhysicsY),
-				this._strokeWidth,
 				Color.LIGHT_STEE_BLUE,
+				this._strokeWidth,
 				1.0,
 				false,
 				ECanvas2DLineCap.ROUND

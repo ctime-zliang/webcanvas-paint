@@ -3,7 +3,6 @@ import { EDIRECTION_KEY } from '../../../config/NativeProfile'
 import { EOperationAction } from '../../../config/OperationProfile'
 import { CanvasMatrix4 } from '../../../engine/algorithm/geometry/matrix/CanvasMatrix4'
 import { Matrix4 } from '../../../engine/algorithm/geometry/matrix/Matrix4'
-import { Vector3 } from '../../../engine/algorithm/geometry/vector/Vector3'
 import { TElementJSONBaseData } from '../../../engine/types/Primitive'
 import { ElementShapeItemBase } from '../../../objects/shapes/primitive2d/elementBase/ElementShapeItemBase'
 import { TAllElementShapeType } from '../../../types/Element'
@@ -14,6 +13,7 @@ import { InputInfo } from '../../InputInfo'
 import { BaseSelectionTool } from '../BaseSelectionTool'
 import { Constant } from '../../../Constant'
 import { OutProfileMessage } from '../../../utils/OutMessage'
+import { Vector2 } from '../../../engine/algorithm/geometry/vector/Vector2'
 
 export class MoveOperSelectionTool extends BaseSelectionTool {
 	private _shapeItemCommands: Map<string, ElementCommand<TElementJSONBaseData>>
@@ -103,7 +103,7 @@ export class MoveOperSelectionTool extends BaseSelectionTool {
 
 	private moveSelectedItems(diffX: number, diffY: number): void {
 		const allSelectItems: Array<ElementShapeItemBase> = Constant.selectManager.getAllSelectItems()
-		const moveMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector3(diffX, diffY, 0))
+		const moveMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(diffX, diffY).toVector3())
 		for (let i: number = 0; i < allSelectItems.length; i++) {
 			const item: ElementShapeItemBase = allSelectItems[i]
 			item.transform(moveMatrix4)

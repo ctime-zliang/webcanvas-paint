@@ -54,7 +54,7 @@ export function cdt2dTest01(webCanvas: WebCanvas, layerItemId: string): void {
 			.then((d2textVertexData): void => {
 				const shapeElementItemId1: string = d2TextElementController.createD2TextElementItemByVertexData(
 					layerItemAId,
-					d2textVertexData.vertexDataArray,
+					d2textVertexData,
 					new Vector2(POINTS[i][0] + 2.5, POINTS[i][1]),
 					Color.GOLDEN,
 					1.0,

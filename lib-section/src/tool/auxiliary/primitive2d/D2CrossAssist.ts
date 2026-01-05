@@ -35,18 +35,16 @@ export class D2CrossAssist extends BaseAuxiliary {
 			-Constant.environment.canvasHeight
 		)
 		this._xLineShape = buildD2AssistLineShape(
-			EDrawLayerCode.MaskLayer,
 			new Vector2(leftTopScenePhysicsX, 0),
 			new Vector2(rightBottomScenePhysicsX, 0),
-			this._strokeWidth,
-			Color.LIGHT_STEE_BLUE
+			Color.LIGHT_STEE_BLUE,
+			this._strokeWidth
 		)
 		this._yLineShape = buildD2AssistLineShape(
-			EDrawLayerCode.MaskLayer,
 			new Vector2(0, leftTopScenePhysicsY),
 			new Vector2(0, rightBottomScenePhysicsY),
-			this._strokeWidth,
-			Color.LIGHT_STEE_BLUE
+			Color.LIGHT_STEE_BLUE,
+			this._strokeWidth
 		)
 		this._xLineShape.segSize = this._yLineShape.segSize = this._segSize
 		this._xLineShape.gapSize = this._yLineShape.gapSize = this._gapSize

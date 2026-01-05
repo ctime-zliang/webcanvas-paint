@@ -10,7 +10,6 @@ import { ECommandAction } from '../../history/command/Config'
 import { InputInfo } from '../../InputInfo'
 import { D2CircleShape } from '../../../objects/shapes/primitive2d/D2CircleShape'
 import { CanvasMatrix4 } from '../../../engine/algorithm/geometry/matrix/CanvasMatrix4'
-import { Vector3 } from '../../../engine/algorithm/geometry/vector/Vector3'
 import { D2SelectionTool } from './D2SelectionTool'
 import { Vector2 } from '../../../engine/algorithm/geometry/vector/Vector2'
 import { Constant } from '../../../Constant'
@@ -121,23 +120,18 @@ export class D2CircleShapeSelectionTool extends D2SelectionTool {
 		const diffY: number = inputInfo.moveScenePhysicsY - this.moveScenePhysicsY
 		if (this._isSelectedPointCenter) {
 			this.moveSelectedItem(diffX, diffY)
-			this.updatePointsPosition()
 		} else if (this._isSelectedPointTop) {
 			this._selectedItem.updateRadius(inputInfo.moveScenePhysicsX, inputInfo.moveScenePhysicsY)
-			this.updatePointsPosition()
 		} else if (this._isSelectedPointRight) {
 			this._selectedItem.updateRadius(inputInfo.moveScenePhysicsX, inputInfo.moveScenePhysicsY)
-			this.updatePointsPosition()
 		} else if (this._isSelectedPointBottom) {
 			this._selectedItem.updateRadius(inputInfo.moveScenePhysicsX, inputInfo.moveScenePhysicsY)
-			this.updatePointsPosition()
 		} else if (this._isSelectedPointLeft) {
 			this._selectedItem.updateRadius(inputInfo.moveScenePhysicsX, inputInfo.moveScenePhysicsY)
-			this.updatePointsPosition()
 		} else {
 			this.moveSelectedItem(diffX, diffY)
-			this.updatePointsPosition()
 		}
+		this.updatePointsPosition()
 		this.moveScenePhysicsX = inputInfo.moveScenePhysicsX
 		this.moveScenePhysicsY = inputInfo.moveScenePhysicsY
 	}
@@ -210,7 +204,7 @@ export class D2CircleShapeSelectionTool extends D2SelectionTool {
 	}
 
 	private moveSelectedItem(diffX: number, diffY: number): void {
-		const moveMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector3(diffX, diffY, 0))
+		const moveMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(diffX, diffY).toVector3())
 		this._selectedItem.transform(moveMatrix4)
 	}
 }

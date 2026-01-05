@@ -36,7 +36,7 @@ export function drawTestLineItem(webCanvas: WebCanvas, layerItemId: string): voi
 	})
 	d2ElementController.bindD2ElementShapeItemEvent(
 		shapeElementItemId,
-		POINT_EVENT_NAME.POINTER_DOWN,
+		POINT_EVENT_NAME.POINTER_LEFTDOWN,
 		(elementItemId: string, eventId: string): void => {
 			console.log(d2ElementController.getD2ElementShapeItemJSONData(elementItemId))
 		}

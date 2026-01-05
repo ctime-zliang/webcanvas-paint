@@ -7,12 +7,12 @@ import { CommandProxy } from '../../history/command/primitive2d/CommandProxy'
 import { ECommandAction } from '../../history/command/Config'
 import { InputInfo } from '../../InputInfo'
 import { CanvasMatrix4 } from '../../../engine/algorithm/geometry/matrix/CanvasMatrix4'
-import { Vector3 } from '../../../engine/algorithm/geometry/vector/Vector3'
 import { D2SelectionTool } from './D2SelectionTool'
 import { D2TextShapeCommand } from '../../history/command/primitive2d/D2TextShapeCommand'
 import { D2TextShape } from '../../../objects/shapes/primitive2d/D2TextShape'
 import { Constant } from '../../../Constant'
 import { OutProfileMessage } from '../../../utils/OutMessage'
+import { Vector2 } from '../../../engine/algorithm/geometry/vector/Vector2'
 
 export class D2TextShapeSelectionTool extends D2SelectionTool {
 	private _shapeItemCommand: D2TextShapeCommand
@@ -97,7 +97,7 @@ export class D2TextShapeSelectionTool extends D2SelectionTool {
 	}
 
 	private moveSelectedItem(diffX: number, diffY: number): void {
-		const moveMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector3(diffX, diffY, 0))
+		const moveMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(diffX, diffY).toVector3())
 		this._selectedItem.transform(moveMatrix4)
 	}
 }

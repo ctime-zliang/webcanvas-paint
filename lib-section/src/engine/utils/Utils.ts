@@ -59,31 +59,6 @@ export function arrayCopy(
 	throw new Error('cannot read array out of range.')
 }
 
-export function throttle1(fn: (...args: any) => void, delay: number = 500): () => void {
-	let previous: number = 0
-	return function (): void {
-		let now: number = +new Date()
-		if (now - previous > delay) {
-			//@ts-ignore
-			fn.apply(this as any, arguments as any)
-			previous = now
-		}
-	}
-}
-
-export function throttle2(fn: (...args: any) => void, delay: number = 500): () => void {
-	let timer: any = null
-	return function (): void {
-		if (!timer) {
-			timer = window.setTimeout((): void => {
-				timer = null
-				//@ts-ignore
-				fn.apply(this as any, arguments as any)
-			}, delay)
-		}
-	}
-}
-
 export async function isSupportWebGPU(): Promise<boolean> {
 	try {
 		if (!(navigator as any).gpu) {
@@ -131,4 +106,12 @@ export function getAllKeysFromMap<T>(map: Map<string, T>): Array<string> {
 export function isFloatEqual(a: number, b: number, precise: number = 1e-10): boolean {
 	const d: number = a - b
 	return (d > 0 ? d : -d) < precise
+}
+
+export function nextFrameTick(callback: (timeStamp: number) => void, delay: number = 0): void {
+	window.setTimeout((): void => {
+		window.requestAnimationFrame((timeStamp: number): void => {
+			callback(timeStamp)
+		})
+	}, delay)
 }

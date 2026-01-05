@@ -61,7 +61,7 @@ export * from './algorithm/geometry/primitives/Line'
 export * from './algorithm/geometry/primitives/Polyline'
 export * from './algorithm/geometry/primitives/PolylineGroup'
 export * from './algorithm/geometry/primitives/Triangle'
-export { nextFrameTick } from './utils/Utils'
+export { nextFrameTick } from './engine/utils/Utils'
 
 export type InputInfoData = InputInfo
 export type D2ElementController = _D2ElementController
@@ -253,6 +253,10 @@ export class WebCanvas {
 
 	public setCanvasStaticRest(): void {
 		Constant.messageTool.messageBus.publish(EFrameCommand.SET_STATIC_REST, null)
+	}
+
+	public flushShapesStorage(): void {
+		Constant.messageTool.messageBus.publish(EFrameCommand.REFRESH_RTREE, null)
 	}
 
 	public setDrawD2ToolCommand(type: EDrawD2ToolCommand, data: { [key: string]: any } = {}): void {

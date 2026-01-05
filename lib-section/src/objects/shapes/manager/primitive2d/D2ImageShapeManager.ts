@@ -5,10 +5,10 @@ import { D2ImageModelManager } from '../../../models/manager/primitive2d/D2Image
 import { D2ImageModel } from '../../../models/primitive2d/D2ImageModel'
 import { D2ImageShape } from '../../primitive2d/D2ImageShape'
 import { EFrameCommand } from '../../../../config/CommandEnum'
-import { nextFrameTick } from '../../../../utils/Utils'
 import { Color } from '../../../../engine/common/Color'
 import { Vector2 } from '../../../../engine/algorithm/geometry/vector/Vector2'
 import { Constant } from '../../../../Constant'
+import { nextFrameTick } from '../../../../engine/utils/Utils'
 
 export class D2ImageShapeManager extends BaseManager<D2ImageShape> {
 	private static instance: D2ImageShapeManager

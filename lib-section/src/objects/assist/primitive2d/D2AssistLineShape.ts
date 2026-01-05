@@ -7,42 +7,17 @@ import { TElement2DLineJSONViewData, TElementShapeType } from '../../../types/El
 import { buildD2LineModel, D2LineModel } from '../../models/primitive2d/D2LineModel'
 import { D2LineShape } from '../../shapes/primitive2d/D2LineShape'
 
-export function buildD2AssistLineShapeSimplify(
-	startPoint: Vector2,
-	endPoint: Vector2,
-	strokeColor: Color = Color.WHITE,
-	baseStrokeWidth: number = 0.5,
-	isSolid: boolean = false,
-	layerItemId: string = EDrawLayerCode.MaskLayer
-): D2AssistLineShape {
-	const alpha: number = 1.0
-	const lineCap: ECanvas2DLineCap = ECanvas2DLineCap.SQUARE
-	const lineModelItem: D2LineModel = buildD2LineModel(
-		layerItemId,
-		startPoint,
-		endPoint,
-		baseStrokeWidth,
-		strokeColor,
-		alpha,
-		isSolid,
-		lineCap,
-		true
-	)
-	const assistLineShapeItem: D2AssistLineShape = new D2AssistLineShape(lineModelItem, isSolid, lineCap, null!)
-	return assistLineShapeItem
-}
-
 export function buildD2AssistLineShape(
-	layerItemId: string,
 	startPoint: Vector2,
 	endPoint: Vector2,
-	baseStrokeWidth: number = 0.5,
 	strokeColor: Color = Color.WHITE,
+	baseStrokeWidth: number = 0.5,
 	alpha: number = 1.0,
 	isSolid: boolean = false,
 	lineCap: ECanvas2DLineCap = ECanvas2DLineCap.SQUARE,
 	parent: TElementShapeType = null!,
-	isFixedStrokeWidth: boolean = true
+	isFixedStrokeWidth: boolean = true,
+	layerItemId: EDrawLayerCode = EDrawLayerCode.MaskLayer
 ): D2AssistLineShape {
 	const lineModelItem: D2LineModel = buildD2LineModel(
 		layerItemId,

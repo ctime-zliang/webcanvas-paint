@@ -3,7 +3,6 @@ import { Vector2 } from '../../engine/algorithm/geometry/vector/Vector2'
 import { TFontCanvasRenderMetrics } from '../../engine/modules/d2Canvas2Svg/Canvas'
 import { Color } from '../../engine/common/Color'
 import { TFontPolygonBbox2, TFontTriangleVertexData } from '../../manager/TextGraphicsManager'
-import { buildD2AssistLineShapeSimplify } from '../../objects/assist/primitive2d/D2AssistLineShape'
 import { POINT_ARRAY_OCCUPY_SIZE } from '../../service/TextFontService'
 
 export class TextLayout {
@@ -76,11 +75,6 @@ export class TextLayout {
 				}
 			}
 		}
-		// buildD2AssistLineShapeSimplify(
-		// 	new Vector2(d2TextShapeBboxMinX, d2TextShapeBboxMinY),
-		// 	new Vector2(d2TextShapeBboxMaxX, d2TextShapeBboxMaxY),
-		// 	Color.CADE_BLUE
-		// )
 		return {
 			bbox2: new BBox2(d2TextShapeBboxMinX, d2TextShapeBboxMinY, d2TextShapeBboxMaxX, d2TextShapeBboxMaxY),
 			vertexDataArray,

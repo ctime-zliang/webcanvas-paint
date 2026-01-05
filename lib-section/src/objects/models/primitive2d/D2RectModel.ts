@@ -2,12 +2,12 @@ import { ED2ElementType } from '../../../config/D2ElementProfile'
 import { BBox2 } from '../../../engine/algorithm/geometry/bbox/BBox2'
 import { Color } from '../../../engine/common/Color'
 import { ECanvas2DLineCap } from '../../../engine/config/PrimitiveProfile'
-import { updateDashedSegProfile } from '../../../utils/Utils'
 import { ElementModelItemBase } from './elementBase/ElementModelItemBase'
 import { Vector2 } from '../../../engine/algorithm/geometry/vector/Vector2'
 import { D2CrossRelationShips } from '../../../algorithm/geometry/D2CrossRelationShips'
 import { Constant } from '../../../Constant'
 import { BBox2Creator } from '../../../algorithm/geometry/utils/BBox2Creator'
+import { D2DashedSegUtils } from './utils/D2DashedSegUtils'
 
 export function buildD2RectModel(
 	layerItemId: string,
@@ -89,7 +89,7 @@ export class D2RectModel extends ElementModelItemBase {
 		this._fillColor = fillColor
 		this._borderRadius = borderRadius
 		this._isSolid = isSolid
-		const { segSize, gapSize } = updateDashedSegProfile(ECanvas2DLineCap.ROUND, this._strokeWidth)
+		const { segSize, gapSize } = D2DashedSegUtils.updateDashedSegProfile(ECanvas2DLineCap.ROUND, this._strokeWidth)
 		this._segSize = segSize
 		this._gapSize = gapSize
 		this._fixedStrokeWidth = isFixedStrokeWidth

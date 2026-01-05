@@ -102,7 +102,6 @@ export class D2ImageShape extends ElementShapeItemBase {
 	}
 	public set position(value: Vector2) {
 		;(this.model as D2ImageModel).position = value
-		Constant.messageTool.messageBus.publish(EFrameCommand.REFRESH_RTREE, null)
 		this.refreshRender()
 	}
 
@@ -143,7 +142,6 @@ export class D2ImageShape extends ElementShapeItemBase {
 	}
 	public set rotation(value: number) {
 		;(this.model as D2ImageModel).rotation = value
-		Constant.messageTool.messageBus.publish(EFrameCommand.REFRESH_RTREE, null)
 		this.refreshRender()
 	}
 
@@ -152,7 +150,6 @@ export class D2ImageShape extends ElementShapeItemBase {
 	}
 	public set isFlipX(value: boolean) {
 		;(this.model as D2ImageModel).isFlipX = value
-		Constant.messageTool.messageBus.publish(EFrameCommand.REFRESH_RTREE, null)
 		this.refreshRender()
 	}
 
@@ -161,7 +158,6 @@ export class D2ImageShape extends ElementShapeItemBase {
 	}
 	public set isFlipY(value: boolean) {
 		;(this.model as D2ImageModel).isFlipY = value
-		Constant.messageTool.messageBus.publish(EFrameCommand.REFRESH_RTREE, null)
 		this.refreshRender()
 	}
 

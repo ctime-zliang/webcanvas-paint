@@ -12,11 +12,11 @@ export function buildD2AssistPointShape(
 	parent: TElementShapeType = null!,
 	shape: ED2PointShape = ED2PointShape.DOT,
 	size: number = 1.2,
-	strokeColor: Color = Color.GREEN
+	strokeColor: Color = Color.GREEN,
+	layerItemId: EDrawLayerCode = EDrawLayerCode.MaskLayer
 ): D2AssistPointShape {
 	const alpha: number = 1.0
 	const iSize: number = shape === ED2PointShape.TRIANGLE ? size + 0.2 : size
-	const layerItemId: EDrawLayerCode = EDrawLayerCode.MaskLayer
 	const elementModelItem: D2PointModel = buildD2PointModel(layerItemId, centerPoint, iSize, shape, strokeColor, alpha, false)
 	const assistLineShapeItem: D2AssistPointShape = new D2AssistPointShape(elementModelItem, parent)
 	return assistLineShapeItem

@@ -5,11 +5,11 @@ import { Color } from '../../../engine/common/Color'
 import { ECanvas2DLineCap } from '../../../engine/config/PrimitiveProfile'
 import { Primitive } from '../../../algorithm/geometry/primitives/Primitive'
 import { Line } from '../../../algorithm/geometry/primitives/Line'
-import { updateDashedSegProfile } from '../../../utils/Utils'
 import { ElementModelItemBase } from './elementBase/ElementModelItemBase'
 import { D2CrossRelationShips } from '../../../algorithm/geometry/D2CrossRelationShips'
 import { Constant } from '../../../Constant'
 import { BBox2Creator } from '../../../algorithm/geometry/utils/BBox2Creator'
+import { D2DashedSegUtils } from './utils/D2DashedSegUtils'
 
 export function buildD2LineModel(
 	layerItemId: string,
@@ -69,7 +69,7 @@ export class D2LineModel extends ElementModelItemBase {
 		this._strokeColor = strokeColor
 		this._lineCap = lineCap
 		this._isSolid = isSolid
-		const { segSize, gapSize } = updateDashedSegProfile(this._lineCap, this._strokeWidth)
+		const { segSize, gapSize } = D2DashedSegUtils.updateDashedSegProfile(this._lineCap, this._strokeWidth)
 		this._segSize = segSize
 		this._gapSize = gapSize
 		this._fixedStrokeWidth = isFixedStrokeWidth
@@ -112,7 +112,7 @@ export class D2LineModel extends ElementModelItemBase {
 	}
 	public set lineCap(value: ECanvas2DLineCap) {
 		this._lineCap = value
-		const { segSize, gapSize } = updateDashedSegProfile(this._lineCap, this._strokeWidth)
+		const { segSize, gapSize } = D2DashedSegUtils.updateDashedSegProfile(this._lineCap, this._strokeWidth)
 		this._segSize = segSize
 		this._gapSize = gapSize
 	}

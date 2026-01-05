@@ -11,7 +11,6 @@ import { ECommandAction } from '../../history/command/Config'
 import { D2LineShapeCommand } from '../../history/command/primitive2d/D2LineShapeCommand'
 import { InputInfo } from '../../InputInfo'
 import { CanvasMatrix4 } from '../../../engine/algorithm/geometry/matrix/CanvasMatrix4'
-import { Vector3 } from '../../../engine/algorithm/geometry/vector/Vector3'
 import { D2SelectionTool } from './D2SelectionTool'
 import { Vector2 } from '../../../engine/algorithm/geometry/vector/Vector2'
 import { D2LineTransform } from '../../../algorithm/geometry/D2LineTransform'
@@ -105,10 +104,9 @@ export class D2LineShapeSelectionTool extends D2SelectionTool {
 	public mouseMoveHandler(inputInfo: InputInfo): void {
 		const diffX: number = inputInfo.moveScenePhysicsX - this.moveScenePhysicsX
 		const diffY: number = inputInfo.moveScenePhysicsY - this.moveScenePhysicsY
-		const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector3(diffX, diffY, 0))
+		const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(diffX, diffY).toVector3())
 		if (this._isSelectedPointStart) {
 			this._selectedItem.startPoint = this._selectedItem.startPoint.multiplyMatrix4(translateMatrix4)
-			this.updatePointsPosition()
 		} else if (this._isSelectedPointMiddle) {
 			if (diffX === 0 && diffY === 0) {
 				return
@@ -127,17 +125,15 @@ export class D2LineShapeSelectionTool extends D2SelectionTool {
 				((A.x * B.x + A.y * B.y) * B.x) / (B.x * B.x + B.y * B.y),
 				((A.x * B.x + A.y * B.y) * B.y) / (B.x * B.x + B.y * B.y)
 			)
-			const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector3(C.x, C.y, 0))
+			const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(C.x, C.y).toVector3())
 			this._selectedItem.startPoint = this._selectedItem.startPoint.multiplyMatrix4(translateMatrix4)
 			this._selectedItem.endPoint = this._selectedItem.endPoint.multiplyMatrix4(translateMatrix4)
-			this.updatePointsPosition()
 		} else if (this._isSelectedPointEnd) {
 			this._selectedItem.endPoint = this._selectedItem.endPoint.multiplyMatrix4(translateMatrix4)
-			this.updatePointsPosition()
 		} else {
 			this.moveSelectedItem(diffX, diffY)
-			this.updatePointsPosition()
 		}
+		this.updatePointsPosition()
 		this.moveScenePhysicsX = inputInfo.moveScenePhysicsX
 		this.moveScenePhysicsY = inputInfo.moveScenePhysicsY
 	}
@@ -192,7 +188,7 @@ export class D2LineShapeSelectionTool extends D2SelectionTool {
 	}
 
 	private moveSelectedItem(diffX: number, diffY: number): void {
-		const moveMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector3(diffX, diffY, 0))
+		const moveMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(diffX, diffY).toVector3())
 		this._selectedItem.transform(moveMatrix4)
 	}
 }

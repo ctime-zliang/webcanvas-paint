@@ -12,7 +12,6 @@ import { InputInfo } from '../../InputInfo'
 import { D2ArcShape } from '../../../objects/shapes/primitive2d/D2ArcShape'
 import { ED2PointShape } from '../../../engine/config/PrimitiveProfile'
 import { CanvasMatrix4 } from '../../../engine/algorithm/geometry/matrix/CanvasMatrix4'
-import { Vector3 } from '../../../engine/algorithm/geometry/vector/Vector3'
 import { D2ArcTransform } from '../../../algorithm/geometry/D2ArcTransform'
 import { D2SelectionTool } from './D2SelectionTool'
 import { D2LineTransform } from '../../../algorithm/geometry/D2LineTransform'
@@ -111,10 +110,9 @@ export class D2ArcShapeSelectionTool extends D2SelectionTool {
 	public mouseMoveHandler(inputInfo: InputInfo): void {
 		const diffX: number = inputInfo.moveScenePhysicsX - this.moveScenePhysicsX
 		const diffY: number = inputInfo.moveScenePhysicsY - this.moveScenePhysicsY
-		const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector3(diffX, diffY, 0))
+		const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(diffX, diffY).toVector3())
 		if (this._isSelectedPointCenter) {
 			this.moveSelectedItem(diffX, diffY)
-			this.updatePointsPosition()
 		} else if (this._isSelectedPointStart) {
 			const newStartPoint: Vector2 = this._pointStart.centerPoint.multiplyMatrix4(translateMatrix4)
 			const { startAngle, endAngle, radius, centerPoint, sweep } = D2ArcTransform.calculateD2ArcProfileByThreePoint(
@@ -127,7 +125,6 @@ export class D2ArcShapeSelectionTool extends D2SelectionTool {
 			this._selectedItem.startAngle = startAngle
 			this._selectedItem.endAngle = endAngle
 			this._selectedItem.sweep = sweep
-			this.updatePointsPosition()
 		} else if (this._isSelectedPointEnd) {
 			const newEndPoint: Vector2 = this._pointEnd.centerPoint.multiplyMatrix4(translateMatrix4)
 			const { startAngle, endAngle, radius, centerPoint, sweep } = D2ArcTransform.calculateD2ArcProfileByThreePoint(
@@ -140,7 +137,6 @@ export class D2ArcShapeSelectionTool extends D2SelectionTool {
 			this._selectedItem.startAngle = startAngle
 			this._selectedItem.endAngle = endAngle
 			this._selectedItem.sweep = sweep
-			this.updatePointsPosition()
 		} else if (this._isSelectedPointMiddle) {
 			/**
 			 * 计算当前线段的垂线向量 B
@@ -156,7 +152,7 @@ export class D2ArcShapeSelectionTool extends D2SelectionTool {
 				((A.x * B.x + A.y * B.y) * B.x) / (B.x * B.x + B.y * B.y),
 				((A.x * B.x + A.y * B.y) * B.y) / (B.x * B.x + B.y * B.y)
 			)
-			const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector3(C.x, C.y, 0))
+			const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(C.x, C.y).toVector3())
 			const newMiddlePoint: Vector2 = this._pointMiddle.centerPoint.multiplyMatrix4(translateMatrix4)
 			const { startAngle, endAngle, radius, centerPoint, sweep } = D2ArcTransform.calculateD2ArcProfileByThreePoint(
 				this._pointStart.centerPoint,
@@ -168,11 +164,10 @@ export class D2ArcShapeSelectionTool extends D2SelectionTool {
 			this._selectedItem.startAngle = startAngle
 			this._selectedItem.endAngle = endAngle
 			this._selectedItem.sweep = sweep
-			this.updatePointsPosition()
 		} else {
 			this.moveSelectedItem(diffX, diffY)
-			this.updatePointsPosition()
 		}
+		this.updatePointsPosition()
 		this.moveScenePhysicsX = inputInfo.moveScenePhysicsX
 		this.moveScenePhysicsY = inputInfo.moveScenePhysicsY
 	}
@@ -242,7 +237,7 @@ export class D2ArcShapeSelectionTool extends D2SelectionTool {
 	}
 
 	private moveSelectedItem(diffX: number, diffY: number): void {
-		const moveMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector3(diffX, diffY, 0))
+		const moveMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(diffX, diffY).toVector3())
 		this._selectedItem.transform(moveMatrix4)
 	}
 }

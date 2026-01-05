@@ -55,7 +55,7 @@ async function readFileAsImage(file: File): Promise<{
 }
 
 export async function drawTestImage(webCanvas: WebCanvas, layerItemId: string): Promise<void> {
-	const file: File = await fetchFileByURL('https://i.ooxx.ooo/i/NTY0O.jpg', 'test-image-1.jpg')
+	const file: File = await fetchFileByURL('https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'test-image-1.jpg')
 	const readResult: {
 		imageDataURL: string
 		fileHashUuid: string
@@ -97,6 +97,7 @@ export async function drawTestImage(webCanvas: WebCanvas, layerItemId: string): 
 	}, 1000)
 	nextFrameTick(async (): Promise<void> => {
 		d2ElementController.updateD2ElementShapeItemByJSONData(shapeElementItemId1, { isFlipY: true, rotation: Angles.degreeToRadian(30) })
+		webCanvas.flushShapesStorage()
 		// await sleep(500)
 		// d2ElementController.updateD2ElementShapeItemByJSONData(shapeElementItemId1, { rotation: Angles.degreeToRadian(90) })
 	}, 1000)
