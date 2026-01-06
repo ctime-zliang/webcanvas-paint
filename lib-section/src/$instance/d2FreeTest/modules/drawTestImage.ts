@@ -99,8 +99,8 @@ export async function drawTestImage(webCanvas: WebCanvas, layerItemId: string): 
 	nextFrameTick(async (): Promise<void> => {
 		d2ElementController.updateD2ElementShapeItemByJSONData(shapeElementItemId1, {
 			isFlipX: true,
-			isFlipY: true,
-			rotation: Angles.degreeToRadian(45),
+			isFlipY: false,
+			rotation: Angles.degreeToRadian(30),
 		})
 		// webCanvas.flushShapesStorage()
 		// await sleep(500)

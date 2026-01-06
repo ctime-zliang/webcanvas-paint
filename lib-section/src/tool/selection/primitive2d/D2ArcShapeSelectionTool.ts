@@ -110,11 +110,11 @@ export class D2ArcShapeSelectionTool extends D2SelectionTool {
 	public mouseMoveHandler(inputInfo: InputInfo): void {
 		const diffX: number = inputInfo.moveScenePhysicsX - this.moveScenePhysicsX
 		const diffY: number = inputInfo.moveScenePhysicsY - this.moveScenePhysicsY
-		const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(diffX, diffY).toVector3())
+		const matrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(diffX, diffY).toVector3())
 		if (this._isSelectedPointCenter) {
 			this.moveSelectedItem(diffX, diffY)
 		} else if (this._isSelectedPointStart) {
-			const newStartPoint: Vector2 = this._pointStart.centerPoint.multiplyMatrix4(translateMatrix4)
+			const newStartPoint: Vector2 = this._pointStart.centerPoint.multiplyMatrix4(matrix4)
 			const { startAngle, endAngle, radius, centerPoint, sweep } = D2ArcTransform.calculateD2ArcProfileByThreePoint(
 				newStartPoint,
 				this._pointEnd.centerPoint,
@@ -126,7 +126,7 @@ export class D2ArcShapeSelectionTool extends D2SelectionTool {
 			this._selectedItem.endAngle = endAngle
 			this._selectedItem.sweep = sweep
 		} else if (this._isSelectedPointEnd) {
-			const newEndPoint: Vector2 = this._pointEnd.centerPoint.multiplyMatrix4(translateMatrix4)
+			const newEndPoint: Vector2 = this._pointEnd.centerPoint.multiplyMatrix4(matrix4)
 			const { startAngle, endAngle, radius, centerPoint, sweep } = D2ArcTransform.calculateD2ArcProfileByThreePoint(
 				this._pointStart.centerPoint,
 				newEndPoint,
@@ -152,8 +152,8 @@ export class D2ArcShapeSelectionTool extends D2SelectionTool {
 				((A.x * B.x + A.y * B.y) * B.x) / (B.x * B.x + B.y * B.y),
 				((A.x * B.x + A.y * B.y) * B.y) / (B.x * B.x + B.y * B.y)
 			)
-			const translateMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(C.x, C.y).toVector3())
-			const newMiddlePoint: Vector2 = this._pointMiddle.centerPoint.multiplyMatrix4(translateMatrix4)
+			const matrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(C.x, C.y).toVector3())
+			const newMiddlePoint: Vector2 = this._pointMiddle.centerPoint.multiplyMatrix4(matrix4)
 			const { startAngle, endAngle, radius, centerPoint, sweep } = D2ArcTransform.calculateD2ArcProfileByThreePoint(
 				this._pointStart.centerPoint,
 				this._pointEnd.centerPoint,

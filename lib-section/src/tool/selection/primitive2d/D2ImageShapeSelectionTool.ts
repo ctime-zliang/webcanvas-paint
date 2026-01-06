@@ -15,6 +15,7 @@ import { ED2PointShape } from '../../../engine/config/PrimitiveProfile'
 import { Vector2 } from '../../../engine/algorithm/geometry/vector/Vector2'
 import { Constant } from '../../../Constant'
 import { OutProfileMessage } from '../../../utils/OutMessage'
+import { D2LineTransform } from '../../../algorithm/geometry/D2LineTransform'
 
 export class D2ImageShapeSelectionTool extends D2SelectionTool {
 	private _shapeItemCommand: D2ImageShapeCommand
@@ -142,7 +143,7 @@ export class D2ImageShapeSelectionTool extends D2SelectionTool {
 		const diffY: number = inputInfo.moveScenePhysicsY - this.moveScenePhysicsY
 		this._selectedItem.isFlipX = false
 		this._selectedItem.isFlipY = false
-		this._selectedItem.rotation = 0
+		// this._selectedItem.rotation = 0
 		if (this._isSelectedPointLeftUp) {
 			const matrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(diffX, diffY).toVector3())
 			this._selectedItem.position = this._selectedItem.position.add(new Vector2(diffX, diffY))
@@ -170,8 +171,23 @@ export class D2ImageShapeSelectionTool extends D2SelectionTool {
 			this._selectedItem.height -= diffY
 			this._selectedItem.width -= diffX
 		} else if (this._isSelectedPointLeft) {
+			/**
+			 * 计算当前线段的垂线向量 B
+			 * 计算当前鼠标的移动向量 A
+			 * 计算向量 A 在向量 B 上的投影 C
+			 */
+			const perpendicular: { v1: Vector2; v2: Vector2 } = D2LineTransform.calculatePerpendicular(
+				this._selectedItem.leftDown.sub(this._selectedItem.leftUp)
+			)
+			const B: Vector2 = perpendicular.v1
+			const A: Vector2 = new Vector2(diffX, diffY)
+			const C: Vector2 = new Vector2(
+				((A.x * B.x + A.y * B.y) * B.x) / (B.x * B.x + B.y * B.y),
+				((A.x * B.x + A.y * B.y) * B.y) / (B.x * B.x + B.y * B.y)
+			)
+			const matrix41: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(C.x, C.y).toVector3())
 			const matrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(diffX, 0).toVector3())
-			this._selectedItem.position = this._selectedItem.position.add(new Vector2(diffX, 0))
+			this._selectedItem.position = this._selectedItem.position.multiplyMatrix4(matrix41)
 			this._selectedItem.width -= diffX
 		} else {
 			this.moveSelectedItem(diffX, diffY)
@@ -238,7 +254,7 @@ export class D2ImageShapeSelectionTool extends D2SelectionTool {
 		const rotation: number = this._selectedItem.rotation
 		this._selectedItem.isFlipX = false
 		this._selectedItem.isFlipY = false
-		this._selectedItem.rotation = 0
+		// this._selectedItem.rotation = 0
 		this._pointLeftUp = buildD2AssistPointShape(this._selectedItem.leftUp, this._selectedItem)
 		this._pointUp = buildD2AssistPointShape(
 			this._selectedItem.leftUp.add(this._selectedItem.rightUp).mul(0.5),

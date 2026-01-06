@@ -97,7 +97,7 @@ export class D2TextShapeSelectionTool extends D2SelectionTool {
 	}
 
 	private moveSelectedItem(diffX: number, diffY: number): void {
-		const moveMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(diffX, diffY).toVector3())
-		this._selectedItem.transform(moveMatrix4)
+		const matrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(diffX, diffY).toVector3())
+		this._selectedItem.transform(matrix4)
 	}
 }
