@@ -6,6 +6,7 @@ import { ECanvas2DLineCap, EPrimitiveStatus } from '../../../engine/config/Primi
 import { TElement2DLineJSONViewData, TElementShapeType } from '../../../types/Element'
 import { buildD2LineModel, D2LineModel } from '../../models/primitive2d/D2LineModel'
 import { D2LineShape } from '../../shapes/primitive2d/D2LineShape'
+import { Camera } from '../../../engine/common/Camera'
 
 export function buildD2AssistLineShape(
 	startPoint: Vector2,
@@ -36,11 +37,13 @@ export function buildD2AssistLineShape(
 
 export class D2AssistLineShape extends D2LineShape {
 	private _parent: TElementShapeType
+	private _camera: Camera
 	constructor(model: D2LineModel, isSolid: boolean = true, lineCap: ECanvas2DLineCap, parent: TElementShapeType = null!) {
 		super(model)
 		this.isSolid = isSolid
 		this.lineCap = lineCap
 		this._parent = parent
+		this._camera = Camera.getInstance()
 		this.refreshRender()
 	}
 

@@ -10,7 +10,7 @@ import { D2RectShape } from '../../../../objects/shapes/primitive2d/D2RectShape'
 import { ECanvas2DLineCap } from '../../../../engine/config/PrimitiveProfile'
 import { BaseD2Arc } from '../../structure/primitive2d/BaseD2Arc'
 import { ESweep } from '../../../../engine/config/CommonProfile'
-import { BBox2 } from '../../../../Main'
+import { BBox2 } from '../../../../engine/algorithm/geometry/bbox/BBox2'
 
 export class D2RectView extends ShapeElementViewBase {
 	private _mainPrimitives: Array<StructureItemBase>

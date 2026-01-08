@@ -11,7 +11,7 @@ export function drawTestCircle(webCanvas: WebCanvas, layerItemId: string): void 
 	})
 	d2ElementController.bindD2ElementShapeItemEvent(
 		shapeElementItemId1,
-		POINT_EVENT_NAME.POINTER_DOWN,
+		POINT_EVENT_NAME.POINTER_LEFTDOWN,
 		(elementItemId: string, eventId: string): void => {
 			console.log(d2ElementController.getD2ElementShapeItemJSONData(elementItemId))
 		}
@@ -31,7 +31,7 @@ export function drawTestCircle(webCanvas: WebCanvas, layerItemId: string): void 
 	})
 	d2ElementController.bindD2ElementShapeItemEvent(
 		shapeElementItemId2,
-		POINT_EVENT_NAME.POINTER_DOWN,
+		POINT_EVENT_NAME.POINTER_LEFTDOWN,
 		(elementItemId: string, eventId: string): void => {
 			console.log(d2ElementController.getD2ElementShapeItemJSONData(elementItemId))
 		}

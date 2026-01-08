@@ -2,7 +2,7 @@ import { BBox2, BBox2Fac } from '../../../engine/algorithm/geometry/bbox/BBox2'
 import { Matrix4 } from '../../../engine/algorithm/geometry/matrix/Matrix4'
 import { Vector2 } from '../../../engine/algorithm/geometry/vector/Vector2'
 import { ESweep } from '../../../engine/config/CommonProfile'
-import { Angles } from '../../../Main'
+import { Angles } from '../../../engine/math/Angles'
 import { Arc } from '../primitives/Arc'
 
 function getBox(v1: Vector2, v2: Vector2): [number, number, number, number] {

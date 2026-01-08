@@ -141,61 +141,65 @@ export class D2ImageShapeSelectionTool extends D2SelectionTool {
 		const rotation: number = this._selectedItem.rotation
 		const diffX: number = inputInfo.moveScenePhysicsX - this.moveScenePhysicsX
 		const diffY: number = inputInfo.moveScenePhysicsY - this.moveScenePhysicsY
+		const moveDiffVector2: Vector2 = new Vector2(diffX, diffY)
 		this._selectedItem.isFlipX = false
 		this._selectedItem.isFlipY = false
-		// this._selectedItem.rotation = 0
 		if (this._isSelectedPointLeftUp) {
-			const matrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(diffX, diffY).toVector3())
-			this._selectedItem.position = this._selectedItem.position.add(new Vector2(diffX, diffY))
-			this._selectedItem.width -= diffX
-			this._selectedItem.height += diffY
+			const LINE_Y: Vector2 = this._selectedItem.leftDown.sub(this._selectedItem.leftUp)
+			const P_Y: Vector2 = D2LineTransform.calculateVectorProjection(LINE_Y, moveDiffVector2)
+			this._selectedItem.position = this._selectedItem.position.add(P_Y)
+			this._selectedItem.width -= P_Y.x / Math.cos(rotation)
+			const LINE_X: Vector2 = this._selectedItem.rightUp.sub(this._selectedItem.leftUp)
+			const P_X: Vector2 = D2LineTransform.calculateVectorProjection(LINE_X, moveDiffVector2)
+			this._selectedItem.position = this._selectedItem.position.add(P_X)
+			this._selectedItem.height -= P_X.x / Math.sin(rotation)
 		} else if (this._isSelectedPointUp) {
-			const matrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(0, diffY).toVector3())
-			this._selectedItem.position = this._selectedItem.position.add(new Vector2(0, diffY))
-			this._selectedItem.height += diffY
+			const LINE_X: Vector2 = this._selectedItem.rightUp.sub(this._selectedItem.leftUp)
+			const P_X: Vector2 = D2LineTransform.calculateVectorProjection(LINE_X, moveDiffVector2)
+			this._selectedItem.position = this._selectedItem.position.add(P_X)
+			this._selectedItem.height -= P_X.x / Math.sin(rotation)
 		} else if (this._isSelectedPointRightUp) {
-			const matrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(0, diffY).toVector3())
-			this._selectedItem.position = this._selectedItem.position.add(new Vector2(0, diffY))
-			this._selectedItem.width += diffX
-			this._selectedItem.height += diffY
+			const LINE_X: Vector2 = this._selectedItem.rightUp.sub(this._selectedItem.leftUp)
+			const P_X: Vector2 = D2LineTransform.calculateVectorProjection(LINE_X, moveDiffVector2)
+			this._selectedItem.position = this._selectedItem.position.add(P_X)
+			this._selectedItem.height -= P_X.x / Math.sin(rotation)
+			const LINE_Y: Vector2 = this._selectedItem.rightDown.sub(this._selectedItem.rightUp)
+			const P_Y: Vector2 = D2LineTransform.calculateVectorProjection(LINE_Y, moveDiffVector2)
+			this._selectedItem.width += P_Y.x / Math.cos(rotation)
 		} else if (this._isSelectedPointRight) {
-			this._selectedItem.width += diffX
+			const LINE_Y: Vector2 = this._selectedItem.rightDown.sub(this._selectedItem.rightUp)
+			const P_Y: Vector2 = D2LineTransform.calculateVectorProjection(LINE_Y, moveDiffVector2)
+			this._selectedItem.width += P_Y.x / Math.cos(rotation)
 		} else if (this._isSelectedPointRightBottom) {
-			this._selectedItem.width += diffX
-			this._selectedItem.height -= diffY
+			const LINE_Y: Vector2 = this._selectedItem.rightDown.sub(this._selectedItem.rightUp)
+			const P_Y: Vector2 = D2LineTransform.calculateVectorProjection(LINE_Y, moveDiffVector2)
+			this._selectedItem.width += P_Y.x / Math.cos(rotation)
+			const LINE_X: Vector2 = this._selectedItem.rightDown.sub(this._selectedItem.leftDown)
+			const P_X: Vector2 = D2LineTransform.calculateVectorProjection(LINE_X, moveDiffVector2)
+			this._selectedItem.height += P_X.x / Math.sin(rotation)
 		} else if (this._isSelectedPointBottom) {
-			this._selectedItem.height -= diffY
+			const LINE_X: Vector2 = this._selectedItem.rightDown.sub(this._selectedItem.leftDown)
+			const P_X: Vector2 = D2LineTransform.calculateVectorProjection(LINE_X, moveDiffVector2)
+			this._selectedItem.height += P_X.x / Math.sin(rotation)
 		} else if (this._isSelectedPointLeftBottom) {
-			const matrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(diffX, 0).toVector3())
-			this._selectedItem.position = this._selectedItem.position.add(new Vector2(diffX, 0))
-			this._selectedItem.height -= diffY
-			this._selectedItem.width -= diffX
+			const LINE_X: Vector2 = this._selectedItem.rightDown.sub(this._selectedItem.leftDown)
+			const P_X: Vector2 = D2LineTransform.calculateVectorProjection(LINE_X, moveDiffVector2)
+			this._selectedItem.height += P_X.x / Math.sin(rotation)
+			const LINE_Y: Vector2 = this._selectedItem.leftDown.sub(this._selectedItem.leftUp)
+			const P_Y: Vector2 = D2LineTransform.calculateVectorProjection(LINE_Y, moveDiffVector2)
+			this._selectedItem.position = this._selectedItem.position.add(P_Y)
+			this._selectedItem.width -= P_Y.x / Math.cos(rotation)
 		} else if (this._isSelectedPointLeft) {
-			/**
-			 * 计算当前线段的垂线向量 B
-			 * 计算当前鼠标的移动向量 A
-			 * 计算向量 A 在向量 B 上的投影 C
-			 */
-			const perpendicular: { v1: Vector2; v2: Vector2 } = D2LineTransform.calculatePerpendicular(
-				this._selectedItem.leftDown.sub(this._selectedItem.leftUp)
-			)
-			const B: Vector2 = perpendicular.v1
-			const A: Vector2 = new Vector2(diffX, diffY)
-			const C: Vector2 = new Vector2(
-				((A.x * B.x + A.y * B.y) * B.x) / (B.x * B.x + B.y * B.y),
-				((A.x * B.x + A.y * B.y) * B.y) / (B.x * B.x + B.y * B.y)
-			)
-			const matrix41: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(C.x, C.y).toVector3())
-			const matrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(diffX, 0).toVector3())
-			this._selectedItem.position = this._selectedItem.position.multiplyMatrix4(matrix41)
-			this._selectedItem.width -= diffX
+			const LINE_Y: Vector2 = this._selectedItem.leftDown.sub(this._selectedItem.leftUp)
+			const P_Y: Vector2 = D2LineTransform.calculateVectorProjection(LINE_Y, moveDiffVector2)
+			this._selectedItem.position = this._selectedItem.position.add(P_Y)
+			this._selectedItem.width -= P_Y.x / Math.cos(rotation)
 		} else {
 			this.moveSelectedItem(diffX, diffY)
 		}
 		this.updateAssistShapes()
 		this._selectedItem.isFlipX = isFlipX
 		this._selectedItem.isFlipY = isFlipY
-		this._selectedItem.rotation = rotation
 		this._selectedItem.updateBBox2()
 		this.moveScenePhysicsX = inputInfo.moveScenePhysicsX
 		this.moveScenePhysicsY = inputInfo.moveScenePhysicsY
@@ -204,21 +208,21 @@ export class D2ImageShapeSelectionTool extends D2SelectionTool {
 	public mouseUpMoveHandler(inputInfo: InputInfo): void {
 		Constant.environment.updateCanvasMouseCursor('default')
 		if (this.isSelectAssistPoint(this._pointLeftUp, inputInfo.moveScenePhysicsX, inputInfo.moveScenePhysicsY)) {
-			Constant.environment.updateCanvasMouseCursor('nwse-resize')
+			Constant.environment.updateCanvasMouseCursor('pointer')
 		} else if (this.isSelectAssistPoint(this._pointUp, inputInfo.moveScenePhysicsX, inputInfo.moveScenePhysicsY)) {
-			Constant.environment.updateCanvasMouseCursor('ns-resize')
+			Constant.environment.updateCanvasMouseCursor('pointer')
 		} else if (this.isSelectAssistPoint(this._pointRightUp, inputInfo.moveScenePhysicsX, inputInfo.moveScenePhysicsY)) {
-			Constant.environment.updateCanvasMouseCursor('nesw-resize')
+			Constant.environment.updateCanvasMouseCursor('pointer')
 		} else if (this.isSelectAssistPoint(this._pointRight, inputInfo.moveScenePhysicsX, inputInfo.moveScenePhysicsY)) {
-			Constant.environment.updateCanvasMouseCursor('ew-resize')
+			Constant.environment.updateCanvasMouseCursor('pointer')
 		} else if (this.isSelectAssistPoint(this._pointRightBottom, inputInfo.moveScenePhysicsX, inputInfo.moveScenePhysicsY)) {
-			Constant.environment.updateCanvasMouseCursor('nwse-resize')
+			Constant.environment.updateCanvasMouseCursor('pointer')
 		} else if (this.isSelectAssistPoint(this._pointBottom, inputInfo.moveScenePhysicsX, inputInfo.moveScenePhysicsY)) {
-			Constant.environment.updateCanvasMouseCursor('ns-resize')
+			Constant.environment.updateCanvasMouseCursor('pointer')
 		} else if (this.isSelectAssistPoint(this._pointLeftBottom, inputInfo.moveScenePhysicsX, inputInfo.moveScenePhysicsY)) {
-			Constant.environment.updateCanvasMouseCursor('nesw-resize')
+			Constant.environment.updateCanvasMouseCursor('pointer')
 		} else if (this.isSelectAssistPoint(this._pointLeft, inputInfo.moveScenePhysicsX, inputInfo.moveScenePhysicsY)) {
-			Constant.environment.updateCanvasMouseCursor('ew-resize')
+			Constant.environment.updateCanvasMouseCursor('pointer')
 		}
 	}
 

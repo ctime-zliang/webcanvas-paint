@@ -2,7 +2,7 @@ import { Vector2 } from '../../../engine/algorithm/geometry/vector/Vector2'
 import { ESweep } from '../../../engine/config/CommonProfile'
 import { ArraySort } from '../../../engine/math/ArraySort'
 import { toFix } from '../../../engine/math/Calculation'
-import { DoubleKit } from '../../../Main'
+import { DoubleKit } from '../../../engine/math/Doublekit'
 import { Arc } from '../primitives/Arc'
 import { Line } from '../primitives/Line'
 

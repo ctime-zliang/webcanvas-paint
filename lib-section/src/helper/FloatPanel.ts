@@ -1,5 +1,4 @@
-import { toFixed } from '../engine/math/Calculation'
-import { CanvasProfileData, InputInfoData } from '../Main'
+import { CanvasProfileData, InputInfoData, toFixed } from '../Main'
 
 const panelPublicStyle = `
 	min-width: 345px;
@@ -40,14 +39,14 @@ export class FloatPanel {
 			const wrapperHTML: string = `
 				<main style="${panelPublicStyle}">
 					<div style="padding: 2px 0; display: flex; justify-content: flex-start; align-items: center; align-content: center; color: #efefef;">
-						<div>鼠标实时原生坐标(Pixel):&nbsp;&nbsp;</div>
+						<div>鼠标实时 DOM 坐标(pixel):&nbsp;&nbsp;</div>
 						<div id="infoMouseMoveNativeAbsPos" style="min-width: 75px;">-/-</div>
 					</div>
 					<div style="padding: 2px 0; display: flex; justify-content: flex-start; align-items: center; align-content: center; color: #efefef;">
-						<div>鼠标实时场景坐标(Pixel):&nbsp;&nbsp;</div>
+						<div>鼠标实时场景坐标(pixel):&nbsp;&nbsp;</div>
 						<div id="infoMouseMoveSceneTruthPos" style="min-width: 75px;">-/-</div>
 					</div>
-					<div style="padding: 2px 0; display: flex; justify-content: flex-start; align-items: center; align-content: center; color: #ff6600; font-weight: bolder;">
+					<div style="padding: 2px 0; display: flex; justify-content: flex-start; align-items: center; align-content: center; color:rgb(250, 152, 110); font-weight: bolder;">
 						<div>鼠标实时物理坐标(mm):&nbsp;&nbsp;</div>
 						<div id="infoMouseMoveScenePhysicsPos" style="min-width: 75px;">-/-</div>
 					</div>
@@ -66,6 +65,7 @@ export class FloatPanel {
 	}
 
 	static canvasProfilePanelControl = {
+		lastUpdateTimeStamp: 0,
 		appendTo(container: HTMLElement): void {
 			const wrapperHTML: string = `
 				<main style="${panelPublicStyle}">
@@ -74,16 +74,17 @@ export class FloatPanel {
 						<div id="canvasZoomRatio" style="min-width: 75px;">-%</div>
 					</div>
 					<div style="padding: 2px 0; display: flex; justify-content: flex-start; align-items: center; align-content: center; color: #efefef;">
-						<div>画布尺寸:&nbsp;&nbsp;</div>
+						<div>画布尺寸/DPI:&nbsp;&nbsp;</div>
 						<div id="canvasBoundingRect" style="min-width: 75px;">-%</div>
-					</div>
-					<div style="padding: 2px 0; display: flex; justify-content: flex-start; align-items: center; align-content: center; color: #efefef;">
-						<div>DPI:&nbsp;&nbsp;</div>
 						<div id="viewDPI" style="min-width: 75px;">-</div>
 					</div>
 					<div style="padding: 2px 0; display: flex; justify-content: flex-start; align-items: center; align-content: center; color: #efefef;">
 						<div>FPS:&nbsp;&nbsp;</div>
 						<div id="fpsCount" style="min-width: 75px;">-</div>
+					</div>
+					<div style="padding: 2px 0; display: flex; justify-content: flex-start; align-items: center; align-content: center; color: #efefef;">
+						<div>内存使用:&nbsp;&nbsp;</div>
+						<div id="jsMemory" style="min-width: 75px;">-</div>
 					</div>
 				</main>
 			`
@@ -98,6 +99,16 @@ export class FloatPanel {
 			viewDPIElement.innerHTML = `${data.DPI[0]} * ${data.DPI[1]}`
 			const fpsCountElement: HTMLElement = document.getElementById('fpsCount') as HTMLElement
 			fpsCountElement.innerHTML = `${data.fpsCount}/${data.diffFreshInterval}`
+			if (performance.now() - this.lastUpdateTimeStamp >= 500) {
+				this.lastUpdateTimeStamp = performance.now()
+				const jsMemoryElement: HTMLElement = document.getElementById('jsMemory') as HTMLElement
+				const memory = (performance as any).memory || {}
+				jsMemoryElement.innerHTML = `${toFixed(memory.usedJSHeapSize / Math.pow(1024, 2), 2, true)}/${toFixed(
+					memory.totalJSHeapSize / Math.pow(1024, 2),
+					2,
+					true
+				)}`
+			}
 		},
 	}
 

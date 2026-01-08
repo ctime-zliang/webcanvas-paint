@@ -110,11 +110,11 @@ export class D2ArcShapeSelectionTool extends D2SelectionTool {
 	public mouseMoveHandler(inputInfo: InputInfo): void {
 		const diffX: number = inputInfo.moveScenePhysicsX - this.moveScenePhysicsX
 		const diffY: number = inputInfo.moveScenePhysicsY - this.moveScenePhysicsY
-		const matrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(diffX, diffY).toVector3())
+		const diffVector2: Vector2 = new Vector2(diffX, diffY)
 		if (this._isSelectedPointCenter) {
 			this.moveSelectedItem(diffX, diffY)
 		} else if (this._isSelectedPointStart) {
-			const newStartPoint: Vector2 = this._pointStart.centerPoint.multiplyMatrix4(matrix4)
+			const newStartPoint: Vector2 = this._pointStart.centerPoint.add(diffVector2)
 			const { startAngle, endAngle, radius, centerPoint, sweep } = D2ArcTransform.calculateD2ArcProfileByThreePoint(
 				newStartPoint,
 				this._pointEnd.centerPoint,
@@ -126,7 +126,7 @@ export class D2ArcShapeSelectionTool extends D2SelectionTool {
 			this._selectedItem.endAngle = endAngle
 			this._selectedItem.sweep = sweep
 		} else if (this._isSelectedPointEnd) {
-			const newEndPoint: Vector2 = this._pointEnd.centerPoint.multiplyMatrix4(matrix4)
+			const newEndPoint: Vector2 = this._pointEnd.centerPoint.add(diffVector2)
 			const { startAngle, endAngle, radius, centerPoint, sweep } = D2ArcTransform.calculateD2ArcProfileByThreePoint(
 				this._pointStart.centerPoint,
 				newEndPoint,
@@ -139,21 +139,13 @@ export class D2ArcShapeSelectionTool extends D2SelectionTool {
 			this._selectedItem.sweep = sweep
 		} else if (this._isSelectedPointMiddle) {
 			/**
-			 * 计算当前线段的垂线向量 B
-			 * 计算当前鼠标的移动向量 A
-			 * 计算向量 A 在向量 B 上的投影 C
+			 * 计算鼠标位移向量在圆弧端点连线的垂线向量上的投影向量
 			 */
-			const perpendicular: { v1: Vector2; v2: Vector2 } = D2LineTransform.calculatePerpendicular(
-				this._pointEnd.centerPoint.sub(this._pointStart.centerPoint)
+			const P: Vector2 = D2LineTransform.calculateVectorProjection(
+				this._pointEnd.centerPoint.sub(this._pointStart.centerPoint),
+				new Vector2(diffX, diffY)
 			)
-			const B: Vector2 = perpendicular.v1
-			const A: Vector2 = new Vector2(diffX, diffY)
-			const C: Vector2 = new Vector2(
-				((A.x * B.x + A.y * B.y) * B.x) / (B.x * B.x + B.y * B.y),
-				((A.x * B.x + A.y * B.y) * B.y) / (B.x * B.x + B.y * B.y)
-			)
-			const matrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(C.x, C.y).toVector3())
-			const newMiddlePoint: Vector2 = this._pointMiddle.centerPoint.multiplyMatrix4(matrix4)
+			const newMiddlePoint: Vector2 = this._pointMiddle.centerPoint.add(P)
 			const { startAngle, endAngle, radius, centerPoint, sweep } = D2ArcTransform.calculateD2ArcProfileByThreePoint(
 				this._pointStart.centerPoint,
 				this._pointEnd.centerPoint,

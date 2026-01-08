@@ -6,6 +6,7 @@ import { ED2PointShape, EPrimitiveStatus } from '../../../engine/config/Primitiv
 import { TElement2DPointJSONViewData, TElementShapeType } from '../../../types/Element'
 import { buildD2PointModel, D2PointModel } from '../../models/primitive2d/D2PointModel'
 import { D2PointShape } from '../../shapes/primitive2d/D2PointShape'
+import { Camera } from '../../../engine/common/Camera'
 
 export function buildD2AssistPointShape(
 	centerPoint: Vector2,
@@ -24,9 +25,11 @@ export function buildD2AssistPointShape(
 
 export class D2AssistPointShape extends D2PointShape {
 	private _parent: TElementShapeType
+	private _camera: Camera
 	constructor(model: D2PointModel, parent: TElementShapeType = null!) {
 		super(model)
 		this._parent = parent
+		this._camera = Camera.getInstance()
 		this.refreshRender()
 	}
 
@@ -38,10 +41,11 @@ export class D2AssistPointShape extends D2PointShape {
 	}
 
 	public isSelect(x: number, y: number): boolean {
+		const zoomRatio: number = this._camera.getZoomRatio()
 		const point: Vector2 = new Vector2(x, y)
 		const centerPoint: Vector2 = this.centerPoint
 		const distOfClickPointAndCenterPoint: number = point.sub(centerPoint).length
-		if (distOfClickPointAndCenterPoint <= this.size) {
+		if (distOfClickPointAndCenterPoint <= this.size / zoomRatio) {
 			return true
 		}
 		return false

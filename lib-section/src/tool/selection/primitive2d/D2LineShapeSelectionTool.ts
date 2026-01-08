@@ -104,32 +104,24 @@ export class D2LineShapeSelectionTool extends D2SelectionTool {
 	public mouseMoveHandler(inputInfo: InputInfo): void {
 		const diffX: number = inputInfo.moveScenePhysicsX - this.moveScenePhysicsX
 		const diffY: number = inputInfo.moveScenePhysicsY - this.moveScenePhysicsY
-		const matrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(diffX, diffY).toVector3())
+		const diffVector2: Vector2 = new Vector2(diffX, diffY)
 		if (this._isSelectedPointStart) {
-			this._selectedItem.startPoint = this._selectedItem.startPoint.multiplyMatrix4(matrix4)
+			this._selectedItem.startPoint = this._selectedItem.startPoint.add(diffVector2)
 		} else if (this._isSelectedPointMiddle) {
 			if (diffX === 0 && diffY === 0) {
 				return
 			}
 			/**
-			 * 计算当前线段的垂线向量 B
-			 * 计算当前鼠标的移动向量 A
-			 * 计算向量 A 在向量 B 上的投影 C
+			 * 计算鼠标位移向量在线段垂线向量上的投影向量
 			 */
-			const perpendicular: { v1: Vector2; v2: Vector2 } = D2LineTransform.calculatePerpendicular(
-				this._selectedItem.endPoint.sub(this._selectedItem.startPoint)
+			const P: Vector2 = D2LineTransform.calculateVectorProjection(
+				this._selectedItem.endPoint.sub(this._selectedItem.startPoint),
+				new Vector2(diffX, diffY)
 			)
-			const B: Vector2 = perpendicular.v1
-			const A: Vector2 = new Vector2(diffX, diffY)
-			const C: Vector2 = new Vector2(
-				((A.x * B.x + A.y * B.y) * B.x) / (B.x * B.x + B.y * B.y),
-				((A.x * B.x + A.y * B.y) * B.y) / (B.x * B.x + B.y * B.y)
-			)
-			const matrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(C.x, C.y).toVector3())
-			this._selectedItem.startPoint = this._selectedItem.startPoint.multiplyMatrix4(matrix4)
-			this._selectedItem.endPoint = this._selectedItem.endPoint.multiplyMatrix4(matrix4)
+			this._selectedItem.startPoint = this._selectedItem.startPoint.add(P)
+			this._selectedItem.endPoint = this._selectedItem.endPoint.add(P)
 		} else if (this._isSelectedPointEnd) {
-			this._selectedItem.endPoint = this._selectedItem.endPoint.multiplyMatrix4(matrix4)
+			this._selectedItem.endPoint = this._selectedItem.endPoint.add(diffVector2)
 		} else {
 			this.moveSelectedItem(diffX, diffY)
 		}
