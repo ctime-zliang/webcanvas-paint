@@ -91,13 +91,12 @@ export class Vector2 extends Vector {
 	/**
 	 * 计算两向量组成的夹角对应的弧度值
 	 */
-	public static calculateAngleByTwoVector2(vector2_1: Vector2, vector2_2: Vector2): number {
-		const dotProduct: number = vector2_1.x * vector2_2.x + vector2_1.y * vector2_2.y
-		const magnitudeA: number = Math.sqrt(vector2_1.x ** 2 + vector2_1.y ** 2)
-		const magnitudeB: number = Math.sqrt(vector2_2.x ** 2 + vector2_2.y ** 2)
-		const cosTheta: number = dotProduct / (magnitudeA * magnitudeB)
-		const angleRadians: number = Math.acos(cosTheta)
-		return angleRadians
+	public static calculateRadianCCWByTwoVector2(vector2_1: Vector2, vector2_2: Vector2): number {
+		const { x: x1, y: y1 } = vector2_1
+		const { x: x2, y: y2 } = vector2_2
+		const dot: number = x1 * x2 + y1 * y2
+		const cross: number = x1 * y2 - y1 * x2
+		return Math.atan2(cross, dot)
 	}
 
 	/**

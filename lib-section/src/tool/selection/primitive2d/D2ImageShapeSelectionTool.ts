@@ -16,6 +16,7 @@ import { Vector2 } from '../../../engine/algorithm/geometry/vector/Vector2'
 import { Constant } from '../../../Constant'
 import { OutProfileMessage } from '../../../utils/OutMessage'
 import { D2LineTransform } from '../../../algorithm/geometry/D2LineTransform'
+import { Color } from '../../../engine/common/Color'
 
 export class D2ImageShapeSelectionTool extends D2SelectionTool {
 	private _shapeItemCommand: D2ImageShapeCommand
@@ -56,7 +57,7 @@ export class D2ImageShapeSelectionTool extends D2SelectionTool {
 		this._isSelectedPointBottom = false
 		this._isSelectedPointLeftBottom = false
 		this._isSelectedPointLeft = false
-		this.initAssistShapes()
+		this.freshAssistShapes()
 	}
 
 	public mouseLeftDownSelect(inputInfo: InputInfo): TAllElementShapeType {
@@ -122,6 +123,7 @@ export class D2ImageShapeSelectionTool extends D2SelectionTool {
 		this._isSelectedPointBottom = this._pointBottom.isSelect(inputInfo.leftDownScenePhysicsX, inputInfo.leftDownScenePhysicsY)
 		this._isSelectedPointLeftBottom = this._pointLeftBottom.isSelect(inputInfo.leftDownScenePhysicsX, inputInfo.leftDownScenePhysicsY)
 		this._isSelectedPointLeft = this._pointLeft.isSelect(inputInfo.leftDownScenePhysicsX, inputInfo.leftDownScenePhysicsY)
+		this.testGetSelectP()
 	}
 
 	public mouseLeftUpHandler(inputInfo: InputInfo): void {
@@ -136,70 +138,89 @@ export class D2ImageShapeSelectionTool extends D2SelectionTool {
 	}
 
 	public mouseMoveHandler(inputInfo: InputInfo): void {
-		const isFlipX: boolean = this._selectedItem.isFlipX
-		const isFlipY: boolean = this._selectedItem.isFlipY
-		const rotation: number = this._selectedItem.rotation
+		const isWidthPos: boolean = this._selectedItem.width > 0
+		const isHeightPos: boolean = this._selectedItem.height > 0
 		const diffX: number = inputInfo.moveScenePhysicsX - this.moveScenePhysicsX
 		const diffY: number = inputInfo.moveScenePhysicsY - this.moveScenePhysicsY
 		const moveDiffVector2: Vector2 = new Vector2(diffX, diffY)
-		this._selectedItem.isFlipX = false
-		this._selectedItem.isFlipY = false
 		if (this._isSelectedPointLeftUp) {
-			const LINE_Y: Vector2 = this._selectedItem.leftDown.sub(this._selectedItem.leftUp)
+			const LINE_Y: Vector2 = isHeightPos
+				? this._selectedItem.leftUp.sub(this._selectedItem.leftDown)
+				: this._selectedItem.leftDown.sub(this._selectedItem.leftUp)
 			const P_Y: Vector2 = D2LineTransform.calculateVectorProjection(LINE_Y, moveDiffVector2)
-			this._selectedItem.position = this._selectedItem.position.add(P_Y)
-			this._selectedItem.width -= P_Y.x / Math.cos(rotation)
-			const LINE_X: Vector2 = this._selectedItem.rightUp.sub(this._selectedItem.leftUp)
+			const LINE_X: Vector2 = isWidthPos
+				? this._selectedItem.rightUp.sub(this._selectedItem.leftUp)
+				: this._selectedItem.leftUp.sub(this._selectedItem.rightUp)
 			const P_X: Vector2 = D2LineTransform.calculateVectorProjection(LINE_X, moveDiffVector2)
+			this._selectedItem.position = this._selectedItem.position.add(P_Y)
+			this._selectedItem.width += P_Y.length * Math.sign(Vector2.calculateRadianCCWByTwoVector2(LINE_Y, moveDiffVector2))
 			this._selectedItem.position = this._selectedItem.position.add(P_X)
-			this._selectedItem.height -= P_X.x / Math.sin(rotation)
+			this._selectedItem.height += P_X.length * Math.sign(Vector2.calculateRadianCCWByTwoVector2(LINE_X, moveDiffVector2))
 		} else if (this._isSelectedPointUp) {
-			const LINE_X: Vector2 = this._selectedItem.rightUp.sub(this._selectedItem.leftUp)
+			const LINE_X: Vector2 = isWidthPos
+				? this._selectedItem.rightUp.sub(this._selectedItem.leftUp)
+				: this._selectedItem.leftUp.sub(this._selectedItem.rightUp)
 			const P_X: Vector2 = D2LineTransform.calculateVectorProjection(LINE_X, moveDiffVector2)
 			this._selectedItem.position = this._selectedItem.position.add(P_X)
-			this._selectedItem.height -= P_X.x / Math.sin(rotation)
+			this._selectedItem.height += P_X.length * Math.sign(Vector2.calculateRadianCCWByTwoVector2(LINE_X, moveDiffVector2))
 		} else if (this._isSelectedPointRightUp) {
-			const LINE_X: Vector2 = this._selectedItem.rightUp.sub(this._selectedItem.leftUp)
+			const LINE_Y: Vector2 = isHeightPos
+				? this._selectedItem.rightDown.sub(this._selectedItem.rightUp)
+				: this._selectedItem.rightUp.sub(this._selectedItem.rightDown)
+			const P_Y: Vector2 = D2LineTransform.calculateVectorProjection(LINE_Y, moveDiffVector2)
+			const LINE_X: Vector2 = isWidthPos
+				? this._selectedItem.rightUp.sub(this._selectedItem.leftUp)
+				: this._selectedItem.leftUp.sub(this._selectedItem.rightUp)
 			const P_X: Vector2 = D2LineTransform.calculateVectorProjection(LINE_X, moveDiffVector2)
+			this._selectedItem.width += P_Y.length * Math.sign(Vector2.calculateRadianCCWByTwoVector2(LINE_Y, moveDiffVector2))
 			this._selectedItem.position = this._selectedItem.position.add(P_X)
-			this._selectedItem.height -= P_X.x / Math.sin(rotation)
-			const LINE_Y: Vector2 = this._selectedItem.rightDown.sub(this._selectedItem.rightUp)
-			const P_Y: Vector2 = D2LineTransform.calculateVectorProjection(LINE_Y, moveDiffVector2)
-			this._selectedItem.width += P_Y.x / Math.cos(rotation)
+			this._selectedItem.height += P_X.length * Math.sign(Vector2.calculateRadianCCWByTwoVector2(LINE_X, moveDiffVector2))
 		} else if (this._isSelectedPointRight) {
-			const LINE_Y: Vector2 = this._selectedItem.rightDown.sub(this._selectedItem.rightUp)
+			const LINE_Y: Vector2 = isHeightPos
+				? this._selectedItem.rightDown.sub(this._selectedItem.rightUp)
+				: this._selectedItem.rightUp.sub(this._selectedItem.rightDown)
 			const P_Y: Vector2 = D2LineTransform.calculateVectorProjection(LINE_Y, moveDiffVector2)
-			this._selectedItem.width += P_Y.x / Math.cos(rotation)
+			this._selectedItem.width += P_Y.length * Math.sign(Vector2.calculateRadianCCWByTwoVector2(LINE_Y, moveDiffVector2))
 		} else if (this._isSelectedPointRightBottom) {
-			const LINE_Y: Vector2 = this._selectedItem.rightDown.sub(this._selectedItem.rightUp)
+			const LINE_Y: Vector2 = isHeightPos
+				? this._selectedItem.rightDown.sub(this._selectedItem.rightUp)
+				: this._selectedItem.rightUp.sub(this._selectedItem.rightDown)
 			const P_Y: Vector2 = D2LineTransform.calculateVectorProjection(LINE_Y, moveDiffVector2)
-			this._selectedItem.width += P_Y.x / Math.cos(rotation)
-			const LINE_X: Vector2 = this._selectedItem.rightDown.sub(this._selectedItem.leftDown)
+			const LINE_X: Vector2 = isWidthPos
+				? this._selectedItem.leftDown.sub(this._selectedItem.rightDown)
+				: this._selectedItem.rightDown.sub(this._selectedItem.leftDown)
 			const P_X: Vector2 = D2LineTransform.calculateVectorProjection(LINE_X, moveDiffVector2)
-			this._selectedItem.height += P_X.x / Math.sin(rotation)
+			this._selectedItem.width += P_Y.length * Math.sign(Vector2.calculateRadianCCWByTwoVector2(LINE_Y, moveDiffVector2))
+			this._selectedItem.height += P_X.length * Math.sign(Vector2.calculateRadianCCWByTwoVector2(LINE_X, moveDiffVector2))
 		} else if (this._isSelectedPointBottom) {
-			const LINE_X: Vector2 = this._selectedItem.rightDown.sub(this._selectedItem.leftDown)
+			const LINE_X: Vector2 = isWidthPos
+				? this._selectedItem.leftDown.sub(this._selectedItem.rightDown)
+				: this._selectedItem.rightDown.sub(this._selectedItem.leftDown)
 			const P_X: Vector2 = D2LineTransform.calculateVectorProjection(LINE_X, moveDiffVector2)
-			this._selectedItem.height += P_X.x / Math.sin(rotation)
+			this._selectedItem.height += P_X.length * Math.sign(Vector2.calculateRadianCCWByTwoVector2(LINE_X, moveDiffVector2))
 		} else if (this._isSelectedPointLeftBottom) {
-			const LINE_X: Vector2 = this._selectedItem.rightDown.sub(this._selectedItem.leftDown)
+			const LINE_Y: Vector2 = isHeightPos
+				? this._selectedItem.leftUp.sub(this._selectedItem.leftDown)
+				: this._selectedItem.leftDown.sub(this._selectedItem.leftUp)
+			const P_Y: Vector2 = D2LineTransform.calculateVectorProjection(LINE_Y, moveDiffVector2)
+			const LINE_X: Vector2 = isWidthPos
+				? this._selectedItem.leftDown.sub(this._selectedItem.rightDown)
+				: this._selectedItem.rightDown.sub(this._selectedItem.leftDown)
 			const P_X: Vector2 = D2LineTransform.calculateVectorProjection(LINE_X, moveDiffVector2)
-			this._selectedItem.height += P_X.x / Math.sin(rotation)
-			const LINE_Y: Vector2 = this._selectedItem.leftDown.sub(this._selectedItem.leftUp)
-			const P_Y: Vector2 = D2LineTransform.calculateVectorProjection(LINE_Y, moveDiffVector2)
 			this._selectedItem.position = this._selectedItem.position.add(P_Y)
-			this._selectedItem.width -= P_Y.x / Math.cos(rotation)
+			this._selectedItem.width += P_Y.length * Math.sign(Vector2.calculateRadianCCWByTwoVector2(LINE_Y, moveDiffVector2))
+			this._selectedItem.height += P_X.length * Math.sign(Vector2.calculateRadianCCWByTwoVector2(LINE_X, moveDiffVector2))
 		} else if (this._isSelectedPointLeft) {
-			const LINE_Y: Vector2 = this._selectedItem.leftDown.sub(this._selectedItem.leftUp)
+			const LINE_Y: Vector2 = isHeightPos
+				? this._selectedItem.leftUp.sub(this._selectedItem.leftDown)
+				: this._selectedItem.leftDown.sub(this._selectedItem.leftUp)
 			const P_Y: Vector2 = D2LineTransform.calculateVectorProjection(LINE_Y, moveDiffVector2)
 			this._selectedItem.position = this._selectedItem.position.add(P_Y)
-			this._selectedItem.width -= P_Y.x / Math.cos(rotation)
+			this._selectedItem.width += P_Y.length * Math.sign(Vector2.calculateRadianCCWByTwoVector2(LINE_Y, moveDiffVector2))
 		} else {
 			this.moveSelectedItem(diffX, diffY)
 		}
 		this.updateAssistShapes()
-		this._selectedItem.isFlipX = isFlipX
-		this._selectedItem.isFlipY = isFlipY
 		this._selectedItem.updateBBox2()
 		this.moveScenePhysicsX = inputInfo.moveScenePhysicsX
 		this.moveScenePhysicsY = inputInfo.moveScenePhysicsY
@@ -252,44 +273,64 @@ export class D2ImageShapeSelectionTool extends D2SelectionTool {
 		super.quit()
 	}
 
-	private initAssistShapes(): void {
-		const isFlipX: boolean = this._selectedItem.isFlipX
-		const isFlipY: boolean = this._selectedItem.isFlipY
-		const rotation: number = this._selectedItem.rotation
-		this._selectedItem.isFlipX = false
-		this._selectedItem.isFlipY = false
-		// this._selectedItem.rotation = 0
+	private freshAssistShapes(): void {
+		if (this._pointLeftUp) {
+			this._pointLeftUp.setDelete()
+		}
+		if (this._pointUp) {
+			this._pointUp.setDelete()
+		}
+		if (this._pointRightUp) {
+			this._pointRightUp.setDelete()
+		}
+		if (this._pointRight) {
+			this._pointRight.setDelete()
+		}
+		if (this._pointRightBottom) {
+			this._pointRightBottom.setDelete()
+		}
+		if (this._pointBottom) {
+			this._pointBottom.setDelete()
+		}
+		if (this._pointLeftBottom) {
+			this._pointLeftBottom.setDelete()
+		}
+		if (this._pointLeft) {
+			this._pointLeft.setDelete()
+		}
 		this._pointLeftUp = buildD2AssistPointShape(this._selectedItem.leftUp, this._selectedItem)
 		this._pointUp = buildD2AssistPointShape(
 			this._selectedItem.leftUp.add(this._selectedItem.rightUp).mul(0.5),
 			this._selectedItem,
 			ED2PointShape.TRIANGLE,
-			1.6
+			1.6,
+			Color.RED
 		)
 		this._pointRightUp = buildD2AssistPointShape(this._selectedItem.rightUp, this._selectedItem)
 		this._pointRight = buildD2AssistPointShape(
 			this._selectedItem.rightUp.add(this._selectedItem.rightDown).mul(0.5),
 			this._selectedItem,
 			ED2PointShape.TRIANGLE,
-			1.6
+			1.6,
+			Color.BLUE
 		)
 		this._pointRightBottom = buildD2AssistPointShape(this._selectedItem.rightDown, this._selectedItem)
 		this._pointBottom = buildD2AssistPointShape(
 			this._selectedItem.leftDown.add(this._selectedItem.rightDown).mul(0.5),
 			this._selectedItem,
 			ED2PointShape.TRIANGLE,
-			1.6
+			1.6,
+			Color.CYAN
 		)
 		this._pointLeftBottom = buildD2AssistPointShape(this._selectedItem.leftDown, this._selectedItem)
 		this._pointLeft = buildD2AssistPointShape(
 			this._selectedItem.leftUp.add(this._selectedItem.leftDown).mul(0.5),
 			this._selectedItem,
 			ED2PointShape.TRIANGLE,
-			1.6
+			1.6,
+			Color.PINK
 		)
-		this._selectedItem.isFlipX = isFlipX
-		this._selectedItem.isFlipY = isFlipY
-		this._selectedItem.rotation = rotation
+		this.testGetSelectP()
 	}
 
 	private updateAssistShapes(): void {
@@ -306,5 +347,24 @@ export class D2ImageShapeSelectionTool extends D2SelectionTool {
 	private moveSelectedItem(diffX: number, diffY: number): void {
 		const moveMatrix4: Matrix4 = CanvasMatrix4.setTranslateByVector3(new Vector2(diffX, diffY).toVector3())
 		this._selectedItem.transform(moveMatrix4)
+	}
+
+	private testGetSelectP(): void {
+		if (this._isSelectedPointUp) {
+			console.log(`SelectedPointUp`)
+			return
+		}
+		if (this._isSelectedPointLeft) {
+			console.log(`SelectedPointLeft`)
+			return
+		}
+		if (this._isSelectedPointRight) {
+			console.log(`SelectedPointRight`)
+			return
+		}
+		if (this._isSelectedPointBottom) {
+			console.log(`SelectedPointBottom`)
+			return
+		}
 	}
 }
