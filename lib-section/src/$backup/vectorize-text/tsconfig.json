@@ -1,0 +1,31 @@
+{
+	"$schema": "http://json.schemastore.org/tsconfig",
+	"compilerOptions": {
+		"target": "ES2016",
+		"downlevelIteration": true,
+		"types": ["node"],
+		"lib": ["dom", "dom.iterable", "ES2016"],
+		"jsx": "react",
+		"allowJs": false,
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"strictPropertyInitialization": false,
+		"strict": true,
+		"module": "commonjs",
+		"isolatedModules": true,
+		"resolveJsonModule": true,
+		"declaration": true,
+		"declarationDir": "./dist/@types",
+		"noEmit": false,
+		"forceConsistentCasingInFileNames": false,
+		"baseUrl": "./",
+		"paths": {
+			"@app/*": ["./src/*"]
+		}
+	},
+	"include": ["./src"],
+	"exclude": ["./config/**"]
+}

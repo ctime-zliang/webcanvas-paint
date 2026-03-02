@@ -1,0 +1,70 @@
+.container {
+	position: relative;
+	width: 100vw;
+	height: 100vh;
+	border: 1px solid rgba(55, 55, 55);
+	background-color: rgba(22, 22, 22);
+	box-shadow: 4px 4px 12px 4px rgb(44 44 44 / 20%);
+	.wrapper {
+		width: 100%;
+		height: 100%;
+		padding: 50px 75px;
+	}
+}
+
+.listitem-container {
+	padding: 0;
+	margin: 0;
+	.listitem-wrapper {
+		padding: 0 0 10px 0;
+		.listitem-title-wrapper {
+			font-size: 20px;
+			font-weight: 600;
+			color: #ececec;
+			border-bottom: 1px solid #ececec;
+			padding: 8px 0;
+			user-select: none;
+		}
+		.listitem-content-wrapper {
+			display: flex;
+			flex-shrink: 0;
+			flex-wrap: wrap;
+			.listitem-content-item {
+				padding: 10px 10px;
+			}
+		}
+	}
+}
+
+.menuitem-container {
+	padding: 0;
+	margin: 0;
+	border: 1px solid rgba(55, 55, 55);
+	background-color: rgba(22, 22, 22);
+	box-shadow: 4px 4px 12px 4px rgb(44 44 44 / 20%);
+	width: 300px;
+	height: 125px;
+	cursor: pointer;
+	border-radius: 5px;
+	&:hover {
+		border: 1px solid rgba(105, 105, 105);
+	}
+	.menuitem-wrapper {
+		.menuitem-title-wrapper {
+			font-size: 14px;
+			font-weight: 600;
+			color: #dddddd;
+			padding: 10px 10px 5px 10px;
+			user-select: none;
+		}
+		.menuitem-description-wrapper {
+			font-size: 12px;
+			font-weight: 600;
+			color: #aaaaaa;
+			padding: 5px 10px 10px 10px;
+			line-height: 16px;
+			user-select: none;
+			font-family: 'math';
+		}
+	}
+}

@@ -1,0 +1,29 @@
+{
+	"name": "webcanvas-kit",
+	"version": "1.0.0",
+	"description": "React Application",
+	"scripts": {
+		"preinstall": "npm install --package-lock-only --ignore-scripts && npx npm-force-resolutions",
+		"prepare": "husky install",
+		"husky:install": "husky install",
+		"prettier:write-all": "prettier --write .",
+		"prettier:check-all": "prettier --check .",
+		"eslint:check-src": "eslint --ext .js,.ts,.jsx,.tsx src",
+		"eslint:fix-src": "eslint --fix --ext .js,.ts,.jsx,.tsx src",
+		"tsc:check": "tsc --noEmit"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {},
+	"devDependencies": {
+		"@typescript-eslint/eslint-plugin": "^5.6.0",
+		"@typescript-eslint/parser": "^5.6.0",
+		"@webgpu/types": "^0.1.61",
+		"cross-env": "^7.0.3",
+		"eslint": "^8.1.0",
+		"eslint-plugin-import": "^2.25.3",
+		"husky": "^7.0.4",
+		"prettier": "^2.2.1",
+		"rimraf": "^3.0.2"
+	}
+}
