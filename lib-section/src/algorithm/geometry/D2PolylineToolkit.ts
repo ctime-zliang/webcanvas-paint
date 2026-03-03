@@ -147,7 +147,7 @@ export class D2PolylineToolkit {
 	 */
 	public static isPointAtPolyline(pl: Polyline, point: Vector2): boolean {
 		return pl.primitives.some((item: Primitive): boolean => {
-			return D2LineToolkit.isPointOnSegment(point, item.startPoint, item.endPoint)
+			return D2LineToolkit.isPointOnLine2(new Line(point, item.startPoint), item.endPoint)
 		})
 	}
 

@@ -56,7 +56,7 @@ export class D2LineToolkit {
 	/**
 	 * 判断点 point 是否位于线段 line 上
 	 */
-	public static isPointOnLine(line: Line, point: Vector2): boolean {
+	public static isPointOnLine(line: Line, point: Vector2, place: number = DoubleKit.eps1): boolean {
 		if (!line.bbox2.extendByDist(1e-8).isContainsPoint(point)) {
 			/**
 			 * 排除以线段为对角线的矩形之外的点
@@ -69,7 +69,7 @@ export class D2LineToolkit {
 			}
 			return false
 		}
-		if (DoubleKit.eq(Triangle.getArea(line.startPoint, line.endPoint, point), 0)) {
+		if (DoubleKit.eq(Triangle.getArea(line.startPoint, line.endPoint, point), place)) {
 			/**
 			 * 线段 L 的两个端点 A, B 与点 P 共线且 P 处于以该线段为对角线的矩形之内, 则 P 在线段 L 上
 			 **/
@@ -82,19 +82,20 @@ export class D2LineToolkit {
 	 * 判断点 point 是否位于线段 line 上
 	 */
 	public static isPointOnLine2(line: Line, point: Vector2, place: number = 0.5): boolean {
-		const [lineStartPoint, lineEndPoint]: [Vector2, Vector2] = [line.startPoint, line.endPoint]
+		const eps: number = DoubleKit.eps1
 		const [maxX, maxY, minX, minY]: [number, number, number, number] = [
-			lineStartPoint.x - lineEndPoint.x > 0 ? lineStartPoint.x : lineEndPoint.x,
-			lineStartPoint.y - lineEndPoint.y > 0 ? lineStartPoint.y : lineEndPoint.y,
-			lineStartPoint.x - lineEndPoint.x > 0 ? lineEndPoint.x : lineStartPoint.x,
-			lineStartPoint.y - lineEndPoint.y > 0 ? lineEndPoint.y : lineStartPoint.y,
+			line.startPoint.x - line.endPoint.x > 0 ? line.startPoint.x : line.endPoint.x,
+			line.startPoint.y - line.endPoint.y > 0 ? line.startPoint.y : line.endPoint.y,
+			line.startPoint.x - line.endPoint.x > 0 ? line.endPoint.x : line.startPoint.x,
+			line.startPoint.y - line.endPoint.y > 0 ? line.endPoint.y : line.startPoint.y,
 		]
-		const [x, y]: [number, number] = [point.x, point.y]
-		const flg: boolean = x <= maxX + 1e-3 + place && x >= minX - 1e-3 - place && y <= maxY + 1e-3 && y >= minY - 1e-3 - place
+		const flg: boolean =
+			point.x <= maxX + eps + place && point.x >= minX - eps - place && point.y <= maxY + eps + place && point.y >= minY - eps - place
 		if (!flg) {
 			return false
 		}
-		return lineStartPoint.sub(point).cross(lineEndPoint.sub(lineStartPoint)) < Math.sin(Math.PI / 180)
+		const crossValue: number = line.startPoint.sub(point).cross(line.endPoint.sub(line.startPoint))
+		return crossValue < Math.sin(Math.PI / 180) + place
 	}
 
 	/**
@@ -185,21 +186,21 @@ export class D2LineToolkit {
 		return false
 	}
 
-	/**
-	 * 判断点 point 是否位于线段 AB 上
-	 */
-	public static isPointOnSegment(A: Vector2, B: Vector2, point: Vector2, place: number = 0.5): boolean {
-		const data: {
-			point: Vector2
-			d: number
-		} = D2LineToolkit.getClosedPointOnSegmentWithPoint(point, A, B)
-		if (data.d <= place) {
-			point = data.point
-		}
-		const [start2End, start2Point, end2Point]: [number, number, number] = [A.distance(B), A.distance(point), B.distance(point)]
-		const isInLine: boolean = isFloatEqual(start2Point + end2Point, start2End, 1e-3)
-		return isInLine
-	}
+	// /**
+	//  * 判断点 point 是否位于线段 AB 上
+	//  */
+	// public static isPointOnSegment(A: Vector2, B: Vector2, point: Vector2, place: number = 0.5): boolean {
+	// 	const data: {
+	// 		point: Vector2
+	// 		d: number
+	// 	} = D2LineToolkit.getClosedPointOnSegmentWithPoint(point, A, B)
+	// 	if (data.d <= place) {
+	// 		point = data.point
+	// 	}
+	// 	const [start2End, start2Point, end2Point]: [number, number, number] = [A.distance(B), A.distance(point), B.distance(point)]
+	// 	const isInLine: boolean = isFloatEqual(start2Point + end2Point, start2End, 1e-3)
+	// 	return isInLine
+	// }
 
 	public static isSegmentIntered(p1: Vector2, p2: Vector2, p3: Vector2, p4: Vector2): boolean {
 		const determinant = (a: number, b: number, c: number, d: number): number => {

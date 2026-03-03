@@ -33,19 +33,6 @@ export function geometryTest01(webCanvas: WebCanvas, layerItemId: string): void 
 	d2TextElementController.createD2TextElementItem(defaultLayerItemId, footRes.point, `P(${footRes.point.x}, ${footRes.point.y})`, {
 		isEnableSelect: false,
 	})
-	/**
-	 * 判断点是否在线段上
-	 */
-	const pointB: Vector2 = new Vector2(14.25, 50)
-	d2ElementController.createD2PointElementShapeItem(defaultLayerItemId, pointB, {
-		strokeColor: Color.PINK,
-		isEnableScale: true,
-		isEnableSelect: false,
-	})
-	const b1: boolean = D2LineToolkit.isPointOnLine(lineA, pointB)
-	const b2: boolean = D2LineToolkit.isPointOnLine2(lineA, pointB, 0)
-	const b3: boolean = D2LineToolkit.isPointOnSegment(lineA.startPoint, lineA.endPoint, pointB)
-	console.log(b1, b2, b3)
 }
 
 export function geometryTest02(webCanvas: WebCanvas, layerItemId: string): void {
@@ -61,14 +48,13 @@ export function geometryTest02(webCanvas: WebCanvas, layerItemId: string): void 
 	 * 判断点是否在线段上
 	 */
 	const lineA: Line = new Line(lineAStartPoint, lineAEndPoint)
-	const pointB: Vector2 = new Vector2(20, 20)
+	const pointB: Vector2 = new Vector2(20, 0.01)
 	d2ElementController.createD2PointElementShapeItem(defaultLayerItemId, pointB, {
 		strokeColor: Color.PINK,
 		isEnableScale: true,
 		isEnableSelect: false,
 	})
 	const b1: boolean = D2LineToolkit.isPointOnLine(lineA, pointB)
-	const b2: boolean = D2LineToolkit.isPointOnLine2(lineA, pointB, 0)
-	const b3: boolean = D2LineToolkit.isPointOnSegment(lineA.startPoint, lineA.endPoint, pointB)
-	console.log(b1, b2, b3)
+	const b2: boolean = D2LineToolkit.isPointOnLine2(lineA, pointB)
+	console.log(b1, b2)
 }
