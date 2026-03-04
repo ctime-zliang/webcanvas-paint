@@ -3,7 +3,6 @@ import { Vector } from '../../engine/algorithm/geometry/vector/Vector'
 import { Vector2 } from '../../engine/algorithm/geometry/vector/Vector2'
 import { ESweep } from '../../engine/config/CommonProfile'
 import { DoubleKit } from '../../engine/math/Doublekit'
-import { isFloatEqual } from '../../engine/utils/Utils'
 import { D2PrimitiveToolkit } from './D2PrimitiveToolkit'
 import { Arc } from './primitives/Arc'
 import { Line } from './primitives/Line'
@@ -186,39 +185,58 @@ export class D2LineToolkit {
 		return false
 	}
 
-	// /**
-	//  * 判断点 point 是否位于线段 AB 上
-	//  */
-	// public static isPointOnSegment(A: Vector2, B: Vector2, point: Vector2, place: number = 0.5): boolean {
-	// 	const data: {
-	// 		point: Vector2
-	// 		d: number
-	// 	} = D2LineToolkit.getClosedPointOnSegmentWithPoint(point, A, B)
-	// 	if (data.d <= place) {
-	// 		point = data.point
-	// 	}
-	// 	const [start2End, start2Point, end2Point]: [number, number, number] = [A.distance(B), A.distance(point), B.distance(point)]
-	// 	const isInLine: boolean = isFloatEqual(start2Point + end2Point, start2End, 1e-3)
-	// 	return isInLine
-	// }
-
+	/**
+	 * 判断线段 line12 与线段 line34 是否相交
+	 */
 	public static isSegmentIntered(p1: Vector2, p2: Vector2, p3: Vector2, p4: Vector2): boolean {
-		const determinant = (a: number, b: number, c: number, d: number): number => {
-			return a * d - b * c
+		const eps: number = DoubleKit.eps1
+		/**
+		 * 判断点 c 在向量 AB 的哪一侧
+		 * 		> 0, 即在左侧
+		 * 		< 0, 即在右侧
+		 * 		= 0, 共线
+		 *
+		 * cross(A, B, C) = (B - A) x (C - A)
+		 *
+		 * 本质: 有向三角形 ABC 的面积 x 2
+		 */
+		const cross = (a: Vector2, b: Vector2, c: Vector2): number => {
+			return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x)
 		}
-		let V1: number = determinant(p2.x - p1.x, p3.x - p4.x, p2.y - p1.y, p3.y - p4.y)
-		if (Math.abs(V1) < 1e-6) {
-			return false
+		const onSegment = (a: Vector2, b: Vector2, p: Vector2): boolean => {
+			return (
+				Math.min(a.x, b.x) - eps <= p.x &&
+				Math.max(a.x, b.x) + eps >= p.x &&
+				Math.min(a.y, b.y) - eps <= p.y &&
+				Math.max(a.y, b.y) + eps >= p.y
+			)
 		}
-		let V2: number = determinant(p3.x - p1.x, p3.x - p4.x, p3.y - p1.y, p3.y - p4.y) / V1
-		if (V2 > 1 || V2 < 0) {
-			return false
+		/**
+		 * 跨立试验
+		 */
+		const [d1, d2, d3, d4]: [number, number, number, number] = [cross(p1, p2, p3), cross(p1, p2, p4), cross(p3, p4, p1), cross(p3, p4, p2)]
+		/**
+		 * 一般相交
+		 */
+		if (((d1 > eps && d2 < -eps) || (d1 < -eps && d2 > eps)) && ((d3 > eps && d4 < -eps) || (d3 < -eps && d4 > eps))) {
+			return true
 		}
-		let V3: number = determinant(p2.x - p1.x, p3.x - p1.x, p2.y - p1.y, p3.y - p1.y) / V1
-		if (V3 > 1 || V3 < 0) {
-			return false
+		/**
+		 * 共线 & 端点接触
+		 */
+		if (Math.abs(d1) <= eps && onSegment(p1, p2, p3)) {
+			return true
 		}
-		return true
+		if (Math.abs(d2) <= eps && onSegment(p1, p2, p4)) {
+			return true
+		}
+		if (Math.abs(d3) <= eps && onSegment(p3, p4, p1)) {
+			return true
+		}
+		if (Math.abs(d4) <= eps && onSegment(p3, p4, p2)) {
+			return true
+		}
+		return false
 	}
 
 	/**
