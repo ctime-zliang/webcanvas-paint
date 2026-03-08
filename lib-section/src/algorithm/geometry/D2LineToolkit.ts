@@ -186,65 +186,79 @@ export class D2LineToolkit {
 	}
 
 	/**
-	 * 判断线段 line12 与线段 line34 是否相交
+	 * 判断线段 line12 与线段 line34 是否相交, 并返回交点
+	 *
+	 * 求线段 AB 与线段 CD 的交点
+	 * 		解参数方程
+	 * 			A + t(B − A) = C + s(D − C)
+	 * 		则
+	 * 			t = ((C − A) * (D − C)​) / ((B - A) * (D - C))
+	 * 		则交点 P
+	 * 			P = A + t * (B - A)
 	 */
-	public static isSegmentIntered(p1: Vector2, p2: Vector2, p3: Vector2, p4: Vector2): boolean {
+	public static isSegmentIntered(p1: Vector2, p2: Vector2, p3: Vector2, p4: Vector2): Vector2 {
 		const eps: number = DoubleKit.eps1
 		/**
+		 * orient(A, B, C) = (B − A) × (C − A)
+		 * 		即 (xB​ − xA​) * (yC ​− yA​) − (yB ​− yA​) * (xC ​− xA​)
+		 *
 		 * 判断点 c 在向量 AB 的哪一侧
 		 * 		> 0, 即在左侧
 		 * 		< 0, 即在右侧
 		 * 		= 0, 共线
 		 *
-		 * cross(A, B, C) = (B - A) x (C - A)
-		 *
 		 * 本质: 有向三角形 ABC 的面积 x 2
 		 */
-		const cross = (a: Vector2, b: Vector2, c: Vector2): number => {
-			return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x)
+		const orient = (a: Vector2, b: Vector2, c: Vector2): number => {
+			return b.sub(a).cross(c.sub(a))
 		}
 		const onSegment = (a: Vector2, b: Vector2, p: Vector2): boolean => {
 			return (
 				Math.min(a.x, b.x) - eps <= p.x &&
-				Math.max(a.x, b.x) + eps >= p.x &&
+				p.x <= Math.max(a.x, b.x) + eps &&
 				Math.min(a.y, b.y) - eps <= p.y &&
-				Math.max(a.y, b.y) + eps >= p.y
+				p.y <= Math.max(a.y, b.y) + eps
 			)
 		}
 		/**
 		 * 跨立试验
+		 * 		线段 AB 与线段 CD 相交在线段内部相交判定条件
+		 * 			当且仅当
+		 * 				orient(A, B, C) ⋅ orient(A, B, D) < 0 且 orient(C, D, A) ⋅ orient(C, D, B) < 0
+		 *
 		 */
-		const [d1, d2, d3, d4]: [number, number, number, number] = [cross(p1, p2, p3), cross(p1, p2, p4), cross(p3, p4, p1), cross(p3, p4, p2)]
+		const [d1, d2, d3, d4]: [number, number, number, number] = [orient(p1, p2, p3), orient(p1, p2, p4), orient(p3, p4, p1), orient(p3, p4, p2)]
 		/**
 		 * 一般相交
 		 */
 		if (((d1 > eps && d2 < -eps) || (d1 < -eps && d2 > eps)) && ((d3 > eps && d4 < -eps) || (d3 < -eps && d4 > eps))) {
-			return true
+			const r: Vector2 = p2.sub(p1)
+			const s: Vector2 = p4.sub(p3)
+			const t: number = p3.sub(p1).cross(s) / r.cross(s)
+			return new Vector2(p1.x + t * r.x, p1.y + t * r.y)
 		}
 		/**
 		 * 共线 & 端点接触
 		 */
 		if (Math.abs(d1) <= eps && onSegment(p1, p2, p3)) {
-			return true
+			return p3.copy()
 		}
 		if (Math.abs(d2) <= eps && onSegment(p1, p2, p4)) {
-			return true
+			return p4.copy()
 		}
 		if (Math.abs(d3) <= eps && onSegment(p3, p4, p1)) {
-			return true
+			return p1.copy()
 		}
 		if (Math.abs(d4) <= eps && onSegment(p3, p4, p2)) {
-			return true
+			return p2.copy()
 		}
-		return false
+		return null!
 	}
 
 	/**
 	 * 计算点 point 到线段 line 的最近点坐标
 	 */
 	public static getClosedPointOnLineWithPoint(line: Line, point: Vector2): Vector2 {
-		const [px, py]: [number, number] = [point.x, point.y]
-		const [x1, y1, x2, y2]: [number, number, number, number] = [line.startPoint.x, line.startPoint.y, line.endPoint.x, line.endPoint.y]
 		const c1: number = line.endPoint.sub(line.startPoint).cross(point.sub(line.endPoint))
 		if (c1 === 0) {
 			/**
@@ -255,42 +269,42 @@ export class D2LineToolkit {
 				line.startPoint.sub(line.endPoint).dot(point.sub(line.startPoint)),
 			]
 			if (dp1 < 0 && dp2 < 0) {
-				return new Vector2(px, py)
+				return new Vector2(point.x, point.y)
 			}
 			if (dp1 >= 0) {
-				return new Vector2(x2, y2)
+				return new Vector2(line.endPoint.x, line.endPoint.y)
 			}
-			return new Vector2(x1, y1)
+			return new Vector2(line.startPoint.x, line.startPoint.y)
 		}
 		let [x, y]: [number, number] = [NaN, NaN]
-		let [startX, startY]: [number, number] = [x1, y1]
-		let [endX, endY]: [number, number] = [x2, y2]
-		let [startD, endD, midD]: [number, number, number] = [
-			Vector2.distanceSquare(x1, y1, px, py),
-			Vector2.distanceSquare(x2, y2, px, py),
+		let [startX, startY]: [number, number] = [line.startPoint.x, line.startPoint.y]
+		let [endX, endY]: [number, number] = [line.endPoint.x, line.endPoint.y]
+		let [startDS, endDS, midDS]: [number, number, number] = [
+			Vector2.distanceSquare(line.startPoint.x, line.startPoint.y, point.x, point.y),
+			Vector2.distanceSquare(line.endPoint.x, line.endPoint.y, point.x, point.y),
 			Number.POSITIVE_INFINITY,
 		]
 		let times: number = 0
-		while (midD > 0) {
+		while (midDS > 0) {
 			times++
 			x = startX + (endX - startX) * 0.5
 			y = startY + (endY - startY) * 0.5
-			if (startD === endD || (startX === x && startY === y) || (endX === x && endY === y)) {
+			if (startDS === endDS || (startX === x && startY === y) || (endX === x && endY === y)) {
 				break
 			}
-			midD = Vector2.distanceSquare(x, y, px, py)
-			const dp: number = new Vector2(x, y).sub(new Vector2(startX, startY)).dot(new Vector2(px, py).sub(new Vector2(x, y)))
+			midDS = Vector2.distanceSquare(x, y, point.x, point.y)
+			const dp: number = new Vector2(x, y).sub(new Vector2(startX, startY)).dot(new Vector2(point.x, point.y).sub(new Vector2(x, y)))
 			if (dp === 0) {
 				break
 			}
 			if (dp < 0) {
 				endX = x
 				endY = y
-				endD = midD
+				endDS = midDS
 			} else {
 				startX = x
 				startY = y
-				startD = midD
+				startDS = midDS
 			}
 		}
 		return new Vector2(x, y)

@@ -57,14 +57,15 @@ export function geometryTest02(webCanvas: WebCanvas, layerItemId: string): void 
 	const a1: boolean = D2LineToolkit.isPointOnLine(lineA, pointA)
 	const a2: boolean = D2LineToolkit.isPointOnLine2(lineA, pointA, 0.5)
 	console.log(a1, a2)
-	const b1: boolean = D2LineToolkit.isSegmentIntered(lineA.startPoint, lineA.endPoint, pointA, pointB)
-	console.log(b1)
+	const bp1: Vector2 = D2LineToolkit.isSegmentIntered(lineA.startPoint, lineA.endPoint, pointA, pointB)
+	console.log(bp1)
 	/* ... */
 	createPoints(webCanvas, layerItemId, [
 		{ label: `lineAStartPoint`, position: lineAStartPoint },
 		{ label: `lineAEndPoint`, position: lineAEndPoint },
 		{ label: `pointA`, position: pointA },
 		{ label: `pointB`, position: pointB },
+		{ label: `InterPoint`, position: bp1 },
 	])
 }
 
