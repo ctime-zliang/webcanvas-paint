@@ -213,12 +213,11 @@ export class D2LineToolkit {
 			return b.sub(a).cross(c.sub(a))
 		}
 		const onSegment = (a: Vector2, b: Vector2, p: Vector2): boolean => {
-			return (
-				Math.min(a.x, b.x) - eps <= p.x &&
-				p.x <= Math.max(a.x, b.x) + eps &&
-				Math.min(a.y, b.y) - eps <= p.y &&
-				p.y <= Math.max(a.y, b.y) + eps
-			)
+			const bl1: boolean = Math.min(a.x, b.x) - p.x <= eps
+			const bl2: boolean = Math.max(a.x, b.x) - p.x >= -eps
+			const bl3: boolean = Math.min(a.y, b.y) - p.y <= eps
+			const bl4: boolean = Math.max(a.y, b.y) - p.y >= -eps
+			return bl1 && bl2 && bl3 && bl4
 		}
 		/**
 		 * 跨立试验
@@ -269,12 +268,12 @@ export class D2LineToolkit {
 				line.startPoint.sub(line.endPoint).dot(point.sub(line.startPoint)),
 			]
 			if (dp1 < 0 && dp2 < 0) {
-				return new Vector2(point.x, point.y)
+				return point.copy()
 			}
 			if (dp1 >= 0) {
-				return new Vector2(line.endPoint.x, line.endPoint.y)
+				return line.endPoint.copy()
 			}
-			return new Vector2(line.startPoint.x, line.startPoint.y)
+			return line.startPoint.copy()
 		}
 		let [x, y]: [number, number] = [NaN, NaN]
 		let [startX, startY]: [number, number] = [line.startPoint.x, line.startPoint.y]
@@ -311,12 +310,44 @@ export class D2LineToolkit {
 	}
 
 	/**
-	 * 计算点 point 到线段 AB 的最短距离及端点坐标
+	 * 计算点 point 到线段 line 的最近点坐标, 并计算该最近坐标点与点 point 的距离
 	 */
 	public static getClosedPointOnSegmentWithPoint(A: Vector2, B: Vector2, point: Vector2): { point: Vector2; d: number } {
+		/**
+		 * 线段 AB 所在的直线 l 的参数方程
+		 * 		L(t) = A + t * (B − A)
+		 * 即
+		 * 		L(t) = { xA + t * (xB - xA), yA + t * (yB - yA) }
+		 *
+		 * 直线 l 外一点 P 到直线 l 的最短距离所相交的点 Q 满足
+		 * 		PQ 垂直 AB
+		 * 即
+		 * 		(Q - p) · (B - A) = 0
+		 *
+		 * 数学推导
+		 * 		设
+		 * 			Q = A + t * (B - A)
+		 * 		则
+		 * 			Q - P = A + t * (B - A) - P
+		 * 		则
+		 * 			(A + t * (B - A) - P) · (B - A) = 0
+		 * 		展开
+		 * 			(A - P) · (B - A) + t * (B - A) · (B - A) = 0
+		 * 		即
+		 * 			t = ((P - A) · (B - A)) / ((B - A) · (B - A))
+		 */
+		/**
+		 * 定义 t, 即表示投影点 Q 在 AB 上的相对位置
+		 * 		0 <= t <= 1, Q 在 AB 之间
+		 * 		t < 0, Q 在 A 外侧
+		 * 		t > 1, Q 在 B 外侧
+		 */
 		let t: number = undefined!
 		const [dx, dy]: [number, number] = [B.x - A.x, B.y - A.y]
 		const [dxPA, dyPA]: [number, number] = [point.x - A.x, point.y - A.y]
+		/**
+		 * AB 退化为点
+		 */
 		if (dx === 0 && dy === 0) {
 			return {
 				d: Math.sqrt(dxPA * dxPA + dyPA * dyPA),
@@ -327,7 +358,7 @@ export class D2LineToolkit {
 		if (t < 0) {
 			return {
 				d: Math.sqrt(dxPA * dxPA + dyPA * dyPA),
-				point: new Vector2(B.x, B.y),
+				point: new Vector2(A.x, A.y),
 			}
 		}
 		if (t > 1) {

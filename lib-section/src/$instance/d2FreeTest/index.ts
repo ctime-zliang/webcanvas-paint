@@ -222,8 +222,8 @@ export function main(): void {
 		// drawTestTextItemSim(webCanvas, layerItem01Id)
 
 		// geometryTest01(webCanvas, layerItem01Id)
-		geometryTest02(webCanvas, layerItem01Id)
-		// geometryTest03(webCanvas, layerItem01Id)
+		// geometryTest02(webCanvas, layerItem01Id)
+		geometryTest03(webCanvas, layerItem01Id)
 
 		// intersectionTest01(webCanvas, layerItem01Id)
 		// intersectionTest02(webCanvas, layerItem01Id)
