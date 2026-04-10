@@ -1,5 +1,4 @@
 import { BBox2 } from '../../engine/algorithm/geometry/bbox/BBox2'
-import { Vector } from '../../engine/algorithm/geometry/vector/Vector'
 import { Vector2 } from '../../engine/algorithm/geometry/vector/Vector2'
 import { ESweep } from '../../engine/config/CommonProfile'
 import { DoubleKit } from '../../engine/math/Doublekit'
