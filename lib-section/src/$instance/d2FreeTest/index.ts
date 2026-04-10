@@ -29,7 +29,7 @@ import { drawTestPointItemStd } from './modules/drawTestPoint'
 import { drawTestRectItems, drawTestRectItemStd } from './modules/drawTestRect'
 import { drawTestTextItemSim, drawTestTextItemStd } from './modules/drawTestText'
 import { initWebSystemConfig } from './utils/initWebSystemConfig'
-import { geometryTest01, geometryTest02, geometryTest03 } from './modules/geometryTest'
+import { geometryTest01, geometryTest02, geometryTest03, geometryTest04, geometryTest05 } from './modules/geometryTest'
 
 async function initMessageHandle(webCanvas: WebCanvas): Promise<void> {
 	const { messageTool, drawLayerController, d2ElementController, operationController } = webCanvas
@@ -223,7 +223,9 @@ export function main(): void {
 
 		// geometryTest01(webCanvas, layerItem01Id)
 		// geometryTest02(webCanvas, layerItem01Id)
-		geometryTest03(webCanvas, layerItem01Id)
+		// geometryTest03(webCanvas, layerItem01Id)
+		// geometryTest04(webCanvas, layerItem01Id)
+		geometryTest05(webCanvas, layerItem01Id)
 
 		// intersectionTest01(webCanvas, layerItem01Id)
 		// intersectionTest02(webCanvas, layerItem01Id)

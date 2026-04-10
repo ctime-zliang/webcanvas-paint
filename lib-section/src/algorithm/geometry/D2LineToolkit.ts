@@ -58,7 +58,8 @@ export class D2LineToolkit {
 	public static isPointOnLine(line: Line, point: Vector2, place: number = DoubleKit.eps1): boolean {
 		if (!line.bbox2.extendByDist(1e-8).isContainsPoint(point)) {
 			/**
-			 * 排除以线段为对角线的矩形之外的点
+			 * IF:
+			 * 		排除以线段为对角线的矩形之外的点
 			 **/
 			return false
 		}
@@ -70,7 +71,8 @@ export class D2LineToolkit {
 		}
 		if (DoubleKit.eq(Triangle.getArea(line.startPoint, line.endPoint, point), place)) {
 			/**
-			 * 线段 L 的两个端点 A, B 与点 P 共线且 P 处于以该线段为对角线的矩形之内, 则 P 在线段 L 上
+			 * IF:
+			 * 		线段 L 的两个端点 A, B 与点 P 共线且 P 处于以该线段为对角线的矩形之内, 则 P 在线段 L 上
 			 **/
 			return true
 		}
@@ -196,7 +198,7 @@ export class D2LineToolkit {
 	 * 		则交点 P
 	 * 			P = A + t * (B - A)
 	 */
-	public static isSegmentIntered(p1: Vector2, p2: Vector2, p3: Vector2, p4: Vector2): Vector2 {
+	public static isSegmentIntered(line1: Line, line2: Line): Vector2 {
 		const eps: number = DoubleKit.eps1
 		/**
 		 * orient(A, B, C) = (B − A) × (C − A)
@@ -223,33 +225,39 @@ export class D2LineToolkit {
 		 * 跨立试验
 		 * 		线段 AB 与线段 CD 相交在线段内部相交判定条件
 		 * 			当且仅当
-		 * 				orient(A, B, C) ⋅ orient(A, B, D) < 0 且 orient(C, D, A) ⋅ orient(C, D, B) < 0
+		 * 				orient(A, B, C) * orient(A, B, D) < 0 且 orient(C, D, A) * orient(C, D, B) < 0
 		 *
 		 */
-		const [d1, d2, d3, d4]: [number, number, number, number] = [orient(p1, p2, p3), orient(p1, p2, p4), orient(p3, p4, p1), orient(p3, p4, p2)]
-		/**
-		 * 一般相交
-		 */
+		const [d1, d2, d3, d4]: [number, number, number, number] = [
+			orient(line1.startPoint, line1.endPoint, line2.startPoint),
+			orient(line1.startPoint, line1.endPoint, line2.endPoint),
+			orient(line2.startPoint, line2.endPoint, line1.startPoint),
+			orient(line2.startPoint, line2.endPoint, line1.endPoint),
+		]
 		if (((d1 > eps && d2 < -eps) || (d1 < -eps && d2 > eps)) && ((d3 > eps && d4 < -eps) || (d3 < -eps && d4 > eps))) {
-			const r: Vector2 = p2.sub(p1)
-			const s: Vector2 = p4.sub(p3)
-			const t: number = p3.sub(p1).cross(s) / r.cross(s)
-			return new Vector2(p1.x + t * r.x, p1.y + t * r.y)
+			/**
+			 * IF:
+			 * 		一般相交
+			 **/
+			const R: Vector2 = line1.endPoint.sub(line1.startPoint)
+			const S: Vector2 = line2.endPoint.sub(line2.startPoint)
+			const t: number = line2.startPoint.sub(line1.startPoint).cross(S) / R.cross(S)
+			return new Vector2(line1.startPoint.x + t * R.x, line1.startPoint.y + t * R.y)
 		}
 		/**
 		 * 共线 & 端点接触
 		 */
-		if (Math.abs(d1) <= eps && onSegment(p1, p2, p3)) {
-			return p3.copy()
+		if (Math.abs(d1) <= eps && onSegment(line1.startPoint, line1.endPoint, line2.startPoint)) {
+			return line2.startPoint.copy()
 		}
-		if (Math.abs(d2) <= eps && onSegment(p1, p2, p4)) {
-			return p4.copy()
+		if (Math.abs(d2) <= eps && onSegment(line1.startPoint, line1.endPoint, line2.endPoint)) {
+			return line2.endPoint.copy()
 		}
-		if (Math.abs(d3) <= eps && onSegment(p3, p4, p1)) {
-			return p1.copy()
+		if (Math.abs(d3) <= eps && onSegment(line2.startPoint, line2.endPoint, line1.startPoint)) {
+			return line1.startPoint.copy()
 		}
-		if (Math.abs(d4) <= eps && onSegment(p3, p4, p2)) {
-			return p2.copy()
+		if (Math.abs(d4) <= eps && onSegment(line2.startPoint, line2.endPoint, line1.endPoint)) {
+			return line1.endPoint.copy()
 		}
 		return null!
 	}
@@ -258,16 +266,27 @@ export class D2LineToolkit {
 	 * 计算点 point 到线段 line 的最近点坐标
 	 */
 	public static getClosedPointOnLineWithPoint(line: Line, point: Vector2): Vector2 {
+		/**
+		 * 向量叉乘 AB x BP
+		 */
 		const c1: number = line.endPoint.sub(line.startPoint).cross(point.sub(line.endPoint))
 		if (c1 === 0) {
 			/**
-			 * 三点共线
+			 * IF:
+			 * 		A B P 三点共线
 			 **/
+			/**
+			 * 向量点积 AB · BP 和 BA · AP
+			 */
 			const [dp1, dp2]: [number, number] = [
 				line.endPoint.sub(line.startPoint).dot(point.sub(line.endPoint)),
 				line.startPoint.sub(line.endPoint).dot(point.sub(line.startPoint)),
 			]
 			if (dp1 < 0 && dp2 < 0) {
+				/**
+				 * IF:
+				 * 		点 P 在线段 AB 中间
+				 **/
 				return point.copy()
 			}
 			if (dp1 >= 0) {
@@ -275,9 +294,17 @@ export class D2LineToolkit {
 			}
 			return line.startPoint.copy()
 		}
-		let [x, y]: [number, number] = [NaN, NaN]
-		let [startX, startY]: [number, number] = [line.startPoint.x, line.startPoint.y]
-		let [endX, endY]: [number, number] = [line.endPoint.x, line.endPoint.y]
+		const Q: { x: number; y: number } = { x: NaN, y: NaN }
+		/**
+		 * 定义截取端点 S/E
+		 */
+		const startCut: { x: number; y: number } = { x: line.startPoint.x, y: line.startPoint.y }
+		const endCut: { x: number; y: number } = { x: line.endPoint.x, y: line.endPoint.y }
+		/**
+		 * 线段起点 A 与点 P 的距离的平方
+		 * 线段终点 B 与点 P 的距离的平方
+		 * 线段上任意动点 Q 与点 P 的距离的平方
+		 */
 		let [startDS, endDS, midDS]: [number, number, number] = [
 			Vector2.distanceSquare(line.startPoint.x, line.startPoint.y, point.x, point.y),
 			Vector2.distanceSquare(line.endPoint.x, line.endPoint.y, point.x, point.y),
@@ -286,43 +313,60 @@ export class D2LineToolkit {
 		let times: number = 0
 		while (midDS > 0) {
 			times++
-			x = startX + (endX - startX) * 0.5
-			y = startY + (endY - startY) * 0.5
-			if (startDS === endDS || (startX === x && startY === y) || (endX === x && endY === y)) {
+			Q.x = startCut.x + (endCut.x - startCut.x) * 0.5
+			Q.y = startCut.y + (endCut.y - startCut.y) * 0.5
+			if (startDS === endDS || (startCut.x === Q.x && startCut.y === Q.y) || (endCut.x === Q.x && endCut.y === Q.y)) {
+				/**
+				 * IF:
+				 * 		1. 线段 L 上的截取端点 S/E 与点 Q 的距离相等(即无法再将两个端点拆分)
+				 * 		2. 线段 L 上的任意动点 Q 与左右端点中的其中一个重合
+				 *
+				 * 		即表示此时的点 Q 为线段 L 上最靠近点 P 的点
+				 **/
 				break
 			}
-			midDS = Vector2.distanceSquare(x, y, point.x, point.y)
-			const dp: number = new Vector2(x, y).sub(new Vector2(startX, startY)).dot(new Vector2(point.x, point.y).sub(new Vector2(x, y)))
+			midDS = Vector2.distanceSquare(Q.x, Q.y, point.x, point.y)
+			/**
+			 * 向量 SQ 点乘向量 QP
+			 */
+			const dp: number = new Vector2(Q.x, Q.y)
+				.sub(new Vector2(startCut.x, startCut.y))
+				.dot(new Vector2(point.x, point.y).sub(new Vector2(Q.x, Q.y)))
 			if (dp === 0) {
 				break
 			}
 			if (dp < 0) {
-				endX = x
-				endY = y
+				/**
+				 * IF:
+				 * 		即表示向量 SQ 与向量 QP 的夹角大于 90 角度, 则点 Q 在靠近结束端点 E 的那一侧
+				 * 		也即表示目标点 M 位于起始端点 S 与当前点 Q 的中间那一段的某一位置
+				 **/
+				endCut.x = Q.x
+				endCut.y = Q.y
 				endDS = midDS
 			} else {
-				startX = x
-				startY = y
+				startCut.x = Q.x
+				startCut.y = Q.y
 				startDS = midDS
 			}
 		}
-		return new Vector2(x, y)
+		return new Vector2(Q.x, Q.y)
 	}
 
 	/**
 	 * 计算点 point 到线段 line 的最近点坐标, 并计算该最近坐标点与点 point 的距离
 	 */
-	public static getClosedPointOnSegmentWithPoint(A: Vector2, B: Vector2, point: Vector2): { point: Vector2; d: number } {
+	public static getClosedPointOnSegmentWithPoint(line: Line, point: Vector2): { point: Vector2; d: number } {
 		/**
-		 * 线段 AB 所在的直线 l 的参数方程
+		 * 线段 AB 所在的直线 L 的参数方程
 		 * 		L(t) = A + t * (B − A)
 		 * 即
 		 * 		L(t) = { xA + t * (xB - xA), yA + t * (yB - yA) }
 		 *
-		 * 直线 l 外一点 P 到直线 l 的最短距离所相交的点 Q 满足
+		 * 直线 L 外一点 P 到直线 L 的最短距离所相交的点 Q 满足
 		 * 		PQ 垂直 AB
 		 * 即
-		 * 		(Q - p) · (B - A) = 0
+		 * 		(Q - P) · (B - A) = 0
 		 *
 		 * 数学推导
 		 * 		设
@@ -343,32 +387,33 @@ export class D2LineToolkit {
 		 * 		t > 1, Q 在 B 外侧
 		 */
 		let t: number = undefined!
-		const [dx, dy]: [number, number] = [B.x - A.x, B.y - A.y]
-		const [dxPA, dyPA]: [number, number] = [point.x - A.x, point.y - A.y]
-		/**
-		 * AB 退化为点
-		 */
+		const [dx, dy]: [number, number] = [line.endPoint.x - line.startPoint.x, line.endPoint.y - line.startPoint.y]
+		const [dxPA, dyPA]: [number, number] = [point.x - line.startPoint.x, point.y - line.startPoint.y]
 		if (dx === 0 && dy === 0) {
+			/**
+			 * IF:
+			 * 		线段 L 退化为点
+			 **/
 			return {
 				d: Math.sqrt(dxPA * dxPA + dyPA * dyPA),
-				point: new Vector2(A.x, A.y),
+				point: new Vector2(line.startPoint.x, line.startPoint.y),
 			}
 		}
 		t = (dxPA * dx + dyPA * dy) / (dx * dx + dy * dy)
 		if (t < 0) {
 			return {
 				d: Math.sqrt(dxPA * dxPA + dyPA * dyPA),
-				point: new Vector2(A.x, A.y),
+				point: new Vector2(line.startPoint.x, line.startPoint.y),
 			}
 		}
 		if (t > 1) {
-			const [dxPB, dyPB]: [number, number] = [point.x - B.x, point.y - B.y]
+			const [dxPB, dyPB]: [number, number] = [point.x - line.endPoint.x, point.y - line.endPoint.y]
 			return {
 				d: Math.sqrt(dxPB * dxPB + dyPB * dyPB),
-				point: new Vector2(B.x, B.y),
+				point: new Vector2(line.endPoint.x, line.endPoint.y),
 			}
 		}
-		const [qx, qy]: [number, number] = [A.x + t * dx, A.y + t * dy]
+		const [qx, qy]: [number, number] = [line.startPoint.x + t * dx, line.startPoint.y + t * dy]
 		const [dxPQ, dyPQ]: [number, number] = [point.x - qx, point.y - qy]
 		return {
 			d: Math.sqrt(dxPQ * dxPQ + dyPQ * dyPQ),
@@ -378,95 +423,106 @@ export class D2LineToolkit {
 
 	/**
 	 * 求线段 line 上距离点 point 距离值为 distance 的点坐标
+	 *
+	 * 线段 L 参数方程:
+	 * 		P(t) = start + t * (end - start)
+	 * 			0 <= t <= 1
+	 * 也即:
+	 * 		L(t) = { startX + t * (endX - startX), startY + t * (endY - startY) }
+	 * 			0 <= t <= 1
+	 *
+	 * 圆方程:
+	 * 		(x - Ox) * (x - Ox) + (y - Oy) * (y - Oy) = r * r
+	 *
+	 * 将线段参数方程代入圆方程后得到一元二次方程:
+	 * 		At² + Bt + C = 0
+	 * 		其中:
+	 * 			A = (endX - startX) * (endX - startX) + (endY - startY) * (endY - startY)
+	 * 			B = 2 * ((endX - startX) * (startX - Ox) + (endY - startY) * (startY - Oy))
+	 * 			C = (startX - Ox) * (startX - Ox) + (startY - Oy) * (startY - Oy) - r * r
+	 *
+	 * 判别式:
+	 * 		Δ = B * B - 4 * A * C
 	 */
-	public static getPointsOnLineWithDistance(d: number, line: Line, point: Vector2): Array<Vector2> {
-		const [px, py, d2]: [number, number, number] = [point.x, point.y, d * d]
-		const [x1, y1, x2, y2]: [number, number, number, number] = [line.startPoint.x, line.startPoint.y, line.endPoint.x, line.endPoint.y]
-		const points: Array<Vector2> = []
-		if (y1 === y2) {
+	public static getPointsOnLineWithDistance(d: number, line: Line, point: Vector2, epsilon: number = DoubleKit.eps1): Array<Vector2> {
+		const result: Array<Vector2> = []
+		if (!Number.isFinite(d) || d < 0) {
+			return result
+		}
+		const [startX, startY, endX, endY]: [number, number, number, number] = [
+			line.startPoint.x,
+			line.startPoint.y,
+			line.endPoint.x,
+			line.endPoint.y,
+		]
+		const [dx, dy]: [number, number] = [endX - startX, endY - startY]
+		const A: number = dx * dx + dy * dy
+		/**
+		 * 加入交点
+		 */
+		const appendPoint = (t: number): void => {
+			if (t < -epsilon || t > 1 + epsilon) {
+				return
+			}
+			const clampedT: number = Math.min(1, Math.max(0, t))
+			const x: number = startX + dx * clampedT
+			const y: number = startY + dy * clampedT
+			for (const p of result) {
+				if (Math.abs(p.x - x) <= epsilon && Math.abs(p.y - y) <= epsilon) {
+					return
+				}
+			}
+			result.push(new Vector2(x, y))
+		}
+		/**
+		 * 线段 L 退化为点
+		 */
+		if (A <= epsilon) {
+			const dist2: number = (startX - point.x) * (startX - point.x) + (startY - point.y) * (startY - point.y)
+			if (Math.abs(dist2 - d * d) <= epsilon) {
+				result.push(new Vector2(startX, startY))
+			}
+			return result
+		}
+		const fx: number = startX - point.x
+		const fy: number = startY - point.y
+		const B: number = 2 * (dx * fx + dy * fy)
+		const C: number = fx * fx + fy * fy - d * d
+		const discriminant: number = B * B - 4 * A * C
+		if (discriminant < -epsilon) {
+			return result
+		}
+		/**
+		 * 直线与圆相切
+		 */
+		if (Math.abs(discriminant) <= epsilon) {
 			/**
-			 * 处理线段 L 为水平的情况
+			 * IF:
+			 * 		直线与圆相切
+			 *
+			 * 二次方程的解退化为 t = -B / (2 * A)
+			 * 		t = 0: 交点为线段 L 的起点
+			 * 		t = 1: 交点为线段 L 的终点
+			 * 		t 属于 (0, 1): 交点在线段 L 的内部(不含端点)
+			 * 		t > 1: 交点在线段 L 靠近终点的延长线上
+			 *      t < 0: 交点在线段 L 靠近起点的延长线上
 			 **/
-			/**
-			 * 圆的一般式 (x - Px) * (x - Px) + (y - Py) * (y - Py) = r * r
-			 * 求解 x = Px + Math.sqrt(r * r - (y - pY) * (y - pY)) 或 x = Px - Math.sqrt(r * r - (y - pY) * (y - pY))
-			 */
-			const delta: number = d2 - (y1 - py) * (y1 - py)
-			if (DoubleKit.greater(delta, 0)) {
-				const x: number = Math.sqrt(delta)
-				const [result1, result2]: [number, number] = [px - x, px + x]
-				const [minX, maxX]: [number, number] = [Math.min(x1, x2), Math.max(x1, x2)]
-				if (result1 >= minX && result1 <= maxX) {
-					points.push(new Vector2(result1, y1))
-				}
-				if (result2 >= minX && result2 <= maxX) {
-					points.push(new Vector2(result2, y1))
-				}
-				return points
+			const t: number = -B / (2 * A)
+			if (t >= -epsilon && t <= 1 + epsilon) {
+				const clamped: number = Math.min(1, Math.max(0, t))
+				result.push(new Vector2(startX + dx * clamped, startY + dy * clamped))
 			}
+			return result
 		}
 		/**
-		 * 迭代法求解 逼近交点
+		 * 直线与圆相交
 		 */
-		let [startD, endD]: [number, number] = [Vector2.distanceSquare(x1, y1, px, py) - d2, Vector2.distanceSquare(x2, y2, px, py) - d2]
-		let [startX, startY, endX, endY]: [number, number, number, number] = [x1, y1, x2, y2]
-		let [x, y, midD]: [number, number, number] = [NaN!, NaN!, Number.POSITIVE_INFINITY]
-		while (midD !== 0) {
-			/**
-			 * 按比例分割截取线段 L, 不断更新 start 和 end, 找到距离圆心 P 的距离为 r * r 的坐标点
-			 */
-			const nextRatio = Math.max(Math.min(Math.abs(startD) / (Math.abs(startD) + Math.abs(endD)), 0.75), 0.25)
-			x = startX + (endX - startX) * nextRatio
-			y = startY + (endY - startY) * nextRatio
-			if ((startX === x && startY === y) || (endX === x && endY === y)) {
-				if (Math.abs(startD) > Math.abs(endD)) {
-					x = endX
-					y = endY
-					midD = endD
-				} else {
-					x = startX
-					y = startY
-					midD = startD
-				}
-				break
-			} else {
-				midD = Vector2.distanceSquare(x, y, px, py) - d2
-				if ((midD < 0 && startD > endD) || (midD > 0 && startD < endD)) {
-					endX = x
-					endY = y
-					endD = midD
-				} else {
-					startX = x
-					startY = y
-					startD = midD
-				}
-			}
-		}
-		const delta: number = Math.sqrt(d2) - Vector.distance({ x, y }, { x: px, y: py })
-		if (DoubleKit.eq(0, midD) || DoubleKit.eq(0, delta)) {
-			points.push(new Vector2(x, y))
-			return points
-		}
-		return points
-		/**
-		 * 使用解方程组方法求解线段 L 与圆 O 的交点问题
-		 * 		对于圆心为 P(px, py) 半径为 r 的圆, 参数方程 FO 如下:
-		 * 			x = Px + r * cos(θ)
-		 * 			y = Py + r * sin(θ)
-		 * 		对于圆心为 P(px, py) 半径为 r 的圆, 标准方程 FS0 如下:
-		 * 			(x - Px) * (x - Px) + (y - Py) * (y - Py) = r * r
-		 * 		对于经过坐标点 A(x1, y1) 和坐标点 B(x2, y2) 的直线 L, 参数方程 FL 如下:
-		 * 			x = x1 + (x2 - x1) * t
-		 * 			y = y1 + (y2 - y1) * t
-		 * 		将 FL 带入 FS0, 得 t 的解如下:
-		 * 			t = (-B + Math.sqrt(B * B - 4 * A * C)) / (X * A))) 或 t = (-B - Math.sqrt(B * B - 4 * A * C)) / (X * A)))
-		 * 			其中:
-		 * 				A = (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)
-		 * 				B = 2 * ((x2 - x1) * (x1 - Px) + (y2 - y1) * (y1 - Py))
-		 * 				C = (x1 - Px) * (x1 - Px) + (y1 - Py) * (y1 - Py) - r * r
-		 * 			若 B * B - 4 * A * C 存在实数解且 t 存在于 [0, 1] , 则表示线段 L 与圆有交点
-		 * 		将 t 带入 FL, 即可求出交点坐标 (x(n), y(n))
-		 */
+		const sqrtDiscriminant: number = Math.sqrt(discriminant)
+		const t1: number = (-B - sqrtDiscriminant) / (2 * A)
+		const t2: number = (-B + sqrtDiscriminant) / (2 * A)
+		appendPoint(t1)
+		appendPoint(t2)
+		return result
 	}
 
 	/**

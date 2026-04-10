@@ -20,7 +20,7 @@ export class DoubleKit {
 	}
 
 	public static lesseq(a: number, b: number, eps: number = this.eps1): boolean {
-		return a - b < eps
+		return a - b <= -eps
 	}
 
 	public static greater(a: number, b: number, eps: number = this.eps1): boolean {
@@ -28,7 +28,7 @@ export class DoubleKit {
 	}
 
 	public static greatereq(a: number, b: number, eps: number = this.eps1): boolean {
-		return a - b > -eps
+		return a - b >= eps
 	}
 
 	public static sqrt(dis: number): number {
