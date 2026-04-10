@@ -456,10 +456,6 @@ export class D2LineToolkit {
 			line.endPoint.y,
 		]
 		const [dx, dy]: [number, number] = [endX - startX, endY - startY]
-		const A: number = dx * dx + dy * dy
-		/**
-		 * 加入交点
-		 */
 		const appendPoint = (t: number): void => {
 			if (t < -epsilon || t > 1 + epsilon) {
 				return
@@ -473,6 +469,7 @@ export class D2LineToolkit {
 			}
 			result.push(new Vector2(x, y))
 		}
+		const A: number = dx * dx + dy * dy
 		/**
 		 * 线段 L 退化为点
 		 */
