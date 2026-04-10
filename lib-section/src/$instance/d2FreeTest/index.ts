@@ -29,7 +29,14 @@ import { drawTestPointItemStd } from './modules/drawTestPoint'
 import { drawTestRectItems, drawTestRectItemStd } from './modules/drawTestRect'
 import { drawTestTextItemSim, drawTestTextItemStd } from './modules/drawTestText'
 import { initWebSystemConfig } from './utils/initWebSystemConfig'
-import { geometryTest01, geometryTest02, geometryTest03, geometryTest04, geometryTest05 } from './modules/geometryTest'
+import {
+	d2LineToolkitTest01,
+	d2LineToolkitTest02,
+	d2LineToolkitTest03,
+	d2LineToolkitTest04,
+	d2LineToolkitTest05,
+	d2LineToolkitTest06,
+} from './modules/d2LineToolkitTest'
 
 async function initMessageHandle(webCanvas: WebCanvas): Promise<void> {
 	const { messageTool, drawLayerController, d2ElementController, operationController } = webCanvas
@@ -221,11 +228,12 @@ export function main(): void {
 		// drawTestTextItemStd(webCanvas, layerItem01Id)
 		// drawTestTextItemSim(webCanvas, layerItem01Id)
 
-		// geometryTest01(webCanvas, layerItem01Id)
-		// geometryTest02(webCanvas, layerItem01Id)
-		// geometryTest03(webCanvas, layerItem01Id)
-		// geometryTest04(webCanvas, layerItem01Id)
-		geometryTest05(webCanvas, layerItem01Id)
+		// d2LineToolkitTest01(webCanvas, layerItem01Id)
+		// d2LineToolkitTest02(webCanvas, layerItem01Id)
+		// d2LineToolkitTest03(webCanvas, layerItem01Id)
+		// d2LineToolkitTest04(webCanvas, layerItem01Id)
+		// d2LineToolkitTest05(webCanvas, layerItem01Id)
+		d2LineToolkitTest06(webCanvas, layerItem01Id)
 
 		// intersectionTest01(webCanvas, layerItem01Id)
 		// intersectionTest02(webCanvas, layerItem01Id)

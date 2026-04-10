@@ -95,7 +95,7 @@ export class D2Intersection {
 		if (lineB.isPoint()) {
 			return D2LineToolkit.isPointOnLine(lineA, lineB.startPoint) ? { count: 1, points: [lineB.startPoint] } : { count: 0, points: [] }
 		}
-		const inters: BBox2 = D2LineToolkit.fastIntersectionDetection(lineA, lineB)
+		const inters: BBox2 = D2LineToolkit.getIntersectionByLines(lineA, lineB)
 		if (inters === null) {
 			return { count: 0, points: [] }
 		}

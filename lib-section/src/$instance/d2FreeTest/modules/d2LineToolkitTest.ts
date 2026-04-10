@@ -1,7 +1,7 @@
-import { Color, D2LineToolkit, Line, Vector2, WebCanvas } from '../../../Main'
+import { BBox2, Color, D2LineToolkit, Line, Vector2, WebCanvas } from '../../../Main'
 import { createPoints } from '../utils/createPoints'
 
-export function geometryTest01(webCanvas: WebCanvas, layerItemId: string): void {
+export function d2LineToolkitTest01(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
 	const defaultLayerItemId: string = layerItemId
 	const [lineAStartPoint, lineAEndPoint]: [Vector2, Vector2] = [new Vector2(0, 70), new Vector2(50, 0)]
@@ -38,7 +38,7 @@ export function geometryTest01(webCanvas: WebCanvas, layerItemId: string): void 
 	])
 }
 
-export function geometryTest02(webCanvas: WebCanvas, layerItemId: string): void {
+export function d2LineToolkitTest02(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
 	const defaultLayerItemId: string = layerItemId
 	const [lineAStartPoint, lineAEndPoint]: [Vector2, Vector2] = [new Vector2(0, -30), new Vector2(0, 30)]
@@ -74,7 +74,7 @@ export function geometryTest02(webCanvas: WebCanvas, layerItemId: string): void 
 	])
 }
 
-export function geometryTest03(webCanvas: WebCanvas, layerItemId: string): void {
+export function d2LineToolkitTest03(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
 	const defaultLayerItemId: string = layerItemId
 	const [lineAStartPoint, lineAEndPoint]: [Vector2, Vector2] = [new Vector2(-30, -30), new Vector2(0, 30)]
@@ -106,7 +106,7 @@ export function geometryTest03(webCanvas: WebCanvas, layerItemId: string): void 
 	])
 }
 
-export function geometryTest04(webCanvas: WebCanvas, layerItemId: string): void {
+export function d2LineToolkitTest04(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController, d2TextElementController } = webCanvas
 	const defaultLayerItemId: string = layerItemId
 	const [lineAStartPoint, lineAEndPoint]: [Vector2, Vector2] = [new Vector2(-30, -30), new Vector2(0, 30)]
@@ -148,7 +148,7 @@ export function geometryTest04(webCanvas: WebCanvas, layerItemId: string): void 
 	])
 }
 
-export function geometryTest05(webCanvas: WebCanvas, layerItemId: string): void {
+export function d2LineToolkitTest05(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
 	const defaultLayerItemId: string = layerItemId
 	const [lineAStartPoint, lineAEndPoint]: [Vector2, Vector2] = [new Vector2(50, -100), new Vector2(50, 100)]
@@ -182,4 +182,34 @@ export function geometryTest05(webCanvas: WebCanvas, layerItemId: string): void 
 	}
 	/* ... */
 	createPoints(webCanvas, layerItemId, renderPoints)
+}
+
+export function d2LineToolkitTest06(webCanvas: WebCanvas, layerItemId: string): void {
+	const { d2ElementController } = webCanvas
+	const defaultLayerItemId: string = layerItemId
+	const [lineAStartPoint, lineAEndPoint]: [Vector2, Vector2] = [new Vector2(-50, -50), new Vector2(50, 50)]
+	d2ElementController.createD2LineElementShapeItem(defaultLayerItemId, lineAStartPoint, lineAEndPoint, {
+		strokeColor: Color.RED,
+		isEnableSelect: false,
+	})
+	const [lineBStartPoint, lineBEndPoint]: [Vector2, Vector2] = [new Vector2(-30, 30), new Vector2(30, -30)]
+	d2ElementController.createD2LineElementShapeItem(defaultLayerItemId, lineBStartPoint, lineBEndPoint, {
+		strokeColor: Color.RED,
+		isEnableSelect: false,
+	})
+	/**
+	 * 获取线段 lineA 与线段 lineB 的重叠区域(返回 BBox2)
+	 */
+	console.log('%c <T: 获取线段 lineA 与线段 lineB 的重叠区域(返回 BBox2)>', 'color: #ff6600')
+	const [lineA, lineB]: [Line, Line] = [new Line(lineAStartPoint, lineAEndPoint), new Line(lineBStartPoint, lineBEndPoint)]
+	const inters: BBox2 = D2LineToolkit.getIntersectionByLines(lineA, lineB)
+	console.log(inters)
+	console.log('%c </T>', 'color: #ff6600')
+	/* ... */
+	createPoints(webCanvas, layerItemId, [
+		{ label: `lineAStartPoint`, position: lineAStartPoint },
+		{ label: `lineAEndPoint`, position: lineAEndPoint },
+		{ label: `lineBStartPoint`, position: lineBStartPoint },
+		{ label: `lineBEndPoint`, position: lineBEndPoint },
+	])
 }

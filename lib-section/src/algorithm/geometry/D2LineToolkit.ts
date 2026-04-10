@@ -464,9 +464,8 @@ export class D2LineToolkit {
 			if (t < -epsilon || t > 1 + epsilon) {
 				return
 			}
-			const clampedT: number = Math.min(1, Math.max(0, t))
-			const x: number = startX + dx * clampedT
-			const y: number = startY + dy * clampedT
+			const clamped: number = Math.min(1, Math.max(0, t))
+			const [x, y]: [number, number] = [startX + dx * clamped, startY + dy * clamped]
 			for (const p of result) {
 				if (Math.abs(p.x - x) <= epsilon && Math.abs(p.y - y) <= epsilon) {
 					return
@@ -518,17 +517,16 @@ export class D2LineToolkit {
 		 * 直线与圆相交
 		 */
 		const sqrtDiscriminant: number = Math.sqrt(discriminant)
-		const t1: number = (-B - sqrtDiscriminant) / (2 * A)
-		const t2: number = (-B + sqrtDiscriminant) / (2 * A)
-		appendPoint(t1)
-		appendPoint(t2)
+		appendPoint((-B - sqrtDiscriminant) / (2 * A))
+		appendPoint((-B + sqrtDiscriminant) / (2 * A))
 		return result
 	}
 
 	/**
 	 * 获取线段 lineA 与线段 lineB 的重叠区域(返回 BBox2)
+	 * 		计算 lineA 所构成的 BBox2 与 lineB 所构成的 BBox2 的重叠区域, 生成新的 BBox2
 	 */
-	public static fastIntersectionDetection(lineA: Line, lineB: Line): BBox2 {
+	public static getIntersectionByLines(lineA: Line, lineB: Line): BBox2 {
 		const inters: BBox2 = lineA.bbox2.getIntersection(lineB.bbox2)
 		if (inters === null) {
 			return null!
