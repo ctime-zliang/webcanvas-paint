@@ -35,7 +35,7 @@ export class D2PolygonToolkit {
 			let pl: Polyline = pls[i]
 			if (pl.primitives.length === 1) {
 				const pt: Primitive = pl.primitives[0]
-				if (pt instanceof Arc && Math.abs(pt.sweepRadian) === 360) {
+				if (pt instanceof Arc && Math.abs(pt.sweepRadian) === Math.PI * 2) {
 					if (!(pt.sweep === ESweep.CCW)) {
 						result.push(['CIRCLE', pt.centerPoint.x * ratio, pt.centerPoint.y * ratio, pt.rx * ratio])
 						continue
@@ -89,7 +89,7 @@ export class D2PolygonToolkit {
 					Arc.build2(
 						new Vector2(polygon[1] as number, polygon[2] as number),
 						0,
-						360,
+						Math.PI * 2,
 						polygon[3] as number,
 						polygon[3] as number,
 						ESweep.CW
@@ -118,9 +118,9 @@ export class D2PolygonToolkit {
 						endPoint = new Vector2(polygon[i + 2] as number, polygon[i + 3] as number)
 						if (Math.abs(radian) > 1e-8 && !startPoint.equalsWithPoint(endPoint)) {
 							const { centerPoint, radius, startRadian, endRadian, sweep } = D2ArcToolkit.calculateD2ArcProfileTwoPointsAndRadian(
+								radian,
 								startPoint,
-								endPoint,
-								radian
+								endPoint
 							)
 							pt = Arc.build2(centerPoint, (startRadian / Math.PI) * 180, (endRadian / Math.PI) * 180, radius, radius, sweep)
 							pts.addLastValue(pt)

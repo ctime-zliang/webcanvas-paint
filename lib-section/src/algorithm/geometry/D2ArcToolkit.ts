@@ -4,13 +4,6 @@ import { D2CircleToolkit } from './D2CircleToolkit'
 import { Arc } from './primitives/Arc'
 import { BBox2, BBox2Fac } from '../../engine/algorithm/geometry/bbox/BBox2'
 import { DoubleKit } from '../../engine/math/Doublekit'
-import { Angles } from '../../engine/math/Angles'
-import { ARC_EPS } from './Constant'
-import { Line } from './primitives/Line'
-import { isFloatEqual } from '../../engine/utils/Utils'
-import { D2Intersection } from './D2Intersection'
-import { Matrix4 } from '../../engine/algorithm/geometry/matrix/Matrix4'
-import { D2ArcIdentify } from './D2ArcIdentify'
 
 export class D2ArcToolkit {
 	public static fixCircleRadian(point: Vector2, centerPoint: Vector2): number {
@@ -22,106 +15,96 @@ export class D2ArcToolkit {
 	 * 判断点 point 是否位于圆弧 arc 上
 	 */
 	public static isPointOnArc(arc: Arc, point: Vector2): boolean {
-		const b: BBox2 = arc.bbox2
-		if (point.x - b.minX > -ARC_EPS && point.x - b.maxX < ARC_EPS && point.y - b.minY > -ARC_EPS && point.y - b.maxY < ARC_EPS) {
-			if (Math.abs(arc.sweepRadian) >= 180) {
-				let radian: number = Angles.regularRadian(point.getRadianByVector2(arc.centerPoint))
-				if (
-					DoubleKit.eq(radian, arc.startRadian, DoubleKit.eps2) ||
-					DoubleKit.eq(radian, arc.startRadian + Math.PI * 2, DoubleKit.eps2) ||
-					DoubleKit.eq(radian, arc.startRadian - Math.PI * 2, DoubleKit.eps2)
-				) {
-					return true
-				}
-				if (
-					DoubleKit.eq(radian, arc.endRadian, DoubleKit.eps2) ||
-					DoubleKit.eq(radian, arc.endRadian + Math.PI * 2, DoubleKit.eps2) ||
-					DoubleKit.eq(radian, arc.endRadian - Math.PI * 2, DoubleKit.eps2)
-				) {
-					return true
-				}
-				if (arc.sweepRadian > 0) {
-					if (DoubleKit.less(radian, arc.startRadian)) {
-						radian += Math.PI * 2
-					}
-					return DoubleKit.greatereq(arc.endRadian, radian)
-				}
-				if (DoubleKit.greater(radian, arc.startRadian)) {
-					radian -= Math.PI * 2
-				}
-				return DoubleKit.lesseq(arc.endRadian, radian)
-			}
-			return true
-		}
-		return false
-	}
-
-	/**
-	 * 判断点 point 是否位于圆弧 arc 上
-	 */
-	public static isPointOnArc2(arc: Arc, point: Vector2, precise: number = 1e-3): boolean {
-		const [c, s]: [Vector2, Vector2] = [arc.centerPoint, arc.startPoint]
-		const [rx, ry]: [number, number] = [arc.rx, arc.ry]
-		const [radP, radPM, radPA]: [number, number, number] = [
-			Math.atan2(point.y - c.y, point.x - c.x),
-			Math.atan2(s.y - c.y, s.x - c.x),
-			Math.atan2(ry - c.y, rx - c.x),
-		]
-		if (Math.abs(radPM - radP) < precise || Math.abs(radPM - radP) > Math.PI * 2 - precise || Math.abs(radPA - radP) < precise) {
-			return true
-		}
-		let bool: boolean = Math.abs(radPM - radPA) > Math.PI === arc.isOverHalfCircle
-		if (Math.abs(Math.abs(radPM - radPA) - Math.PI) < precise) {
-			bool = (radPM <= 0 && radPA >= 0) === !(arc.sweepRadian >= 0)
-		}
-		if (radPM >= radPA && radPM >= radP && radP >= radPA) {
-			return bool
-		}
-		if (radPM <= radPA && radPM <= radP && radP <= radPA) {
-			return bool
-		}
-		return !bool
-	}
-
-	/**
-	 * 判断点 point 是否位于圆弧 arc 上
-	 */
-	public static isPointOnArc3(arc: Arc, point: Vector2): boolean {
 		const arcRadius: number = arc.rx
-		const [arcLineStart, arcLineEnd, arcCenter]: [Vector2, Vector2, Vector2] = [arc.startPoint, arc.endPoint, arc.centerPoint]
 		/**
-		 * 圆弧线段中点
-		 * 		待修改
+		 * 圆弧半径退化
 		 */
-		const arcLineCenter: Vector2 = arc.centerPoint
-		const point2Center: number = point.distance(arcCenter)
-		const [lineSP, lineEP, linePC]: [Line, Line, Line] = [
-			new Line(arcLineStart, arcLineCenter),
-			new Line(arcLineEnd, arcLineCenter),
-			new Line(point, arcCenter),
-		]
+		if (arcRadius <= DoubleKit.eps1) {
+			return false
+		}
+		const [dx, dy]: [number, number] = [point.x - arc.centerPoint.x, point.y - arc.centerPoint.y]
+		const dist2: number = dx * dx + dy * dy
+		const r2: number = arcRadius * arcRadius
 		/**
-		 * 记圆弧端点 A 到圆弧中点 M 的线段为 LA
-		 * 记圆弧端点 B 到圆弧中点 M 的线段为 LB
-		 * 判断点 P 到圆弧中心点的线段 LP 是否与 LA 或 LB 相交
+		 * 点在圆弧所在的圆的外侧
 		 */
-		const inter1: {
-			count: number
-			points: Array<Vector2>
-		} = D2Intersection.getIntersectionsOfLines(lineSP, linePC)
-		const inter2: {
-			count: number
-			points: Array<Vector2>
-		} = D2Intersection.getIntersectionsOfLines(lineEP, linePC)
-		const psIsInterSmOrm: number = inter1.count || inter2.count
-		const isPoint2CenterEqualRadius: boolean = isFloatEqual(point2Center, arcRadius, 1e-3)
-		return isPoint2CenterEqualRadius && !!psIsInterSmOrm
+		if (Math.abs(dist2 - r2) > DoubleKit.eps1 * Math.max(1, r2)) {
+			return false
+		}
+		/**
+		 * 构造向量
+		 * 		向量 S, 即圆弧中心点到圆弧起始点的向量
+		 * 		向量 E, 即圆弧中心点到圆弧结束点的向量
+		 * 		向量 P, 即圆弧中心点到平面上任意点的向量
+		 */
+		const [sx, sy]: [number, number] = [arc.startPoint.x - arc.centerPoint.x, arc.startPoint.y - arc.centerPoint.y]
+		const [ex, ey]: [number, number] = [arc.endPoint.x - arc.centerPoint.x, arc.endPoint.y - arc.centerPoint.y]
+		const [px, py]: [number, number] = [point.x - arc.centerPoint.x, point.y - arc.centerPoint.y]
+		/**
+		 * 向量叉乘
+		 * 		判断旋转方向
+		 * 		S x P
+		 * 			值大于 0, 即向量 P 位于向量 S 的逆时针旋转方位, 也即向量 P 位于向量 S 的左侧
+		 * 			值小于 0, 即向量 P 位于向量 S 的顺时针旋转方位, 也即向量 P 位于向量 S 的右侧
+		 * 			值等于 0, 即向量 P 与向量 S 共线
+		 * 		P x E
+		 * 			值大于 0, 即向量 E 位于向量 P 的逆时针旋转方位, 也即向量 E 位于向量 P 的左侧
+		 * 			值小于 0, 即向量 E 位于向量 P 的顺时针旋转方位, 也即向量 E 位于向量 P 的右侧
+		 * 			值等于 0, 即向量 E 与向量 P 共线
+		 * 		S x E
+		 * 			值大于 0, 即向量 E 位于向量 S 的逆时针旋转方位, 也即向量 E 位于向量 S 的左侧
+		 * 			值小于 0, 即向量 E 位于向量 S 的顺时针旋转方位, 也即向量 E 位于向量 S 的右侧
+		 * 			值等于 0, 即向量 E 与向量 S 共线
+		 */
+		const [crossSP, crossPE, crossSE]: [number, number, number] = [sx * py - sy * px, px * ey - py * ex, sx * ey - sy * ex]
+		if (Math.abs(crossSE) <= DoubleKit.eps1) {
+			/**
+			 * IF: 圆弧起点坐标与圆弧终点坐标共线或近似共线
+			 * 		场景一: 极小圆弧(近似共线)
+			 * 		场景二: 半圆圆弧(共线)
+			 **/
+			/**
+			 * 向量点乘
+			 * 		判断夹角
+			 * 		S · E
+			 * 			值大于 0, 即夹角小于 90 度
+			 * 			值小于 0, 即夹角大于 90 度
+			 * 			值等于 0, 即夹角等于 90 度
+			 */
+			const dotSE: number = sx * ex + sy * ey
+			if (dotSE > 0) {
+				/**
+				 * IF: 极小圆弧
+				 **/
+				return sx * px + sy * py > 0
+			}
+			if (arc.sweep === ESweep.CCW) {
+				return crossSP >= -DoubleKit.eps1
+			}
+			return crossSP <= DoubleKit.eps1
+		}
+		if (arc.sweep === ESweep.CCW) {
+			if (crossSE > 0) {
+				/**
+				 * IF: 小圆弧
+				 **/
+				return crossSP >= -DoubleKit.eps1 && crossPE >= -DoubleKit.eps1
+			}
+			return !(crossSP < -DoubleKit.eps1 && crossPE < -DoubleKit.eps1)
+		}
+		if (crossSE < 0) {
+			/**
+			 * IF: 大圆弧
+			 **/
+			return crossSP <= DoubleKit.eps1 && crossPE <= DoubleKit.eps1
+		}
+		return !(crossSP > DoubleKit.eps1 && crossPE > DoubleKit.eps1)
 	}
 
 	/**
 	 * 判断点 point 是否位于圆弧 arc 上
 	 */
-	public static isPointOnArc4(
+	public static isPointOnStrokeArc(
 		point: Vector2,
 		sRadian: number,
 		eRadian: number,
@@ -255,14 +238,17 @@ export class D2ArcToolkit {
 		/**
 		 * 计算圆参数
 		 */
-		const { centerPoint, radius, sweep } = D2CircleToolkit.calculateCircleProfileByByThreePoint(startPoint, endPoint, thirdPoint)
+		const circleResultParams = D2CircleToolkit.calculateCircleProfileByByThreePoint(startPoint, endPoint, thirdPoint)
+		if (!circleResultParams) {
+			return null!
+		}
 		/**
 		 * 计算圆弧角度
 		 */
 		const [thetaA, thetaB, thetaC]: [number, number, number] = [
-			D2ArcToolkit.fixCircleRadian(startPoint, centerPoint),
-			D2ArcToolkit.fixCircleRadian(endPoint, centerPoint),
-			D2ArcToolkit.fixCircleRadian(thirdPoint, centerPoint),
+			D2ArcToolkit.fixCircleRadian(startPoint, circleResultParams.centerPoint),
+			D2ArcToolkit.fixCircleRadian(endPoint, circleResultParams.centerPoint),
+			D2ArcToolkit.fixCircleRadian(thirdPoint, circleResultParams.centerPoint),
 		]
 		let [startRadian, endRadian]: [number, number] = [0, 0]
 		if (thetaC < Math.min(thetaA, thetaB) || thetaC > Math.max(thetaA, thetaB)) {
@@ -281,74 +267,12 @@ export class D2ArcToolkit {
 			endRadian = thetaB
 		}
 		return {
-			centerPoint: centerPoint,
-			radius: radius,
-			sweep: sweep,
+			centerPoint: circleResultParams.centerPoint,
+			radius: circleResultParams.radius,
+			sweep: circleResultParams.sweep,
 			startRadian: startRadian,
 			endRadian: endRadian,
 		}
-	}
-
-	/**
-	 * 已知:
-	 * 		起始点坐标 startPoint
-	 * 		结束点坐标 endPoint
-	 * 		第三点坐标 thirdPoint
-	 * 求解:
-	 * 		起始弧度 startRadian
-	 * 		终止弧度 endRadian
-	 * 		半径 radius
-	 * 		圆心坐标 centerPoint
-	 * 		旋转方向 sweep
-	 */
-	public static calculateD2ArcProfileByThreePoint2(
-		startPoint: Vector2,
-		endPoint: Vector2,
-		thirdPoint: Vector2
-	): {
-		startRadian: number
-		endRadian: number
-		radius: number
-		centerPoint: Vector2
-		sweep: ESweep
-	} {
-		if (startPoint.equalsWithVector2(endPoint)) {
-			if (thirdPoint.equalsWithVector2(startPoint)) {
-				const centerPoint: Vector2 = startPoint.add(new Vector2(0.001, 0))
-				const radius: number = 0.001
-				const [startRadian, endRadian]: [number, number] = [
-					startPoint.getRadianByVector2(centerPoint),
-					endPoint.getRadianByVector2(centerPoint),
-				]
-				const sweep: ESweep = ESweep.CCW
-				return { centerPoint, radius, startRadian, endRadian, sweep }
-			}
-			const centerPoint: Vector2 = startPoint.add(thirdPoint).mul(0.5)
-			const radius: number = thirdPoint.distance(startPoint) / 2
-			const [startRadian, endRadian]: [number, number] = [startPoint.getRadianByVector2(centerPoint), endPoint.getRadianByVector2(centerPoint)]
-			const sweep: ESweep = ESweep.CCW
-			return { centerPoint, radius, startRadian, endRadian, sweep }
-		}
-		const [direct1, direct2]: [Vector2, Vector2] = [endPoint.sub(thirdPoint).normalize(), thirdPoint.sub(startPoint).normalize()]
-		if (direct1.cross(direct2) === 0) {
-			thirdPoint.add(new Vector2(-direct1.y, direct1.x)).mul(0.01)
-		}
-		const [A1, B1, C1]: [number, number, number] = [
-			2 * (endPoint.x - startPoint.x),
-			2 * (endPoint.y - startPoint.y),
-			endPoint.x * endPoint.x + endPoint.y * endPoint.y - (startPoint.x * startPoint.x + startPoint.y * startPoint.y),
-		]
-		const [A2, B2, C2]: [number, number, number] = [
-			2 * (thirdPoint.x - endPoint.x),
-			2 * (thirdPoint.y - endPoint.y),
-			thirdPoint.x * thirdPoint.x + thirdPoint.y * thirdPoint.y - (endPoint.x * endPoint.x + endPoint.y * endPoint.y),
-		]
-		const centerPoint: Vector2 = new Vector2((C1 * B2 - C2 * B1) / (A1 * B2 - A2 * B1), (A1 * C2 - A2 * C1) / (A1 * B2 - A2 * B1))
-		const radius: number = centerPoint.distance(startPoint)
-		const [startRadian, endRadian]: [number, number] = [startPoint.getRadianByVector2(centerPoint), endPoint.getRadianByVector2(centerPoint)]
-		const crossV: number = direct2.cross(direct1)
-		const sweep: ESweep = crossV > 0 ? ESweep.CCW : ESweep.CW
-		return { centerPoint, radius, startRadian, endRadian, sweep }
 	}
 
 	/**
@@ -394,17 +318,20 @@ export class D2ArcToolkit {
 	 * 		终止弧度 endRadian
 	 */
 	public static calculateRadianProfileByPoint(
-		O: Vector2,
-		A: Vector2,
-		B: Vector2,
+		centerPoint: Vector2,
+		startPoint: Vector2,
+		endPoint: Vector2,
 		sweep: ESweep
 	): {
 		startRadian: number
 		endRadian: number
 	} {
+		if (DoubleKit.neq(centerPoint.distanceSquare(startPoint), centerPoint.distanceSquare(endPoint))) {
+			return null!
+		}
 		const [vA, vB]: [{ x: number; y: number }, { x: number; y: number }] = [
-			{ x: A.x - O.x, y: A.y - O.y },
-			{ x: B.x - O.x, y: B.y - O.y },
+			{ x: startPoint.x - centerPoint.x, y: startPoint.y - centerPoint.y },
+			{ x: endPoint.x - centerPoint.x, y: endPoint.y - centerPoint.y },
 		]
 		let [start, end]: [number, number] = [Math.atan2(vA.y, vA.x), Math.atan2(vB.y, vB.x)]
 		if (start < 0) {
@@ -417,12 +344,10 @@ export class D2ArcToolkit {
 			if (end < start) {
 				end += Math.PI * 2
 			}
-		} else if (sweep === ESweep.CW) {
+		} else {
 			if (end > start) {
 				end -= Math.PI * 2
 			}
-		} else {
-			throw new Error('dir must be "ccw" or "cw"')
 		}
 		return {
 			startRadian: start,
@@ -443,9 +368,9 @@ export class D2ArcToolkit {
 	 * 		旋转方向 sweep
 	 */
 	public static calculateD2ArcProfileTwoPointsAndRadian(
+		sweepRadian: number,
 		startPoint: Vector2,
-		endPoint: Vector2,
-		radian: number
+		endPoint: Vector2
 	): {
 		centerPoint: Vector2
 		radius: number
@@ -455,99 +380,32 @@ export class D2ArcToolkit {
 	} {
 		const direct: Vector2 = endPoint.sub(startPoint)
 		const v: Vector2 = new Vector2(-direct.y, direct.x).normalize()
-		const radian2: number = Math.abs(radian) / 2
-		let radius: number = 0
-		if (radian2 !== 0) {
-			radius = direct.length / 2 / Math.sin(radian2)
-		} else {
-			throw new Error(`can not represent circle.`)
+		const radian2: number = Math.abs(sweepRadian) / 2
+		if (radian2 === 0) {
+			return null!
 		}
+		const radius: number = direct.length / 2 / Math.sin(radian2)
 		let sweep: ESweep = undefined!
 		let centerPoint: Vector2 = undefined!
-		if (radian > 0) {
+		if (sweepRadian > 0) {
 			sweep = ESweep.CCW
 			centerPoint = endPoint.add(v.rotateSurround(Vector2.ORIGIN, radian2).mul(radius))
 		} else {
 			sweep = ESweep.CW
 			centerPoint = startPoint.sub(v.rotateSurround(Vector2.ORIGIN, radian2).mul(radius))
 		}
-		const [startRadian, endRadian]: [number, number] = [startPoint.getRadianByVector2(centerPoint), endPoint.getRadianByVector2(centerPoint)]
-		return { centerPoint, radius, startRadian, endRadian, sweep }
+		const startRadian: number = startPoint.getRadianByVector2(centerPoint)
+		return { centerPoint, radius, startRadian, endRadian: startRadian + sweepRadian, sweep }
 	}
 
-	public static getMiddleInArc(pt: Arc): Vector2 {
-		const sweepRadian: number = Math.abs(pt.sweepRadian % 360)
-		const [v1, v2]: [Vector2, Vector2] = [pt.startPoint.sub(pt.centerPoint), pt.endPoint.sub(pt.centerPoint)]
-		let centerDirect: Vector2 = v1.add(v2).normalize()
-		if (sweepRadian > 180) {
-			centerDirect = centerDirect.mul(-1)
-		}
-		const middle: Vector2 = pt.centerPoint.add(centerDirect.mul(pt.rx))
-		return middle
-	}
-
-	public static getArcLength(radius: number, sweepRadian: number): number {
-		return Math.abs((radius * sweepRadian * Math.PI) / Math.PI)
-	}
-
-	public static arcApplyTranslateMatrix4(
-		matrix4: Matrix4,
-		oldStartRadian: number,
-		oldEndRadian: number,
-		oldSweepRadian: number,
-		oldRadius: number,
-		oldCenter: Vector2
-	): {
-		center: Vector2
-		startRadian: number
-		endRadian: number
+	public static getArcBBox2(
+		centerPoint: Vector2,
+		radius: number,
+		storkeWidth: number,
+		startRadian: number,
+		endRadian: number,
 		sweep: ESweep
-	} {
-		const result: {
-			center: Vector2
-			startRadian: number
-			endRadian: number
-			sweep: ESweep
-		} = {
-			center: undefined!,
-			startRadian: undefined!,
-			endRadian: undefined!,
-			sweep: undefined!,
-		}
-		const [newStartPoint, newEndPoint]: [Vector2, Vector2] = [
-			oldCenter.add(new Vector2(Math.cos(oldStartRadian) * oldRadius, Math.sin(oldStartRadian) * oldRadius)),
-			oldCenter.add(new Vector2(Math.cos(oldEndRadian) * oldRadius, Math.sin(oldEndRadian) * oldRadius)),
-		]
-		const radian: number = oldSweepRadian
-		const midRadian: number = oldStartRadian + radian / 2
-		const mid: Vector2 = oldCenter.add(new Vector2(Math.cos(midRadian) * oldRadius, Math.sin(midRadian) * oldRadius))
-		const [c, s, e, m]: [Vector2, Vector2, Vector2, Vector2] = [
-			oldCenter.multiplyMatrix4(matrix4),
-			newStartPoint.multiplyMatrix4(matrix4),
-			newEndPoint.multiplyMatrix4(matrix4),
-			mid.multiplyMatrix4(matrix4),
-		]
-		const [newStartDir, newEndDir]: [Vector2, Vector2] = [s.sub(c), e.sub(c)]
-		let [sRadian, eRadian]: [number, number] = [Math.atan2(newStartDir.y, newStartDir.x), Math.atan2(newEndDir.y, newEndDir.x)]
-		if (sRadian < 0) {
-			sRadian += Math.PI * 2
-		}
-		if (eRadian < 0) {
-			eRadian += Math.PI * 2
-		}
-		result.center = c
-		result.startRadian = sRadian
-		result.endRadian = eRadian
-		const [d1, d2]: [Vector2, Vector2] = [m.sub(s), e.sub(m)]
-		if (d1.cross(d2) >= 0) {
-			result.sweep = ESweep.CCW
-		} else {
-			result.sweep = ESweep.CW
-		}
-		return result
-	}
-
-	public static getArcBBox2(center: Vector2, radius: number, storkeWidth: number, startRadian: number, endRadian: number, sweep: ESweep): BBox2 {
+	): BBox2 {
 		if (storkeWidth < 0) {
 			return null!
 		}
@@ -588,244 +446,28 @@ export class D2ArcToolkit {
 			return null!
 		}
 		const bbox2Fac: BBox2Fac = new BBox2Fac()
-		const [start, end]: [Vector2, Vector2] = [
-			center.add(new Vector2(Math.cos(startRadian) * radius, Math.sin(startRadian) * radius)),
-			center.add(new Vector2(Math.cos(endRadian) * radius, Math.sin(endRadian) * radius)),
+		const [startPoint, endPoint]: [Vector2, Vector2] = [
+			centerPoint.add(new Vector2(Math.cos(startRadian) * radius, Math.sin(startRadian) * radius)),
+			centerPoint.add(new Vector2(Math.cos(endRadian) * radius, Math.sin(endRadian) * radius)),
 		]
-		bbox2Fac.extendByValue(start.x, start.y).extendByValue(end.x, end.y)
+		bbox2Fac.extendByValue(startPoint.x, startPoint.y).extendByValue(endPoint.x, endPoint.y)
 		if (isContain(0)) {
-			const p: Vector2 = center.add(new Vector2(radius, 0))
+			const p: Vector2 = centerPoint.add(new Vector2(radius, 0))
 			bbox2Fac.extendByValue(p.x, p.y)
 		}
 		if (isContain(Math.PI / 2)) {
-			const p: Vector2 = center.add(new Vector2(0, radius))
+			const p: Vector2 = centerPoint.add(new Vector2(0, radius))
 			bbox2Fac.extendByValue(p.x, p.y)
 		}
 		if (isContain(Math.PI)) {
-			const p: Vector2 = center.add(new Vector2(-radius, 0))
+			const p: Vector2 = centerPoint.add(new Vector2(-radius, 0))
 			bbox2Fac.extendByValue(p.x, p.y)
 		}
 		if (isContain(Math.PI * (3 / 2))) {
-			const p: Vector2 = center.add(new Vector2(0, -radius))
+			const p: Vector2 = centerPoint.add(new Vector2(0, -radius))
 			bbox2Fac.extendByValue(p.x, p.y)
 		}
 		bbox2Fac.extendByOffset(storkeWidth / 2)
 		return bbox2Fac.build()
-	}
-
-	public static getArcMiddlePoint(center: Vector2, radius: number, startRadian: number, endRadian: number, sweep: ESweep = ESweep.CCW): Vector2 {
-		if (sweep === ESweep.CCW) {
-			if (endRadian > startRadian) {
-				const radian: number = (endRadian - startRadian) / 2 + startRadian
-				const midPoint: Vector2 = center.add(new Vector2(Math.cos(radian), Math.sin(radian)).mul(radius))
-				return midPoint
-			}
-			if (endRadian === startRadian) {
-				const midPoint: Vector2 = center.add(new Vector2(Math.cos((Math.PI * 3) / 2), Math.sin((Math.PI * 3) / 2)).mul(radius))
-				return midPoint
-			}
-			const radian: number = (endRadian + Math.PI * 2 - startRadian) / 2 + startRadian
-			const midPoint: Vector2 = center.add(new Vector2(Math.cos(radian), Math.sin(radian)).mul(radius))
-			return midPoint
-		}
-		if (endRadian > startRadian) {
-			const radian: number = (startRadian = Math.PI * 2 - endRadian) / 2 + endRadian
-			const midPoint: Vector2 = center.add(new Vector2(Math.cos(radian), Math.sin(radian)).mul(radius))
-			return midPoint
-		}
-		if (endRadian === startRadian) {
-			const midPoint: Vector2 = center.add(new Vector2(Math.cos((Math.PI * 3) / 2), Math.sin((Math.PI * 3) / 2)).mul(radius))
-			return midPoint
-		}
-		const radian: number = (startRadian - endRadian) / 2 + endRadian
-		const midPoint: Vector2 = center.add(new Vector2(Math.cos(radian), Math.sin(radian)).mul(radius))
-		return midPoint
-	}
-
-	public static updateArcParamByNewStartPoint(
-		newStartPoint: Vector2,
-		oldStartPoint: Vector2,
-		oldEndPoint: Vector2,
-		oldMidPoint: Vector2,
-		oldCenterPoint: Vector2,
-		oldSweep: ESweep,
-		oldRadius: number
-	): {
-		center: Vector2
-		startRadian: number
-		endRadian: number
-		radius: number
-	} {
-		const result: {
-			center: Vector2
-			startRadian: number
-			endRadian: number
-			radius: number
-		} = {
-			center: null!,
-			startRadian: undefined!,
-			endRadian: undefined!,
-			radius: undefined!,
-		}
-		const newStartPoint2: Vector2 = new D2ArcIdentify().fixStartPoint(newStartPoint, oldEndPoint, oldCenterPoint, oldRadius, oldSweep)
-		let length2: number = oldEndPoint.distanceSquare(newStartPoint2)
-		let distance: number = Math.sqrt(oldMidPoint.distanceSquare(oldStartPoint) - oldEndPoint.distanceSquare(oldStartPoint) / 4)
-		if (distance < 0.1 || Number.isNaN(distance)) {
-			distance = 0.1
-		}
-		let radius: number = distance / 2 + length2 / distance / 8
-		if (radius === 0) {
-			radius = 1e-8
-		}
-		result.radius = radius
-		const [direct, mid]: [Vector2, Vector2] = [oldEndPoint.sub(newStartPoint2), newStartPoint2.add(oldEndPoint).mul(0.5)]
-		let l: Vector2 = null!
-		if (oldSweep === ESweep.CCW) {
-			l = new Vector2(-direct.y, direct.x).normalize()
-		} else {
-			l = new Vector2(direct.y, -direct.x).normalize()
-		}
-		let center: Vector2 = mid.add(l.mul(radius - distance))
-		result.center = center
-		const [OS, OE]: [Vector2, Vector2] = [newStartPoint2.sub(center).normalize(), oldEndPoint.sub(center).normalize()]
-		result.startRadian = Math.atan2(OS.y, OS.x)
-		result.endRadian = Math.atan2(OE.y, OE.x)
-		return result
-	}
-
-	public static updateArcParamByNewEndPoint(
-		newEndPoint: Vector2,
-		oldStartPoint: Vector2,
-		oldEndPoint: Vector2,
-		oldMidPoint: Vector2,
-		oldSweep: ESweep
-	): {
-		center: Vector2
-		startRadian: number
-		endRadian: number
-		radius: number
-	} {
-		const result: {
-			center: Vector2
-			startRadian: number
-			endRadian: number
-			radius: number
-		} = {
-			center: null!,
-			startRadian: undefined!,
-			endRadian: undefined!,
-			radius: undefined!,
-		}
-		let length2: number = newEndPoint.distanceSquare(oldStartPoint)
-		let distance: number = Math.sqrt(oldMidPoint.distanceSquare(oldStartPoint) - oldEndPoint.distanceSquare(oldStartPoint) / 4)
-		if (distance < 0.1 || Number.isNaN(distance)) {
-			distance = 0.1
-		}
-		let radius: number = distance / 2 + length2 / distance / 8
-		if (radius === 0) {
-			radius = 1e-8
-		}
-		result.radius = radius
-		let direct: Vector2 = newEndPoint.sub(oldStartPoint)
-		let mid: Vector2 = oldStartPoint.add(newEndPoint).mul(0.5)
-		let l: Vector2 = null!
-		if (oldSweep === ESweep.CCW) {
-			l = new Vector2(-direct.y, direct.x).normalize()
-		} else {
-			l = new Vector2(direct.y, -direct.x)
-		}
-		let center: Vector2 = mid.add(l.mul(radius - distance))
-		result.center = center
-		const [OS, OE]: [Vector2, Vector2] = [oldStartPoint.sub(center).normalize(), newEndPoint.sub(center).normalize()]
-		result.startRadian = Math.atan2(OS.y, OS.x)
-		result.endRadian = Math.atan2(OE.y, OE.x)
-		return result
-	}
-
-	/**
-	 * 已知圆弧起始坐标/结束坐标/起始点切线方向(视作与圆弧旋转方向一致), 求圆弧参数
-	 */
-	public static tangentPositionDirect2Arc(
-		startPoint: Vector2,
-		startPointDirect: Vector2,
-		endPoint: Vector2,
-		fixStart: boolean = true
-	): {
-		centerPoint: Vector2
-		radius: number
-		startRadian: number
-		endRadian: number
-		sweep: ESweep
-	} {
-		if (startPoint.equalsWithVector2(endPoint)) {
-			const v: Vector2 = new Vector2(startPointDirect.y, -startPointDirect.x).normalize()
-			const centerPoint: Vector2 = startPoint.add(v)
-			const startRadian: number = startPoint.getRadianByVector2(centerPoint)
-			const endRadian: number = startRadian + Math.PI * 2
-			if (fixStart) {
-				return {
-					centerPoint,
-					radius: 1,
-					startRadian,
-					endRadian,
-					sweep: ESweep.CW,
-				}
-			}
-			return {
-				centerPoint,
-				radius: 1,
-				startRadian: endRadian,
-				endRadian: startRadian,
-				sweep: ESweep.CW,
-			}
-		}
-		const start2end: Vector2 = endPoint.sub(startPoint)
-		const cross: number = startPointDirect.cross(start2end)
-		let sweep: ESweep = undefined!
-		let [v1, v2]: [Vector2, Vector2] = [undefined!, undefined!]
-		if (cross > 0) {
-			sweep = ESweep.CCW
-			v1 = new Vector2(-startPointDirect.y, startPointDirect.x).normalize()
-			v2 = new Vector2(-start2end.y, start2end.x).normalize()
-		} else {
-			sweep = ESweep.CW
-			v1 = new Vector2(startPointDirect.y, -startPointDirect.x).normalize()
-			v2 = new Vector2(start2end.y, -startPointDirect.x).normalize()
-		}
-		const line1: Line = new Line(startPoint, startPoint.add(v1.mul(100000)))
-		const center1: Vector2 = startPoint.add(endPoint).mul(0.5)
-		const line2: Line = new Line(center1.sub(v2.mul(100000)), center1.add(v2.mul(100000)))
-		const interRes: {
-			count: number
-			points: Array<Vector2>
-		} = D2Intersection.getIntersectionsOfPrimitives(line1, line2)
-		if (interRes.count > 0) {
-			const centerPoint: Vector2 = interRes.points[0]
-			const [radius, startRadian, endRadian]: [number, number, number] = [
-				centerPoint.distance(startPoint),
-				startPoint.getRadianByVector2(centerPoint),
-				endPoint.getRadianByVector2(centerPoint),
-			]
-			return {
-				centerPoint,
-				radius,
-				startRadian,
-				endRadian,
-				sweep,
-			}
-		}
-		const centerPoint: Vector2 = startPoint.add(v1.mul(100000))
-		const [radius, startRadian, endRadian]: [number, number, number] = [
-			centerPoint.distance(startPoint),
-			startPoint.getRadianByVector2(centerPoint),
-			endPoint.getRadianByVector2(centerPoint),
-		]
-		return {
-			centerPoint,
-			radius,
-			startRadian,
-			endRadian,
-			sweep,
-		}
 	}
 }

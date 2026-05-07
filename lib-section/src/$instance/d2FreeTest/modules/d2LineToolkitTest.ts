@@ -46,16 +46,16 @@ export function d2LineToolkitTest02(webCanvas: WebCanvas, layerItemId: string): 
 		strokeColor: Color.RED,
 		isEnableSelect: false,
 	})
-	/**
-	 * 判断点是否在线段上
-	 */
-	console.log('%c <T: 判断点是否在线段上>', 'color: #ff6600')
-	const [lineA]: [Line] = [new Line(lineAStartPoint, lineAEndPoint)]
 	const [pointA, pointB]: [Vector2, Vector2] = [new Vector2(20, 20), new Vector2(-30, -20)]
 	d2ElementController.createD2LineElementShapeItem(defaultLayerItemId, pointA, pointB, {
 		strokeColor: Color.GREEN,
 		isEnableSelect: false,
 	})
+	/**
+	 * 判断点是否在线段上
+	 */
+	console.log('%c <T: 判断点是否在线段上>', 'color: #ff6600')
+	const [lineA]: [Line] = [new Line(lineAStartPoint, lineAEndPoint)]
 	const a1: boolean = D2LineToolkit.isPointOnLine(lineA, pointA)
 	const a2: boolean = D2LineToolkit.isPointOnLine2(lineA, pointA, 0.5)
 	console.log(a1, a2)

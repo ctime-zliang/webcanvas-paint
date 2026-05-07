@@ -1,0 +1,22 @@
+float result = abs(sign(value - refer))
+    always return 1.0 or 0.0
+
+
+float result = step(ed, 0.0)
+    if ed > 0.0, then return 0.0
+    if ed <= 0.0, then return 1.0
+
+
+float getValue(float value, float refer) {
+    return step(abs(sign(value - refer)), 0.0)
+}
+    if value > refer, then return 0.0
+    if value < refer, then return 0.0
+    if value = refer, then return 1.0
+
+
+float less(float a, float b) {
+    return 1.0 - step(b, a);
+}
+    if a < b, then return 1.0
+    if a >= b, then return 0.0

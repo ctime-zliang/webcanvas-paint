@@ -39,7 +39,7 @@ export class DrawD2ArcShape extends DrawD2Shape {
 			for (let i: number = 0; i < this.shapeInstances.length; i++) {
 				const targetShapeItem: D2ArcShape = this.shapeInstances[i]
 				const elementItemId: string = Constant.globalIdenManager.getElementIden()
-				const { startRadian, endRadian, radius, centerPoint, sweep } = D2ArcToolkit.calculateD2ArcProfileByThreePoint(
+				const arcResultParmas = D2ArcToolkit.calculateD2ArcProfileByThreePoint(
 					this._pointsGroup[i][0],
 					this._pointsGroup[i][1],
 					this._pointsGroup[i][2]
@@ -47,11 +47,11 @@ export class DrawD2ArcShape extends DrawD2Shape {
 				const newTargetShapeItem: D2ArcShape = D2ArcShapeManager.getInstance().createShapeItem(
 					elementItemId,
 					this.selectedDrawLayerShapeItem.model.layerItemId,
-					centerPoint,
-					radius,
-					startRadian,
-					endRadian,
-					sweep,
+					arcResultParmas.centerPoint,
+					arcResultParmas.radius,
+					arcResultParmas.startRadian,
+					arcResultParmas.endRadian,
+					arcResultParmas.sweep,
 					{
 						...targetShapeItem.toJSON(),
 						strokeWidth: this.strokeWidth,
@@ -112,16 +112,16 @@ export class DrawD2ArcShape extends DrawD2Shape {
 	public updateShapes(inputInfo: InputInfo): void {
 		for (let i: number = 0; i < this.shapeInstances.length; i++) {
 			this._pointsGroup[i][2] = new Vector2(inputInfo.moveScenePhysicsX, inputInfo.moveScenePhysicsY)
-			const { startRadian, endRadian, radius, centerPoint, sweep } = D2ArcToolkit.calculateD2ArcProfileByThreePoint(
+			const arcResultParmas = D2ArcToolkit.calculateD2ArcProfileByThreePoint(
 				this._pointsGroup[i][0],
 				this._pointsGroup[i][1],
 				this._pointsGroup[i][2]
 			)
-			this.shapeInstances[i].startRadian = startRadian
-			this.shapeInstances[i].endRadian = endRadian
-			this.shapeInstances[i].radius = radius
-			this.shapeInstances[i].sweep = sweep
-			this.shapeInstances[i].centerPoint = centerPoint
+			this.shapeInstances[i].startRadian = arcResultParmas.startRadian
+			this.shapeInstances[i].endRadian = arcResultParmas.endRadian
+			this.shapeInstances[i].radius = arcResultParmas.radius
+			this.shapeInstances[i].sweep = arcResultParmas.sweep
+			this.shapeInstances[i].centerPoint = arcResultParmas.centerPoint
 		}
 	}
 
@@ -133,18 +133,26 @@ export class DrawD2ArcShape extends DrawD2Shape {
 		}
 		for (let i: number = 0; i < this._firstInitD2Lines.length; i++) {
 			this._pointsGroup[i][2] = new Vector2(x + 0.005, y + 0.005)
-			const { startRadian, endRadian, radius, centerPoint, sweep } = D2ArcToolkit.calculateD2ArcProfileByThreePoint(
+			const arcResultParmas = D2ArcToolkit.calculateD2ArcProfileByThreePoint(
 				this._pointsGroup[i][0],
 				this._pointsGroup[i][1],
 				this._pointsGroup[i][2]
 			)
 			this.shapeInstances.push(
-				buildD2ArcShape(this.selectedDrawLayerShapeItem.model.layerItemId, centerPoint, radius, startRadian, endRadian, sweep, {
-					strokeWidth: this.strokeWidth,
-					strokeColor: this.strokeColor,
-					isFill: this.isFill,
-					fillColor: this.fillColor,
-				})
+				buildD2ArcShape(
+					this.selectedDrawLayerShapeItem.model.layerItemId,
+					arcResultParmas.centerPoint,
+					arcResultParmas.radius,
+					arcResultParmas.startRadian,
+					arcResultParmas.endRadian,
+					arcResultParmas.sweep,
+					{
+						strokeWidth: this.strokeWidth,
+						strokeColor: this.strokeColor,
+						isFill: this.isFill,
+						fillColor: this.fillColor,
+					}
+				)
 			)
 		}
 	}

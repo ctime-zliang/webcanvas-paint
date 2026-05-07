@@ -116,28 +116,28 @@ export class D2ArcShapeSelectionTool extends D2SelectionTool {
 			this.moveSelectedItem(diffX, diffY)
 		} else if (this._isSelectedPointStart) {
 			const newStartPoint: Vector2 = this._pointStart.centerPoint.add(diffVector2)
-			const { startRadian, endRadian, radius, centerPoint, sweep } = D2ArcToolkit.calculateD2ArcProfileByThreePoint(
+			const arcResultParmas = D2ArcToolkit.calculateD2ArcProfileByThreePoint(
 				newStartPoint,
 				this._pointEnd.centerPoint,
 				this._pointMiddle.centerPoint
 			)
-			this._selectedItem.radius = radius
-			this._selectedItem.centerPoint = centerPoint
-			this._selectedItem.startRadian = startRadian
-			this._selectedItem.endRadian = endRadian
-			this._selectedItem.sweep = sweep
+			this._selectedItem.radius = arcResultParmas.radius
+			this._selectedItem.centerPoint = arcResultParmas.centerPoint
+			this._selectedItem.startRadian = arcResultParmas.startRadian
+			this._selectedItem.endRadian = arcResultParmas.endRadian
+			this._selectedItem.sweep = arcResultParmas.sweep
 		} else if (this._isSelectedPointEnd) {
 			const newEndPoint: Vector2 = this._pointEnd.centerPoint.add(diffVector2)
-			const { startRadian, endRadian, radius, centerPoint, sweep } = D2ArcToolkit.calculateD2ArcProfileByThreePoint(
+			const arcResultParmas = D2ArcToolkit.calculateD2ArcProfileByThreePoint(
 				this._pointStart.centerPoint,
 				newEndPoint,
 				this._pointMiddle.centerPoint
 			)
-			this._selectedItem.radius = radius
-			this._selectedItem.centerPoint = centerPoint
-			this._selectedItem.startRadian = startRadian
-			this._selectedItem.endRadian = endRadian
-			this._selectedItem.sweep = sweep
+			this._selectedItem.radius = arcResultParmas.radius
+			this._selectedItem.centerPoint = arcResultParmas.centerPoint
+			this._selectedItem.startRadian = arcResultParmas.startRadian
+			this._selectedItem.endRadian = arcResultParmas.endRadian
+			this._selectedItem.sweep = arcResultParmas.sweep
 		} else if (this._isSelectedPointMiddle) {
 			/**
 			 * 计算鼠标位移向量在圆弧端点连线的垂线向量上的投影向量
@@ -147,16 +147,16 @@ export class D2ArcShapeSelectionTool extends D2SelectionTool {
 				new Vector2(diffX, diffY)
 			)
 			const newMiddlePoint: Vector2 = this._pointMiddle.centerPoint.add(P)
-			const { startRadian, endRadian, radius, centerPoint, sweep } = D2ArcToolkit.calculateD2ArcProfileByThreePoint(
+			const arcResultParmas = D2ArcToolkit.calculateD2ArcProfileByThreePoint(
 				this._pointStart.centerPoint,
 				this._pointEnd.centerPoint,
 				newMiddlePoint
 			)
-			this._selectedItem.radius = radius
-			this._selectedItem.centerPoint = centerPoint
-			this._selectedItem.startRadian = startRadian
-			this._selectedItem.endRadian = endRadian
-			this._selectedItem.sweep = sweep
+			this._selectedItem.radius = arcResultParmas.radius
+			this._selectedItem.centerPoint = arcResultParmas.centerPoint
+			this._selectedItem.startRadian = arcResultParmas.startRadian
+			this._selectedItem.endRadian = arcResultParmas.endRadian
+			this._selectedItem.sweep = arcResultParmas.sweep
 		} else {
 			this.moveSelectedItem(diffX, diffY)
 		}

@@ -275,7 +275,7 @@ export class D2ArcModel extends D2ElementModelItemBase {
 		if (this.isEnableSelect === false) {
 			return false
 		}
-		return D2ArcToolkit.isPointOnArc4(
+		return D2ArcToolkit.isPointOnStrokeArc(
 			new Vector2(x, y),
 			this.startRadian,
 			this.endRadian,

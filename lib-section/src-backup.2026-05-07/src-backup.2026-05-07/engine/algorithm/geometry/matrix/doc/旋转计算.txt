@@ -1,0 +1,50 @@
+﻿假设一个点的坐标是 (x, y, z), 经过旋转变换后的坐标为 (x1, y1, z1)
+
+1. 绕 Z 轴旋转 [c] 角度, 则:
+笛卡尔坐标系计算:
+    x1 = xcos[c] - ysin[c]
+    y1 = xsin[c] + ycos[c]
+    z1 = z
+矩阵计算:
+    | cos[c]  sin[c] 0 0 | | x |
+    | -sin[c] cos[c] 0 0 | | y |
+    | 0       0      1 0 | | z |
+    | 0       0      0 1 | | 1 |
+    =
+    | xcos[c] - ysin[c] |
+    | xsin[c] + ycos[c] |
+    | z                 |
+    | 1                 |
+
+2. 绕 X 轴旋转 [a] 角度, 则:
+笛卡尔坐标系计算:
+    x1 = x
+    y1 = ycos[a] - zsin[a]
+    z1 = ysin[a] + zcos[a]
+矩阵计算:
+    | 1 0       0      0 | | x |
+    | 0 cos[a]  sin[a] 0 | | y |
+    | 0 -sin[a] cos[a] 0 | | z |
+    | 0 0       0      1 | | 1 |
+    =
+    | x                 |
+    | ycos[a] - zsin[a] |
+    | ysin[a] + zcos[a] |
+    | 1                 |
+
+3. 绕 Y 轴旋转 [b] 角度, 则:
+笛卡尔坐标系计算:
+    x1 = zsin[b] + xcos[b]
+    y1 = y
+    z1 = zcos[b] - xsin[b]
+    
+矩阵计算:
+    | cos[b]  0 sin[b] 0 | | x |
+    | 0	      1 0      0 | | y |
+    | -sin[b] 0 cos[b] 0 | | z |
+    | 0       0 0      1 | | 1 |
+    =
+    | zsin[b] + xcos[b] |
+    | y                 |
+    | zcos[b] - xsin[b] |
+    | 1                 |

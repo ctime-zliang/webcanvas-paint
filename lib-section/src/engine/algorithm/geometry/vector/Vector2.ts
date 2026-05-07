@@ -242,10 +242,15 @@ export class Vector2 extends Vector {
 	}
 
 	/**
-	 * 设当前向量为 B, 输入向量 A, 计算 AB 向量的弧度
+	 * 将以点 point 为起点, 以当前点为终点的向量记作 P, 计算向量 P 与坐标轴 X 轴正方向的夹角(弧度)
 	 */
-	public getRadianByVector2(vector2: Vector2): number {
-		return Math.atan2(this.y - vector2.y, this.x - vector2.x)
+	public getRadianByVector2(point: Vector2): number {
+		const dx: number = this.x - point.x
+		const dy: number = this.y - point.y
+		if (dx === 0 && dy === 0) {
+			return 0
+		}
+		return Math.atan2(dy, dx)
 	}
 
 	/**

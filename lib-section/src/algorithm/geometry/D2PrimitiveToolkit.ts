@@ -87,7 +87,7 @@ export class D2PrimitiveToolkit {
 			return [new Line(pt.startPoint, point), new Line(point, pt.endPoint)]
 		}
 		if (pt instanceof Arc) {
-			if (Math.abs(pt.sweepRadian) === 360.0) {
+			if (Math.abs(pt.sweepRadian) === Math.PI * 2) {
 				const mid: Vector2 = pt.centerPoint.sub(point).mul(2).add(point)
 				const [pt1, pt2]: [Arc, Arc] = [
 					Arc.build4(mid, point, pt.centerPoint, pt.rx, pt.rx, pt.sweep),
@@ -193,11 +193,11 @@ export class D2PrimitiveToolkit {
 		if (pt instanceof Arc) {
 			const originstartRadian: number = Angles.regularRadian(pt.startRadian)
 			const len: number = Math.PI * 1 * pt.rx * 2
-			const radian1: number = (dis1 / len) * 360
+			const radian1: number = (dis1 / len) * Math.PI * 2
 			const startRadian: number = pt.sweep === ESweep.CW ? originstartRadian - radian1 : originstartRadian + radian1
 			let endRadian: number = pt.endRadian
 			if (typeof dis2 === 'number') {
-				const radian2: number = (dis2 / len) * 360
+				const radian2: number = (dis2 / len) * Math.PI * 2
 				endRadian = pt.sweep === ESweep.CW ? originstartRadian - radian2 : originstartRadian + radian2
 			}
 			return Arc.build2(pt.centerPoint, startRadian, endRadian, pt.rx, pt.rx, pt.sweep)

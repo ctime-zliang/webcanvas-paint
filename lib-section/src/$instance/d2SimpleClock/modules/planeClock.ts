@@ -9,12 +9,13 @@ import {
 	px2mm,
 	Vector3,
 	WebCanvas,
-	D2FONT_STYLE,
 	Vector2,
 	D2TextVertexData,
 	SWEEP,
 } from '../../../Main'
 import { formatDates } from '../../public/formatDates'
+import { createTextVertexData } from '../utils/createTextVertexData'
+import { appendImageElement, updateImageElement } from '../utils/renderImage'
 
 const RUN_PROFILE = {
 	isShowSecondHand: true,
@@ -35,6 +36,10 @@ const RUN_PROFILE = {
 		d2TextVertexData: D2TextVertexData
 	}>,
 	/* ... */
+	imageConfig: {
+		imageElementItemId: undefined,
+	},
+	/* ... */
 	nowTimeStamp: 0,
 	lastTimeStamp: 0,
 	distTimeStamp: 0,
@@ -51,9 +56,9 @@ function drawPlaneClock(
 	webCanvas: WebCanvas,
 	canvasContainerElement: HTMLElement,
 	timeStamp: number,
-	layerItemId1: string,
-	layerItemId2: string,
-	layerItemId3: string
+	clockPlaneLayerItemId: string,
+	clockPointerLayerItemId: string,
+	clockPointerCenterLayerItemId: string
 ): void {
 	if (webCanvas.isQuit) {
 		canvasContainerElement.remove()
@@ -70,9 +75,9 @@ function drawPlaneClock(
 	 * 清理当前图层的所有图元
 	 */
 	const { drawLayerController, d2TextElementController, d2ElementController } = webCanvas
-	drawLayerController.deleteDrawLayerElements(layerItemId1)
-	drawLayerController.deleteDrawLayerElements(layerItemId2)
-	drawLayerController.deleteDrawLayerElements(layerItemId3)
+	drawLayerController.deleteDrawLayerElements(clockPlaneLayerItemId)
+	drawLayerController.deleteDrawLayerElements(clockPointerLayerItemId)
+	drawLayerController.deleteDrawLayerElements(clockPointerCenterLayerItemId)
 
 	const timeString: string = formatDates()
 	const nowHours: number = new Date().getHours()
@@ -93,7 +98,7 @@ function drawPlaneClock(
 	 * 绘制外层圆弧
 	 */
 	const outArcElementId1: string = d2ElementController.createD2ArcElementShapeItem(
-		layerItemId1,
+		clockPlaneLayerItemId,
 		new Vector2(0, 0),
 		outCircleRadius1 + 10,
 		-(Math.PI * 1) / 4,
@@ -106,7 +111,7 @@ function drawPlaneClock(
 		}
 	)
 	const outArcElementId2: string = d2ElementController.createD2ArcElementShapeItem(
-		layerItemId1,
+		clockPlaneLayerItemId,
 		new Vector2(0, 0),
 		outCircleRadius1 + 10,
 		(3 * (Math.PI * 1)) / 4,
@@ -122,7 +127,7 @@ function drawPlaneClock(
 	/**
 	 * 绘制外层大圆
 	 */
-	const outCircleElementId1: string = d2ElementController.createD2CircleElementShapeItem(layerItemId1, new Vector2(0, 0), {
+	const outCircleElementId1: string = d2ElementController.createD2CircleElementShapeItem(clockPlaneLayerItemId, new Vector2(0, 0), {
 		radius: outCircleRadius1,
 		strokeWidth: 0.5,
 	})
@@ -130,7 +135,7 @@ function drawPlaneClock(
 		elementItemName: `外层大圆 1`,
 		strokeColor: Color.createByAlpha(0.7, Color.YELLOW_GREEN),
 	})
-	const outCircleElementId2: string = d2ElementController.createD2CircleElementShapeItem(layerItemId1, new Vector2(0, 0), {
+	const outCircleElementId2: string = d2ElementController.createD2CircleElementShapeItem(clockPlaneLayerItemId, new Vector2(0, 0), {
 		radius: outCircleRadius2,
 		strokeWidth: 0.5,
 	})
@@ -149,7 +154,7 @@ function drawPlaneClock(
 			const rotationMatrix4: Matrix4 = CanvasMatrix4.setRotationByVector3(-Angles.degreeToRadian(30 * (i + 1)), new Vector3(0, 0, 1))
 			const endPosition: Vector3 = baseEndPosition.multiplyMatrix4(rotationMatrix4)
 			d2TextElementController.createD2TextElementItemByVertexData(
-				layerItemId1,
+				clockPlaneLayerItemId,
 				d2TextVertexData,
 				new Vector2(
 					endPosition.x - (d2TextVertexData.initBbox2.maxX - d2TextVertexData.initBbox2.minX) / 2,
@@ -167,7 +172,7 @@ function drawPlaneClock(
 	 * 绘制矩形框
 	 */
 	d2ElementController.createD2RectElementShapeItem(
-		layerItemId1,
+		clockPlaneLayerItemId,
 		new Vector2((-RUN_PROFILE.outCircleRadius / 12) * 3.5, RUN_PROFILE.outCircleRadius * 0.25),
 		(RUN_PROFILE.outCircleRadius / 12) * 3.5 * 2,
 		10,
@@ -186,7 +191,7 @@ function drawPlaneClock(
 	 */
 	if (RUN_PROFILE.isShowDateTime) {
 		d2TextElementController.createD2TextElementItem(
-			layerItemId1,
+			clockPlaneLayerItemId,
 			new Vector2((-RUN_PROFILE.outCircleRadius / 12) * 4.5, -RUN_PROFILE.outCircleRadius * 0.45),
 			timeString,
 			{
@@ -215,7 +220,7 @@ function drawPlaneClock(
 		const rippleRadiusDist: number = RIPPLE_PROFILE.maxRadius - RIPPLE_PROFILE.radius
 		const setRippleCircleFillColorAlpha: number = 0.25 * (rippleRadiusDist / RIPPLE_PROFILE.maxRadius)
 		const setRippleCircleStrokeColorAlpha: number = 0.25 * (rippleRadiusDist / RIPPLE_PROFILE.maxRadius)
-		const rippleCircleElementId: string = d2ElementController.createD2CircleElementShapeItem(layerItemId1, new Vector2(0, 0), {
+		const rippleCircleElementId: string = d2ElementController.createD2CircleElementShapeItem(clockPlaneLayerItemId, new Vector2(0, 0), {
 			radius: RIPPLE_PROFILE.radius,
 			strokeWidth: 0.3,
 		})
@@ -243,7 +248,7 @@ function drawPlaneClock(
 			const startPosition: Vector3 = baseStartPosition.multiplyMatrix4(translateMatrix4.multiply4(rotationMatrix4))
 			const endPosition: Vector3 = baseEndPosition.multiplyMatrix4(translateMatrix4.multiply4(rotationMatrix4))
 			const lineElementId: string = d2ElementController.createD2LineElementShapeItem(
-				layerItemId1,
+				clockPointerLayerItemId,
 				startPosition.toVector2(),
 				endPosition.toVector2(),
 				{
@@ -277,7 +282,7 @@ function drawPlaneClock(
 			const startPosition: Vector3 = baseStartPosition.multiplyMatrix4(translateMatrix4.multiply4(rotationMatrix4))
 			const endPosition: Vector3 = baseEndPosition.multiplyMatrix4(translateMatrix4.multiply4(rotationMatrix4))
 			const lineElementId: string = d2ElementController.createD2LineElementShapeItem(
-				layerItemId1,
+				clockPointerLayerItemId,
 				startPosition.toVector2(),
 				endPosition.toVector2(),
 				{
@@ -307,54 +312,84 @@ function drawPlaneClock(
 		rotationMatrix4 = CanvasMatrix4.setRotationByVector3(rotationOfHou, new Vector3(0, 0, 1))
 		startPosition = new Vector3(0, 0, 0).multiplyMatrix4(rotationMatrix4)
 		endPosition = new Vector3(0, outCircleRadius2 - 40, 0).multiplyMatrix4(rotationMatrix4)
-		lineElementId = d2ElementController.createD2LineElementShapeItem(layerItemId2, startPosition.toVector2(), endPosition.toVector2(), {
-			strokeWidth: 3.5,
-		})
+		lineElementId = d2ElementController.createD2LineElementShapeItem(
+			clockPointerLayerItemId,
+			startPosition.toVector2(),
+			endPosition.toVector2(),
+			{
+				strokeWidth: 3.5,
+			}
+		)
 		d2ElementController.updateD2ElementShapeItemAttrByJSONData(lineElementId, { elementItemName: `时针`, strokeColor: Color.GREEN })
 		rotationMatrix4 = CanvasMatrix4.setRotationByVector3(rotationOfHou + Math.PI, new Vector3(0, 0, 1))
 		startPosition = new Vector3(0, 0, 0).multiplyMatrix4(rotationMatrix4)
 		endPosition = new Vector3(0, 18, 0).multiplyMatrix4(rotationMatrix4)
-		lineElementId = d2ElementController.createD2LineElementShapeItem(layerItemId2, startPosition.toVector2(), endPosition.toVector2(), {
-			strokeWidth: 3.5,
-		})
+		lineElementId = d2ElementController.createD2LineElementShapeItem(
+			clockPointerLayerItemId,
+			startPosition.toVector2(),
+			endPosition.toVector2(),
+			{
+				strokeWidth: 3.5,
+			}
+		)
 		d2ElementController.updateD2ElementShapeItemAttrByJSONData(lineElementId, { elementItemName: `时针尾`, strokeColor: Color.GREEN })
 	}
 	if (RUN_PROFILE.isShowMinuteHand) {
 		rotationMatrix4 = CanvasMatrix4.setRotationByVector3(rotationOfMin, new Vector3(0, 0, 1))
 		startPosition = new Vector3(0, 0, 0).multiplyMatrix4(rotationMatrix4)
 		endPosition = new Vector3(0, outCircleRadius2 - 25, 0).multiplyMatrix4(rotationMatrix4)
-		lineElementId = d2ElementController.createD2LineElementShapeItem(layerItemId2, startPosition.toVector2(), endPosition.toVector2(), {
-			strokeWidth: 3.5,
-		})
+		lineElementId = d2ElementController.createD2LineElementShapeItem(
+			clockPointerLayerItemId,
+			startPosition.toVector2(),
+			endPosition.toVector2(),
+			{
+				strokeWidth: 3.5,
+			}
+		)
 		d2ElementController.updateD2ElementShapeItemAttrByJSONData(lineElementId, { elementItemName: `分针`, strokeColor: Color.YELLOW })
 		rotationMatrix4 = CanvasMatrix4.setRotationByVector3(rotationOfMin + Math.PI, new Vector3(0, 0, 1))
 		startPosition = new Vector3(0, 0, 0).multiplyMatrix4(rotationMatrix4)
 		endPosition = new Vector3(0, 25, 0).multiplyMatrix4(rotationMatrix4)
-		lineElementId = d2ElementController.createD2LineElementShapeItem(layerItemId2, startPosition.toVector2(), endPosition.toVector2(), {
-			strokeWidth: 3.5,
-		})
+		lineElementId = d2ElementController.createD2LineElementShapeItem(
+			clockPointerLayerItemId,
+			startPosition.toVector2(),
+			endPosition.toVector2(),
+			{
+				strokeWidth: 3.5,
+			}
+		)
 		d2ElementController.updateD2ElementShapeItemAttrByJSONData(lineElementId, { elementItemName: `分针尾`, strokeColor: Color.YELLOW })
 	}
 	if (RUN_PROFILE.isShowSecondHand) {
 		rotationMatrix4 = CanvasMatrix4.setRotationByVector3(rotationOfSec, new Vector3(0, 0, 1))
 		startPosition = new Vector3(0, 0, 0).multiplyMatrix4(rotationMatrix4)
 		endPosition = new Vector3(0, outCircleRadius2 - 10, 0).multiplyMatrix4(rotationMatrix4)
-		lineElementId = d2ElementController.createD2LineElementShapeItem(layerItemId2, startPosition.toVector2(), endPosition.toVector2(), {
-			strokeWidth: 2.5,
-		})
+		lineElementId = d2ElementController.createD2LineElementShapeItem(
+			clockPointerLayerItemId,
+			startPosition.toVector2(),
+			endPosition.toVector2(),
+			{
+				strokeWidth: 2.5,
+			}
+		)
 		d2ElementController.updateD2ElementShapeItemAttrByJSONData(lineElementId, { elementItemName: `秒针`, strokeColor: Color.RED })
 		rotationMatrix4 = CanvasMatrix4.setRotationByVector3(rotationOfSec + Math.PI, new Vector3(0, 0, 1))
 		startPosition = new Vector3(0, 0, 0).multiplyMatrix4(rotationMatrix4)
 		endPosition = new Vector3(0, 32, 0).multiplyMatrix4(rotationMatrix4)
-		lineElementId = d2ElementController.createD2LineElementShapeItem(layerItemId2, startPosition.toVector2(), endPosition.toVector2(), {
-			strokeWidth: 2.5,
-		})
+		lineElementId = d2ElementController.createD2LineElementShapeItem(
+			clockPointerLayerItemId,
+			startPosition.toVector2(),
+			endPosition.toVector2(),
+			{
+				strokeWidth: 2.5,
+			}
+		)
 		d2ElementController.updateD2ElementShapeItemAttrByJSONData(lineElementId, { elementItemName: `秒针尾`, strokeColor: Color.RED })
 	}
 	/**
 	 * 绘制中心实心圆
 	 */
-	const centerCircleElementItem1: string = d2ElementController.createD2CircleElementShapeItem(layerItemId3, new Vector2(0, 0), {
+	const centerCircleElementItem1: string = d2ElementController.createD2CircleElementShapeItem(clockPointerCenterLayerItemId, new Vector2(0, 0), {
 		radius: 4,
 		strokeWidth: 0.5,
 	})
@@ -363,7 +398,7 @@ function drawPlaneClock(
 		strokeColor: Color.ORIGIN,
 		fillColor: Color.ORIGIN,
 	})
-	const centerCircleElementItem2: string = d2ElementController.createD2CircleElementShapeItem(layerItemId3, new Vector2(0, 0), {
+	const centerCircleElementItem2: string = d2ElementController.createD2CircleElementShapeItem(clockPointerCenterLayerItemId, new Vector2(0, 0), {
 		radius: 2,
 		strokeWidth: 0.5,
 	})
@@ -374,32 +409,17 @@ function drawPlaneClock(
 	})
 
 	window.requestAnimationFrame((timeStamp: number): void => {
-		drawPlaneClock(webCanvas, canvasContainerElement, timeStamp, layerItemId1, layerItemId2, layerItemId3)
+		updateImageElement(d2ElementController, RUN_PROFILE.imageConfig.imageElementItemId!)
+		drawPlaneClock(webCanvas, canvasContainerElement, timeStamp, clockPlaneLayerItemId, clockPointerLayerItemId, clockPointerCenterLayerItemId)
 	})
-}
-
-function createTextVertexData(d2TextElementController: any): void {
-	const allTexts: Array<string> = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-	for (let i: number = 0; i < allTexts.length; i++) {
-		d2TextElementController
-			.createD2TextVertexDataItem(allTexts[i], {
-				fontFamily: RUN_PROFILE.scaleFontFamily,
-				fontSize: RUN_PROFILE.outCircleRadius / 7,
-			})
-			.then((d2TextVertexData: any): void => {
-				RUN_PROFILE.scaleTextVertexs.push({
-					textContent: allTexts[i],
-					d2TextVertexData,
-				})
-			})
-	}
 }
 
 export function drawPlaneClockInit(webCanvas: WebCanvas, canvasContainerElement: HTMLElement): void {
 	const { d2ElementController, d2TextElementController, drawLayerController } = webCanvas
-	const clockLayerItemId1: string = drawLayerController.createDrawLayerShapeItem(`Layer Clock1`)
-	const clockLayerItemId2: string = drawLayerController.createDrawLayerShapeItem(`Layer Clock2`)
-	const clockLayerItemId3: string = drawLayerController.createDrawLayerShapeItem(`Layer Clock2`)
+	const clockPlaneLayerItemId: string = drawLayerController.createDrawLayerShapeItem(`Clock Plane`)
+	const clockPointerLayerItemId: string = drawLayerController.createDrawLayerShapeItem(`Clock Pointer`)
+	const clockPointerCenterLayerItemId: string = drawLayerController.createDrawLayerShapeItem(`Clock Pointer Center`)
+	const earthLayerItemId: string = drawLayerController.createDrawLayerShapeItem(`Earth Image`)
 
 	drawLayerController.clearAllDrawLayersSelectedStatus()
 
@@ -414,10 +434,11 @@ export function drawPlaneClockInit(webCanvas: WebCanvas, canvasContainerElement:
 	RIPPLE_PROFILE.maxRadius = RUN_PROFILE.outCircleRadius
 	RIPPLE_PROFILE.speed = RIPPLE_PROFILE.maxRadius / RIPPLE_PROFILE.duration
 
-	createTextVertexData(d2TextElementController)
+	createTextVertexData(d2TextElementController, RUN_PROFILE.scaleFontFamily, RUN_PROFILE.outCircleRadius / 7, RUN_PROFILE.scaleTextVertexs)
+	appendImageElement(d2ElementController, earthLayerItemId, RIPPLE_PROFILE.maxRadius * 0.6, RUN_PROFILE)
 
 	window.requestAnimationFrame((timeStamp: number): void => {
 		RUN_PROFILE.lastTimeStamp = timeStamp
-		drawPlaneClock(webCanvas, canvasContainerElement, timeStamp, clockLayerItemId1, clockLayerItemId2, clockLayerItemId3)
+		drawPlaneClock(webCanvas, canvasContainerElement, timeStamp, clockPlaneLayerItemId, clockPointerLayerItemId, clockPointerCenterLayerItemId)
 	})
 }

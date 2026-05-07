@@ -215,7 +215,7 @@ export class D2ElementController extends BaseInterface {
 	/**
 	 * 获取图元 JSON 数据
 	 */
-	public getD2ElementShapeItemJSONData(elementItemId: string, markShapeType?: ED2ElementType): TElementJSONData {
+	public getD2ElementShapeItemJSONData(elementItemId: string, markShapeType?: ED2ElementType): any {
 		let targetElement: TElementShapeType = null!
 		if (!markShapeType) {
 			targetElement = Helper.getAllElementShapes().filter((elementItem: TElementShapeType): boolean => {

@@ -16,62 +16,18 @@ import image02 from '../../public/asserts/kA2cK1qT4oT6vX4pW5mC8vK2iT0iD9.png'
 import image03 from '../../public/asserts/iN5lA1rY4xY1nM9fQ1fH8gX4lX9nZ2.jpg'
 import image04 from '../../public/asserts/aG3yX1mO9eS3nF0wH7qY7dY8yB9pR0.png'
 import image05 from '../../public/asserts/eP7eA1sP8bW7aM4sF8wE6lZ6uP9rA8.jpg'
-
-async function fetchFileByURL(imageUrl: string, fileName: string = 'image.jpg'): Promise<File> {
-	try {
-		const response: any = await window.fetch(imageUrl)
-		const blob: Blob = await response.blob()
-		const file: File = new File([blob], fileName, {
-			type: blob.type || 'image/jpeg',
-			lastModified: Date.now(),
-		})
-		return file
-	} catch (error) {
-		return null!
-	}
-}
-
-async function readFileAsImage(file: File): Promise<{
-	imageDataURL: string
-	fileHashUuid: string
-	width: number
-	height: number
-}> {
-	return new Promise((resolve, reject): void => {
-		const fileReader: FileReader = new FileReader()
-		fileReader.onload = function (e: ProgressEvent<FileReader>): void {
-			const imageDataURL: string = e.target?.result as string
-			const image: HTMLImageElement = new Image()
-			image.crossOrigin = 'anonymous'
-			image.onload = function (e: Event): void {
-				resolve({
-					imageDataURL,
-					fileHashUuid: getHashIden(),
-					width: image.width,
-					height: image.height,
-				})
-			}
-			image.onerror = function (e: string | Event): void {
-				console.error(`[ReadFileAsImage] Image Error: `, e)
-			}
-			image.src = imageDataURL
-		}
-		fileReader.onerror = function (e: string | Event): void {
-			console.error(`[ReadFileAsImage] FileReader Error: `, e)
-		}
-		fileReader.readAsDataURL(file)
-	})
-}
+import earth01 from '../../public/asserts/earth-01.png'
+import { fetchFileByURL, readFileAsImage } from '../../public/utils'
 
 export async function drawTestImageItemStd(webCanvas: WebCanvas, layerItemId: string): Promise<void> {
-	const file: File = await fetchFileByURL(image03, 'test-image-1.jpg')
+	const file: File = await fetchFileByURL(earth01, 'test-image-1.jpg')
 	const readResult: {
 		imageDataURL: string
 		fileHashUuid: string
 		width: number
 		height: number
 	} = await readFileAsImage(file)
-	const sImageWdith: number = readResult.width * 0.1
+	const sImageWidth: number = readResult.width * 0.1
 	const sImageHeight: number = readResult.height * 0.1
 	const { d2ElementController, d2TextElementController } = webCanvas
 	const defaultLayerItemId: string = layerItemId
@@ -80,7 +36,7 @@ export async function drawTestImageItemStd(webCanvas: WebCanvas, layerItemId: st
 		new Vector2(-50, 50),
 		readResult.fileHashUuid,
 		readResult.imageDataURL,
-		sImageWdith,
+		sImageWidth,
 		sImageHeight,
 		{
 			isFlipX: true,

@@ -141,6 +141,6 @@ export class D2PointModel extends D2ElementModelItemBase {
 		if (this.isEnableSelect === false) {
 			return false
 		}
-		return D2CircleToolkit.isPointOnCircle(new Vector2(x, y), this.size, this.centerPoint, 0, true)
+		return D2CircleToolkit.isPointOnStrokeCircle(new Vector2(x, y), this.size, this.centerPoint, 0, true)
 	}
 }
