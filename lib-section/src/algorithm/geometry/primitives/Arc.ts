@@ -469,7 +469,6 @@ export class Arc extends Primitive {
 					minY = Math.min(minY, point.y)
 					maxY = Math.max(maxY, point.y)
 				}
-				// nextAngle += 90
 				nextAngle += Math.PI / 2
 			}
 		} else if (this.sweepRadian < 0) {
@@ -482,7 +481,6 @@ export class Arc extends Primitive {
 					minY = Math.min(minY, point.y)
 					maxY = Math.max(maxY, point.y)
 				}
-				// nextAngle -= 90
 				nextAngle -= Math.PI / 2
 			}
 		}

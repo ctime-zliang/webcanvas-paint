@@ -50,13 +50,6 @@ export class Vector2 extends Vector {
 		return new Vector2(Math.cos(radian), Math.sin(radian))
 	}
 
-	/**
-	 * 计算 AB 向量的弧度
-	 */
-	public static getRadianByVector2(vector1: Vector2, vector2: Vector2): number {
-		return Math.atan2(vector2.y - vector1.y, vector2.x - vector1.x)
-	}
-
 	public static createByJSONData(jsonData: { x: number; y: number }): Vector2 {
 		return new Vector2(jsonData.x, jsonData.y)
 	}
@@ -241,9 +234,6 @@ export class Vector2 extends Vector {
 		return new BBox2(this.x, this.x, this.y, this.y)
 	}
 
-	/**
-	 * 将以点 point 为起点, 以当前点为终点的向量记作 P, 计算向量 P 与坐标轴 X 轴正方向的夹角(弧度)
-	 */
 	public getRadianByVector2(point: Vector2): number {
 		const dx: number = this.x - point.x
 		const dy: number = this.y - point.y

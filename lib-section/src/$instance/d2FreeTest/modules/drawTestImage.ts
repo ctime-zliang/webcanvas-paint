@@ -30,9 +30,8 @@ export async function drawTestImageItemStd(webCanvas: WebCanvas, layerItemId: st
 	const sImageWidth: number = readResult.width * 0.1
 	const sImageHeight: number = readResult.height * 0.1
 	const { d2ElementController, d2TextElementController } = webCanvas
-	const defaultLayerItemId: string = layerItemId
 	const shapeElementItemIdA1: string = d2ElementController.createD2ImageElementItem(
-		defaultLayerItemId,
+		layerItemId,
 		new Vector2(-50, 50),
 		readResult.fileHashUuid,
 		readResult.imageDataURL,
@@ -58,54 +57,54 @@ export async function drawTestImageItemStd(webCanvas: WebCanvas, layerItemId: st
 	// 	window.requestAnimationFrame(f)
 	// }
 	// window.requestAnimationFrame(f)
-	d2ElementController.createD2PointElementShapeItem(defaultLayerItemId, new Vector2(jsonData.bbox2.minX, jsonData.bbox2.maxY), {
+	d2ElementController.createD2PointElementShapeItem(layerItemId, new Vector2(jsonData.bbox2.minX, jsonData.bbox2.maxY), {
 		strokeColor: Color.RED,
 		isEnableSelect: false,
 	})
-	d2ElementController.createD2PointElementShapeItem(defaultLayerItemId, new Vector2(jsonData.bbox2.maxX, jsonData.bbox2.maxY), {
+	d2ElementController.createD2PointElementShapeItem(layerItemId, new Vector2(jsonData.bbox2.maxX, jsonData.bbox2.maxY), {
 		strokeColor: Color.RED,
 		isEnableSelect: false,
 	})
-	d2ElementController.createD2PointElementShapeItem(defaultLayerItemId, new Vector2(jsonData.bbox2.maxX, jsonData.bbox2.minY), {
+	d2ElementController.createD2PointElementShapeItem(layerItemId, new Vector2(jsonData.bbox2.maxX, jsonData.bbox2.minY), {
 		strokeColor: Color.RED,
 		isEnableSelect: false,
 	})
-	d2ElementController.createD2PointElementShapeItem(defaultLayerItemId, new Vector2(jsonData.bbox2.minX, jsonData.bbox2.minY), {
+	d2ElementController.createD2PointElementShapeItem(layerItemId, new Vector2(jsonData.bbox2.minX, jsonData.bbox2.minY), {
 		strokeColor: Color.RED,
 		isEnableSelect: false,
 	})
-	d2ElementController.createD2PointElementShapeItem(defaultLayerItemId, Vector2.createByJSONData(jsonData.leftUp), {
+	d2ElementController.createD2PointElementShapeItem(layerItemId, Vector2.createByJSONData(jsonData.leftUp), {
 		strokeColor: Color.BLUE,
 		isEnableSelect: false,
 	})
-	d2ElementController.createD2PointElementShapeItem(defaultLayerItemId, Vector2.createByJSONData(jsonData.rightUp), {
+	d2ElementController.createD2PointElementShapeItem(layerItemId, Vector2.createByJSONData(jsonData.rightUp), {
 		strokeColor: Color.BLUE,
 		isEnableSelect: false,
 	})
-	d2ElementController.createD2PointElementShapeItem(defaultLayerItemId, Vector2.createByJSONData(jsonData.rightDown), {
+	d2ElementController.createD2PointElementShapeItem(layerItemId, Vector2.createByJSONData(jsonData.rightDown), {
 		strokeColor: Color.BLUE,
 		isEnableSelect: false,
 	})
-	d2ElementController.createD2PointElementShapeItem(defaultLayerItemId, Vector2.createByJSONData(jsonData.leftDown), {
+	d2ElementController.createD2PointElementShapeItem(layerItemId, Vector2.createByJSONData(jsonData.leftDown), {
 		strokeColor: Color.BLUE,
 		isEnableSelect: false,
 	})
-	d2TextElementController.createD2TextElementItem(defaultLayerItemId, Vector2.createByJSONData(jsonData.leftUp), 'LeftUp', {
+	d2TextElementController.createD2TextElementItem(layerItemId, Vector2.createByJSONData(jsonData.leftUp), 'LeftUp', {
 		fontFamily: 'auto',
 		fontSize: 10,
 		strokeColor: Color.BLUE,
 	})
-	d2TextElementController.createD2TextElementItem(defaultLayerItemId, Vector2.createByJSONData(jsonData.rightUp), 'RightUp', {
+	d2TextElementController.createD2TextElementItem(layerItemId, Vector2.createByJSONData(jsonData.rightUp), 'RightUp', {
 		fontFamily: 'auto',
 		fontSize: 10,
 		strokeColor: Color.BLUE,
 	})
-	d2TextElementController.createD2TextElementItem(defaultLayerItemId, Vector2.createByJSONData(jsonData.rightDown), 'RightDown', {
+	d2TextElementController.createD2TextElementItem(layerItemId, Vector2.createByJSONData(jsonData.rightDown), 'RightDown', {
 		fontFamily: 'auto',
 		fontSize: 10,
 		strokeColor: Color.BLUE,
 	})
-	d2TextElementController.createD2TextElementItem(defaultLayerItemId, Vector2.createByJSONData(jsonData.leftDown), 'LeftDown', {
+	d2TextElementController.createD2TextElementItem(layerItemId, Vector2.createByJSONData(jsonData.leftDown), 'LeftDown', {
 		fontFamily: 'auto',
 		fontSize: 10,
 		strokeColor: Color.BLUE,
@@ -123,9 +122,8 @@ export async function drawTestImageItems(webCanvas: WebCanvas, layerItemId: stri
 	const sImageWdith: number = readResult.width * 0.05
 	const sImageHeight: number = readResult.height * 0.05
 	const { d2ElementController } = webCanvas
-	const defaultLayerItemId: string = layerItemId
 	const shapeElementItemIdA1: string = d2ElementController.createD2ImageElementItem(
-		defaultLayerItemId,
+		layerItemId,
 		new Vector2(-150, 70),
 		readResult.fileHashUuid,
 		readResult.imageDataURL,
@@ -138,7 +136,7 @@ export async function drawTestImageItems(webCanvas: WebCanvas, layerItemId: stri
 		}
 	)
 	const shapeElementItemIdA2: string = d2ElementController.createD2ImageElementItem(
-		defaultLayerItemId,
+		layerItemId,
 		new Vector2(-50, 70),
 		readResult.fileHashUuid,
 		readResult.imageDataURL,
@@ -151,7 +149,7 @@ export async function drawTestImageItems(webCanvas: WebCanvas, layerItemId: stri
 		}
 	)
 	const shapeElementItemIdA3: string = d2ElementController.createD2ImageElementItem(
-		defaultLayerItemId,
+		layerItemId,
 		new Vector2(50, 70),
 		readResult.fileHashUuid,
 		readResult.imageDataURL,
@@ -164,7 +162,7 @@ export async function drawTestImageItems(webCanvas: WebCanvas, layerItemId: stri
 		}
 	)
 	const shapeElementItemIdA4: string = d2ElementController.createD2ImageElementItem(
-		defaultLayerItemId,
+		layerItemId,
 		new Vector2(150, 70),
 		readResult.fileHashUuid,
 		readResult.imageDataURL,
@@ -177,7 +175,7 @@ export async function drawTestImageItems(webCanvas: WebCanvas, layerItemId: stri
 		}
 	)
 	const shapeElementItemIdB1: string = d2ElementController.createD2ImageElementItem(
-		defaultLayerItemId,
+		layerItemId,
 		new Vector2(-150, -70),
 		readResult.fileHashUuid,
 		readResult.imageDataURL,
@@ -190,7 +188,7 @@ export async function drawTestImageItems(webCanvas: WebCanvas, layerItemId: stri
 		}
 	)
 	const shapeElementItemIdB2: string = d2ElementController.createD2ImageElementItem(
-		defaultLayerItemId,
+		layerItemId,
 		new Vector2(-50, -70),
 		readResult.fileHashUuid,
 		readResult.imageDataURL,
@@ -203,7 +201,7 @@ export async function drawTestImageItems(webCanvas: WebCanvas, layerItemId: stri
 		}
 	)
 	const shapeElementItemIdB3: string = d2ElementController.createD2ImageElementItem(
-		defaultLayerItemId,
+		layerItemId,
 		new Vector2(50, -70),
 		readResult.fileHashUuid,
 		readResult.imageDataURL,
@@ -216,7 +214,7 @@ export async function drawTestImageItems(webCanvas: WebCanvas, layerItemId: stri
 		}
 	)
 	const shapeElementItemIdB4: string = d2ElementController.createD2ImageElementItem(
-		defaultLayerItemId,
+		layerItemId,
 		new Vector2(150, -70),
 		readResult.fileHashUuid,
 		readResult.imageDataURL,

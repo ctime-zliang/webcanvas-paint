@@ -6,18 +6,12 @@ function getRandomInArea(min: number = 0, max: number = Number.MAX_SAFE_INTEGER)
 
 export function drawTestLineItemStd(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
-	const defaultLayerItemId: string = layerItemId
-	const shapeElementItemId: string = d2ElementController.createD2LineElementShapeItem(
-		defaultLayerItemId,
-		new Vector2(-70, -70),
-		new Vector2(70, 70),
-		{
-			strokeWidth: 40,
-			strokeColor: Color.RED,
-			lineCap: CANVAS_LINE_CAP.ROUND,
-			rectBorderRadius: 0,
-		}
-	)
+	const shapeElementItemId: string = d2ElementController.createD2LineElementShapeItem(layerItemId, new Vector2(-70, -70), new Vector2(70, 70), {
+		strokeWidth: 40,
+		strokeColor: Color.RED,
+		lineCap: CANVAS_LINE_CAP.ROUND,
+		rectBorderRadius: 0,
+	})
 	d2ElementController.bindD2ElementShapeItemEvent(
 		shapeElementItemId,
 		POINT_EVENT_NAME.POINTER_LEFTDOWN,
@@ -30,7 +24,6 @@ export function drawTestLineItemStd(webCanvas: WebCanvas, layerItemId: string): 
 export function drawTestLineItems(webCanvas: WebCanvas, layerItemId: string): void {
 	const ids: Array<string> = []
 	const { d2ElementController } = webCanvas
-	const defaultLayerItemId: string = layerItemId
 	const allCount: number = 10
 	const DISTX: number = 10
 	const DISTY: number = 10
@@ -49,14 +42,9 @@ export function drawTestLineItems(webCanvas: WebCanvas, layerItemId: string): vo
 		const sy: number = 50 - ri * (H + DISTY)
 		const ex: number = -100 + DISTX * (ci - 1)
 		const ey: number = 50 - ri * (H + DISTY) - H
-		const shapeElementItemId: string = d2ElementController.createD2LineElementShapeItem(
-			defaultLayerItemId,
-			new Vector2(sx, sy),
-			new Vector2(ex, ey),
-			{
-				strokeWidth: W,
-			}
-		)
+		const shapeElementItemId: string = d2ElementController.createD2LineElementShapeItem(layerItemId, new Vector2(sx, sy), new Vector2(ex, ey), {
+			strokeWidth: W,
+		})
 		d2ElementController.updateD2ElementShapeItemAttrByJSONData(shapeElementItemId, {
 			strokeColor: Color.RED,
 		})
@@ -69,21 +57,16 @@ export function drawRandomTestLineItems(webCanvas: WebCanvas): void {
 	const W: number = 2
 	const { d2ElementController } = webCanvas
 	const drawLayerController = webCanvas.drawLayerController
-	const defaultLayerItemId: string = drawLayerController.createDrawLayerShapeItem(`Random Test-Line Layer A`)
+	const layerItemId: string = drawLayerController.createDrawLayerShapeItem(`Random Test-Line Layer A`)
 	for (let i: number = 0; i < count; i++) {
 		const sx: number = getRandomInArea(-125, 125)
 		const sy: number = getRandomInArea(-125, 125)
 		const ex: number = getRandomInArea(-125, 125)
 		const ey: number = getRandomInArea(-125, 125)
-		const shapeElementItemId: string = d2ElementController.createD2LineElementShapeItem(
-			defaultLayerItemId,
-			new Vector2(sx, sy),
-			new Vector2(ex, ey),
-			{
-				strokeWidth: W,
-				strokeColor: Color.RED,
-			}
-		)
+		const shapeElementItemId: string = d2ElementController.createD2LineElementShapeItem(layerItemId, new Vector2(sx, sy), new Vector2(ex, ey), {
+			strokeWidth: W,
+			strokeColor: Color.RED,
+		})
 		d2ElementController.updateD2ElementShapeItemAttrByJSONData(
 			shapeElementItemId,
 			{

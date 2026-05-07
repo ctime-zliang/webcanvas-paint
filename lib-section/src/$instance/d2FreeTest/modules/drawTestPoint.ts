@@ -2,14 +2,13 @@ import { Angles, Color, D2POINT_SHAPE, Vector2, WebCanvas } from '../../../Main'
 
 export function drawTestPointItemStd(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
-	const defaultLayerItemId: string = layerItemId
-	const shapeElementItemId1: string = d2ElementController.createD2PointElementShapeItem(defaultLayerItemId, new Vector2(-30, -30), {
+	const shapeElementItemId1: string = d2ElementController.createD2PointElementShapeItem(layerItemId, new Vector2(-30, -30), {
 		size: 20,
 		shape: D2POINT_SHAPE.DOT,
 		strokeColor: Color.YELLOW_GREEN,
 		isEnableSelect: true,
 	})
-	const shapeElementItemId2: string = d2ElementController.createD2PointElementShapeItem(defaultLayerItemId, new Vector2(30, 30), {
+	const shapeElementItemId2: string = d2ElementController.createD2PointElementShapeItem(layerItemId, new Vector2(30, 30), {
 		size: 20,
 		shape: D2POINT_SHAPE.TRIANGLE,
 		strokeColor: Color.YELLOW_GREEN,

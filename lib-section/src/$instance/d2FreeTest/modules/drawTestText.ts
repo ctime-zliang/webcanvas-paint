@@ -42,13 +42,12 @@ const M_TEST_TXT6: string = `
 
 export async function drawTestTextItemStd(webCanvas: WebCanvas, layerItemId: string): Promise<void> {
 	const { d2TextElementController, d2ElementController } = webCanvas
-	const defaultLayerItemId: string = layerItemId
 	const styleSetting: Partial<BuildD2TextModelOptionalStyleSettingParam> = {
 		padding: { left: 5, top: 5, right: 5, bottom: 5 },
 		backgourdColor: Color.createByAlpha(0.25, Color.YELLOW_GREEN),
 	}
 	const shapeElementItemId1: string = d2TextElementController.createD2TextElementItem(
-		defaultLayerItemId,
+		layerItemId,
 		new Vector2(-100, 30),
 		`
 		CreateD2TextElementItem
@@ -77,7 +76,7 @@ export async function drawTestTextItemStd(webCanvas: WebCanvas, layerItemId: str
 		.then((d2TextVertexData: D2TextVertexData): void => {
 			console.log(`D2TextVertexData: `, d2TextVertexData)
 			const shapeElementItemId1: string = d2TextElementController.createD2TextElementItemByVertexData(
-				defaultLayerItemId,
+				layerItemId,
 				d2TextVertexData,
 				new Vector2(-50, -50),
 				{
@@ -92,7 +91,6 @@ export async function drawTestTextItemStd(webCanvas: WebCanvas, layerItemId: str
 
 export async function drawTestTextItemSim(webCanvas: WebCanvas, layerItemId: string): Promise<void> {
 	const { d2TextElementController, d2ElementController } = webCanvas
-	const defaultLayerItemId: string = layerItemId
 	const fontSize: number = 20
 	const lineHeight: number = fontSize + 10
 	const styleSetting: Partial<BuildD2TextModelOptionalStyleSettingParam> = {
@@ -102,7 +100,7 @@ export async function drawTestTextItemSim(webCanvas: WebCanvas, layerItemId: str
 		borderRadius: 5,
 	}
 	const shapeElementItemId1: string = d2TextElementController.createD2TextElementItem(
-		defaultLayerItemId,
+		layerItemId,
 		new Vector2(-50, 50),
 		M_TEST_TXT1,
 		{
@@ -124,85 +122,85 @@ export async function drawTestTextItemSim(webCanvas: WebCanvas, layerItemId: str
 			// 	window.requestAnimationFrame(f)
 			// }
 			// window.requestAnimationFrame(f)
-			d2ElementController.createD2PointElementShapeItem(defaultLayerItemId, new Vector2(jsonData.bbox2.minX, jsonData.bbox2.maxY), {
+			d2ElementController.createD2PointElementShapeItem(layerItemId, new Vector2(jsonData.bbox2.minX, jsonData.bbox2.maxY), {
 				strokeColor: Color.RED,
 				isEnableSelect: false,
 			})
-			d2ElementController.createD2PointElementShapeItem(defaultLayerItemId, new Vector2(jsonData.bbox2.maxX, jsonData.bbox2.maxY), {
+			d2ElementController.createD2PointElementShapeItem(layerItemId, new Vector2(jsonData.bbox2.maxX, jsonData.bbox2.maxY), {
 				strokeColor: Color.RED,
 				isEnableSelect: false,
 			})
-			d2ElementController.createD2PointElementShapeItem(defaultLayerItemId, new Vector2(jsonData.bbox2.maxX, jsonData.bbox2.minY), {
+			d2ElementController.createD2PointElementShapeItem(layerItemId, new Vector2(jsonData.bbox2.maxX, jsonData.bbox2.minY), {
 				strokeColor: Color.RED,
 				isEnableSelect: false,
 			})
-			d2ElementController.createD2PointElementShapeItem(defaultLayerItemId, new Vector2(jsonData.bbox2.minX, jsonData.bbox2.minY), {
+			d2ElementController.createD2PointElementShapeItem(layerItemId, new Vector2(jsonData.bbox2.minX, jsonData.bbox2.minY), {
 				strokeColor: Color.RED,
 				isEnableSelect: false,
 			})
-			d2ElementController.createD2PointElementShapeItem(defaultLayerItemId, Vector2.createByJSONData(jsonData.leftUp), {
+			d2ElementController.createD2PointElementShapeItem(layerItemId, Vector2.createByJSONData(jsonData.leftUp), {
 				strokeColor: Color.BLUE,
 				isEnableSelect: false,
 			})
-			d2ElementController.createD2PointElementShapeItem(defaultLayerItemId, Vector2.createByJSONData(jsonData.rightUp), {
+			d2ElementController.createD2PointElementShapeItem(layerItemId, Vector2.createByJSONData(jsonData.rightUp), {
 				strokeColor: Color.BLUE,
 				isEnableSelect: false,
 			})
-			d2ElementController.createD2PointElementShapeItem(defaultLayerItemId, Vector2.createByJSONData(jsonData.rightDown), {
+			d2ElementController.createD2PointElementShapeItem(layerItemId, Vector2.createByJSONData(jsonData.rightDown), {
 				strokeColor: Color.BLUE,
 				isEnableSelect: false,
 			})
-			d2ElementController.createD2PointElementShapeItem(defaultLayerItemId, Vector2.createByJSONData(jsonData.leftDown), {
+			d2ElementController.createD2PointElementShapeItem(layerItemId, Vector2.createByJSONData(jsonData.leftDown), {
 				strokeColor: Color.BLUE,
 				isEnableSelect: false,
 			})
-			d2TextElementController.createD2TextElementItem(defaultLayerItemId, Vector2.createByJSONData(jsonData.leftUp), 'LeftUp', {
+			d2TextElementController.createD2TextElementItem(layerItemId, Vector2.createByJSONData(jsonData.leftUp), 'LeftUp', {
 				fontFamily: 'auto',
 				fontSize: 10,
 				strokeColor: Color.BLUE,
 			})
-			d2TextElementController.createD2TextElementItem(defaultLayerItemId, Vector2.createByJSONData(jsonData.rightUp), 'RightUp', {
+			d2TextElementController.createD2TextElementItem(layerItemId, Vector2.createByJSONData(jsonData.rightUp), 'RightUp', {
 				fontFamily: 'auto',
 				fontSize: 10,
 				strokeColor: Color.BLUE,
 			})
-			d2TextElementController.createD2TextElementItem(defaultLayerItemId, Vector2.createByJSONData(jsonData.rightDown), 'RightDown', {
+			d2TextElementController.createD2TextElementItem(layerItemId, Vector2.createByJSONData(jsonData.rightDown), 'RightDown', {
 				fontFamily: 'auto',
 				fontSize: 10,
 				strokeColor: Color.BLUE,
 			})
-			d2TextElementController.createD2TextElementItem(defaultLayerItemId, Vector2.createByJSONData(jsonData.leftDown), 'LeftDown', {
+			d2TextElementController.createD2TextElementItem(layerItemId, Vector2.createByJSONData(jsonData.leftDown), 'LeftDown', {
 				fontFamily: 'auto',
 				fontSize: 10,
 				strokeColor: Color.BLUE,
 			})
 		}
 	)
-	d2ElementController.createD2LineElementShapeItem(defaultLayerItemId, new Vector2(300, -lineHeight * 0), new Vector2(0, -lineHeight * 0), {
+	d2ElementController.createD2LineElementShapeItem(layerItemId, new Vector2(300, -lineHeight * 0), new Vector2(0, -lineHeight * 0), {
 		strokeColor: Color.GOLDEN,
 		strokeWidth: 0.5,
 	})
-	d2ElementController.createD2LineElementShapeItem(defaultLayerItemId, new Vector2(300, -lineHeight * 1), new Vector2(0, -lineHeight * 1), {
+	d2ElementController.createD2LineElementShapeItem(layerItemId, new Vector2(300, -lineHeight * 1), new Vector2(0, -lineHeight * 1), {
 		strokeColor: Color.GOLDEN,
 		strokeWidth: 0.5,
 	})
-	d2ElementController.createD2LineElementShapeItem(defaultLayerItemId, new Vector2(300, -lineHeight * 2), new Vector2(0, -lineHeight * 2), {
+	d2ElementController.createD2LineElementShapeItem(layerItemId, new Vector2(300, -lineHeight * 2), new Vector2(0, -lineHeight * 2), {
 		strokeColor: Color.GOLDEN,
 		strokeWidth: 0.5,
 	})
-	d2ElementController.createD2LineElementShapeItem(defaultLayerItemId, new Vector2(300, -lineHeight * 3), new Vector2(0, -lineHeight * 3), {
+	d2ElementController.createD2LineElementShapeItem(layerItemId, new Vector2(300, -lineHeight * 3), new Vector2(0, -lineHeight * 3), {
 		strokeColor: Color.GOLDEN,
 		strokeWidth: 0.5,
 	})
-	d2ElementController.createD2LineElementShapeItem(defaultLayerItemId, new Vector2(300, -lineHeight * 4), new Vector2(0, -lineHeight * 4), {
+	d2ElementController.createD2LineElementShapeItem(layerItemId, new Vector2(300, -lineHeight * 4), new Vector2(0, -lineHeight * 4), {
 		strokeColor: Color.GOLDEN,
 		strokeWidth: 0.5,
 	})
-	d2ElementController.createD2LineElementShapeItem(defaultLayerItemId, new Vector2(300, -lineHeight * 5), new Vector2(0, -lineHeight * 5), {
+	d2ElementController.createD2LineElementShapeItem(layerItemId, new Vector2(300, -lineHeight * 5), new Vector2(0, -lineHeight * 5), {
 		strokeColor: Color.GOLDEN,
 		strokeWidth: 0.5,
 	})
-	d2ElementController.createD2LineElementShapeItem(defaultLayerItemId, new Vector2(300, -lineHeight * 6), new Vector2(0, -lineHeight * 6), {
+	d2ElementController.createD2LineElementShapeItem(layerItemId, new Vector2(300, -lineHeight * 6), new Vector2(0, -lineHeight * 6), {
 		strokeColor: Color.GOLDEN,
 		strokeWidth: 0.5,
 	})

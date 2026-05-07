@@ -3,9 +3,8 @@ import { Color, POINT_EVENT_NAME, Sweep, SWEEP, Vector2, WebCanvas } from '../..
 
 export function drawTestArcItems(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
-	const defaultLayerItemId: string = layerItemId
 	const shapeElementItemId1: string = d2ElementController.createD2ArcElementShapeItem(
-		defaultLayerItemId,
+		layerItemId,
 		new Vector2(-180, 60),
 		40,
 		0,
@@ -20,7 +19,7 @@ export function drawTestArcItems(webCanvas: WebCanvas, layerItemId: string): voi
 		}
 	)
 	const shapeElementItemId2: string = d2ElementController.createD2ArcElementShapeItem(
-		defaultLayerItemId,
+		layerItemId,
 		new Vector2(-90, 60),
 		40,
 		0,
@@ -35,7 +34,7 @@ export function drawTestArcItems(webCanvas: WebCanvas, layerItemId: string): voi
 		}
 	)
 	const shapeElementItemId3: string = d2ElementController.createD2ArcElementShapeItem(
-		defaultLayerItemId,
+		layerItemId,
 		new Vector2(-0, 60),
 		40,
 		0,
@@ -50,7 +49,7 @@ export function drawTestArcItems(webCanvas: WebCanvas, layerItemId: string): voi
 		}
 	)
 	const shapeElementItemId4: string = d2ElementController.createD2ArcElementShapeItem(
-		defaultLayerItemId,
+		layerItemId,
 		new Vector2(90, 60),
 		40,
 		0,
@@ -65,7 +64,7 @@ export function drawTestArcItems(webCanvas: WebCanvas, layerItemId: string): voi
 		}
 	)
 	const shapeElementItemId5: string = d2ElementController.createD2ArcElementShapeItem(
-		defaultLayerItemId,
+		layerItemId,
 		new Vector2(180, 60),
 		40,
 		0,
@@ -80,7 +79,7 @@ export function drawTestArcItems(webCanvas: WebCanvas, layerItemId: string): voi
 		}
 	)
 	const shapeElementItemId6: string = d2ElementController.createD2ArcElementShapeItem(
-		defaultLayerItemId,
+		layerItemId,
 		new Vector2(-180, -25),
 		40,
 		0,
@@ -95,7 +94,7 @@ export function drawTestArcItems(webCanvas: WebCanvas, layerItemId: string): voi
 		}
 	)
 	const shapeElementItemId7: string = d2ElementController.createD2ArcElementShapeItem(
-		defaultLayerItemId,
+		layerItemId,
 		new Vector2(-90, -25),
 		40,
 		0,
@@ -110,7 +109,7 @@ export function drawTestArcItems(webCanvas: WebCanvas, layerItemId: string): voi
 		}
 	)
 	const shapeElementItemId8: string = d2ElementController.createD2ArcElementShapeItem(
-		defaultLayerItemId,
+		layerItemId,
 		new Vector2(0, -25),
 		40,
 		0,

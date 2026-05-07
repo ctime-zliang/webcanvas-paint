@@ -4,7 +4,6 @@ import { createPoints } from '../utils/createPoints'
 
 export function d2CircleToolkitTest01(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
-	const defaultLayerItemId: string = layerItemId
 	const [pointA, pointB, pointC]: [Vector2, Vector2, Vector2] = [new Vector2(-50, -50), new Vector2(-40, 30), new Vector2(50, 0)]
 	/**
 	 * 非共线三点计算圆参数
@@ -21,7 +20,7 @@ export function d2CircleToolkitTest01(webCanvas: WebCanvas, layerItemId: string)
 		console.error(`当前三点无法生成唯一圆`)
 		return
 	}
-	d2ElementController.createD2CircleElementShapeItem(defaultLayerItemId, circleParams.centerPoint, {
+	d2ElementController.createD2CircleElementShapeItem(layerItemId, circleParams.centerPoint, {
 		radius: circleParams.radius,
 		strokeWidth: circleParams.sweep,
 		strokeColor: Color.RED,

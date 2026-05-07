@@ -3,14 +3,13 @@ import { createPoints } from '../utils/createPoints'
 
 export function d2LineToolkitTest01(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
-	const defaultLayerItemId: string = layerItemId
 	const [lineAStartPoint, lineAEndPoint]: [Vector2, Vector2] = [new Vector2(0, 70), new Vector2(50, 0)]
-	d2ElementController.createD2LineElementShapeItem(defaultLayerItemId, lineAStartPoint, lineAEndPoint, {
+	d2ElementController.createD2LineElementShapeItem(layerItemId, lineAStartPoint, lineAEndPoint, {
 		strokeColor: Color.RED,
 		isEnableSelect: false,
 	})
 	const [pointA]: [Vector2] = [new Vector2(100, 50)]
-	d2ElementController.createD2PointElementShapeItem(defaultLayerItemId, pointA, {
+	d2ElementController.createD2PointElementShapeItem(layerItemId, pointA, {
 		strokeColor: Color.GREEN,
 		isEnableScale: true,
 		isEnableSelect: false,
@@ -23,7 +22,7 @@ export function d2LineToolkitTest01(webCanvas: WebCanvas, layerItemId: string): 
 	const footRes: { point: Vector2; t: number } = D2LineToolkit.calcFootOfPoint2Line(lineA, pointA)
 	console.log(footRes)
 	console.log('%c </T>', 'color: #ff6600')
-	d2ElementController.createD2LineElementShapeItem(defaultLayerItemId, pointA, footRes.point, {
+	d2ElementController.createD2LineElementShapeItem(layerItemId, pointA, footRes.point, {
 		strokeColor: Color.GOLDEN,
 		isEnableSelect: false,
 		isSolid: false,
@@ -40,14 +39,13 @@ export function d2LineToolkitTest01(webCanvas: WebCanvas, layerItemId: string): 
 
 export function d2LineToolkitTest02(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
-	const defaultLayerItemId: string = layerItemId
 	const [lineAStartPoint, lineAEndPoint]: [Vector2, Vector2] = [new Vector2(0, -30), new Vector2(0, 30)]
-	d2ElementController.createD2LineElementShapeItem(defaultLayerItemId, lineAStartPoint, lineAEndPoint, {
+	d2ElementController.createD2LineElementShapeItem(layerItemId, lineAStartPoint, lineAEndPoint, {
 		strokeColor: Color.RED,
 		isEnableSelect: false,
 	})
 	const [pointA, pointB]: [Vector2, Vector2] = [new Vector2(20, 20), new Vector2(-30, -20)]
-	d2ElementController.createD2LineElementShapeItem(defaultLayerItemId, pointA, pointB, {
+	d2ElementController.createD2LineElementShapeItem(layerItemId, pointA, pointB, {
 		strokeColor: Color.GREEN,
 		isEnableSelect: false,
 	})
@@ -76,9 +74,8 @@ export function d2LineToolkitTest02(webCanvas: WebCanvas, layerItemId: string): 
 
 export function d2LineToolkitTest03(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
-	const defaultLayerItemId: string = layerItemId
 	const [lineAStartPoint, lineAEndPoint]: [Vector2, Vector2] = [new Vector2(-30, -30), new Vector2(0, 30)]
-	d2ElementController.createD2LineElementShapeItem(defaultLayerItemId, lineAStartPoint, lineAEndPoint, {
+	d2ElementController.createD2LineElementShapeItem(layerItemId, lineAStartPoint, lineAEndPoint, {
 		strokeColor: Color.RED,
 		isEnableSelect: false,
 	})
@@ -91,7 +88,7 @@ export function d2LineToolkitTest03(webCanvas: WebCanvas, layerItemId: string): 
 	const closedPoint: Vector2 = D2LineToolkit.getClosedPointOnLineWithPoint(lineA, pointA)
 	console.log(closedPoint)
 	console.log('%c </T>', 'color: #ff6600')
-	d2ElementController.createD2LineElementShapeItem(defaultLayerItemId, pointA, closedPoint, {
+	d2ElementController.createD2LineElementShapeItem(layerItemId, pointA, closedPoint, {
 		strokeColor: Color.GOLDEN,
 		isEnableSelect: false,
 		isSolid: false,
@@ -108,9 +105,8 @@ export function d2LineToolkitTest03(webCanvas: WebCanvas, layerItemId: string): 
 
 export function d2LineToolkitTest04(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController, d2TextElementController } = webCanvas
-	const defaultLayerItemId: string = layerItemId
 	const [lineAStartPoint, lineAEndPoint]: [Vector2, Vector2] = [new Vector2(-30, -30), new Vector2(0, 30)]
-	d2ElementController.createD2LineElementShapeItem(defaultLayerItemId, lineAStartPoint, lineAEndPoint, {
+	d2ElementController.createD2LineElementShapeItem(layerItemId, lineAStartPoint, lineAEndPoint, {
 		strokeColor: Color.RED,
 		isEnableSelect: false,
 	})
@@ -123,22 +119,17 @@ export function d2LineToolkitTest04(webCanvas: WebCanvas, layerItemId: string): 
 	const closedRes: { point: Vector2; d: number } = D2LineToolkit.getClosedPointOnSegmentWithPoint(lineA, pointA)
 	console.log(closedRes)
 	console.log('%c </T>', 'color: #ff6600')
-	d2ElementController.createD2LineElementShapeItem(defaultLayerItemId, pointA, closedRes.point, {
+	d2ElementController.createD2LineElementShapeItem(layerItemId, pointA, closedRes.point, {
 		strokeColor: Color.GOLDEN,
 		isEnableSelect: false,
 		isSolid: false,
 		strokeWidth: 0.5,
 	})
-	d2TextElementController.createD2TextElementItem(
-		defaultLayerItemId,
-		new Vector2(closedRes.point.x, closedRes.point.y - 5),
-		`min-dist = ${closedRes.d}`,
-		{
-			fontSize: 5,
-			strokeColor: Color.GOLDEN,
-			isEnableSelect: false,
-		}
-	)
+	d2TextElementController.createD2TextElementItem(layerItemId, new Vector2(closedRes.point.x, closedRes.point.y - 5), `min-dist = ${closedRes.d}`, {
+		fontSize: 5,
+		strokeColor: Color.GOLDEN,
+		isEnableSelect: false,
+	})
 	/* ... */
 	createPoints(webCanvas, layerItemId, [
 		{ label: `lineAStartPoint`, position: lineAStartPoint },
@@ -150,9 +141,8 @@ export function d2LineToolkitTest04(webCanvas: WebCanvas, layerItemId: string): 
 
 export function d2LineToolkitTest05(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
-	const defaultLayerItemId: string = layerItemId
 	const [lineAStartPoint, lineAEndPoint]: [Vector2, Vector2] = [new Vector2(50, -100), new Vector2(50, 100)]
-	d2ElementController.createD2LineElementShapeItem(defaultLayerItemId, lineAStartPoint, lineAEndPoint, {
+	d2ElementController.createD2LineElementShapeItem(layerItemId, lineAStartPoint, lineAEndPoint, {
 		strokeColor: Color.RED,
 		isEnableSelect: false,
 	})
@@ -172,7 +162,7 @@ export function d2LineToolkitTest05(webCanvas: WebCanvas, layerItemId: string): 
 		{ label: `pointA`, position: pointA },
 	]
 	for (let item of targetPoints) {
-		d2ElementController.createD2LineElementShapeItem(defaultLayerItemId, pointA, item, {
+		d2ElementController.createD2LineElementShapeItem(layerItemId, pointA, item, {
 			strokeColor: Color.GOLDEN,
 			isEnableSelect: false,
 			isSolid: false,
@@ -186,14 +176,13 @@ export function d2LineToolkitTest05(webCanvas: WebCanvas, layerItemId: string): 
 
 export function d2LineToolkitTest06(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
-	const defaultLayerItemId: string = layerItemId
 	const [lineAStartPoint, lineAEndPoint]: [Vector2, Vector2] = [new Vector2(-50, -50), new Vector2(50, 50)]
-	d2ElementController.createD2LineElementShapeItem(defaultLayerItemId, lineAStartPoint, lineAEndPoint, {
+	d2ElementController.createD2LineElementShapeItem(layerItemId, lineAStartPoint, lineAEndPoint, {
 		strokeColor: Color.RED,
 		isEnableSelect: false,
 	})
 	const [lineBStartPoint, lineBEndPoint]: [Vector2, Vector2] = [new Vector2(-30, 30), new Vector2(30, -30)]
-	d2ElementController.createD2LineElementShapeItem(defaultLayerItemId, lineBStartPoint, lineBEndPoint, {
+	d2ElementController.createD2LineElementShapeItem(layerItemId, lineBStartPoint, lineBEndPoint, {
 		strokeColor: Color.RED,
 		isEnableSelect: false,
 	})

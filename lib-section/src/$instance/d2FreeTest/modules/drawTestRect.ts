@@ -2,8 +2,7 @@ import { Angles, BBox2, Color, Element2DRectJSONViewData, nextFrameTick, Vector2
 
 export async function drawTestRectItemStd(webCanvas: WebCanvas, layerItemId: string): Promise<void> {
 	const { d2ElementController, d2TextElementController } = webCanvas
-	const defaultLayerItemId: string = layerItemId
-	const shapeElementItemIdA1: string = d2ElementController.createD2RectElementShapeItem(defaultLayerItemId, new Vector2(-50, 50), 125, 75, {
+	const shapeElementItemIdA1: string = d2ElementController.createD2RectElementShapeItem(layerItemId, new Vector2(-50, 50), 125, 75, {
 		strokeWidth: 5,
 		strokeColor: Color.RED,
 		isFill: true,
@@ -25,54 +24,54 @@ export async function drawTestRectItemStd(webCanvas: WebCanvas, layerItemId: str
 	// 	window.requestAnimationFrame(f)
 	// }
 	// window.requestAnimationFrame(f)
-	d2ElementController.createD2PointElementShapeItem(defaultLayerItemId, new Vector2(jsonData.bbox2.minX, jsonData.bbox2.maxY), {
+	d2ElementController.createD2PointElementShapeItem(layerItemId, new Vector2(jsonData.bbox2.minX, jsonData.bbox2.maxY), {
 		strokeColor: Color.RED,
 		isEnableSelect: false,
 	})
-	d2ElementController.createD2PointElementShapeItem(defaultLayerItemId, new Vector2(jsonData.bbox2.maxX, jsonData.bbox2.maxY), {
+	d2ElementController.createD2PointElementShapeItem(layerItemId, new Vector2(jsonData.bbox2.maxX, jsonData.bbox2.maxY), {
 		strokeColor: Color.RED,
 		isEnableSelect: false,
 	})
-	d2ElementController.createD2PointElementShapeItem(defaultLayerItemId, new Vector2(jsonData.bbox2.maxX, jsonData.bbox2.minY), {
+	d2ElementController.createD2PointElementShapeItem(layerItemId, new Vector2(jsonData.bbox2.maxX, jsonData.bbox2.minY), {
 		strokeColor: Color.RED,
 		isEnableSelect: false,
 	})
-	d2ElementController.createD2PointElementShapeItem(defaultLayerItemId, new Vector2(jsonData.bbox2.minX, jsonData.bbox2.minY), {
+	d2ElementController.createD2PointElementShapeItem(layerItemId, new Vector2(jsonData.bbox2.minX, jsonData.bbox2.minY), {
 		strokeColor: Color.RED,
 		isEnableSelect: false,
 	})
-	d2ElementController.createD2PointElementShapeItem(defaultLayerItemId, Vector2.createByJSONData(jsonData.leftUp), {
+	d2ElementController.createD2PointElementShapeItem(layerItemId, Vector2.createByJSONData(jsonData.leftUp), {
 		strokeColor: Color.BLUE,
 		isEnableSelect: false,
 	})
-	d2ElementController.createD2PointElementShapeItem(defaultLayerItemId, Vector2.createByJSONData(jsonData.rightUp), {
+	d2ElementController.createD2PointElementShapeItem(layerItemId, Vector2.createByJSONData(jsonData.rightUp), {
 		strokeColor: Color.BLUE,
 		isEnableSelect: false,
 	})
-	d2ElementController.createD2PointElementShapeItem(defaultLayerItemId, Vector2.createByJSONData(jsonData.rightDown), {
+	d2ElementController.createD2PointElementShapeItem(layerItemId, Vector2.createByJSONData(jsonData.rightDown), {
 		strokeColor: Color.BLUE,
 		isEnableSelect: false,
 	})
-	d2ElementController.createD2PointElementShapeItem(defaultLayerItemId, Vector2.createByJSONData(jsonData.leftDown), {
+	d2ElementController.createD2PointElementShapeItem(layerItemId, Vector2.createByJSONData(jsonData.leftDown), {
 		strokeColor: Color.BLUE,
 		isEnableSelect: false,
 	})
-	d2TextElementController.createD2TextElementItem(defaultLayerItemId, Vector2.createByJSONData(jsonData.leftUp), 'LeftUp', {
+	d2TextElementController.createD2TextElementItem(layerItemId, Vector2.createByJSONData(jsonData.leftUp), 'LeftUp', {
 		fontFamily: 'auto',
 		fontSize: 10,
 		strokeColor: Color.BLUE,
 	})
-	d2TextElementController.createD2TextElementItem(defaultLayerItemId, Vector2.createByJSONData(jsonData.rightUp), 'RightUp', {
+	d2TextElementController.createD2TextElementItem(layerItemId, Vector2.createByJSONData(jsonData.rightUp), 'RightUp', {
 		fontFamily: 'auto',
 		fontSize: 10,
 		strokeColor: Color.BLUE,
 	})
-	d2TextElementController.createD2TextElementItem(defaultLayerItemId, Vector2.createByJSONData(jsonData.rightDown), 'RightDown', {
+	d2TextElementController.createD2TextElementItem(layerItemId, Vector2.createByJSONData(jsonData.rightDown), 'RightDown', {
 		fontFamily: 'auto',
 		fontSize: 10,
 		strokeColor: Color.BLUE,
 	})
-	d2TextElementController.createD2TextElementItem(defaultLayerItemId, Vector2.createByJSONData(jsonData.leftDown), 'LeftDown', {
+	d2TextElementController.createD2TextElementItem(layerItemId, Vector2.createByJSONData(jsonData.leftDown), 'LeftDown', {
 		fontFamily: 'auto',
 		fontSize: 10,
 		strokeColor: Color.BLUE,
@@ -81,13 +80,12 @@ export async function drawTestRectItemStd(webCanvas: WebCanvas, layerItemId: str
 
 export async function drawTestRectItems(webCanvas: WebCanvas, layerItemId: string): Promise<void> {
 	const { d2ElementController } = webCanvas
-	const defaultLayerItemId: string = layerItemId
-	d2ElementController.createD2PointElementShapeItem(defaultLayerItemId, new Vector2(40, 40), {
+	d2ElementController.createD2PointElementShapeItem(layerItemId, new Vector2(40, 40), {
 		size: 10,
 		strokeColor: Color.YELLOW_GREEN,
 		isEnableScale: true,
 	})
-	const shapeElementItemIdA1: string = d2ElementController.createD2RectElementShapeItem(defaultLayerItemId, new Vector2(-150, 70), 75, 50, {
+	const shapeElementItemIdA1: string = d2ElementController.createD2RectElementShapeItem(layerItemId, new Vector2(-150, 70), 75, 50, {
 		strokeWidth: 5,
 		strokeColor: Color.RED,
 		isFill: true,
@@ -99,7 +97,7 @@ export async function drawTestRectItems(webCanvas: WebCanvas, layerItemId: strin
 		rotation: Angles.degreeToRadian(0),
 		borderRadius: 10,
 	})
-	const shapeElementItemIdA2: string = d2ElementController.createD2RectElementShapeItem(defaultLayerItemId, new Vector2(-50, 70), 75, 50, {
+	const shapeElementItemIdA2: string = d2ElementController.createD2RectElementShapeItem(layerItemId, new Vector2(-50, 70), 75, 50, {
 		strokeWidth: 5,
 		strokeColor: Color.RED,
 		isFill: true,
@@ -111,7 +109,7 @@ export async function drawTestRectItems(webCanvas: WebCanvas, layerItemId: strin
 		rotation: Angles.degreeToRadian(30),
 		borderRadius: 10,
 	})
-	const shapeElementItemIdA3: string = d2ElementController.createD2RectElementShapeItem(defaultLayerItemId, new Vector2(50, 70), 75, 50, {
+	const shapeElementItemIdA3: string = d2ElementController.createD2RectElementShapeItem(layerItemId, new Vector2(50, 70), 75, 50, {
 		strokeWidth: 5,
 		strokeColor: Color.RED,
 		isFill: true,
@@ -123,7 +121,7 @@ export async function drawTestRectItems(webCanvas: WebCanvas, layerItemId: strin
 		rotation: Angles.degreeToRadian(90),
 		borderRadius: 10,
 	})
-	const shapeElementItemIdA4: string = d2ElementController.createD2RectElementShapeItem(defaultLayerItemId, new Vector2(150, 70), 75, 50, {
+	const shapeElementItemIdA4: string = d2ElementController.createD2RectElementShapeItem(layerItemId, new Vector2(150, 70), 75, 50, {
 		strokeWidth: 5,
 		strokeColor: Color.RED,
 		isFill: true,
@@ -135,7 +133,7 @@ export async function drawTestRectItems(webCanvas: WebCanvas, layerItemId: strin
 		rotation: Angles.degreeToRadian(120),
 		borderRadius: 10,
 	})
-	const shapeElementItemIdB1: string = d2ElementController.createD2RectElementShapeItem(defaultLayerItemId, new Vector2(-150, -30), 75, 50, {
+	const shapeElementItemIdB1: string = d2ElementController.createD2RectElementShapeItem(layerItemId, new Vector2(-150, -30), 75, 50, {
 		strokeWidth: 5,
 		strokeColor: Color.RED,
 		isFill: true,
@@ -147,7 +145,7 @@ export async function drawTestRectItems(webCanvas: WebCanvas, layerItemId: strin
 		rotation: Angles.degreeToRadian(0),
 		borderRadius: 10,
 	})
-	const shapeElementItemIdB2: string = d2ElementController.createD2RectElementShapeItem(defaultLayerItemId, new Vector2(-50, -30), 75, 50, {
+	const shapeElementItemIdB2: string = d2ElementController.createD2RectElementShapeItem(layerItemId, new Vector2(-50, -30), 75, 50, {
 		strokeWidth: 5,
 		strokeColor: Color.RED,
 		isFill: true,
@@ -159,7 +157,7 @@ export async function drawTestRectItems(webCanvas: WebCanvas, layerItemId: strin
 		rotation: Angles.degreeToRadian(30),
 		borderRadius: 10,
 	})
-	const shapeElementItemIdB3: string = d2ElementController.createD2RectElementShapeItem(defaultLayerItemId, new Vector2(50, -30), 75, 50, {
+	const shapeElementItemIdB3: string = d2ElementController.createD2RectElementShapeItem(layerItemId, new Vector2(50, -30), 75, 50, {
 		strokeWidth: 5,
 		strokeColor: Color.RED,
 		isFill: true,
@@ -171,7 +169,7 @@ export async function drawTestRectItems(webCanvas: WebCanvas, layerItemId: strin
 		rotation: Angles.degreeToRadian(90),
 		borderRadius: 10,
 	})
-	const shapeElementItemIdB4: string = d2ElementController.createD2RectElementShapeItem(defaultLayerItemId, new Vector2(150, -30), 75, 50, {
+	const shapeElementItemIdB4: string = d2ElementController.createD2RectElementShapeItem(layerItemId, new Vector2(150, -30), 75, 50, {
 		strokeWidth: 5,
 		strokeColor: Color.RED,
 		isFill: true,
@@ -185,15 +183,14 @@ export async function drawTestRectItems(webCanvas: WebCanvas, layerItemId: strin
 	})
 	const jsonData: Element2DRectJSONViewData = d2ElementController.getD2ElementShapeItemJSONData(shapeElementItemIdB4) as Element2DRectJSONViewData
 	const bbox2: BBox2 = BBox2.createByJSONData(jsonData.bbox2)
-	d2ElementController.createD2RectElementShapeItem(defaultLayerItemId, bbox2.leftUp, bbox2.width, bbox2.height, {
+	d2ElementController.createD2RectElementShapeItem(layerItemId, bbox2.leftUp, bbox2.width, bbox2.height, {
 		strokeColor: Color.GRAY,
 	})
 }
 
 export async function drawTestRectModify(webCanvas: WebCanvas, layerItemId: string): Promise<void> {
 	const { d2ElementController } = webCanvas
-	const defaultLayerItemId: string = layerItemId
-	const shapeElementItemIdA1: string = d2ElementController.createD2RectElementShapeItem(defaultLayerItemId, new Vector2(-100, 50), 200, 100, {
+	const shapeElementItemIdA1: string = d2ElementController.createD2RectElementShapeItem(layerItemId, new Vector2(-100, 50), 200, 100, {
 		strokeWidth: 5,
 		strokeColor: Color.RED,
 		isFill: true,

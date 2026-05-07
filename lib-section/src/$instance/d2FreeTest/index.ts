@@ -38,13 +38,8 @@ import {
 	d2LineToolkitTest06,
 } from './modules/d2LineToolkitTest'
 import { d2CircleToolkitTest01 } from './modules/d2CircleToolkitTest'
-import {
-	d2ArcToolkitTest01,
-	d2ArcToolkitTest02,
-	d2ArcToolkitTest03,
-	d2ArcToolkitTest04,
-	d2ArcToolkitTest05,
-} from './modules/d2ArcToolkitTest'
+import { d2ArcToolkitTest01, d2ArcToolkitTest02, d2ArcToolkitTest03, d2ArcToolkitTest04, d2ArcToolkitTest05 } from './modules/d2ArcToolkitTest'
+import { vector2Test01 } from './modules/vector2Test'
 
 async function initMessageHandle(webCanvas: WebCanvas): Promise<void> {
 	const { messageTool, drawLayerController, d2ElementController, operationController } = webCanvas
@@ -249,11 +244,13 @@ export function main(): void {
 		// d2ArcToolkitTest02(webCanvas, layerItem01Id)
 		// d2ArcToolkitTest03(webCanvas, layerItem01Id)
 		// d2ArcToolkitTest04(webCanvas, layerItem01Id)
-		d2ArcToolkitTest05(webCanvas, layerItem01Id)
+		// d2ArcToolkitTest05(webCanvas, layerItem01Id)
 
 		// intersectionTest01(webCanvas, layerItem01Id)
 		// intersectionTest02(webCanvas, layerItem01Id)
 		// intersectionTest03(webCanvas, layerItem01Id)
+
+		vector2Test01(webCanvas, layerItem01Id)
 
 		console.log(webCanvas)
 	})

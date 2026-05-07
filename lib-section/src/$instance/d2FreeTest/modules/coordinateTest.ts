@@ -2,7 +2,6 @@ import { Color, D2POINT_SHAPE, nextFrameTick, Vector2, Vector3, WebCanvas } from
 
 export function coordinateTest01(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
-	const defaultLayerItemId: string = layerItemId
 	nextFrameTick((): void => {
 		/**
 		 * 在屏幕指定像素位置生成图元
@@ -11,7 +10,7 @@ export function coordinateTest01(webCanvas: WebCanvas, layerItemId: string): voi
 		console.log(`原始像素坐标(pixel): ${[px0, py0]}`)
 		const [sx, sy] = webCanvas.setCanvasSourceNativePixelPos2ScenePhysicsPos([px0, py0])
 		console.log(`换算物理坐标(mm): ${[sx, sy]}`)
-		d2ElementController.createD2PointElementShapeItem(defaultLayerItemId, new Vector2(sx, sy), {
+		d2ElementController.createD2PointElementShapeItem(layerItemId, new Vector2(sx, sy), {
 			size: 5,
 			shape: D2POINT_SHAPE.DOT,
 			strokeColor: Color.YELLOW_GREEN,
@@ -25,11 +24,10 @@ export function coordinateTest01(webCanvas: WebCanvas, layerItemId: string): voi
 
 export function coordinateTest02(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
-	const defaultLayerItemId: string = layerItemId
 	nextFrameTick((): void => {
 		const [px0, py0] = [850, -550]
 		const [sx, sy] = webCanvas.setCanvasSourceNativePixelPos2ScenePhysicsPos([px0, py0])
-		d2ElementController.createD2PointElementShapeItem(defaultLayerItemId, new Vector2(sx, sy), {
+		d2ElementController.createD2PointElementShapeItem(layerItemId, new Vector2(sx, sy), {
 			size: 5,
 			strokeColor: Color.YELLOW_GREEN,
 			isEnableScale: true,
@@ -43,7 +41,6 @@ export function coordinateTest02(webCanvas: WebCanvas, layerItemId: string): voi
 
 export function coordinateTest03(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
-	const defaultLayerItemId: string = layerItemId
 	nextFrameTick((): void => {
 		const [px0, py0] = [850, -550]
 		webCanvas.setCameraCenterByCanvasSourceNativePixelPos(Vector3.createByArray([px0, py0]))

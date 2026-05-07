@@ -4,13 +4,12 @@ import { createPoints } from '../utils/createPoints'
 
 export function d2ArcToolkitTest01(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
-	const defaultLayerItemId: string = layerItemId
 	const pointA: Vector2 = new Vector2(0, 50)
 	const centerPoint: Vector2 = new Vector2(0, 0)
 	const radius: number = 50
 	const startRadian: number = 0
 	const sweepRadian: number = Math.PI
-	d2ElementController.createD2ArcElementShapeItem(defaultLayerItemId, centerPoint, radius, startRadian, startRadian + sweepRadian, SWEEP.CCW, {
+	d2ElementController.createD2ArcElementShapeItem(layerItemId, centerPoint, radius, startRadian, startRadian + sweepRadian, SWEEP.CCW, {
 		isEnableSelect: false,
 		isFill: true,
 		fillColor: new Color(255, 0, 0, 0.5),
@@ -33,7 +32,6 @@ export function d2ArcToolkitTest01(webCanvas: WebCanvas, layerItemId: string): v
 
 export function d2ArcToolkitTest02(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
-	const defaultLayerItemId: string = layerItemId
 	const [startPoint, endPoint, thirdPoint]: [Vector2, Vector2, Vector2] = [new Vector2(50, 10), new Vector2(-20, -20), new Vector2(0, 50)]
 	/**
 	 * 计算圆弧参数: 已知任意三点求圆弧参数
@@ -53,7 +51,7 @@ export function d2ArcToolkitTest02(webCanvas: WebCanvas, layerItemId: string): v
 		return
 	}
 	d2ElementController.createD2ArcElementShapeItem(
-		defaultLayerItemId,
+		layerItemId,
 		arcParams.centerPoint,
 		arcParams.radius,
 		arcParams.startRadian,
@@ -76,7 +74,6 @@ export function d2ArcToolkitTest02(webCanvas: WebCanvas, layerItemId: string): v
 
 export function d2ArcToolkitTest03(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
-	const defaultLayerItemId: string = layerItemId
 	const [radius, startRadian, sweepRadian]: [number, number, number] = [50, 0, (Math.PI * 4) / 3]
 	/**
 	 * 计算圆弧参数: 已知半径/弧度求圆弧参数
@@ -100,7 +97,6 @@ export function d2ArcToolkitTest03(webCanvas: WebCanvas, layerItemId: string): v
 
 export function d2ArcToolkitTest04(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
-	const defaultLayerItemId: string = layerItemId
 	const [centerPoint, startPoint, endPoint]: [Vector2, Vector2, Vector2] = [new Vector2(0, 0), new Vector2(50, 10), new Vector2(0, 50)]
 	/**
 	 * 计算圆弧参数: 已知圆心/起始结束坐标点求圆弧参数
@@ -127,7 +123,6 @@ export function d2ArcToolkitTest04(webCanvas: WebCanvas, layerItemId: string): v
 
 export function d2ArcToolkitTest05(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
-	const defaultLayerItemId: string = layerItemId
 	const [sweepRadian, startPoint, endPoint]: [number, Vector2, Vector2] = [Math.PI, new Vector2(50, 50), new Vector2(-20, -20)]
 	/**
 	 * 计算圆弧参数: 已知旋转弧度/起始结束坐标点求圆弧参数
@@ -147,7 +142,7 @@ export function d2ArcToolkitTest05(webCanvas: WebCanvas, layerItemId: string): v
 		return
 	}
 	d2ElementController.createD2ArcElementShapeItem(
-		defaultLayerItemId,
+		layerItemId,
 		arcParams.centerPoint,
 		arcParams.radius,
 		arcParams.startRadian,

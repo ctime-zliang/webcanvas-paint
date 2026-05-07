@@ -2,7 +2,6 @@ import { Color, ElementJSONData, POINT_EVENT_NAME, Vector2, WebCanvas } from '..
 
 export function drawTestCircleItems(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
-	const defaultLayerItemId: string = layerItemId
 	const allCount: number = 10
 	const DISTX: number = 50
 	const DISTY: number = 50
@@ -21,7 +20,7 @@ export function drawTestCircleItems(webCanvas: WebCanvas, layerItemId: string): 
 		const sy: number = 50 - ri * (R * 2 + DISTY)
 		const ex: number = -100 + DISTX * (ci - 1)
 		const ey: number = 50 - ri * (R * 2 + DISTY) - R * 2
-		const shapeElementItemId: string = d2ElementController.createD2CircleElementShapeItem(defaultLayerItemId, new Vector2(sx, sy), {
+		const shapeElementItemId: string = d2ElementController.createD2CircleElementShapeItem(layerItemId, new Vector2(sx, sy), {
 			radius: R,
 			strokeWidth: SW,
 			isFill: i % 2 === 0,
