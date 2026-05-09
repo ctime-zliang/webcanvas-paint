@@ -176,7 +176,7 @@ export class D2RectToolkit {
 		return arcs
 	}
 
-	public static getRectArcCenters(
+	public static getRectCornerArcCenters(
 		width: number,
 		height: number,
 		leftUp: Vector2,

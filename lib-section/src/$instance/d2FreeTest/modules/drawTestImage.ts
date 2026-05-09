@@ -20,7 +20,7 @@ import earth01 from '../../public/asserts/earth-01.png'
 import { fetchFileByURL, readFileAsImage } from '../../public/utils'
 
 export async function drawTestImageItemStd(webCanvas: WebCanvas, layerItemId: string): Promise<void> {
-	const file: File = await fetchFileByURL(earth01, 'test-image-1.jpg')
+	const file: File = await fetchFileByURL(image03, 'test-image-1.jpg')
 	const readResult: {
 		imageDataURL: string
 		fileHashUuid: string

@@ -9,8 +9,6 @@ import { TElement2DArcJSONViewData } from '../../../types/Element'
 import { buildD2ArcModel, D2ArcModel, TBuildD2ArcModelOptionalParam } from '../../models/primitive2d/D2ArcModel'
 import { D2ElementShapeItemBase } from './elementBase/D2ElementShapeItemBase'
 
-const d2ArcIdentify: D2ArcIdentify = new D2ArcIdentify()
-
 export function buildD2ArcShape(
 	layerItemId: string,
 	centerPoint: Vector2,
@@ -63,7 +61,7 @@ export class D2ArcShape extends D2ElementShapeItemBase {
 		return (this.model as D2ArcModel).startRadian
 	}
 	public set startRadian(value: number) {
-		;(this.model as D2ArcModel).startRadian = d2ArcIdentify.fixStartRadian(value, this.endRadian, this.radius, this.sweep)
+		;(this.model as D2ArcModel).startRadian = D2ArcIdentify.fixStartRadian(value, this.endRadian, this.radius, this.sweep)
 		this.refreshRender()
 	}
 
@@ -71,7 +69,7 @@ export class D2ArcShape extends D2ElementShapeItemBase {
 		return (this.model as D2ArcModel).endRadian
 	}
 	public set endRadian(value: number) {
-		;(this.model as D2ArcModel).endRadian = d2ArcIdentify.fixStartRadian(value, this.startRadian, this.radius, this.sweep)
+		;(this.model as D2ArcModel).endRadian = D2ArcIdentify.fixStartRadian(value, this.startRadian, this.radius, this.sweep)
 		this.refreshRender()
 	}
 

@@ -123,7 +123,7 @@ export function d2ArcToolkitTest04(webCanvas: WebCanvas, layerItemId: string): v
 
 export function d2ArcToolkitTest05(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
-	const [sweepRadian, startPoint, endPoint]: [number, Vector2, Vector2] = [Math.PI, new Vector2(50, 50), new Vector2(-20, -20)]
+	const [sweepRadian, startPoint, endPoint]: [number, Vector2, Vector2] = [Math.PI / 2, new Vector2(50, 70), new Vector2(-20, -20)]
 	/**
 	 * 计算圆弧参数: 已知旋转弧度/起始结束坐标点求圆弧参数
 	 */

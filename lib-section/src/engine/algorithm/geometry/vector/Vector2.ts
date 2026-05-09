@@ -75,6 +75,7 @@ export class Vector2 extends Vector {
 
 	/**
 	 * 计算两向量组成的夹角对应的弧度值
+	 * 即 将 vector2_1 逆时针旋转到 vector2_2 所需要的旋转弧度值
 	 */
 	public static calculateRadianCCWByTwoVector2(vector2_1: Vector2, vector2_2: Vector2): number {
 		const { x: x1, y: y1 } = vector2_1
@@ -234,6 +235,11 @@ export class Vector2 extends Vector {
 		return new BBox2(this.x, this.x, this.y, this.y)
 	}
 
+	/**
+	 * 计算任意坐标点 point 到当前坐标点的向量与 X 轴正方向的夹角
+	 * 		方法返回值包含于 [-Math.PI, Math.PI]
+	 * 		返回正数表示逆时针旋转, 返回负数表示顺时针旋转
+	 */
 	public getRadianByVector2(point: Vector2): number {
 		const dx: number = this.x - point.x
 		const dy: number = this.y - point.y

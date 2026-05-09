@@ -59,9 +59,10 @@ export class D2ArcToolkit {
 		const [crossSP, crossPE, crossSE]: [number, number, number] = [sx * py - sy * px, px * ey - py * ex, sx * ey - sy * ex]
 		if (Math.abs(crossSE) <= DoubleKit.eps1) {
 			/**
-			 * IF: 圆弧起点坐标与圆弧终点坐标共线或近似共线
-			 * 		场景一: 极小圆弧(近似共线)
-			 * 		场景二: 半圆圆弧(共线)
+			 * IF:
+			 * 		圆弧起点坐标与圆弧终点坐标共线或近似共线
+			 * 			场景一: 极小圆弧(近似共线)
+			 * 			场景二: 半圆圆弧(共线)
 			 **/
 			/**
 			 * 向量点乘
@@ -74,7 +75,8 @@ export class D2ArcToolkit {
 			const dotSE: number = sx * ex + sy * ey
 			if (dotSE > 0) {
 				/**
-				 * IF: 极小圆弧
+				 * IF:
+				 * 		极小圆弧
 				 **/
 				return sx * px + sy * py > 0
 			}
@@ -86,7 +88,8 @@ export class D2ArcToolkit {
 		if (arc.sweep === ESweep.CCW) {
 			if (crossSE > 0) {
 				/**
-				 * IF: 小圆弧
+				 * IF:
+				 * 		小圆弧
 				 **/
 				return crossSP >= -DoubleKit.eps1 && crossPE >= -DoubleKit.eps1
 			}
@@ -94,7 +97,8 @@ export class D2ArcToolkit {
 		}
 		if (crossSE < 0) {
 			/**
-			 * IF: 大圆弧
+			 * IF:
+			 * 		大圆弧
 			 **/
 			return crossSP <= DoubleKit.eps1 && crossPE <= DoubleKit.eps1
 		}
@@ -394,8 +398,8 @@ export class D2ArcToolkit {
 			sweep = ESweep.CW
 			centerPoint = startPoint.sub(v.rotateSurround(Vector2.ORIGIN, radian2).mul(radius))
 		}
-		const startRadian: number = startPoint.getRadianByVector2(centerPoint)
-		return { centerPoint, radius, startRadian, endRadian: startRadian + sweepRadian, sweep }
+		const [startRadian, endRadion]: [number, number] = [startPoint.getRadianByVector2(centerPoint), endPoint.getRadianByVector2(centerPoint)]
+		return { centerPoint, radius, startRadian, endRadian: endRadion < 0 ? endRadion + Math.PI * 2 : endRadion, sweep }
 	}
 
 	public static getArcBBox2(

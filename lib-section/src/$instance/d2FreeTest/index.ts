@@ -250,7 +250,7 @@ export function main(): void {
 		// intersectionTest02(webCanvas, layerItem01Id)
 		// intersectionTest03(webCanvas, layerItem01Id)
 
-		vector2Test01(webCanvas, layerItem01Id)
+		// vector2Test01(webCanvas, layerItem01Id)
 
 		console.log(webCanvas)
 	})
