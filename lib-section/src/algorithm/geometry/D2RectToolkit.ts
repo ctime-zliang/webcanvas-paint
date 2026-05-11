@@ -2,9 +2,6 @@ import { CanvasMatrix4 } from '../../engine/algorithm/geometry/matrix/CanvasMatr
 import { Matrix4 } from '../../engine/algorithm/geometry/matrix/Matrix4'
 import { Vector2 } from '../../engine/algorithm/geometry/vector/Vector2'
 import { Vector3 } from '../../engine/algorithm/geometry/vector/Vector3'
-import { ESweep } from '../../engine/config/CommonProfile'
-import { Angles } from '../../engine/math/Angles'
-import { Arc } from './primitives/Arc'
 
 function isPointInRect(rectPoints: Array<Vector2>, point: Vector2): boolean {
 	let sign: number = 0
@@ -122,89 +119,5 @@ export class D2RectToolkit {
 			}
 		}
 		return false
-	}
-
-	public static getRectCornerArcs(
-		width: number,
-		height: number,
-		leftUp: Vector2,
-		leftLow: Vector2,
-		rightUp: Vector2,
-		rightLow: Vector2,
-		radius: number
-	): Array<Arc> {
-		const arcs: Array<Arc> = []
-		if (radius <= 0) {
-			return arcs
-		}
-		const realCornerRadius: number = Math.min(width / 2, height / 2, radius)
-		const horizontal: Vector2 = rightLow.sub(leftLow).normalize()
-		const vertical: Vector2 = leftUp.sub(leftLow).normalize()
-		const [p1, p2, p3, p4]: [Vector2, Vector2, Vector2, Vector2] = [
-			leftLow.add(horizontal.mul(realCornerRadius)),
-			rightLow.add(horizontal.mul(-realCornerRadius)),
-			rightLow.add(vertical.mul(realCornerRadius)),
-			rightUp.add(vertical.mul(-realCornerRadius)),
-		]
-		const [p5, p6, p7, p8]: [Vector2, Vector2, Vector2, Vector2] = [
-			rightUp.add(horizontal.mul(-realCornerRadius)),
-			leftUp.add(horizontal.mul(realCornerRadius)),
-			leftUp.add(vertical.mul(-realCornerRadius)),
-			leftLow.add(vertical.mul(realCornerRadius)),
-		]
-		const [c1, c2, c3, c4]: [Vector2, Vector2, Vector2, Vector2] = [
-			p1.add(vertical.mul(realCornerRadius)),
-			p3.add(horizontal.mul(-realCornerRadius)),
-			p5.add(vertical.mul(-realCornerRadius)),
-			p7.add(horizontal.mul(realCornerRadius)),
-		]
-		const ps: Array<Vector2> = [p8, p1, p2, p3, p4, p5, p6, p7]
-		const cs: Array<Vector2> = [c1, c2, c3, c4]
-		for (let i: number = 0; i < cs.length; i++) {
-			const c: Vector2 = cs[i]
-			arcs.push(
-				Arc.build2(
-					c,
-					Angles.radianToDegree(ps[i * 2].getRadianByVector2(c)),
-					Angles.radianToDegree(ps[i * 2 + 1].getRadianByVector2(c)),
-					realCornerRadius,
-					realCornerRadius,
-					ESweep.CCW
-				)
-			)
-		}
-		return arcs
-	}
-
-	public static getRectCornerArcCenters(
-		width: number,
-		height: number,
-		leftUp: Vector2,
-		leftLow: Vector2,
-		rightUp: Vector2,
-		rightLow: Vector2,
-		radius: number
-	): Array<Vector2> {
-		const centerPoints: Array<Vector2> = []
-		if (radius <= 0) {
-			return centerPoints
-		}
-		const realCornerRadius: number = Math.min(width / 2, height / 2, radius)
-		const horizontal: Vector2 = rightLow.sub(leftLow).normalize()
-		const vertical: Vector2 = leftUp.sub(leftLow).normalize()
-		const [p1, p2, p3, p4]: [Vector2, Vector2, Vector2, Vector2] = [
-			leftLow.add(horizontal.mul(realCornerRadius)),
-			rightLow.add(horizontal.mul(realCornerRadius)),
-			rightLow.add(vertical.mul(-realCornerRadius)),
-			rightUp.add(vertical.mul(-realCornerRadius)),
-		]
-		const [c1, c2, c3, c4]: [Vector2, Vector2, Vector2, Vector2] = [
-			p1.add(vertical.mul(realCornerRadius)),
-			p2.add(horizontal.mul(-realCornerRadius)),
-			p3.add(vertical.mul(-realCornerRadius)),
-			p4.add(horizontal.mul(realCornerRadius)),
-		]
-		centerPoints.push(c1, c2, c3, c4)
-		return centerPoints
 	}
 }

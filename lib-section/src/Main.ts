@@ -68,10 +68,6 @@ export * from './algorithm/geometry/D2CircleToolkit'
 export * from './algorithm/geometry/D2Distance'
 export * from './algorithm/geometry/D2Intersection'
 export * from './algorithm/geometry/D2LineToolkit'
-export * from './algorithm/geometry/D2PolygonToolkit'
-export * from './algorithm/geometry/D2PolylineToolkit'
-export * from './algorithm/geometry/D2PrimitiveToolkit'
-export * from './algorithm/geometry/D2ProtractorToolkit'
 export * from './algorithm/geometry/D2RectToolkit'
 
 export type InputInfoData = InputInfo

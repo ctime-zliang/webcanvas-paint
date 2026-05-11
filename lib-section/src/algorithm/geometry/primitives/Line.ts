@@ -184,18 +184,18 @@ export class Line extends Primitive {
 		}
 		if (cap === ECanvasD2LineCap.BUTT || cap === ECanvasD2LineCap.SQUARE) {
 			if (sweep === ESweep.CW) {
-				pl = Polyline.build5([left, -halfWidth, left, halfWidth, right, halfWidth, right, -halfWidth])
+				pl = Polyline.build3([left, -halfWidth, left, halfWidth, right, halfWidth, right, -halfWidth])
 			} else {
-				pl = Polyline.build5([left, halfWidth, left, -halfWidth, right, -halfWidth, right, halfWidth])
+				pl = Polyline.build3([left, halfWidth, left, -halfWidth, right, -halfWidth, right, halfWidth])
 			}
 		} else {
 			if (sweep === ESweep.CW) {
-				pl = Polyline.build2([
+				pl = Polyline.build1([
 					Arc.build3(new Vector2(left, 0), -Math.PI / 2, -Math.PI, halfWidth, halfWidth),
 					Arc.build3(new Vector2(right, 0), Math.PI / 2, -Math.PI, halfWidth, halfWidth),
 				])
 			} else {
-				pl = Polyline.build2([
+				pl = Polyline.build1([
 					Arc.build3(new Vector2(left, 0), Math.PI / 2, Math.PI, halfWidth, halfWidth),
 					Arc.build3(new Vector2(right, 0), -Math.PI / 2, Math.PI, halfWidth, halfWidth),
 				])

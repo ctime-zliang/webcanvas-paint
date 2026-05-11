@@ -1,4 +1,4 @@
-import { BBox2, Color, D2LineToolkit, Line, Vector2, WebCanvas } from '../../../Main'
+import { BBox2, Color, D2LineToolkit, Line, Polyline, Vector2, WebCanvas } from '../../../Main'
 import { createPoints } from '../utils/createPoints'
 
 export function d2LineToolkitTest01(webCanvas: WebCanvas, layerItemId: string): void {
@@ -35,6 +35,7 @@ export function d2LineToolkitTest01(webCanvas: WebCanvas, layerItemId: string): 
 		{ label: `pointA`, position: pointA },
 		{ label: `Foot`, position: footRes.point },
 	])
+	console.log(d2ElementController.getAllD2ElementShapeResults())
 }
 
 export function d2LineToolkitTest02(webCanvas: WebCanvas, layerItemId: string): void {
@@ -70,6 +71,7 @@ export function d2LineToolkitTest02(webCanvas: WebCanvas, layerItemId: string): 
 		{ label: `pointB`, position: pointB },
 		{ label: `InterPoint`, position: ip1 },
 	])
+	console.log(d2ElementController.getAllD2ElementShapeResults())
 }
 
 export function d2LineToolkitTest03(webCanvas: WebCanvas, layerItemId: string): void {
@@ -101,6 +103,7 @@ export function d2LineToolkitTest03(webCanvas: WebCanvas, layerItemId: string): 
 		{ label: `pointA`, position: pointA },
 		{ label: `closedPoint`, position: closedPoint },
 	])
+	console.log(d2ElementController.getAllD2ElementShapeResults())
 }
 
 export function d2LineToolkitTest04(webCanvas: WebCanvas, layerItemId: string): void {
@@ -137,6 +140,7 @@ export function d2LineToolkitTest04(webCanvas: WebCanvas, layerItemId: string): 
 		{ label: `pointA`, position: pointA },
 		{ label: `closedPoint`, position: closedRes.point },
 	])
+	console.log(d2ElementController.getAllD2ElementShapeResults())
 }
 
 export function d2LineToolkitTest05(webCanvas: WebCanvas, layerItemId: string): void {
@@ -172,6 +176,7 @@ export function d2LineToolkitTest05(webCanvas: WebCanvas, layerItemId: string): 
 	}
 	/* ... */
 	createPoints(webCanvas, layerItemId, renderPoints)
+	console.log(d2ElementController.getAllD2ElementShapeResults())
 }
 
 export function d2LineToolkitTest06(webCanvas: WebCanvas, layerItemId: string): void {
@@ -201,4 +206,32 @@ export function d2LineToolkitTest06(webCanvas: WebCanvas, layerItemId: string): 
 		{ label: `lineBStartPoint`, position: lineBStartPoint },
 		{ label: `lineBEndPoint`, position: lineBEndPoint },
 	])
+	console.log(d2ElementController.getAllD2ElementShapeResults())
+}
+
+export function d2LineToolkitTest07(webCanvas: WebCanvas, layerItemId: string): void {
+	const { d2ElementController } = webCanvas
+	const [pointA, pointB, pointC]: [Vector2, Vector2, Vector2] = [new Vector2(0, 0), new Vector2(150, 10), new Vector2(80, 80)]
+	d2ElementController.createD2LineElementShapeItem(layerItemId, pointA, pointB, {
+		strokeColor: Color.RED,
+		isEnableSelect: false,
+	})
+	d2ElementController.createD2LineElementShapeItem(layerItemId, pointA, pointC, {
+		strokeColor: Color.GREEN,
+		isEnableSelect: false,
+	})
+	/**
+	 * 计算向量投影
+	 */
+	console.log('%c <T: 计算向量投影>', 'color: #ff6600')
+	const line: Vector2 = D2LineToolkit.calculateVectorProjection(pointB, pointC)
+	console.log(line)
+	console.log('%c </T>', 'color: #ff6600')
+	createPoints(webCanvas, layerItemId, [
+		{ label: `PointA`, position: pointA },
+		{ label: `PointB`, position: pointB },
+		{ label: `PointC`, position: pointC },
+		{ label: `PointT`, position: line },
+	])
+	console.log(d2ElementController.getAllD2ElementShapeResults())
 }

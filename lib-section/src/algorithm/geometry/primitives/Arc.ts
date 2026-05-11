@@ -347,7 +347,7 @@ export class Arc extends Primitive {
 					Angles.radianToDegree(a1.pointOn(a1.endRadian).getRadianByVector2(c1)),
 					Angles.radianToDegree(a2.pointOn(a2.endRadian).getRadianByVector2(c2)),
 				]
-				return Polyline.build2([
+				return Polyline.build1([
 					a1,
 					Arc.build3(c1, startRadian1, sweepRadian, halfWidth, halfWidth),
 					a2,
@@ -355,7 +355,7 @@ export class Arc extends Primitive {
 				])
 			}
 			default: {
-				return Polyline.build2([a1, a2])
+				return Polyline.build1([a1, a2])
 			}
 		}
 	}

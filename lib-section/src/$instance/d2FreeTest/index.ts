@@ -36,6 +36,7 @@ import {
 	d2LineToolkitTest04,
 	d2LineToolkitTest05,
 	d2LineToolkitTest06,
+	d2LineToolkitTest07,
 } from './modules/d2LineToolkitTest'
 import { d2CircleToolkitTest01 } from './modules/d2CircleToolkitTest'
 import { d2ArcToolkitTest01, d2ArcToolkitTest02, d2ArcToolkitTest03, d2ArcToolkitTest04, d2ArcToolkitTest05 } from './modules/d2ArcToolkitTest'
@@ -237,6 +238,7 @@ export function main(): void {
 		// d2LineToolkitTest04(webCanvas, layerItem01Id)
 		// d2LineToolkitTest05(webCanvas, layerItem01Id)
 		// d2LineToolkitTest06(webCanvas, layerItem01Id)
+		// d2LineToolkitTest07(webCanvas, layerItem01Id)
 
 		// d2CircleToolkitTest01(webCanvas, layerItem01Id)
 

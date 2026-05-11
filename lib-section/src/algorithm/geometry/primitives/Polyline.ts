@@ -25,12 +25,7 @@ export class Polyline extends StructPrimitive<Polyline> {
 		return new Polyline(ps)
 	}
 
-	public static build2(primitives: ReadonlyArray<Primitive>): Polyline {
-		// return Polyline.build1(asIterator(primitives))
-		return Polyline.build1([])
-	}
-
-	public static build3(points: Array<Vector2>): Polyline {
+	public static build2(points: Array<Vector2>): Polyline {
 		const ps: Array<Primitive> = []
 		let prev: Vector2 = null!
 		for (let i: number = 0; i < points.length; i++) {
@@ -43,21 +38,12 @@ export class Polyline extends StructPrimitive<Polyline> {
 		return new Polyline(ps)
 	}
 
-	public static build4(points: Array<Vector2>): Polyline {
-		// return Polyline.build3(asIterator(points))
-		return Polyline.build1([])
-	}
-
-	public static build5(xys: Array<number>): Polyline {
+	public static build3(xys: Array<number>): Polyline {
 		const vs: Array<Vector2> = []
 		for (let i: number = 0; i < xys.length; i += 2) {
 			vs.push(new Vector2(xys[i], xys[i + 1]))
 		}
-		return this.build4(vs)
-	}
-
-	public static build6(bbox2: BBox2): Polyline {
-		return Polyline.build3([bbox2.leftDown, bbox2.rightDown, bbox2.leftUp, bbox2.leftDown])
+		return this.build2(vs)
 	}
 
 	private _primitives: Array<Primitive>
@@ -133,7 +119,7 @@ export class Polyline extends StructPrimitive<Polyline> {
 				pts.push(this.primitives[i])
 			}
 			pts.push(new Line(endPoint, startPoint))
-			return Polyline.build2(pts)
+			return Polyline.build1(pts)
 		}
 		return this
 	}
@@ -213,7 +199,7 @@ export class Polyline extends StructPrimitive<Polyline> {
 		for (let i: number = 0; i < this.primitives.length; i++) {
 			pts[i] = this.primitives[i].multiplyMatrix3(matrix3)
 		}
-		return Polyline.build2(pts)
+		return Polyline.build1(pts)
 	}
 
 	public isClose(place: number): boolean {
@@ -243,7 +229,7 @@ export class Polyline extends StructPrimitive<Polyline> {
 	}
 
 	public clone(): Polyline {
-		return Polyline.build2(this.primitives)
+		return Polyline.build1(this.primitives)
 	}
 
 	public putItem(item: Primitive | Polyline, place?: number): boolean {
