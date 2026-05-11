@@ -11,8 +11,11 @@ export abstract class Primitive extends StructPrimitive<Primitive> {
 	public abstract get endPoint(): Vector2
 	public abstract get bbox2(): BBox2
 	public abstract get length(): number
-	public abstract multiplyMatrix3(matrix3: Matrix3): Primitive
 	public abstract toPoints(resolution: number): Array<Vector2>
 	public abstract reverse(): Primitive
+	// public abstract multiplyMatrix3(matrix3: Matrix3): Primitive
+	// public abstract mirrorX(): Primitive
+	// public abstract mirrorY(): Primitive
+	// // public abstract mirrorO(): Primitive
 	public abstract storke(width: number, cap: ECanvasD2LineCap, sweep: ESweep): Polyline
 }

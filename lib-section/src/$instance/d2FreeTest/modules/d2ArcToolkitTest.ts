@@ -25,7 +25,7 @@ export function d2ArcToolkitTest01(webCanvas: WebCanvas, layerItemId: string): v
 	/* ... */
 	createPoints(webCanvas, layerItemId, [
 		{ label: `pointA`, position: pointA },
-		{ label: `CenterPoint`, position: centerPoint },
+		{ label: `centerPoint`, position: centerPoint },
 	])
 	console.log(d2ElementController.getAllD2ElementShapeResults())
 }
@@ -65,9 +65,9 @@ export function d2ArcToolkitTest02(webCanvas: WebCanvas, layerItemId: string): v
 	)
 	/* ... */
 	createPoints(webCanvas, layerItemId, [
-		{ label: `StartPoint`, position: startPoint },
-		{ label: `ThirdPoint`, position: thirdPoint },
-		{ label: `EndPoint`, position: endPoint },
+		{ label: `startPoint`, position: startPoint },
+		{ label: `thirdPoint`, position: thirdPoint },
+		{ label: `endPoint`, position: endPoint },
 	])
 	console.log(d2ElementController.getAllD2ElementShapeResults())
 }
@@ -88,9 +88,9 @@ export function d2ArcToolkitTest03(webCanvas: WebCanvas, layerItemId: string): v
 	console.log('%c </T>', 'color: #ff6600')
 	/* ... */
 	createPoints(webCanvas, layerItemId, [
-		{ label: `StartPoint`, position: arcParams.startPoint },
-		{ label: `MiddlePoint`, position: arcParams.middlePoint },
-		{ label: `EndPoint`, position: arcParams.endPoint },
+		{ label: `startPoint`, position: arcParams.startPoint },
+		{ label: `middlePoint`, position: arcParams.middlePoint },
+		{ label: `endPoint`, position: arcParams.endPoint },
 	])
 	console.log(d2ElementController.getAllD2ElementShapeResults())
 }
@@ -114,9 +114,9 @@ export function d2ArcToolkitTest04(webCanvas: WebCanvas, layerItemId: string): v
 	}
 	/* ... */
 	createPoints(webCanvas, layerItemId, [
-		{ label: `StartPoint`, position: startPoint },
-		{ label: `CenterPoint`, position: centerPoint },
-		{ label: `EndPoint`, position: endPoint },
+		{ label: `startPoint`, position: startPoint },
+		{ label: `centerPoint`, position: centerPoint },
+		{ label: `endPoint`, position: endPoint },
 	])
 	console.log(d2ElementController.getAllD2ElementShapeResults())
 }
@@ -156,9 +156,9 @@ export function d2ArcToolkitTest05(webCanvas: WebCanvas, layerItemId: string): v
 	)
 	/* ... */
 	createPoints(webCanvas, layerItemId, [
-		{ label: `StartPoint`, position: startPoint },
-		{ label: `CenterPoint`, position: arcParams.centerPoint },
-		{ label: `EndPoint`, position: endPoint },
+		{ label: `startPoint`, position: startPoint },
+		{ label: `centerPoint`, position: arcParams.centerPoint },
+		{ label: `endPoint`, position: endPoint },
 	])
 	console.log(d2ElementController.getAllD2ElementShapeResults())
 }

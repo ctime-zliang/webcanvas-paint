@@ -256,7 +256,21 @@ export class Arc extends Primitive {
 		return Arc.build1(this.endPoint, this.startPoint, this.rx, this.ry, this.isOverHalfCircle, this.sweepRadian >= 0 ? ESweep.CW : ESweep.CCW)
 	}
 
-	public mirror(origin?: Vector2): Arc {
+	public mirrorX(origin: Vector2 = Vector2.ORIGIN): Arc {
+		if (this.startPoint.equalsWithVector2(this.endPoint)) {
+			return Arc.build3(this.centerPoint.mirrorSurroundX(), 0, Math.PI * 2, this.rx, this.ry)
+		}
+		return Arc.build1(
+			this.startPoint.mirrorSurroundX(origin),
+			this.endPoint.mirrorSurroundX(origin),
+			this.rx,
+			this.ry,
+			this.isOverHalfCircle,
+			this.sweepRadian >= 0 ? ESweep.CW : ESweep.CCW
+		)
+	}
+
+	public mirrorY(origin: Vector2 = Vector2.ORIGIN): Arc {
 		if (this.startPoint.equalsWithVector2(this.endPoint)) {
 			return Arc.build3(this.centerPoint.mirrorSurroundY(), 0, Math.PI * 2, this.rx, this.ry)
 		}

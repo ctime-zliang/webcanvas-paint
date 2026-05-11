@@ -228,10 +228,81 @@ export function d2LineToolkitTest07(webCanvas: WebCanvas, layerItemId: string): 
 	console.log(line)
 	console.log('%c </T>', 'color: #ff6600')
 	createPoints(webCanvas, layerItemId, [
-		{ label: `PointA`, position: pointA },
-		{ label: `PointB`, position: pointB },
-		{ label: `PointC`, position: pointC },
-		{ label: `PointT`, position: line },
+		{ label: `pointA`, position: pointA },
+		{ label: `pointB`, position: pointB },
+		{ label: `pointC`, position: pointC },
+		{ label: `pointT`, position: line },
+	])
+	console.log(d2ElementController.getAllD2ElementShapeResults())
+}
+
+export function d2LineToolkitTest08(webCanvas: WebCanvas, layerItemId: string): void {
+	const { d2ElementController } = webCanvas
+	const [pointA, pointB]: [Vector2, Vector2] = [new Vector2(-50, -30), new Vector2(70, 40)]
+	d2ElementController.createD2LineElementShapeItem(layerItemId, pointA, pointB, {
+		strokeColor: Color.RED,
+		isEnableSelect: false,
+	})
+	/**
+	 * 线段绕自镜像翻转
+	 */
+	console.log('%c <T: 线段绕自镜像翻转>', 'color: #ff6600')
+	const lineP: Line = new Line(pointA, pointB)
+	const lineA: Line = D2LineToolkit.flipX(lineP)
+	console.log(lineA)
+	const lineB: Line = D2LineToolkit.flipY(lineP)
+	console.log(lineB)
+	console.log('%c </T>', 'color: #ff6600')
+	d2ElementController.createD2LineElementShapeItem(layerItemId, lineA.startPoint, lineA.endPoint, {
+		strokeColor: Color.GOLDEN,
+		isEnableSelect: false,
+	})
+	d2ElementController.createD2LineElementShapeItem(layerItemId, lineB.startPoint, lineB.endPoint, {
+		strokeColor: Color.GREEN,
+		isEnableSelect: false,
+	})
+	createPoints(webCanvas, layerItemId, [
+		{ label: `pointA`, position: pointA },
+		{ label: `pointB`, position: pointB },
+	])
+	console.log(d2ElementController.getAllD2ElementShapeResults())
+}
+
+export function d2LineToolkitTest09(webCanvas: WebCanvas, layerItemId: string): void {
+	const { d2ElementController } = webCanvas
+	const [pointA, pointB]: [Vector2, Vector2] = [new Vector2(-50, -30), new Vector2(70, 40)]
+	const rotation1: number = 0
+	d2ElementController.createD2LineElementShapeItem(layerItemId, pointA, pointB, {
+		strokeColor: Color.RED,
+		isEnableSelect: false,
+	})
+	/**
+	 * 线段绕自旋转
+	 */
+	console.log('%c <T: 线段绕自旋转>', 'color: #ff6600')
+	const lineP: Line = new Line(pointA, pointB)
+	const rotation2: number = rotation1 + Math.PI / 4
+	const lineN1: Line = D2LineToolkit.rotation(lineP, rotation2, rotation1)
+	console.log(lineN1)
+	const rotation3: number = rotation2 + Math.PI / 4
+	const lineN2: Line = D2LineToolkit.rotation(lineN1, rotation3, rotation2)
+	console.log(lineN2)
+	console.log('%c </T>', 'color: #ff6600')
+	d2ElementController.createD2LineElementShapeItem(layerItemId, lineN1.startPoint, lineN1.endPoint, {
+		strokeColor: Color.GOLDEN,
+		isEnableSelect: false,
+	})
+	d2ElementController.createD2LineElementShapeItem(layerItemId, lineN2.startPoint, lineN2.endPoint, {
+		strokeColor: Color.YELLOW,
+		isEnableSelect: false,
+	})
+	createPoints(webCanvas, layerItemId, [
+		{ label: `pointA`, position: lineP.startPoint },
+		{ label: `pointB`, position: lineP.endPoint },
+		{ label: `pointC`, position: lineN1.startPoint },
+		{ label: `pointD`, position: lineN1.endPoint },
+		{ label: `pointE`, position: lineN2.startPoint },
+		{ label: `pointF`, position: lineN2.endPoint },
 	])
 	console.log(d2ElementController.getAllD2ElementShapeResults())
 }

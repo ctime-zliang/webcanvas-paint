@@ -158,15 +158,34 @@ export class Polyline extends StructPrimitive<Polyline> {
 		return new Polyline(pts)
 	}
 
-	public mirror(origin?: Vector2): Polyline {
+	public mirrorX(origin: Vector2 = Vector2.ORIGIN): Polyline {
 		const pts: Array<Primitive> = []
 		for (let i: number = 0; i < this.primitives.length; i++) {
 			const pt: Primitive = this.primitives[i]
 			let nPt: Primitive = null!
 			if (pt instanceof Line) {
-				nPt = pt.mirror(origin)
+				nPt = pt.mirrorX(origin)
 			} else if (pt instanceof Arc) {
-				nPt = pt.mirror(origin)
+				nPt = pt.mirrorX(origin)
+			} else {
+				continue
+			}
+			if (nPt) {
+				pts[i] = nPt
+			}
+		}
+		return new Polyline(pts)
+	}
+
+	public mirrorY(origin: Vector2 = Vector2.ORIGIN): Polyline {
+		const pts: Array<Primitive> = []
+		for (let i: number = 0; i < this.primitives.length; i++) {
+			const pt: Primitive = this.primitives[i]
+			let nPt: Primitive = null!
+			if (pt instanceof Line) {
+				nPt = pt.mirrorY(origin)
+			} else if (pt instanceof Arc) {
+				nPt = pt.mirrorY(origin)
 			} else {
 				continue
 			}

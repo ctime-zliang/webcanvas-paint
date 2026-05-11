@@ -7,6 +7,7 @@ import { ECanvasD2LineCap } from '../../../engine/config/PrimitiveProfile'
 import { Arc } from './Arc'
 import { Polyline } from './Polyline'
 import { Primitive } from './Primitive'
+import { Matrix4 } from '../../../engine/algorithm/geometry/matrix/Matrix4'
 
 export class Line extends Primitive {
 	private _startPoint: Vector2
@@ -118,7 +119,7 @@ export class Line extends Primitive {
 	}
 
 	public isPoint(): boolean {
-		if ((this, this.startPoint.distance(this.endPoint) <= 1e-8)) {
+		if ((this, this.startPoint.distance(this.endPoint) <= DoubleKit.eps1)) {
 			return true
 		}
 		return this.startPoint.equalsWithVector2(this.endPoint)
@@ -128,7 +129,15 @@ export class Line extends Primitive {
 		return new Line(this._startPoint.multiplyMatrix3(matrix3), this._endPoint.multiplyMatrix3(matrix3))
 	}
 
-	public mirror(origin?: Vector2): Line {
+	public multiplyMatrix4(matrix4: Matrix4): Line {
+		return new Line(this._startPoint.multiplyMatrix4(matrix4), this._endPoint.multiplyMatrix4(matrix4))
+	}
+
+	public mirrorX(origin: Vector2 = Vector2.ORIGIN): Line {
+		return new Line(this.startPoint.mirrorSurroundX(origin), this.endPoint.mirrorSurroundX(origin))
+	}
+
+	public mirrorY(origin: Vector2 = Vector2.ORIGIN): Line {
 		return new Line(this.startPoint.mirrorSurroundY(origin), this.endPoint.mirrorSurroundY(origin))
 	}
 

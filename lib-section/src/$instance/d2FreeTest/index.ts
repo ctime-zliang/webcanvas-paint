@@ -37,10 +37,13 @@ import {
 	d2LineToolkitTest05,
 	d2LineToolkitTest06,
 	d2LineToolkitTest07,
+	d2LineToolkitTest08,
+	d2LineToolkitTest09,
 } from './modules/d2LineToolkitTest'
 import { d2CircleToolkitTest01 } from './modules/d2CircleToolkitTest'
 import { d2ArcToolkitTest01, d2ArcToolkitTest02, d2ArcToolkitTest03, d2ArcToolkitTest04, d2ArcToolkitTest05 } from './modules/d2ArcToolkitTest'
 import { vector2Test01 } from './modules/vector2Test'
+import { lineTest01, lineTest02 } from './modules/line'
 
 async function initMessageHandle(webCanvas: WebCanvas): Promise<void> {
 	const { messageTool, drawLayerController, d2ElementController, operationController } = webCanvas
@@ -232,6 +235,9 @@ export function main(): void {
 		// drawTestTextItemStd(webCanvas, layerItem01Id)
 		// drawTestTextItemSim(webCanvas, layerItem01Id)
 
+		// lineTest01(webCanvas, layerItem01Id)
+		// lineTest02(webCanvas, layerItem01Id)
+
 		// d2LineToolkitTest01(webCanvas, layerItem01Id)
 		// d2LineToolkitTest02(webCanvas, layerItem01Id)
 		// d2LineToolkitTest03(webCanvas, layerItem01Id)
@@ -239,6 +245,8 @@ export function main(): void {
 		// d2LineToolkitTest05(webCanvas, layerItem01Id)
 		// d2LineToolkitTest06(webCanvas, layerItem01Id)
 		// d2LineToolkitTest07(webCanvas, layerItem01Id)
+		// d2LineToolkitTest08(webCanvas, layerItem01Id)
+		d2LineToolkitTest09(webCanvas, layerItem01Id)
 
 		// d2CircleToolkitTest01(webCanvas, layerItem01Id)
 

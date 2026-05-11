@@ -1,10 +1,75 @@
 import { BBox2 } from '../../engine/algorithm/geometry/bbox/BBox2'
+import { CanvasMatrix4 } from '../../engine/algorithm/geometry/matrix/CanvasMatrix4'
+import { Matrix4 } from '../../engine/algorithm/geometry/matrix/Matrix4'
 import { Vector2 } from '../../engine/algorithm/geometry/vector/Vector2'
+import { Vector3 } from '../../engine/algorithm/geometry/vector/Vector3'
 import { DoubleKit } from '../../engine/math/Doublekit'
 import { Line } from './primitives/Line'
 import { Triangle } from './primitives/Triangle'
 
 export class D2LineToolkit {
+	public static rotationTranslate(
+		newRotation: number,
+		oldRotation: number,
+		startPoint: Vector2,
+		endPoint: Vector2
+	): {
+		rotation: number
+		maxtrix4: Matrix4
+	} {
+		const rotation: number = newRotation % (Math.PI * 2)
+		const effectMatrix: Matrix4 = CanvasMatrix4.setRotationByLine(
+			rotation - oldRotation,
+			new Vector3((startPoint.x + endPoint.x) / 2, (startPoint.y + endPoint.y) / 2, 0),
+			new Vector3((startPoint.x + endPoint.x) / 2, (startPoint.y + endPoint.y) / 2, 1)
+		)
+		return {
+			rotation,
+			maxtrix4: effectMatrix,
+		}
+	}
+
+	public static flipXTranslate(
+		startPoint: Vector2,
+		endPoint: Vector2
+	): {
+		maxtrix4: Matrix4
+	} {
+		const cx: number = (startPoint.x + endPoint.x) * 0.5
+		const cy: number = (startPoint.y + endPoint.y) * 0.5
+		return {
+			maxtrix4: new Matrix4([-1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 2 * cx, 0, 0, 1]),
+		}
+	}
+
+	public static flipYTranslate(
+		startPoint: Vector2,
+		endPoint: Vector2
+	): {
+		maxtrix4: Matrix4
+	} {
+		const cx: number = (startPoint.x + endPoint.x) * 0.5
+		const cy: number = (startPoint.y + endPoint.y) * 0.5
+		return {
+			maxtrix4: new Matrix4([1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1, 0, 0, 2 * cy, 0, 1]),
+		}
+	}
+
+	public static rotation(line: Line, newRotation: number, oldRotation: number): Line {
+		const { maxtrix4 } = D2LineToolkit.rotationTranslate(newRotation, oldRotation, line.startPoint, line.endPoint)
+		return line.multiplyMatrix3(maxtrix4.toMatrix3())
+	}
+
+	public static flipX(line: Line): Line {
+		const { maxtrix4 } = D2LineToolkit.flipXTranslate(line.startPoint, line.endPoint)
+		return line.multiplyMatrix3(maxtrix4.toMatrix3())
+	}
+
+	public static flipY(line: Line): Line {
+		const { maxtrix4 } = D2LineToolkit.flipYTranslate(line.startPoint, line.endPoint)
+		return line.multiplyMatrix3(maxtrix4.toMatrix3())
+	}
+
 	/**
 	 * 计算点 point 到直线 line 的垂足坐标
 	 * 		令

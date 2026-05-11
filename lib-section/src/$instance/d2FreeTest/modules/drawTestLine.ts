@@ -7,7 +7,7 @@ function getRandomInArea(min: number = 0, max: number = Number.MAX_SAFE_INTEGER)
 export function drawTestLineItemStd(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
 	const shapeElementItemId: string = d2ElementController.createD2LineElementShapeItem(layerItemId, new Vector2(-70, -70), new Vector2(70, 70), {
-		strokeWidth: 40,
+		strokeWidth: 20,
 		strokeColor: Color.RED,
 		lineCap: CANVAS_LINE_CAP.ROUND,
 		rectBorderRadius: 0,
