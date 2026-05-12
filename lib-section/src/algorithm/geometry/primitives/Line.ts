@@ -7,7 +7,6 @@ import { ECanvasD2LineCap } from '../../../engine/config/PrimitiveProfile'
 import { Arc } from './Arc'
 import { Polyline } from './Polyline'
 import { Primitive } from './Primitive'
-import { Matrix4 } from '../../../engine/algorithm/geometry/matrix/Matrix4'
 
 export class Line extends Primitive {
 	private _startPoint: Vector2
@@ -129,12 +128,19 @@ export class Line extends Primitive {
 		return new Line(this._startPoint.multiplyMatrix3(matrix3), this._endPoint.multiplyMatrix3(matrix3))
 	}
 
-	public mirrorX(origin: Vector2 = Vector2.ORIGIN): Line {
-		return new Line(this.startPoint.mirrorSurroundX(origin), this.endPoint.mirrorSurroundX(origin))
+	public mirrorX(yValue: number = 0): Line {
+		return new Line(this.startPoint.mirrorSurroundX(yValue), this.endPoint.mirrorSurroundX(yValue))
 	}
 
-	public mirrorY(origin: Vector2 = Vector2.ORIGIN): Line {
-		return new Line(this.startPoint.mirrorSurroundY(origin), this.endPoint.mirrorSurroundY(origin))
+	public mirrorY(xValue: number = 0): Line {
+		return new Line(this.startPoint.mirrorSurroundY(xValue), this.endPoint.mirrorSurroundY(xValue))
+	}
+
+	public mirrorO(origin: Vector2 = Vector2.ORIGIN): Line {
+		return new Line(
+			this.startPoint.mirrorSurroundY(origin.x).mirrorSurroundX(origin.y),
+			this.endPoint.mirrorSurroundY(origin.x).mirrorSurroundX(origin.y)
+		)
 	}
 
 	public isParallel(stLine: Line, needSameDir: boolean = false): boolean {
@@ -209,43 +215,5 @@ export class Line extends Primitive {
 		const orientation: number = Math.atan2(yOff, xOff)
 		pl = pl.asClose()
 		return pl.multiplyMatrix3(Matrix3.rotate(orientation).multiply3(Matrix3.translate(origin.x, origin.y)))
-	}
-
-	public isInArea(point: Vector2, width: number, cap: ECanvasD2LineCap): boolean {
-		const { x, y } = point
-		let [start, end]: [Vector2, Vector2] = [this.startPoint, this.endPoint]
-		const isRound: boolean = cap === ECanvasD2LineCap.ROUND ? true : false
-		const [dx, dy]: [number, number] = [x - start.x, y - start.y]
-		const [dx2, dy2]: [number, number] = [x - end.x, y - end.y]
-		const [X, Y]: [number, number] = [end.x - start.y, end.y - start.y]
-		const vertical: Vector2 = new Vector2(Y, X).normalize()
-		const [limitX, limitY]: [number, number] = [X + (vertical.x * width) / 2, Y + (vertical.y * width) / 2]
-		const limit: number = limitX * limitX + limitY * limitY
-		const [len, len2]: [number, number] = [dx * dx + dy * dy, dx2 * dx2 + dy2 * dy2]
-		const length: number = Math.sqrt(X * X + Y * Y)
-		if (Math.abs(dx * Y - dy * X) / 2 <= (length * width) / 4 && len <= limit && len2 <= limit) {
-			if (isRound) {
-				return true
-			}
-			const p2end: Vector2 = new Vector2(x, y).sub(end).normalize()
-			const p2start: Vector2 = new Vector2(x, y).sub(start).normalize()
-			const cross: number = new Vector2(vertical.x, vertical.y).cross(p2end)
-			const corss1: number = new Vector2(vertical.x, vertical.y).cross(p2start)
-			if (cross >= 0 && corss1 < +0) {
-				return true
-			}
-			return false
-		}
-		if (isRound) {
-			const r: number = width / 2
-			if (len <= r * r) {
-				return true
-			}
-			if (len2 <= r * r) {
-				return true
-			}
-			return false
-		}
-		return false
 	}
 }

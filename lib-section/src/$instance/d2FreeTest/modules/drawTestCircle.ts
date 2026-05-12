@@ -1,4 +1,4 @@
-import { Color, ElementJSONData, POINT_EVENT_NAME, Vector2, WebCanvas } from '../../../Main'
+import { Color, ElementJSONData, Vector2, WebCanvas } from '../../../Main'
 
 export function drawTestCircleItems(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas

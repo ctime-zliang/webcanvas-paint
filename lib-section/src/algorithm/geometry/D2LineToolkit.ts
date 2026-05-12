@@ -3,6 +3,7 @@ import { CanvasMatrix4 } from '../../engine/algorithm/geometry/matrix/CanvasMatr
 import { Matrix4 } from '../../engine/algorithm/geometry/matrix/Matrix4'
 import { Vector2 } from '../../engine/algorithm/geometry/vector/Vector2'
 import { Vector3 } from '../../engine/algorithm/geometry/vector/Vector3'
+import { ECanvasD2LineCap } from '../../engine/config/PrimitiveProfile'
 import { DoubleKit } from '../../engine/math/Doublekit'
 import { Line } from './primitives/Line'
 import { Triangle } from './primitives/Triangle'
@@ -627,5 +628,53 @@ export class D2LineToolkit {
 			((A.x * B.x + A.y * B.y) * B.y) / (B.x * B.x + B.y * B.y)
 		)
 		return C
+	}
+
+	/**
+	 * 检查点是否处于有宽线段的描边范围内
+	 */
+	public static isInLineArea(line: Line, point: Vector2, width: number, cap: ECanvasD2LineCap): boolean {
+		const [sx, sy, ex, ey]: [number, number, number, number] = [line.startPoint.x, line.startPoint.y, line.endPoint.x, line.endPoint.y]
+		const [px, py]: [number, number] = [point.x, point.y]
+		const [vx, vy]: [number, number] = [ex - sx, ey - sy]
+		const [wx, wy]: [number, number] = [px - sx, py - sy]
+		const r: number = width * 0.5
+		const rr: number = r * r
+		const lenSq: number = vx * vx + vy * vy
+		if (lenSq <= Number.EPSILON) {
+			const [dx, dy]: [number, number] = [px - sx, py - sy]
+			return dx * dx + dy * dy <= rr
+		}
+		let t: number = (wx * vx + wy * vy) / lenSq
+		switch (cap) {
+			case ECanvasD2LineCap.ROUND: {
+				t = t < 0 ? 0 : t > 1 ? 1 : t
+				break
+			}
+			case ECanvasD2LineCap.BUTT: {
+				if (t < 0 || t > 1) {
+					return false
+				}
+				break
+			}
+			case ECanvasD2LineCap.SQUARE: {
+				const len: number = Math.sqrt(lenSq)
+				const extend: number = r / len
+				if (t < -extend || t > 1 + extend) {
+					return false
+				}
+				t = t < 0 ? 0 : t > 1 ? 1 : t
+				break
+			}
+			default: {
+				if (t < 0 || t > 1) {
+					return false
+				}
+			}
+		}
+		const [qx, qy]: [number, number] = [sx + t * vx, sy + t * vy]
+		const [dx, dy]: [number, number] = [px - qx, py - qy]
+		const distSq: number = dx * dx + dy * dy
+		return distSq <= rr
 	}
 }

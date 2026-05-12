@@ -256,13 +256,13 @@ export class Arc extends Primitive {
 		return Arc.build1(this.endPoint, this.startPoint, this.rx, this.ry, this.isOverHalfCircle, this.sweepRadian >= 0 ? ESweep.CW : ESweep.CCW)
 	}
 
-	public mirrorX(origin: Vector2 = Vector2.ORIGIN): Arc {
+	public mirrorX(yValue: number = 0): Arc {
 		if (this.startPoint.equalsWithVector2(this.endPoint)) {
 			return Arc.build3(this.centerPoint.mirrorSurroundX(), 0, Math.PI * 2, this.rx, this.ry)
 		}
 		return Arc.build1(
-			this.startPoint.mirrorSurroundX(origin),
-			this.endPoint.mirrorSurroundX(origin),
+			this.startPoint.mirrorSurroundX(yValue),
+			this.endPoint.mirrorSurroundX(yValue),
 			this.rx,
 			this.ry,
 			this.isOverHalfCircle,
@@ -270,13 +270,13 @@ export class Arc extends Primitive {
 		)
 	}
 
-	public mirrorY(origin: Vector2 = Vector2.ORIGIN): Arc {
+	public mirrorY(xValue: number = 0): Arc {
 		if (this.startPoint.equalsWithVector2(this.endPoint)) {
 			return Arc.build3(this.centerPoint.mirrorSurroundY(), 0, Math.PI * 2, this.rx, this.ry)
 		}
 		return Arc.build1(
-			this.startPoint.mirrorSurroundY(origin),
-			this.endPoint.mirrorSurroundY(origin),
+			this.startPoint.mirrorSurroundY(xValue),
+			this.endPoint.mirrorSurroundY(xValue),
 			this.rx,
 			this.ry,
 			this.isOverHalfCircle,
@@ -319,7 +319,7 @@ export class Arc extends Primitive {
 			centerDirect = centerDirect.mul(-1)
 		}
 		return this.centerPoint.add(centerDirect.mul(this.rx))
-	}	
+	}
 
 	public storke(width: number, cap: ECanvasD2LineCap, sweep: ESweep): Polyline {
 		const halfWidth: number = width / 2

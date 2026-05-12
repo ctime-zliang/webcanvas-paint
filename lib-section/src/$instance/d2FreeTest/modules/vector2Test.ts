@@ -1,4 +1,4 @@
-import { Color, Vector2, WebCanvas } from '../../../Main'
+import { Vector2, WebCanvas } from '../../../Main'
 import { createPoints } from '../utils/createPoints'
 
 export function vector2Test01(webCanvas: WebCanvas, layerItemId: string): void {

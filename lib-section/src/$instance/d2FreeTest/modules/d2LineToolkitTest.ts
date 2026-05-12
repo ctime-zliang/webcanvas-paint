@@ -1,4 +1,4 @@
-import { BBox2, Color, D2LineToolkit, Line, Polyline, Vector2, WebCanvas } from '../../../Main'
+import { BBox2, CANVAS_LINE_CAP, CanvasD2LineCap, Color, D2LineToolkit, Line, Vector2, WebCanvas } from '../../../Main'
 import { createPoints } from '../utils/createPoints'
 
 export function d2LineToolkitTest01(webCanvas: WebCanvas, layerItemId: string): void {
@@ -303,6 +303,33 @@ export function d2LineToolkitTest09(webCanvas: WebCanvas, layerItemId: string): 
 		{ label: `pointD`, position: lineN1.endPoint },
 		{ label: `pointE`, position: lineN2.startPoint },
 		{ label: `pointF`, position: lineN2.endPoint },
+	])
+	console.log(d2ElementController.getAllD2ElementShapeResults())
+}
+
+export function d2LineToolkitTest10(webCanvas: WebCanvas, layerItemId: string): void {
+	const { d2ElementController } = webCanvas
+	const [pointA, pointB]: [Vector2, Vector2] = [new Vector2(-50, -30), new Vector2(70, 40)]
+	const strokeWidth: number = 30
+	const cap: CanvasD2LineCap = CANVAS_LINE_CAP.ROUND
+	d2ElementController.createD2LineElementShapeItem(layerItemId, pointA, pointB, {
+		strokeColor: Color.RED,
+		isEnableSelect: false,
+		strokeWidth,
+	})
+	const [pointR]: [Vector2] = [new Vector2(10, 23)]
+	/**
+	 * 检查点是否在有宽线段范围内
+	 */
+	console.log('%c <T: 检查点是否在有宽线段范围内>', 'color: #ff6600')
+	const lineP: Line = new Line(pointA, pointB)
+	const a1: boolean = D2LineToolkit.isInLineArea(lineP, pointR, strokeWidth, cap)
+	console.log(a1)
+	console.log('%c </T>', 'color: #ff6600')
+	createPoints(webCanvas, layerItemId, [
+		{ label: `pointA`, position: lineP.startPoint },
+		{ label: `pointB`, position: lineP.endPoint },
+		{ label: `pointR`, position: pointR },
 	])
 	console.log(d2ElementController.getAllD2ElementShapeResults())
 }

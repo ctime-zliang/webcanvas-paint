@@ -1,5 +1,5 @@
 import { Cdt2ds } from '../../../engine/modules/d2Canvas2Svg/cdt2ds/Cdt2ds'
-import { Color, D2EdgeItem, D2FONT_STYLE, D2PointItem, nextFrameTick, Vector2, WebCanvas } from '../../../Main'
+import { Color, D2EdgeItem, D2PointItem, nextFrameTick, Vector2, WebCanvas } from '../../../Main'
 
 const POINTS: Array<D2PointItem> = [
 	// Outer

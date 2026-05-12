@@ -297,17 +297,17 @@ export class Vector2 extends Vector {
 	}
 
 	/**
-	 * 向量关于 origin2 坐标点的 x 坐标值的 X 轴镜像
+	 * 当前向量关于直线 y = value 的镜像向量坐标
 	 */
-	public mirrorSurroundX(origin2: Vector2 = Vector2.ORIGIN): Vector2 {
-		return new Vector2(this.x, 2 * origin2.y - this.y)
+	public mirrorSurroundX(yValue: number = 0): Vector2 {
+		return new Vector2(this.x, 2 * yValue - this.y)
 	}
 
 	/**
-	 * 向量关于 origin2 坐标点的 y 坐标值的 Y 轴镜像
+	 * 当前向量关于直线 x = value 的镜像向量坐标
 	 */
-	public mirrorSurroundY(origin2: Vector2 = Vector2.ORIGIN): Vector2 {
-		return new Vector2(2 * origin2.x - this.x, this.y)
+	public mirrorSurroundY(xValue: number = 0): Vector2 {
+		return new Vector2(2 * xValue - this.x, this.y)
 	}
 
 	/**
