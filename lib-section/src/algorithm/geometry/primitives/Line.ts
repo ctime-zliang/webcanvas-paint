@@ -129,10 +129,6 @@ export class Line extends Primitive {
 		return new Line(this._startPoint.multiplyMatrix3(matrix3), this._endPoint.multiplyMatrix3(matrix3))
 	}
 
-	public multiplyMatrix4(matrix4: Matrix4): Line {
-		return new Line(this._startPoint.multiplyMatrix4(matrix4), this._endPoint.multiplyMatrix4(matrix4))
-	}
-
 	public mirrorX(origin: Vector2 = Vector2.ORIGIN): Line {
 		return new Line(this.startPoint.mirrorSurroundX(origin), this.endPoint.mirrorSurroundX(origin))
 	}

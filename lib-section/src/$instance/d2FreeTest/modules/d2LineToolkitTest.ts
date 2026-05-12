@@ -244,9 +244,9 @@ export function d2LineToolkitTest08(webCanvas: WebCanvas, layerItemId: string): 
 		isEnableSelect: false,
 	})
 	/**
-	 * 线段绕自镜像翻转
+	 * 线段自镜像翻转
 	 */
-	console.log('%c <T: 线段绕自镜像翻转>', 'color: #ff6600')
+	console.log('%c <T: 线段自镜像翻转>', 'color: #ff6600')
 	const lineP: Line = new Line(pointA, pointB)
 	const lineA: Line = D2LineToolkit.flipX(lineP)
 	console.log(lineA)
@@ -277,9 +277,9 @@ export function d2LineToolkitTest09(webCanvas: WebCanvas, layerItemId: string): 
 		isEnableSelect: false,
 	})
 	/**
-	 * 线段绕自旋转
+	 * 线段自旋转
 	 */
-	console.log('%c <T: 线段绕自旋转>', 'color: #ff6600')
+	console.log('%c <T: 线段自旋转>', 'color: #ff6600')
 	const lineP: Line = new Line(pointA, pointB)
 	const rotation2: number = rotation1 + Math.PI / 4
 	const lineN1: Line = D2LineToolkit.rotation(lineP, rotation2, rotation1)

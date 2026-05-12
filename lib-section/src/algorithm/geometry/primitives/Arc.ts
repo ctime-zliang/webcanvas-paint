@@ -284,25 +284,6 @@ export class Arc extends Primitive {
 		)
 	}
 
-	public sectorArea(): number {
-		return Math.abs(this.sweepRadian) * this.rx * this.ry
-	}
-
-	public getArea(): number {
-		let triArea: number = Triangle.getArea(this.centerPoint, this.startPoint, this.pointOn(this.endRadian))
-		return this.sectorArea() - triArea
-	}
-
-	public getMiddlePoint(): Vector2 {
-		const sweepRadian: number = Math.abs(this.sweepRadian)
-		const [v1, v2]: [Vector2, Vector2] = [this.startPoint.sub(this.centerPoint), this.endPoint.sub(this.centerPoint)]
-		let centerDirect: Vector2 = v1.add(v2).normalize()
-		if (sweepRadian > Math.PI) {
-			centerDirect = centerDirect.mul(-1)
-		}
-		return this.centerPoint.add(centerDirect.mul(this.rx))
-	}
-
 	public multiplyMatrix3(matrix3: Matrix3): Arc {
 		let sw: number = undefined!
 		if (matrix3.isMirrored()) {
@@ -320,6 +301,25 @@ export class Arc extends Primitive {
 		}
 		return Arc.build3(this.centerPoint.multiplyMatrix3(matrix3), sa, sw, matrix3.iScale * this.rx, matrix3.iScale * this.ry)
 	}
+
+	public sectorArea(): number {
+		return Math.abs(this.sweepRadian) * this.rx * this.ry
+	}
+
+	public getArea(): number {
+		let triArea: number = Triangle.getArea(this.centerPoint, this.startPoint, this.pointOn(this.endRadian))
+		return this.sectorArea() - triArea
+	}
+
+	public getMiddlePoint(): Vector2 {
+		const sweepRadian: number = Math.abs(this.sweepRadian)
+		const [v1, v2]: [Vector2, Vector2] = [this.startPoint.sub(this.centerPoint), this.endPoint.sub(this.centerPoint)]
+		let centerDirect: Vector2 = v1.add(v2).normalize()
+		if (sweepRadian > Math.PI) {
+			centerDirect = centerDirect.mul(-1)
+		}
+		return this.centerPoint.add(centerDirect.mul(this.rx))
+	}	
 
 	public storke(width: number, cap: ECanvasD2LineCap, sweep: ESweep): Polyline {
 		const halfWidth: number = width / 2
