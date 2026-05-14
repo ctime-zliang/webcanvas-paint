@@ -98,18 +98,18 @@ export class D2Distance {
 		let distance: number = point.distance(arc.centerPoint)
 		if (distance !== 0) {
 			const [x, y]: [number, number] = [
-				(arc.rx * (point.y - arc.centerPoint.y)) / distance + arc.centerPoint.y,
-				(arc.rx * (point.x - arc.centerPoint.x)) / distance + arc.centerPoint.x,
+				(arc.radius * (point.y - arc.centerPoint.y)) / distance + arc.centerPoint.y,
+				(arc.radius * (point.x - arc.centerPoint.x)) / distance + arc.centerPoint.x,
 			]
 			const l1: Line = new Line(new Vector2(x, y), point)
-			distance = arc.rx - distance
+			distance = arc.radius - distance
 			if (distance < this._minDist) {
 				this._minDist = distance
 				l = l1
 			}
 		} else {
 			const l1: Line = new Line(arc.startPoint, point)
-			distance = arc.rx - distance
+			distance = arc.radius - distance
 			if (distance < this._minDist) {
 				this._minDist = distance
 				l = l1
@@ -137,7 +137,7 @@ export class D2Distance {
 	}
 
 	private concentricArc(arc1: Arc, arc2: Arc, shortestLine: Line): Line {
-		if (arc1.centerPoint.distance(arc2.centerPoint) < 1e-5 && arc1.rx === arc2.rx && arc1.ry === arc2.ry) {
+		if (arc1.centerPoint.distance(arc2.centerPoint) < 1e-5) {
 			let l1: Line = new Line(arc1.startPoint, arc2.svgEnd)
 			if (l1.length < this._minDist) {
 				this._minDist = l1.length
@@ -168,7 +168,7 @@ export class D2Distance {
 	private point2ArcMinLine(shortestLine: Line, arc: Arc, p: Vector2): Line {
 		if (D2ArcToolkit.isPointOnArc(arc, p)) {
 			const distance: number = p.distance(arc.centerPoint)
-			if (distance > arc.rx || distance > arc.ry) {
+			if (distance > arc.radius || distance > arc.radius) {
 				shortestLine = this.minLineForArcAndLine(arc, shortestLine, p)
 			} else {
 				shortestLine = this.arcInnerLineFootSegment(arc, shortestLine, p)

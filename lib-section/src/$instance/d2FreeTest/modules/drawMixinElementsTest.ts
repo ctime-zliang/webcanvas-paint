@@ -1,6 +1,6 @@
 import { Color, Vector2, WebCanvas } from '../../../Main'
 
-export function drawTestMixinItems(webCanvas: WebCanvas, layerItemId: string): void {
+export function drawMixinItemsTest01(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
 	const RADIUS: number = 15
 	const shapeElementItemId01: string = d2ElementController.createD2LineElementShapeItem(layerItemId, new Vector2(-125, 30), new Vector2(-125, 60), {

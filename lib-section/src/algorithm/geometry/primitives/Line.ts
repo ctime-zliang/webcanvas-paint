@@ -202,13 +202,13 @@ export class Line extends Primitive {
 		} else {
 			if (sweep === ESweep.CW) {
 				pl = Polyline.build1([
-					Arc.build3(new Vector2(left, 0), -Math.PI / 2, -Math.PI, halfWidth, halfWidth),
-					Arc.build3(new Vector2(right, 0), Math.PI / 2, -Math.PI, halfWidth, halfWidth),
+					Arc.build3(new Vector2(left, 0), -Math.PI / 2, -Math.PI, halfWidth),
+					Arc.build3(new Vector2(right, 0), Math.PI / 2, -Math.PI, halfWidth),
 				])
 			} else {
 				pl = Polyline.build1([
-					Arc.build3(new Vector2(left, 0), Math.PI / 2, Math.PI, halfWidth, halfWidth),
-					Arc.build3(new Vector2(right, 0), -Math.PI / 2, Math.PI, halfWidth, halfWidth),
+					Arc.build3(new Vector2(left, 0), Math.PI / 2, Math.PI, halfWidth),
+					Arc.build3(new Vector2(right, 0), -Math.PI / 2, Math.PI, halfWidth),
 				])
 			}
 		}

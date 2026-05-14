@@ -1,7 +1,7 @@
 import { ECanvasD2LineCap } from '../../../engine/config/PrimitiveProfile'
 import { Color, POINT_EVENT_NAME, Sweep, SWEEP, Vector2, WebCanvas } from '../../../Main'
 
-export function drawTestArcItems(webCanvas: WebCanvas, layerItemId: string): void {
+export function drawArcItemsTest01(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
 	const shapeElementItemId1: string = d2ElementController.createD2ArcElementShapeItem(
 		layerItemId,

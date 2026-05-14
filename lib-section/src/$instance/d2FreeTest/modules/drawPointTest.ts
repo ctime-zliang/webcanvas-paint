@@ -1,6 +1,6 @@
 import { Angles, Color, D2POINT_SHAPE, Vector2, WebCanvas } from '../../../Main'
 
-export function drawTestPointItemStd(webCanvas: WebCanvas, layerItemId: string): void {
+export function drawPointItemStdTest01(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
 	const shapeElementItemId1: string = d2ElementController.createD2PointElementShapeItem(layerItemId, new Vector2(-30, -30), {
 		size: 20,

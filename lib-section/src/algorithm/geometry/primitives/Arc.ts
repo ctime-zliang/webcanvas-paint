@@ -10,12 +10,11 @@ import { DoubleKit } from '../../../engine/math/Doublekit'
 import { Triangle } from './Triangle'
 
 export class Arc extends Primitive {
-	public static build1(startPoint: Vector2, endPoint: Vector2, rx: number, ry: number, isLarge: boolean, sweep: ESweep): Arc {
-		rx = Math.abs(rx)
-		ry = Math.abs(ry)
+	public static build1(startPoint: Vector2, endPoint: Vector2, radius: number, isLarge: boolean, sweep: ESweep): Arc {
+		radius = Math.abs(radius)
 		const isCircle: boolean = startPoint.equalsWithVector2(endPoint)
 		if (isCircle) {
-			return new Arc(rx, ry, startPoint, 0, isLarge ? Math.PI * 2 : 0)
+			return new Arc(radius, startPoint, 0, isLarge ? Math.PI * 2 : 0)
 		}
 		const [x0, y0]: [number, number] = [startPoint.x, -startPoint.x]
 		const [x, y]: [number, number] = [endPoint.x, -endPoint.y]
@@ -23,16 +22,16 @@ export class Arc extends Primitive {
 		const [dx2, dy2]: [number, number] = [(x0 - x) / 2, (y0 - y) / 2]
 		const [cosV, sinV]: [number, number] = [Math.cos(0), Math.sin(0)]
 		const [x1, y1]: [number, number] = [cosV * dx2 + sinV * dy2, -sinV * dx2 + cosV * dy2]
-		const [Prx, Pry]: [number, number] = [rx * rx, ry * ry]
+		const [Prx, Pry]: [number, number] = [radius * radius, radius * radius]
 		const [Px1, Py1]: [number, number] = [x1 * x1, y1 * y1]
 		let [sign, sq]: [number, number] = [isLarge === sweepFlag ? -1 : 1, (Prx * Pry - Prx * Py1 - Pry * Px1) / (Prx * Py1 + Pry * Px1)]
 		sq = sq < 0 ? 0 : sq
 		const coef: number = (sign = Math.sqrt(sq))
-		const [cx1, cy1]: [number, number] = [coef * ((rx * y1) / ry), coef * -((ry * x1) / rx)]
+		const [cx1, cy1]: [number, number] = [coef * ((radius * y1) / radius), coef * -((radius * x1) / radius)]
 		const [sx2, sy2]: [number, number] = [(x0 + x) / 2, (y0 + y) / 2]
 		const [cx, cy]: [number, number] = [sx2 + (cosV * cx1 - sinV * cy1), sy2 + (sinV * cx1 + cosV * cy1)]
-		const [ux, uy]: [number, number] = [(x1 - cx1) / rx, (y1 - cy1) / ry]
-		const [vx, vy]: [number, number] = [(-x1 - cx1) / rx, (-y1 - cy1) / ry]
+		const [ux, uy]: [number, number] = [(x1 - cx1) / radius, (y1 - cy1) / radius]
+		const [vx, vy]: [number, number] = [(-x1 - cx1) / radius, (-y1 - cy1) / radius]
 		let [p, n]: [number, number] = [ux, Math.sqrt(ux * ux + uy * uy)]
 		sign = uy < 0 ? -1.0 : 1.0
 		const angleStart: number = Angles.radianToDegree(sign * Math.acos(p / n))
@@ -56,16 +55,15 @@ export class Arc extends Primitive {
 		}
 		const lambda: number = (dx2 * dx2) / Prx + (dy2 * dy2) / Pry
 		const distance: number = startPoint.distance(endPoint) / 2
-		if (rx < distance && ry < distance) {
-			rx *= Math.sqrt(lambda)
-			ry *= Math.sqrt(lambda)
+		if (radius < distance) {
+			radius *= Math.sqrt(lambda)
 		}
 		const startRadian: number = isCircle ? 0 : Angles.regularDegress(-angleStart)
 		const sweepRadian: number = isCircle ? (isLarge ? Math.PI * 2 : 0) : -angleExtent
-		return new Arc(rx, ry, new Vector2(cx, -cy), startRadian, sweepRadian)
+		return new Arc(radius, new Vector2(cx, -cy), startRadian, sweepRadian)
 	}
 
-	public static build2(center: Vector2, startRadian: number, endRadian: number, rx: number, ry: number, sweep: ESweep): Arc {
+	public static build2(center: Vector2, startRadian: number, endRadian: number, rx: number, sweep: ESweep): Arc {
 		let sweepRadian: number = undefined!
 		if (startRadian === endRadian) {
 			startRadian = Angles.regularDegress(startRadian)
@@ -85,17 +83,17 @@ export class Arc extends Primitive {
 			}
 			sweepRadian = endRadian - startRadian
 		}
-		return new Arc(rx, ry, center, Angles.radianToDegree(startRadian), sweepRadian)
+		return new Arc(rx, center, Angles.radianToDegree(startRadian), sweepRadian)
 	}
 
-	public static build3(center: Vector2, startRadian: number, sweepRadian: number, rx: number, ry: number): Arc {
-		return new Arc(rx, ry, center, Angles.radianToDegree(startRadian), sweepRadian)
+	public static build3(center: Vector2, startRadian: number, sweepRadian: number, rx: number): Arc {
+		return new Arc(rx, center, Angles.radianToDegree(startRadian), sweepRadian)
 	}
 
-	public static build4(startPoint: Vector2, endPoint: Vector2, center: Vector2, rx: number, ry: number, sweep: ESweep): Arc {
+	public static build4(startPoint: Vector2, endPoint: Vector2, center: Vector2, rx: number, sweep: ESweep): Arc {
 		const startRadian: number = Angles.radianToDegree(startPoint.getRadianByVector2(center))
 		const endRadian: number = Angles.radianToDegree(endPoint.getRadianByVector2(center))
-		return Arc.build2(center, startRadian, endRadian, rx, ry, sweep)
+		return Arc.build2(center, startRadian, endRadian, rx, sweep)
 	}
 
 	public static build5(startPoint: Vector2, endPoint: Vector2, radian: number): Arc {
@@ -118,26 +116,24 @@ export class Arc extends Primitive {
 		}
 		const startRadian: number = Angles.radianToDegree(startPoint.getRadianByVector2(center))
 		const endRadian: number = Angles.radianToDegree(endPoint.getRadianByVector2(center))
-		return Arc.build2(center, startRadian, endRadian, radius, radius, sweep)
+		return Arc.build2(center, startRadian, endRadian, radius, sweep)
 	}
 
 	public static buildCircle(center: Vector2, r: number, sweep: ESweep): Arc {
-		return Arc.build2(center, 0, Math.PI * 2, r, r, sweep)
+		return Arc.build2(center, 0, Math.PI * 2, r, sweep)
 	}
 
 	private readonly _startRadian: number
 	private readonly _sweepRadian: number
 	private _startPoint: Vector2
 	private _endPoint: Vector2
-	private _rx: number
-	private _ry: number
+	private _radius: number
 	private _centerPoint: Vector2
 	private _bbox2: BBox2
 	private _svgEnd: Vector2
-	constructor(rx: number, ry: number, centerPoint: Vector2, startRadian: number, sweepRadian: number) {
+	constructor(radius: number, centerPoint: Vector2, startRadian: number, sweepRadian: number) {
 		super()
-		this._rx = rx
-		this._ry = ry
+		this._radius = radius
 		this._centerPoint = centerPoint
 		this._startRadian = startRadian
 		this._sweepRadian = sweepRadian
@@ -178,19 +174,15 @@ export class Arc extends Primitive {
 	}
 
 	public get isCicle(): boolean {
-		return DoubleKit.eq(Math.abs(this.sweepRadian), Math.PI * 2) || (this.startPoint.equalsWithVector2(this.endPoint) && this.rx === this.ry)
+		return DoubleKit.eq(Math.abs(this.sweepRadian), Math.PI * 2) || this.startPoint.equalsWithVector2(this.endPoint)
 	}
 
 	public get sweepRadian(): number {
 		return this._sweepRadian
 	}
 
-	public get rx(): number {
-		return this._rx
-	}
-
-	public get ry(): number {
-		return this._ry
+	public get radius(): number {
+		return this._radius
 	}
 
 	public get sweep(): ESweep {
@@ -205,7 +197,7 @@ export class Arc extends Primitive {
 	}
 
 	public get length(): number {
-		return Math.abs(this.rx * this.sweepRadian)
+		return Math.abs(this.radius * this.sweepRadian)
 	}
 
 	public get svgEnd(): Vector2 {
@@ -216,55 +208,36 @@ export class Arc extends Primitive {
 	}
 
 	public toString(): string {
-		return `Arc (${this.centerPoint.x}, ${this.centerPoint.y}, ${this.rx}, ${this.ry}, ${this.startRadian}, ${this.sweepRadian})`
+		return `Arc (${this.centerPoint.x}, ${this.centerPoint.y}, ${this.radius}, ${this.startRadian}, ${this.sweepRadian})`
 	}
 
+	/**
+	 * 求圆/圆弧上对应弧度的点坐标
+	 */
 	public pointOn(radian: number): Vector2 {
-		if (radian === 0) {
-			return this._centerPoint.add(new Vector2(this.rx, 0))
+		radian %= Math.PI * 2
+		if (radian < 0) {
+			radian += Math.PI * 2
 		}
-		if (radian === Math.PI / 2) {
-			return this._centerPoint.add(new Vector2(0, this.ry))
-		}
-		if (radian === (Math.PI * 3) / 2) {
-			return this._centerPoint.add(new Vector2(0, -this.ry))
-		}
-		const [rx2, ry2]: [number, number] = [this.rx * this.rx, this.ry * this.ry]
-		const tg: number = Math.tan(radian)
-		const tg2: number = tg * tg
-		let [x, y]: [number, number] = [Math.sqrt((rx2 * ry2) / (ry2 + rx2 * tg2)), Math.sqrt((rx2 * ry2) / (rx2 + ry2 / tg2))]
-		if (radian > Math.PI / 2 && radian < (Math.PI * 3) / 2) {
-			x = -x
-		}
-		if (radian > Math.PI && radian < Math.PI * 2) {
-			y = -y
-		}
-		if (Number.isNaN(x)) {
-			x = 0
-		}
-		if (Number.isNaN(y)) {
-			y = 0
-		}
-		return this._centerPoint.add(new Vector2(x, y))
+		return this._centerPoint.add(new Vector2(this.radius * Math.cos(radian), this.radius * Math.sin(radian)))
 	}
 
 	public exchangeSweep(): Arc {
-		return Arc.build3(this.centerPoint, this.startRadian + this.sweepRadian, -this.sweepRadian, this.rx, this.ry)
+		return Arc.build3(this.centerPoint, this.startRadian + this.sweepRadian, -this.sweepRadian, this.radius)
 	}
 
 	public exchangeSweepAndStart(): Arc {
-		return Arc.build1(this.endPoint, this.startPoint, this.rx, this.ry, this.isOverHalfCircle, this.sweepRadian >= 0 ? ESweep.CW : ESweep.CCW)
+		return Arc.build1(this.endPoint, this.startPoint, this.radius, this.isOverHalfCircle, this.sweepRadian >= 0 ? ESweep.CW : ESweep.CCW)
 	}
 
 	public mirrorX(yValue: number = 0): Arc {
 		if (this.startPoint.equalsWithVector2(this.endPoint)) {
-			return Arc.build3(this.centerPoint.mirrorSurroundX(), 0, Math.PI * 2, this.rx, this.ry)
+			return Arc.build3(this.centerPoint.mirrorSurroundX(), 0, Math.PI * 2, this.radius)
 		}
 		return Arc.build1(
 			this.startPoint.mirrorSurroundX(yValue),
 			this.endPoint.mirrorSurroundX(yValue),
-			this.rx,
-			this.ry,
+			this.radius,
 			this.isOverHalfCircle,
 			this.sweepRadian >= 0 ? ESweep.CW : ESweep.CCW
 		)
@@ -272,13 +245,12 @@ export class Arc extends Primitive {
 
 	public mirrorY(xValue: number = 0): Arc {
 		if (this.startPoint.equalsWithVector2(this.endPoint)) {
-			return Arc.build3(this.centerPoint.mirrorSurroundY(), 0, Math.PI * 2, this.rx, this.ry)
+			return Arc.build3(this.centerPoint.mirrorSurroundY(), 0, Math.PI * 2, this.radius)
 		}
 		return Arc.build1(
 			this.startPoint.mirrorSurroundY(xValue),
 			this.endPoint.mirrorSurroundY(xValue),
-			this.rx,
-			this.ry,
+			this.radius,
 			this.isOverHalfCircle,
 			this.sweepRadian >= 0 ? ESweep.CW : ESweep.CCW
 		)
@@ -299,11 +271,11 @@ export class Arc extends Primitive {
 		} else {
 			sa = Angles.radianToDegree(Angles.transform(Angles.degreeToRadian(this.startRadian), matrix3))
 		}
-		return Arc.build3(this.centerPoint.multiplyMatrix3(matrix3), sa, sw, matrix3.iScale * this.rx, matrix3.iScale * this.ry)
+		return Arc.build3(this.centerPoint.multiplyMatrix3(matrix3), sa, sw, matrix3.iScale * this.radius)
 	}
 
 	public sectorArea(): number {
-		return Math.abs(this.sweepRadian) * this.rx * this.ry
+		return Math.abs(this.sweepRadian) * this.radius * this.radius
 	}
 
 	public getArea(): number {
@@ -318,13 +290,13 @@ export class Arc extends Primitive {
 		if (sweepRadian > Math.PI) {
 			centerDirect = centerDirect.mul(-1)
 		}
-		return this.centerPoint.add(centerDirect.mul(this.rx))
+		return this.centerPoint.add(centerDirect.mul(this.radius))
 	}
 
 	public storke(width: number, cap: ECanvasD2LineCap, sweep: ESweep): Polyline {
 		const halfWidth: number = width / 2
-		const [rxLarge, ryLarge]: [number, number] = [this.rx + halfWidth, this.ry + halfWidth]
-		let [rxSmall, rySmall]: [number, number] = [this.rx - halfWidth, this.ry - halfWidth]
+		const rxLarge: number = this.radius + halfWidth
+		let [rxSmall, rySmall]: [number, number] = [this.radius - halfWidth, this.radius - halfWidth]
 		let a2Matrix: Matrix3 = new Matrix3()
 		if (rxSmall < 0) {
 			rxSmall = -rxSmall
@@ -343,11 +315,11 @@ export class Arc extends Primitive {
 		a2Matrix = a2Matrix.setOrigin(this.centerPoint.x, this.centerPoint.y)
 		let [a1, a2]: [Arc, Arc] = [null!, null!]
 		if (sweep === this.sweep) {
-			a1 = Arc.build3(this.centerPoint, this.startRadian, this.sweepRadian, rxLarge, ryLarge)
-			a2 = Arc.build3(this.centerPoint, this.startRadian + this.sweepRadian, -this.sweepRadian, rxSmall, rySmall)
+			a1 = Arc.build3(this.centerPoint, this.startRadian, this.sweepRadian, rxLarge)
+			a2 = Arc.build3(this.centerPoint, this.startRadian + this.sweepRadian, -this.sweepRadian, rxSmall)
 		} else {
-			a1 = Arc.build3(this.centerPoint, this.startRadian + this.sweepRadian, -this.sweepRadian, rxLarge, ryLarge)
-			a2 = Arc.build3(this.centerPoint, this.startRadian, this.sweepRadian, rxSmall, rySmall)
+			a1 = Arc.build3(this.centerPoint, this.startRadian + this.sweepRadian, -this.sweepRadian, rxLarge)
+			a2 = Arc.build3(this.centerPoint, this.startRadian, this.sweepRadian, rxSmall)
 		}
 		a2 = a2.multiplyMatrix3(a2Matrix)
 		switch (cap) {
@@ -363,9 +335,9 @@ export class Arc extends Primitive {
 				]
 				return Polyline.build1([
 					a1,
-					Arc.build3(c1, startRadian1, sweepRadian, halfWidth, halfWidth),
+					Arc.build3(c1, startRadian1, sweepRadian, halfWidth),
 					a2,
-					Arc.build3(c2, startRadian2, sweepRadian, halfWidth, halfWidth),
+					Arc.build3(c2, startRadian2, sweepRadian, halfWidth),
 				])
 			}
 			default: {
@@ -375,10 +347,10 @@ export class Arc extends Primitive {
 	}
 
 	public toPoints(resolution: number): Array<Vector2> {
-		if (this.rx <= resolution) {
+		if (this.radius <= resolution) {
 			return [this.startPoint, this.getSvgEnd(this.startRadian, this.sweepRadian, this.startPoint, this.endPoint)]
 		}
-		const cos: number = (this.rx - resolution) / this.rx
+		const cos: number = (this.radius - resolution) / this.radius
 		let cnt: number = Math.ceil(Math.abs(this.sweepRadian / Angles.radianToDegree(Math.acos(cos)) / 2))
 		cnt = Math.max(cnt, 2)
 		const ps: Array<Vector2> = new Array(cnt + 1)
@@ -392,7 +364,7 @@ export class Arc extends Primitive {
 
 	public getMidPoint(): Vector2 {
 		const [startRadian, endRadian]: [number, number] = [this.startRadian, this.endRadian]
-		const [sweep, centerPoint, radius]: [ESweep, Vector2, number] = [this.sweep, this.centerPoint, this.rx]
+		const [sweep, centerPoint, radius]: [ESweep, Vector2, number] = [this.sweep, this.centerPoint, this.radius]
 		if (sweep === ESweep.CCW) {
 			if (endRadian > startRadian) {
 				let radian: number = (endRadian - startRadian) / 2 + startRadian
@@ -424,7 +396,7 @@ export class Arc extends Primitive {
 	public isInArea(point: Vector2, width: number): boolean {
 		const { x, y } = point
 		const centerPoint: Vector2 = this.centerPoint
-		const radius: number = this.rx
+		const radius: number = this.radius
 		let startRadian: number = Angles.degreeToRadian(this.startRadian)
 		if (this.sweep === ESweep.CW) {
 			startRadian = Angles.degreeToRadian(this.endRadian)
@@ -467,7 +439,7 @@ export class Arc extends Primitive {
 	}
 
 	public reverse(): Arc {
-		return Arc.build1(this.endPoint, this.startPoint, this.rx, this.ry, this.isOverHalfCircle, this.sweepRadian >= 0 ? ESweep.CW : ESweep.CCW)
+		return Arc.build1(this.endPoint, this.startPoint, this.radius, this.isOverHalfCircle, this.sweepRadian >= 0 ? ESweep.CW : ESweep.CCW)
 	}
 
 	private buildBBox2(): BBox2 {

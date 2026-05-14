@@ -20,14 +20,14 @@ import { initWebCanvas } from '../public/initWebCanvas'
 import { cdt2dTest01 } from './modules/cdt2dTest'
 import { coordinateTest01, coordinateTest02, coordinateTest03 } from './modules/coordinateTest'
 import { intersectionTest01, intersectionTest02, intersectionTest03 } from './modules/intersectionTest'
-import { drawTestArcItems } from './modules/drawTestArc'
-import { drawTestCircleItems } from './modules/drawTestCircle'
-import { drawTestImageItems, drawTestImageItemStd } from './modules/drawTestImage'
-import { drawRandomTestLineItems, drawTestLineItems, drawTestLineItemStd } from './modules/drawTestLine'
-import { drawTestMixinItems } from './modules/drawTestMixin'
-import { drawTestPointItemStd } from './modules/drawTestPoint'
-import { drawTestRectItems, drawTestRectItemStd } from './modules/drawTestRect'
-import { drawTestTextItemSim, drawTestTextItemStd } from './modules/drawTestText'
+import { drawArcItemsTest01 } from './modules/drawArcTest'
+import { drawCircleItemsTest01 } from './modules/drawCircleTest'
+import { drawImageItemsTest01, drawImageItemStdTest01 } from './modules/drawImageTest'
+import { drawRandomLineItemsTest01, drawLineItemsTest01, drawLineItemStdTest01 } from './modules/drawLineTest'
+import { drawMixinItemsTest01 } from './modules/drawMixinElementsTest'
+import { drawPointItemStdTest01 } from './modules/drawPointTest'
+import { drawRectItemsTest01, drawRectItemStdTest01 } from './modules/drawRectTest'
+import { drawTextItemSimTest01, drawTextItemStdTest01 } from './modules/drawTextTest'
 import { initWebSystemConfig } from './utils/initWebSystemConfig'
 import {
 	d2LineToolkitTest01,
@@ -44,7 +44,8 @@ import {
 import { d2CircleToolkitTest01 } from './modules/d2CircleToolkitTest'
 import { d2ArcToolkitTest01, d2ArcToolkitTest02, d2ArcToolkitTest03, d2ArcToolkitTest04, d2ArcToolkitTest05 } from './modules/d2ArcToolkitTest'
 import { vector2Test01 } from './modules/vector2Test'
-import { lineTest01, lineTest02 } from './modules/line'
+import { lineTest01, lineTest02 } from './modules/lineTest'
+import { arcTest01 } from './modules/arcTest'
 
 async function initMessageHandle(webCanvas: WebCanvas): Promise<void> {
 	const { messageTool, drawLayerController, d2ElementController, operationController } = webCanvas
@@ -215,29 +216,31 @@ export function main(): void {
 		// coordinateTest02(webCanvas, layerItem01Id)
 		// coordinateTest03(webCanvas, layerItem01Id)
 
-		// drawTestArcItems(webCanvas, layerItem01Id)
+		// drawArcItemsTest01(webCanvas, layerItem01Id)
 
-		// drawTestCircleItems(webCanvas, layerItem01Id)
+		// drawCircleItemsTest01(webCanvas, layerItem01Id)
 
-		// drawTestImageItemStd(webCanvas, layerItem01Id)
-		// drawTestImageItems(webCanvas, layerItem01Id)
+		// drawImageItemStdTest01(webCanvas, layerItem01Id)
+		// drawImageItemsTest01(webCanvas, layerItem01Id)
 
-		// drawTestLineItemStd(webCanvas, layerItem01Id)
-		// drawTestLineItems(webCanvas, layerItem01Id)
-		// drawRandomTestLineItems(webCanvas)
+		// drawLineItemStdTest01(webCanvas, layerItem01Id)
+		// drawLineItemsTest01(webCanvas, layerItem01Id)
+		// drawRandomLineItemsTest01(webCanvas)
 
-		// drawTestMixinItems(webCanvas, layerItem01Id)
+		// drawMixinItemsTest01(webCanvas, layerItem01Id)
 
-		// drawTestPointItemStd(webCanvas, layerItem01Id)
+		// drawPointItemStdTest01(webCanvas, layerItem01Id)
 
-		// drawTestRectItemStd(webCanvas, layerItem01Id)
-		// drawTestRectItems(webCanvas, layerItem01Id)
+		// drawRectItemStdTest01(webCanvas, layerItem01Id)
+		// drawRectItemsTest01(webCanvas, layerItem01Id)
 
-		// drawTestTextItemStd(webCanvas, layerItem01Id)
-		// drawTestTextItemSim(webCanvas, layerItem01Id)
+		// drawTextItemStdTest01(webCanvas, layerItem01Id)
+		// drawTextItemSimTest01(webCanvas, layerItem01Id)
 
 		// lineTest01(webCanvas, layerItem01Id)
 		// lineTest02(webCanvas, layerItem01Id)
+
+		arcTest01(webCanvas, layerItem01Id)
 
 		// d2LineToolkitTest01(webCanvas, layerItem01Id)
 		// d2LineToolkitTest02(webCanvas, layerItem01Id)
@@ -248,7 +251,7 @@ export function main(): void {
 		// d2LineToolkitTest07(webCanvas, layerItem01Id)
 		// d2LineToolkitTest08(webCanvas, layerItem01Id)
 		// d2LineToolkitTest09(webCanvas, layerItem01Id)
-		d2LineToolkitTest10(webCanvas, layerItem01Id)
+		// d2LineToolkitTest10(webCanvas, layerItem01Id)
 
 		// d2CircleToolkitTest01(webCanvas, layerItem01Id)
 

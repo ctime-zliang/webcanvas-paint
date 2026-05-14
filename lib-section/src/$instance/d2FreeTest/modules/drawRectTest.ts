@@ -1,6 +1,6 @@
 import { Angles, BBox2, Color, Element2DRectJSONViewData, nextFrameTick, Vector2, WebCanvas } from '../../../Main'
 
-export async function drawTestRectItemStd(webCanvas: WebCanvas, layerItemId: string): Promise<void> {
+export async function drawRectItemStdTest01(webCanvas: WebCanvas, layerItemId: string): Promise<void> {
 	const { d2ElementController, d2TextElementController } = webCanvas
 	const shapeElementItemIdA1: string = d2ElementController.createD2RectElementShapeItem(layerItemId, new Vector2(-50, 50), 125, 75, {
 		strokeWidth: 5,
@@ -78,7 +78,7 @@ export async function drawTestRectItemStd(webCanvas: WebCanvas, layerItemId: str
 	})
 }
 
-export async function drawTestRectItems(webCanvas: WebCanvas, layerItemId: string): Promise<void> {
+export async function drawRectItemsTest01(webCanvas: WebCanvas, layerItemId: string): Promise<void> {
 	const { d2ElementController } = webCanvas
 	d2ElementController.createD2PointElementShapeItem(layerItemId, new Vector2(40, 40), {
 		size: 10,

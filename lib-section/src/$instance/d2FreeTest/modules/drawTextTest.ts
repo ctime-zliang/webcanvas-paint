@@ -40,7 +40,7 @@ const M_TEST_TXT6: string = `
 	jA
 `
 
-export async function drawTestTextItemStd(webCanvas: WebCanvas, layerItemId: string): Promise<void> {
+export async function drawTextItemStdTest01(webCanvas: WebCanvas, layerItemId: string): Promise<void> {
 	const { d2TextElementController, d2ElementController } = webCanvas
 	const styleSetting: Partial<BuildD2TextModelOptionalStyleSettingParam> = {
 		padding: { left: 5, top: 5, right: 5, bottom: 5 },
@@ -89,7 +89,7 @@ export async function drawTestTextItemStd(webCanvas: WebCanvas, layerItemId: str
 		})
 }
 
-export async function drawTestTextItemSim(webCanvas: WebCanvas, layerItemId: string): Promise<void> {
+export async function drawTextItemSimTest01(webCanvas: WebCanvas, layerItemId: string): Promise<void> {
 	const { d2TextElementController, d2ElementController } = webCanvas
 	const fontSize: number = 20
 	const lineHeight: number = fontSize + 10

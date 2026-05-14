@@ -4,7 +4,7 @@ function getRandomInArea(min: number = 0, max: number = Number.MAX_SAFE_INTEGER)
 	return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
-export function drawTestLineItemStd(webCanvas: WebCanvas, layerItemId: string): void {
+export function drawLineItemStdTest01(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
 	const shapeElementItemId: string = d2ElementController.createD2LineElementShapeItem(layerItemId, new Vector2(-70, -70), new Vector2(70, 70), {
 		strokeWidth: 20,
@@ -21,7 +21,7 @@ export function drawTestLineItemStd(webCanvas: WebCanvas, layerItemId: string): 
 	)
 }
 
-export function drawTestLineItems(webCanvas: WebCanvas, layerItemId: string): void {
+export function drawLineItemsTest01(webCanvas: WebCanvas, layerItemId: string): void {
 	const ids: Array<string> = []
 	const { d2ElementController } = webCanvas
 	const allCount: number = 10
@@ -51,7 +51,7 @@ export function drawTestLineItems(webCanvas: WebCanvas, layerItemId: string): vo
 	}
 }
 
-export function drawRandomTestLineItems(webCanvas: WebCanvas): void {
+export function drawRandomLineItemsTest01(webCanvas: WebCanvas): void {
 	const __start: number = performance.now()
 	const count: number = 5 * 1e4
 	const W: number = 2

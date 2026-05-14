@@ -18,7 +18,7 @@ export function d2ArcToolkitTest01(webCanvas: WebCanvas, layerItemId: string): v
 	 * 判断点是否位于圆弧上
 	 */
 	console.log('%c <T: 判断点是否位于圆弧上>', 'color: #ff6600')
-	const arc: Arc = new Arc(radius, radius, centerPoint, startRadian, sweepRadian)
+	const arc: Arc = new Arc(radius, centerPoint, startRadian, sweepRadian)
 	const a1: boolean = D2ArcToolkit.isPointOnArc(arc, pointA)
 	console.log(a1)
 	console.log('%c </T>', 'color: #ff6600')

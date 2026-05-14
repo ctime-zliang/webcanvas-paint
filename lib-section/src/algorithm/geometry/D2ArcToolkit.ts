@@ -15,7 +15,7 @@ export class D2ArcToolkit {
 	 * 判断点 point 是否位于圆弧 arc 上
 	 */
 	public static isPointOnArc(arc: Arc, point: Vector2): boolean {
-		const arcRadius: number = arc.rx
+		const arcRadius: number = arc.radius
 		/**
 		 * 圆弧半径退化
 		 */

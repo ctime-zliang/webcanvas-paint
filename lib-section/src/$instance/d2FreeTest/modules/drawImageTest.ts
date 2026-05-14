@@ -19,7 +19,7 @@ import image05 from '../../public/asserts/eP7eA1sP8bW7aM4sF8wE6lZ6uP9rA8.jpg'
 import earth01 from '../../public/asserts/earth-01.png'
 import { fetchFileByURL, readFileAsImage } from '../../public/utils'
 
-export async function drawTestImageItemStd(webCanvas: WebCanvas, layerItemId: string): Promise<void> {
+export async function drawImageItemStdTest01(webCanvas: WebCanvas, layerItemId: string): Promise<void> {
 	const file: File = await fetchFileByURL(image03, 'test-image-1.jpg')
 	const readResult: {
 		imageDataURL: string
@@ -111,7 +111,7 @@ export async function drawTestImageItemStd(webCanvas: WebCanvas, layerItemId: st
 	})
 }
 
-export async function drawTestImageItems(webCanvas: WebCanvas, layerItemId: string): Promise<void> {
+export async function drawImageItemsTest01(webCanvas: WebCanvas, layerItemId: string): Promise<void> {
 	const file: File = await fetchFileByURL(image01, 'test-image-1.jpg')
 	const readResult: {
 		imageDataURL: string

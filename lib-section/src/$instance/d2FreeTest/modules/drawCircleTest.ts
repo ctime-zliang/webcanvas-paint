@@ -1,6 +1,6 @@
 import { Color, ElementJSONData, Vector2, WebCanvas } from '../../../Main'
 
-export function drawTestCircleItems(webCanvas: WebCanvas, layerItemId: string): void {
+export function drawCircleItemsTest01(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
 	const allCount: number = 10
 	const DISTX: number = 50
