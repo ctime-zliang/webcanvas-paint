@@ -346,17 +346,34 @@ export class Arc extends Primitive {
 		}
 	}
 
+	/**
+	 * 圆弧离散采样, 限制折线与圆弧之间的最大误差不超过 resolution
+	 */
 	public toPoints(resolution: number): Array<Vector2> {
 		if (this.radius <= resolution) {
 			return [this.startPoint, this.getSvgEnd(this.startRadian, this.sweepRadian, this.startPoint, this.endPoint)]
 		}
-		const cos: number = (this.radius - resolution) / this.radius
-		let cnt: number = Math.ceil(Math.abs(this.sweepRadian / Angles.radianToDegree(Math.acos(cos)) / 2))
-		cnt = Math.max(cnt, 2)
-		const ps: Array<Vector2> = new Array(cnt + 1)
-		let step: number = this.sweepRadian / cnt
-		let radian: number = this.startRadian
-		for (let i: number = 0; i <= cnt; i++, radian += step) {
+		/**
+		 * 圆弧离散误差公式 cos = (radius - resolution) / radius
+		 *
+		 * 设
+		 * 		圆心为 O
+		 * 		采样点 A 和 B, 中点为 M
+		 * 则
+		 * 		弦高(最大误差)为
+		 * 		e = r - r * cos(θ/2)
+		 * 即
+		 * 		e = r(1 - cos(θ/2))
+		 * 即
+		 * 		cos(θ/2) = (r - e)/r
+		 * 
+		 * this.sweepRadian / theta 即表示需要分成多少段
+		 */
+		const theta = 2 * Math.acos((this.radius - resolution) / this.radius)
+		const segmentCount = Math.max(2, Math.ceil(Math.abs(this.sweepRadian / theta)))
+		const ps: Array<Vector2> = new Array(segmentCount + 1)
+		const step: number = this.sweepRadian / segmentCount
+		for (let i: number = 0, radian: number = this.startRadian; i <= segmentCount; i++, radian += step) {
 			ps[i] = this.pointOn(radian)
 		}
 		return ps
