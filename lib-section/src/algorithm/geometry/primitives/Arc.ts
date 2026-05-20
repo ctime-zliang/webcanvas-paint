@@ -366,7 +366,7 @@ export class Arc extends Primitive {
 		 * 		e = r(1 - cos(θ/2))
 		 * 即
 		 * 		cos(θ/2) = (r - e)/r
-		 * 
+		 *
 		 * this.sweepRadian / theta 即表示需要分成多少段
 		 */
 		const theta = 2 * Math.acos((this.radius - resolution) / this.radius)

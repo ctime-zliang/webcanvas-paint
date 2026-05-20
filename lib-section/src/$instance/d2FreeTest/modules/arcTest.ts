@@ -69,3 +69,31 @@ export function arcTest02(webCanvas: WebCanvas, layerItemId: string): void {
 		),
 	])
 }
+
+export function arcTest03(webCanvas: WebCanvas, layerItemId: string): void {
+	const { d2ElementController } = webCanvas
+	const centerPoint: Vector2 = new Vector2(10, 0)
+	const radius: number = 50
+	const startRadian: number = Math.PI * (1 / 4)
+	const endRadian: number = Math.PI * (5 / 4)
+	d2ElementController.createD2ArcElementShapeItem(layerItemId, centerPoint, radius, startRadian, endRadian, SWEEP.CCW, {
+		isEnableSelect: false,
+	})
+	/**
+	 * 计算圆弧弧线中点
+	 */
+	console.log('%c <T: 计算圆弧弧线中点>', 'color: #ff6600')
+	const [arc]: [Arc] = [new Arc(radius, centerPoint, startRadian, endRadian - startRadian)]
+	console.log(arc)
+	const P1: Vector2 = arc.getMidPoint()
+	console.log(P1)
+	console.log('%c </T>', 'color: #ff6600')
+	console.log(d2ElementController.getAllD2ElementShapeResults())
+	/* ... */
+	createPoints(webCanvas, layerItemId, [
+		{ label: `centerPoint`, position: centerPoint },
+		{ label: `startPoint`, position: arc.startPoint },
+		{ label: `endPoint`, position: arc.endPoint },
+		{ label: `P1`, position: P1 },
+	])
+}
