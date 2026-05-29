@@ -6,8 +6,8 @@
 		"preinstall": "npm install --package-lock-only --ignore-scripts && npx npm-force-resolutions",
 		"prepare": "husky install",
 		"husky:install": "husky install",
-		"prettier:write-all": "prettier --write .",
-		"prettier:check-all": "prettier --check .",
+		"prettier:write": "prettier --write .",
+		"prettier:check": "prettier --check .",
 		"eslint:check-src": "eslint --ext .js,.ts,.jsx,.tsx src",
 		"eslint:fix-src": "eslint --fix --ext .js,.ts,.jsx,.tsx src",
 		"tsc:check": "tsc --noEmit"
