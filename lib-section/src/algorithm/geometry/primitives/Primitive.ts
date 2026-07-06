@@ -17,5 +17,5 @@ export abstract class Primitive extends StructPrimitive<Primitive> {
 	public abstract mirrorX(yValue: number): Primitive
 	public abstract mirrorY(xValue: number): Primitive
 	// public abstract mirrorO(): Primitive
-	public abstract storke(width: number, cap: ECanvasD2LineCap, sweep: ESweep): Polyline
+	public abstract stroke(width: number, cap: ECanvasD2LineCap, sweep: ESweep): Polyline
 }

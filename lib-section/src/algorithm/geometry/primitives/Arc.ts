@@ -24,7 +24,8 @@ export class Arc extends Primitive {
 		const [x1, y1]: [number, number] = [cosV * dx2 + sinV * dy2, -sinV * dx2 + cosV * dy2]
 		const [Prx, Pry]: [number, number] = [radius * radius, radius * radius]
 		const [Px1, Py1]: [number, number] = [x1 * x1, y1 * y1]
-		let [sign, sq]: [number, number] = [isLarge === sweepFlag ? -1 : 1, (Prx * Pry - Prx * Py1 - Pry * Px1) / (Prx * Py1 + Pry * Px1)]
+		let sign: number = isLarge === sweepFlag ? -1 : 1
+		let sq: number = (Prx * Pry - Prx * Py1 - Pry * Px1) / (Prx * Py1 + Pry * Px1)
 		sq = sq < 0 ? 0 : sq
 		const coef: number = (sign = Math.sqrt(sq))
 		const [cx1, cy1]: [number, number] = [coef * ((radius * y1) / radius), coef * -((radius * x1) / radius)]
@@ -87,7 +88,7 @@ export class Arc extends Primitive {
 	}
 
 	public static build3(center: Vector2, startRadian: number, sweepRadian: number, rx: number): Arc {
-		return new Arc(rx, center, Angles.radianToDegree(startRadian), sweepRadian)
+		return new Arc(rx, center, (startRadian), sweepRadian)
 	}
 
 	public static build4(startPoint: Vector2, endPoint: Vector2, center: Vector2, rx: number, sweep: ESweep): Arc {
@@ -222,6 +223,9 @@ export class Arc extends Primitive {
 		return this._centerPoint.add(new Vector2(this.radius * Math.cos(radian), this.radius * Math.sin(radian)))
 	}
 
+	/**
+	 * 将圆弧的旋转方向反向, 并保持其他参数不变, 生成新的圆弧
+	 */
 	public exchangeSweep(): Arc {
 		return Arc.build3(this.centerPoint, this.startRadian + this.sweepRadian, -this.sweepRadian, this.radius)
 	}
@@ -293,57 +297,58 @@ export class Arc extends Primitive {
 		return this.centerPoint.add(centerDirect.mul(this.radius))
 	}
 
-	public storke(width: number, cap: ECanvasD2LineCap, sweep: ESweep): Polyline {
-		const halfWidth: number = width / 2
-		const rxLarge: number = this.radius + halfWidth
-		let [rxSmall, rySmall]: [number, number] = [this.radius - halfWidth, this.radius - halfWidth]
-		let a2Matrix: Matrix3 = new Matrix3()
-		if (rxSmall < 0) {
-			rxSmall = -rxSmall
-			a2Matrix = a2Matrix.multiply3(Matrix3.MIRROR_Y)
-		}
-		if (rySmall < 0) {
-			rySmall = -rySmall
-			a2Matrix = a2Matrix.multiply3(Matrix3.MIRROR_X)
-		}
-		if (rxSmall === 0) {
-			rxSmall = 0.001
-		}
-		if (rySmall === 0) {
-			rySmall = 0.001
-		}
-		a2Matrix = a2Matrix.setOrigin(this.centerPoint.x, this.centerPoint.y)
-		let [a1, a2]: [Arc, Arc] = [null!, null!]
-		if (sweep === this.sweep) {
-			a1 = Arc.build3(this.centerPoint, this.startRadian, this.sweepRadian, rxLarge)
-			a2 = Arc.build3(this.centerPoint, this.startRadian + this.sweepRadian, -this.sweepRadian, rxSmall)
-		} else {
-			a1 = Arc.build3(this.centerPoint, this.startRadian + this.sweepRadian, -this.sweepRadian, rxLarge)
-			a2 = Arc.build3(this.centerPoint, this.startRadian, this.sweepRadian, rxSmall)
-		}
-		a2 = a2.multiplyMatrix3(a2Matrix)
-		switch (cap) {
-			case ECanvasD2LineCap.ROUND: {
-				const sweepRadian: number = sweep === ESweep.CCW ? Math.PI : -Math.PI
-				const [c1, c2]: [Vector2, Vector2] = [
-					sweep === this.sweep ? this.pointOn(this.endRadian) : this.pointOn(this.startRadian),
-					sweep === this.sweep ? this.pointOn(this.startRadian) : this.pointOn(this.endRadian),
-				]
-				const [startRadian1, startRadian2]: [number, number] = [
-					Angles.radianToDegree(a1.pointOn(a1.endRadian).getRadianByVector2(c1)),
-					Angles.radianToDegree(a2.pointOn(a2.endRadian).getRadianByVector2(c2)),
-				]
-				return Polyline.build1([
-					a1,
-					Arc.build3(c1, startRadian1, sweepRadian, halfWidth),
-					a2,
-					Arc.build3(c2, startRadian2, sweepRadian, halfWidth),
-				])
-			}
-			default: {
-				return Polyline.build1([a1, a2])
-			}
-		}
+	public stroke(strokeWidth: number, cap: ECanvasD2LineCap, sweep: ESweep): Polyline {
+		// const halfStrokeWidth: number = strokeWidth / 2
+		// const rxLarge: number = this.radius + halfStrokeWidth
+		// let [rxSmall, rySmall]: [number, number] = [this.radius - halfStrokeWidth, this.radius - halfStrokeWidth]
+		// let a2Matrix: Matrix3 = new Matrix3()
+		// if (rxSmall < 0) {
+		// 	rxSmall = -rxSmall
+		// 	a2Matrix = a2Matrix.multiply3(Matrix3.MIRROR_Y)
+		// }
+		// if (rySmall < 0) {
+		// 	rySmall = -rySmall
+		// 	a2Matrix = a2Matrix.multiply3(Matrix3.MIRROR_X)
+		// }
+		// if (rxSmall === 0) {
+		// 	rxSmall = 0.001
+		// }
+		// if (rySmall === 0) {
+		// 	rySmall = 0.001
+		// }
+		// a2Matrix = a2Matrix.setOrigin(this.centerPoint.x, this.centerPoint.y)
+		// let [a1, a2]: [Arc, Arc] = [null!, null!]
+		// if (sweep === this.sweep) {
+		// 	a1 = Arc.build3(this.centerPoint, this.startRadian, this.sweepRadian, rxLarge)
+		// 	a2 = Arc.build3(this.centerPoint, this.startRadian + this.sweepRadian, -this.sweepRadian, rxSmall)
+		// } else {
+		// 	a1 = Arc.build3(this.centerPoint, this.startRadian + this.sweepRadian, -this.sweepRadian, rxLarge)
+		// 	a2 = Arc.build3(this.centerPoint, this.startRadian, this.sweepRadian, rxSmall)
+		// }
+		// a2 = a2.multiplyMatrix3(a2Matrix)
+		// switch (cap) {
+		// 	case ECanvasD2LineCap.ROUND: {
+		// 		const sweepRadian: number = sweep === ESweep.CCW ? Math.PI : -Math.PI
+		// 		const [c1, c2]: [Vector2, Vector2] = [
+		// 			sweep === this.sweep ? this.pointOn(this.endRadian) : this.pointOn(this.startRadian),
+		// 			sweep === this.sweep ? this.pointOn(this.startRadian) : this.pointOn(this.endRadian),
+		// 		]
+		// 		const [startRadian1, startRadian2]: [number, number] = [
+		// 			a1.pointOn(a1.endRadian).getRadianByVector2(c1),
+		// 			a2.pointOn(a2.endRadian).getRadianByVector2(c2),
+		// 		]
+		// 		return Polyline.build1([
+		// 			a1,
+		// 			Arc.build3(c1, startRadian1, sweepRadian, halfStrokeWidth),
+		// 			a2,
+		// 			Arc.build3(c2, startRadian2, sweepRadian, halfStrokeWidth),
+		// 		])
+		// 	}
+		// 	default: {
+		// 		return Polyline.build1([a1, a2])
+		// 	}
+		// }
+		return null!
 	}
 
 	/**

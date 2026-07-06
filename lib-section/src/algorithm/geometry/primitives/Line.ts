@@ -170,7 +170,7 @@ export class Line extends Primitive {
 		return Math.sqrt(dx * dx + dy * dy)
 	}
 
-	public storke(width: number, cap: ECanvasD2LineCap, sweep: ESweep): Polyline {
+	public stroke(width: number, cap: ECanvasD2LineCap, sweep: ESweep): Polyline {
 		let origin: Vector2 = null!
 		let [xOff, yOff]: [number, number] = [undefined!, undefined!]
 		if (this.endPoint.x < this.startPoint.x) {

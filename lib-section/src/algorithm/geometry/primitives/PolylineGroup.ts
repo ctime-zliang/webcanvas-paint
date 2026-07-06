@@ -45,13 +45,6 @@ export class PolylineGroup extends StructPrimitive<PolylineGroup> {
 		return this
 	}
 
-	public mirror(origin: Vector2): PolylineGroup {
-		for (let i: number = 0; i < this._polylines.length; i++) {
-			this._polylines[i].mirror(origin)
-		}
-		return this
-	}
-
 	public isEqual(plg: PolylineGroup): boolean {
 		if (!(plg instanceof PolylineGroup)) {
 			return false

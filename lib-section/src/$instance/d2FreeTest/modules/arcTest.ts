@@ -1,4 +1,6 @@
-import { Arc, Color, Line, SWEEP, Vector2, WebCanvas } from '../../../Main'
+import { Primitive } from '../../../algorithm/geometry/primitives/Primitive'
+import { ECanvasD2LineCap } from '../../../engine/config/PrimitiveProfile'
+import { Arc, Color, Line, Polyline, SWEEP, Vector2, WebCanvas } from '../../../Main'
 import { createPoints } from '../utils/createPoints'
 
 export function arcTest01(webCanvas: WebCanvas, layerItemId: string): void {
@@ -96,4 +98,32 @@ export function arcTest03(webCanvas: WebCanvas, layerItemId: string): void {
 		{ label: `endPoint`, position: arc.endPoint },
 		{ label: `P1`, position: P1 },
 	])
+}
+
+export function arcTest04(webCanvas: WebCanvas, layerItemId: string): void {
+	const { d2ElementController } = webCanvas
+	const centerPoint: Vector2 = new Vector2(10, 0)
+	const strokeWidth: number = 10
+	const radius: number = 50
+	const startRadian: number = 0
+	const endRadian: number = Math.PI
+	d2ElementController.createD2ArcElementShapeItem(layerItemId, centerPoint, radius, startRadian, endRadian, SWEEP.CCW, {
+		isEnableSelect: false,
+		strokeWidth,
+	})
+	/**
+	 * 计算圆弧弧线中点
+	 */
+	console.log('%c <T: 圆弧反向>', 'color: #ff6600')
+	const [arc]: [Arc] = [new Arc(radius, centerPoint, startRadian, endRadian - startRadian)]
+	console.log(arc)
+	const arc1: Arc = arc.exchangeSweep()
+	d2ElementController.createD2ArcElementShapeItem(layerItemId, arc1.centerPoint, arc1.radius, arc1.startRadian, arc1.endRadian, arc1.sweep, {
+		isEnableSelect: false,
+		strokeWidth,
+		strokeColor: Color.GOLDEN,
+	})
+	console.log(arc1)
+	console.log('%c </T>', 'color: #ff6600')
+	console.log(d2ElementController.getAllD2ElementShapeResults())
 }
