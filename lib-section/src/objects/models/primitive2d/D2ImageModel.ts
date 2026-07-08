@@ -22,7 +22,7 @@ export function createBuildD2ImageModelOptionalParam(optional: Partial<TBuildD2I
 	return {
 		isShowStroke: false,
 		strokeWidth: 0,
-		strokeColor: new Color(0, 0, 0, 1),
+		strokeColor: Color.WHITE,
 		alpha: 1.0,
 		rotation: 0,
 		isFlipX: false,

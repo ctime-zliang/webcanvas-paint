@@ -88,7 +88,7 @@ export class Arc extends Primitive {
 	}
 
 	public static build3(center: Vector2, startRadian: number, sweepRadian: number, rx: number): Arc {
-		return new Arc(rx, center, (startRadian), sweepRadian)
+		return new Arc(rx, center, startRadian, sweepRadian)
 	}
 
 	public static build4(startPoint: Vector2, endPoint: Vector2, center: Vector2, rx: number, sweep: ESweep): Arc {
@@ -230,34 +230,48 @@ export class Arc extends Primitive {
 		return Arc.build3(this.centerPoint, this.startRadian + this.sweepRadian, -this.sweepRadian, this.radius)
 	}
 
-	public exchangeSweepAndStart(): Arc {
-		return Arc.build1(this.endPoint, this.startPoint, this.radius, this.isOverHalfCircle, this.sweepRadian >= 0 ? ESweep.CW : ESweep.CCW)
-	}
-
 	public mirrorX(yValue: number = 0): Arc {
-		if (this.startPoint.equalsWithVector2(this.endPoint)) {
-			return Arc.build3(this.centerPoint.mirrorSurroundX(), 0, Math.PI * 2, this.radius)
-		}
-		return Arc.build1(
-			this.startPoint.mirrorSurroundX(yValue),
-			this.endPoint.mirrorSurroundX(yValue),
-			this.radius,
-			this.isOverHalfCircle,
-			this.sweepRadian >= 0 ? ESweep.CW : ESweep.CCW
-		)
+		// if (this.startPoint.equalsWithVector2(this.endPoint)) {
+		// 	return Arc.build3(this.centerPoint.mirrorSurroundX(), 0, Math.PI * 2, this.radius)
+		// }
+		// return Arc.build1(
+		// 	this.startPoint.mirrorSurroundX(yValue),
+		// 	this.endPoint.mirrorSurroundX(yValue),
+		// 	this.radius,
+		// 	this.isOverHalfCircle,
+		// 	this.sweepRadian >= 0 ? ESweep.CW : ESweep.CCW
+		// )
+		throw new Error(`algorithm error.`)
 	}
 
 	public mirrorY(xValue: number = 0): Arc {
-		if (this.startPoint.equalsWithVector2(this.endPoint)) {
-			return Arc.build3(this.centerPoint.mirrorSurroundY(), 0, Math.PI * 2, this.radius)
-		}
-		return Arc.build1(
-			this.startPoint.mirrorSurroundY(xValue),
-			this.endPoint.mirrorSurroundY(xValue),
-			this.radius,
-			this.isOverHalfCircle,
-			this.sweepRadian >= 0 ? ESweep.CW : ESweep.CCW
-		)
+		// if (this.startPoint.equalsWithVector2(this.endPoint)) {
+		// 	return Arc.build3(this.centerPoint.mirrorSurroundY(), 0, Math.PI * 2, this.radius)
+		// }
+		// return Arc.build1(
+		// 	this.startPoint.mirrorSurroundY(xValue),
+		// 	this.endPoint.mirrorSurroundY(xValue),
+		// 	this.radius,
+		// 	this.isOverHalfCircle,
+		// 	this.sweepRadian >= 0 ? ESweep.CW : ESweep.CCW
+		// )
+		throw new Error(`algorithm error.`)
+	}
+
+	public mirrorO(origin: Vector2 = Vector2.ORIGIN): Arc {
+		// let startPoint: Vector2 = this.startPoint
+		// let endPoint: Vector2 = this.endPoint
+		// if (this.startPoint.equalsWithVector2(this.endPoint)) {
+		// 	return Arc.build3(this.centerPoint.mirrorSurroundY(), 0, Math.PI * 2, this.radius)
+		// }
+		// return Arc.build1(
+		// 	startPoint.mirrorSurroundX(origin.y),
+		// 	endPoint.mirrorSurroundY(origin.x),
+		// 	this.radius,
+		// 	this.isOverHalfCircle,
+		// 	this.sweepRadian >= 0 ? 0 : 1
+		// )
+		throw new Error(`algorithm error.`)
 	}
 
 	public multiplyMatrix3(matrix3: Matrix3): Arc {
@@ -269,11 +283,11 @@ export class Arc extends Primitive {
 		}
 		let sa: number = undefined!
 		if (matrix3.equals(Matrix3.ROT_90)) {
-			sa = Angles.toQuarterDegree(this.startRadian + Math.PI / 2)
+			sa = Angles.toQuarterRadian(this.startRadian + Math.PI / 2)
 		} else if (matrix3.equals(Matrix3.ROT_N90)) {
-			sa = Angles.regularDegress(this.startRadian - Math.PI / 2)
+			sa = Angles.toQuarterRadian(this.startRadian - Math.PI / 2)
 		} else {
-			sa = Angles.radianToDegree(Angles.transform(Angles.degreeToRadian(this.startRadian), matrix3))
+			sa = Angles.toQuarterRadian(Angles.transform(this.startRadian, matrix3))
 		}
 		return Arc.build3(this.centerPoint.multiplyMatrix3(matrix3), sa, sw, matrix3.iScale * this.radius)
 	}
@@ -348,7 +362,7 @@ export class Arc extends Primitive {
 		// 		return Polyline.build1([a1, a2])
 		// 	}
 		// }
-		return null!
+		throw new Error(`algorithm error.`)
 	}
 
 	/**

@@ -106,13 +106,13 @@ export function arcTest04(webCanvas: WebCanvas, layerItemId: string): void {
 	const strokeWidth: number = 10
 	const radius: number = 50
 	const startRadian: number = 0
-	const endRadian: number = Math.PI
+	const endRadian: number = (Math.PI * 3) / 4
 	d2ElementController.createD2ArcElementShapeItem(layerItemId, centerPoint, radius, startRadian, endRadian, SWEEP.CCW, {
 		isEnableSelect: false,
 		strokeWidth,
 	})
 	/**
-	 * 计算圆弧弧线中点
+	 * 圆弧反向
 	 */
 	console.log('%c <T: 圆弧反向>', 'color: #ff6600')
 	const [arc]: [Arc] = [new Arc(radius, centerPoint, startRadian, endRadian - startRadian)]
@@ -124,6 +124,45 @@ export function arcTest04(webCanvas: WebCanvas, layerItemId: string): void {
 		strokeColor: Color.GOLDEN,
 	})
 	console.log(arc1)
+	console.log('%c </T>', 'color: #ff6600')
+	console.log(d2ElementController.getAllD2ElementShapeResults())
+}
+
+export function arcTest05(webCanvas: WebCanvas, layerItemId: string): void {
+	const { d2ElementController } = webCanvas
+	const centerPoint: Vector2 = new Vector2(10, 0)
+	const strokeWidth: number = 10
+	const radius: number = 50
+	const startRadian: number = 0
+	const endRadian: number = Math.PI * 1
+	d2ElementController.createD2ArcElementShapeItem(layerItemId, centerPoint, radius, startRadian, endRadian, SWEEP.CCW, {
+		isEnableSelect: false,
+		strokeWidth,
+		strokeColor: Color.RED,
+	})
+	/**
+	 * 圆弧镜像
+	 */
+	console.log('%c <T: 圆弧镜像>', 'color: #ff6600')
+	const [arc]: [Arc] = [new Arc(radius, centerPoint, startRadian, endRadian - startRadian)]
+	console.log(arc)
+	const [arc1, arc2, arc3]: [Arc, Arc, Arc] = [arc.mirrorX(1), arc.mirrorY(1), arc.mirrorO(new Vector2(1, 1))]
+	d2ElementController.createD2ArcElementShapeItem(layerItemId, arc1.centerPoint, arc1.radius, arc1.startRadian, arc1.endRadian, arc1.sweep, {
+		isEnableSelect: false,
+		strokeWidth,
+		strokeColor: Color.GOLDEN,
+	})
+	d2ElementController.createD2ArcElementShapeItem(layerItemId, arc2.centerPoint, arc2.radius, arc2.startRadian, arc2.endRadian, arc2.sweep, {
+		isEnableSelect: false,
+		strokeWidth,
+		strokeColor: Color.YELLOW_GREEN,
+	})
+	d2ElementController.createD2ArcElementShapeItem(layerItemId, arc3.centerPoint, arc3.radius, arc3.startRadian, arc3.endRadian, arc3.sweep, {
+		isEnableSelect: false,
+		strokeWidth,
+		strokeColor: Color.BLUE,
+	})
+	console.log(arc1, arc2, arc3)
 	console.log('%c </T>', 'color: #ff6600')
 	console.log(d2ElementController.getAllD2ElementShapeResults())
 }

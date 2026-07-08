@@ -113,6 +113,34 @@ export class Matrix3 extends Matrix {
 		return Matrix3.translate(-x, -y).multiply3(this).translate(x, y)
 	}
 
+	public equals(matrix: Object): boolean {
+		if (matrix === null) {
+			return false
+		}
+		if (this === matrix) {
+			return true
+		}
+		if (matrix instanceof Matrix3) {
+			if (this.m !== matrix.m) {
+				return false
+			}
+			if (this.n !== matrix.n) {
+				return false
+			}
+			let isEqual: boolean = true
+			loop1: for (let i: number = 0; i < this.data.length; i++) {
+				for (let j: number = 0; j < matrix.data.length; j++) {
+					if (this.data[i] !== matrix.data[j]) {
+						isEqual = false
+						break loop1
+					}
+				}
+			}
+			return isEqual
+		}
+		return false
+	}
+
 	/**
 	 * 矩阵转置
 	 */

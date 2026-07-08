@@ -28,9 +28,9 @@ export function createBuildD2CircleModelOptionalParam(optional: Partial<TBuildD2
 	return {
 		radius: 1,
 		strokeWidth: 1,
-		strokeColor: new Color(0, 0, 0, 1),
+		strokeColor: Color.WHITE,
 		isFill: false,
-		fillColor: Color.createByAlpha(0),
+		fillColor: Color.WHITE,
 		alpha: 1.0,
 		isSolid: true,
 		lineCap: ECanvasD2LineCap.ROUND,

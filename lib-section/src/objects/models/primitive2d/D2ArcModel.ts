@@ -27,9 +27,9 @@ export type TBuildD2ArcModelOptionalParam = {
 export function createBuildD2ArcModelOptionalParam(optional: Partial<TBuildD2ArcModelOptionalParam> = {}): TBuildD2ArcModelOptionalParam {
 	return {
 		strokeWidth: 1,
-		strokeColor: Color.RED,
+		strokeColor: Color.WHITE,
 		isFill: false,
-		fillColor: Color.createByAlpha(0),
+		fillColor: Color.WHITE,
 		alpha: 1.0,
 		isSolid: true,
 		lineCap: ECanvasD2LineCap.ROUND,
