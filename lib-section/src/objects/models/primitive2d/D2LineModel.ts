@@ -25,7 +25,7 @@ export type TBuildD2LineModelOptionalParam = {
 export function createBuildD2LineModelOptionalParam(optional: Partial<TBuildD2LineModelOptionalParam> = {}): TBuildD2LineModelOptionalParam {
 	return {
 		strokeWidth: 1,
-		strokeColor: Color.WHITE,
+		strokeColor: Color.SILVER,
 		alpha: 1.0,
 		isSolid: true,
 		lineCap: ECanvasD2LineCap.ROUND,

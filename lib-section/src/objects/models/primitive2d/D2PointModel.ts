@@ -21,7 +21,7 @@ export function buildD2PointModel(layerItemId: string, centerPoint: Vector2, opt
 	const locSetting: TBuildD2PointModelOptionalParam = {
 		size: 1.0,
 		shape: ED2PointShape.DOT,
-		strokeColor: Color.RED,
+		strokeColor: Color.SILVER,
 		alpha: 1.0,
 		isEnableScale: false,
 		isEnableSelect: true,

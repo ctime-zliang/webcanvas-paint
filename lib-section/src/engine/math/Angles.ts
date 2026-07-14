@@ -38,6 +38,15 @@ export class Angles {
 		return rd === Angles.PIx2 ? 0 : rd
 	}
 
+	public static normalizeRadian(radian: number): number {
+		const tau: number = Math.PI * 2
+		radian %= tau
+		if (radian < 0) {
+			radian += tau
+		}
+		return radian
+	}
+
 	public static toQuarterRadian(radian: number): number {
 		return Angles.regularRadian(((radian + Angles.PI_4) / Angles.PI_2) * Angles.PI_2)
 	}

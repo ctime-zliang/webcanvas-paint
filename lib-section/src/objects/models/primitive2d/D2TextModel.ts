@@ -47,7 +47,7 @@ export function createBuildD2TextModelOptionalParam(
 		fontStyle: ED2FontStyle.NORMAL,
 		fontSize,
 		fontWeight: 100,
-		strokeColor: Color.WHITE,
+		strokeColor: Color.SILVER,
 		alpha: 1.0,
 		rotation: 0,
 		isEnableSelect: true,

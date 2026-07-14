@@ -12,7 +12,6 @@ export abstract class Primitive extends StructPrimitive<Primitive> {
 	public abstract get bbox2(): BBox2
 	public abstract get length(): number
 	public abstract toPoints(resolution: number): Array<Vector2>
-	public abstract reverse(): Primitive
 	public abstract multiplyMatrix3(matrix3: Matrix3): Primitive
 	public abstract mirrorX(yValue: number): Primitive
 	public abstract mirrorY(xValue: number): Primitive

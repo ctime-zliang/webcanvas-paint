@@ -7,7 +7,6 @@ import { Polyline } from './Polyline'
 import { ECanvasD2LineCap } from '../../../engine/config/PrimitiveProfile'
 import { Primitive } from './Primitive'
 import { DoubleKit } from '../../../engine/math/Doublekit'
-import { Triangle } from './Triangle'
 
 export class Arc extends Primitive {
 	public static build1(startPoint: Vector2, endPoint: Vector2, radius: number, isLarge: boolean, sweep: ESweep): Arc {
@@ -87,10 +86,6 @@ export class Arc extends Primitive {
 		return new Arc(rx, center, Angles.radianToDegree(startRadian), sweepRadian)
 	}
 
-	public static build3(center: Vector2, startRadian: number, sweepRadian: number, rx: number): Arc {
-		return new Arc(rx, center, startRadian, sweepRadian)
-	}
-
 	public static build4(startPoint: Vector2, endPoint: Vector2, center: Vector2, rx: number, sweep: ESweep): Arc {
 		const startRadian: number = Angles.radianToDegree(startPoint.getRadianByVector2(center))
 		const endRadian: number = Angles.radianToDegree(endPoint.getRadianByVector2(center))
@@ -125,23 +120,25 @@ export class Arc extends Primitive {
 	}
 
 	private readonly _startRadian: number
-	private readonly _sweepRadian: number
+	private readonly _endRadian: number
+	private readonly _sweep: ESweep
 	private _startPoint: Vector2
 	private _endPoint: Vector2
 	private _radius: number
 	private _centerPoint: Vector2
 	private _bbox2: BBox2
 	private _svgEnd: Vector2
-	constructor(radius: number, centerPoint: Vector2, startRadian: number, sweepRadian: number) {
+	constructor(radius: number, centerPoint: Vector2, startRadian: number, endRadian: number) {
 		super()
 		this._radius = radius
 		this._centerPoint = centerPoint
 		this._startRadian = startRadian
-		this._sweepRadian = sweepRadian
+		this._endRadian = endRadian
+		this._sweep = this._endRadian >= this._startRadian ? ESweep.CCW : ESweep.CW
 		this._bbox2 = null!
 		this._svgEnd = null!
 		this._startPoint = this.pointOn(startRadian)
-		this._endPoint = this.pointOn(startRadian + sweepRadian)
+		this._endPoint = this.pointOn(startRadian + (this._endRadian - this._startRadian))
 	}
 
 	public get startPoint(): Vector2 {
@@ -167,7 +164,16 @@ export class Arc extends Primitive {
 	}
 
 	public get endRadian(): number {
-		return this.startRadian + this.sweepRadian
+		return this._endRadian
+	}
+
+	public get sweepRadian(): number {
+		const start = this.startRadian
+		const end = this.endRadian
+		if (this.sweep === ESweep.CCW) {
+			return end >= start ? end - start : end + Math.PI * 2 - start
+		}
+		return end <= start ? -(start - end) : -(start + Math.PI * 2 - end)
 	}
 
 	public get isOverHalfCircle(): boolean {
@@ -178,16 +184,12 @@ export class Arc extends Primitive {
 		return DoubleKit.eq(Math.abs(this.sweepRadian), Math.PI * 2) || this.startPoint.equalsWithVector2(this.endPoint)
 	}
 
-	public get sweepRadian(): number {
-		return this._sweepRadian
-	}
-
 	public get radius(): number {
 		return this._radius
 	}
 
 	public get sweep(): ESweep {
-		return this.sweepRadian >= 0 ? ESweep.CCW : ESweep.CW
+		return this._sweep
 	}
 
 	public get bbox2(): BBox2 {
@@ -227,141 +229,26 @@ export class Arc extends Primitive {
 	 * 将圆弧的旋转方向反向, 并保持其他参数不变, 生成新的圆弧
 	 */
 	public exchangeSweep(): Arc {
-		return Arc.build3(this.centerPoint, this.startRadian + this.sweepRadian, -this.sweepRadian, this.radius)
+		return new Arc(this.radius, this.centerPoint, this.endRadian, -this.startRadian)
 	}
 
 	public mirrorX(yValue: number = 0): Arc {
-		// if (this.startPoint.equalsWithVector2(this.endPoint)) {
-		// 	return Arc.build3(this.centerPoint.mirrorSurroundX(), 0, Math.PI * 2, this.radius)
-		// }
-		// return Arc.build1(
-		// 	this.startPoint.mirrorSurroundX(yValue),
-		// 	this.endPoint.mirrorSurroundX(yValue),
-		// 	this.radius,
-		// 	this.isOverHalfCircle,
-		// 	this.sweepRadian >= 0 ? ESweep.CW : ESweep.CCW
-		// )
 		throw new Error(`algorithm error.`)
 	}
 
 	public mirrorY(xValue: number = 0): Arc {
-		// if (this.startPoint.equalsWithVector2(this.endPoint)) {
-		// 	return Arc.build3(this.centerPoint.mirrorSurroundY(), 0, Math.PI * 2, this.radius)
-		// }
-		// return Arc.build1(
-		// 	this.startPoint.mirrorSurroundY(xValue),
-		// 	this.endPoint.mirrorSurroundY(xValue),
-		// 	this.radius,
-		// 	this.isOverHalfCircle,
-		// 	this.sweepRadian >= 0 ? ESweep.CW : ESweep.CCW
-		// )
 		throw new Error(`algorithm error.`)
 	}
 
 	public mirrorO(origin: Vector2 = Vector2.ORIGIN): Arc {
-		// let startPoint: Vector2 = this.startPoint
-		// let endPoint: Vector2 = this.endPoint
-		// if (this.startPoint.equalsWithVector2(this.endPoint)) {
-		// 	return Arc.build3(this.centerPoint.mirrorSurroundY(), 0, Math.PI * 2, this.radius)
-		// }
-		// return Arc.build1(
-		// 	startPoint.mirrorSurroundX(origin.y),
-		// 	endPoint.mirrorSurroundY(origin.x),
-		// 	this.radius,
-		// 	this.isOverHalfCircle,
-		// 	this.sweepRadian >= 0 ? 0 : 1
-		// )
 		throw new Error(`algorithm error.`)
 	}
 
 	public multiplyMatrix3(matrix3: Matrix3): Arc {
-		let sw: number = undefined!
-		if (matrix3.isMirrored()) {
-			sw = -this.sweepRadian
-		} else {
-			sw = this.sweepRadian
-		}
-		let sa: number = undefined!
-		if (matrix3.equals(Matrix3.ROT_90)) {
-			sa = Angles.toQuarterRadian(this.startRadian + Math.PI / 2)
-		} else if (matrix3.equals(Matrix3.ROT_N90)) {
-			sa = Angles.toQuarterRadian(this.startRadian - Math.PI / 2)
-		} else {
-			sa = Angles.toQuarterRadian(Angles.transform(this.startRadian, matrix3))
-		}
-		return Arc.build3(this.centerPoint.multiplyMatrix3(matrix3), sa, sw, matrix3.iScale * this.radius)
-	}
-
-	public sectorArea(): number {
-		return Math.abs(this.sweepRadian) * this.radius * this.radius
-	}
-
-	public getArea(): number {
-		let triArea: number = Triangle.getArea(this.centerPoint, this.startPoint, this.pointOn(this.endRadian))
-		return this.sectorArea() - triArea
-	}
-
-	public getMiddlePoint(): Vector2 {
-		const sweepRadian: number = Math.abs(this.sweepRadian)
-		const [v1, v2]: [Vector2, Vector2] = [this.startPoint.sub(this.centerPoint), this.endPoint.sub(this.centerPoint)]
-		let centerDirect: Vector2 = v1.add(v2).normalize()
-		if (sweepRadian > Math.PI) {
-			centerDirect = centerDirect.mul(-1)
-		}
-		return this.centerPoint.add(centerDirect.mul(this.radius))
+		throw new Error(`algorithm error.`)
 	}
 
 	public stroke(strokeWidth: number, cap: ECanvasD2LineCap, sweep: ESweep): Polyline {
-		// const halfStrokeWidth: number = strokeWidth / 2
-		// const rxLarge: number = this.radius + halfStrokeWidth
-		// let [rxSmall, rySmall]: [number, number] = [this.radius - halfStrokeWidth, this.radius - halfStrokeWidth]
-		// let a2Matrix: Matrix3 = new Matrix3()
-		// if (rxSmall < 0) {
-		// 	rxSmall = -rxSmall
-		// 	a2Matrix = a2Matrix.multiply3(Matrix3.MIRROR_Y)
-		// }
-		// if (rySmall < 0) {
-		// 	rySmall = -rySmall
-		// 	a2Matrix = a2Matrix.multiply3(Matrix3.MIRROR_X)
-		// }
-		// if (rxSmall === 0) {
-		// 	rxSmall = 0.001
-		// }
-		// if (rySmall === 0) {
-		// 	rySmall = 0.001
-		// }
-		// a2Matrix = a2Matrix.setOrigin(this.centerPoint.x, this.centerPoint.y)
-		// let [a1, a2]: [Arc, Arc] = [null!, null!]
-		// if (sweep === this.sweep) {
-		// 	a1 = Arc.build3(this.centerPoint, this.startRadian, this.sweepRadian, rxLarge)
-		// 	a2 = Arc.build3(this.centerPoint, this.startRadian + this.sweepRadian, -this.sweepRadian, rxSmall)
-		// } else {
-		// 	a1 = Arc.build3(this.centerPoint, this.startRadian + this.sweepRadian, -this.sweepRadian, rxLarge)
-		// 	a2 = Arc.build3(this.centerPoint, this.startRadian, this.sweepRadian, rxSmall)
-		// }
-		// a2 = a2.multiplyMatrix3(a2Matrix)
-		// switch (cap) {
-		// 	case ECanvasD2LineCap.ROUND: {
-		// 		const sweepRadian: number = sweep === ESweep.CCW ? Math.PI : -Math.PI
-		// 		const [c1, c2]: [Vector2, Vector2] = [
-		// 			sweep === this.sweep ? this.pointOn(this.endRadian) : this.pointOn(this.startRadian),
-		// 			sweep === this.sweep ? this.pointOn(this.startRadian) : this.pointOn(this.endRadian),
-		// 		]
-		// 		const [startRadian1, startRadian2]: [number, number] = [
-		// 			a1.pointOn(a1.endRadian).getRadianByVector2(c1),
-		// 			a2.pointOn(a2.endRadian).getRadianByVector2(c2),
-		// 		]
-		// 		return Polyline.build1([
-		// 			a1,
-		// 			Arc.build3(c1, startRadian1, sweepRadian, halfStrokeWidth),
-		// 			a2,
-		// 			Arc.build3(c2, startRadian2, sweepRadian, halfStrokeWidth),
-		// 		])
-		// 	}
-		// 	default: {
-		// 		return Polyline.build1([a1, a2])
-		// 	}
-		// }
 		throw new Error(`algorithm error.`)
 	}
 
@@ -398,35 +285,9 @@ export class Arc extends Primitive {
 		return ps
 	}
 
-	public getMidPoint(): Vector2 {
-		const [startRadian, endRadian]: [number, number] = [this.startRadian, this.endRadian]
-		const [sweep, centerPoint, radius]: [ESweep, Vector2, number] = [this.sweep, this.centerPoint, this.radius]
-		if (sweep === ESweep.CCW) {
-			if (endRadian > startRadian) {
-				let radian: number = (endRadian - startRadian) / 2 + startRadian
-				let midPoint: Vector2 = centerPoint.add(new Vector2(Math.cos(radian), Math.sin(radian)).mul(radius))
-				return midPoint
-			}
-			if (endRadian === startRadian) {
-				let midPoint: Vector2 = centerPoint.add(new Vector2(Math.cos((Math.PI * 3) / 2), Math.sin((Math.PI * 3) / 2)).mul(radius))
-				return midPoint
-			}
-			let radian: number = (endRadian + Math.PI * 2 - startRadian) / 2 + startRadian
-			let midPoint: Vector2 = centerPoint.add(new Vector2(Math.cos(radian), Math.sin(radian)).mul(radius))
-			return midPoint
-		}
-		if (endRadian > startRadian) {
-			let radian: number = (startRadian + Math.PI * 2 - endRadian) / 2 + endRadian
-			let midPoint: Vector2 = centerPoint.add(new Vector2(Math.cos(radian), Math.sin(radian)).mul(radius))
-			return midPoint
-		}
-		if (endRadian === startRadian) {
-			let midPoint: Vector2 = centerPoint.add(new Vector2(Math.cos((Math.PI * 3) / 2), Math.sin((Math.PI * 3) / 2)).mul(radius))
-			return midPoint
-		}
-		const radian: number = (startRadian - endRadian) / 2 + endRadian
-		const midPoint: Vector2 = centerPoint.add(new Vector2(Math.cos(radian), Math.sin(radian)).mul(radius))
-		return midPoint
+	public getMiddlePoint(): Vector2 {
+		const radian: number = Angles.normalizeRadian(this.startRadian + this.sweepRadian * 0.5)
+		return this.centerPoint.add(new Vector2(Math.cos(radian), Math.sin(radian)).mul(this.radius))
 	}
 
 	public isInArea(point: Vector2, width: number): boolean {
@@ -472,10 +333,6 @@ export class Arc extends Primitive {
 			return true
 		}
 		return false
-	}
-
-	public reverse(): Arc {
-		return Arc.build1(this.endPoint, this.startPoint, this.radius, this.isOverHalfCircle, this.sweepRadian >= 0 ? ESweep.CW : ESweep.CCW)
 	}
 
 	private buildBBox2(): BBox2 {

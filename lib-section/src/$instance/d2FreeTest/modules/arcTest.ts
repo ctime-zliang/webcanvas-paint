@@ -1,9 +1,28 @@
-import { Primitive } from '../../../algorithm/geometry/primitives/Primitive'
-import { ECanvasD2LineCap } from '../../../engine/config/PrimitiveProfile'
 import { Arc, Color, Line, Polyline, SWEEP, Vector2, WebCanvas } from '../../../Main'
 import { createPoints } from '../utils/createPoints'
 
 export function arcTest01(webCanvas: WebCanvas, layerItemId: string): void {
+	const { d2ElementController } = webCanvas
+	const centerPoint: Vector2 = new Vector2(10, 0)
+	const radius: number = 50
+	const startRadian: number = 0
+	const endRadian: number = (Math.PI * 5) / 4
+	d2ElementController.createD2ArcElementShapeItem(layerItemId, centerPoint, radius, startRadian, endRadian, SWEEP.CCW, {
+		isEnableSelect: false,
+		strokeWidth: 5,
+	})
+	/**
+	 * 圆弧基本信息
+	 */
+	console.log('%c <T: 圆弧基本信息>', 'color: #ff6600')
+	const [arc]: [Arc] = [new Arc(radius, centerPoint, startRadian, endRadian - startRadian)]
+	console.log(arc)
+	console.log(arc.toString())
+	console.log('%c </T>', 'color: #ff6600')
+	console.log(d2ElementController.getAllD2ElementShapeResults())
+}
+
+export function arcTest02(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
 	const centerPoint: Vector2 = new Vector2(10, 0)
 	const radius: number = 50
@@ -13,9 +32,9 @@ export function arcTest01(webCanvas: WebCanvas, layerItemId: string): void {
 		isEnableSelect: false,
 	})
 	/**
-	 * 圆弧测试
+	 * 圆/圆弧上对应弧度的点坐标
 	 */
-	console.log('%c <T: 圆弧测试>', 'color: #ff6600')
+	console.log('%c <T: 圆/圆弧上对应弧度的点坐标>', 'color: #ff6600')
 	const [arc]: [Arc] = [new Arc(radius, centerPoint, startRadian, endRadian - startRadian)]
 	console.log(arc)
 	const P1: Vector2 = arc.pointOn(-Math.PI * (9 / 10))
@@ -31,7 +50,7 @@ export function arcTest01(webCanvas: WebCanvas, layerItemId: string): void {
 	])
 }
 
-export function arcTest02(webCanvas: WebCanvas, layerItemId: string): void {
+export function arcTest03(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
 	const centerPoint: Vector2 = new Vector2(10, 0)
 	const radius: number = 50
@@ -72,34 +91,6 @@ export function arcTest02(webCanvas: WebCanvas, layerItemId: string): void {
 	])
 }
 
-export function arcTest03(webCanvas: WebCanvas, layerItemId: string): void {
-	const { d2ElementController } = webCanvas
-	const centerPoint: Vector2 = new Vector2(10, 0)
-	const radius: number = 50
-	const startRadian: number = Math.PI * (1 / 4)
-	const endRadian: number = Math.PI * (5 / 4)
-	d2ElementController.createD2ArcElementShapeItem(layerItemId, centerPoint, radius, startRadian, endRadian, SWEEP.CCW, {
-		isEnableSelect: false,
-	})
-	/**
-	 * 计算圆弧弧线中点
-	 */
-	console.log('%c <T: 计算圆弧弧线中点>', 'color: #ff6600')
-	const [arc]: [Arc] = [new Arc(radius, centerPoint, startRadian, endRadian - startRadian)]
-	console.log(arc)
-	const P1: Vector2 = arc.getMidPoint()
-	console.log(P1)
-	console.log('%c </T>', 'color: #ff6600')
-	console.log(d2ElementController.getAllD2ElementShapeResults())
-	/* ... */
-	createPoints(webCanvas, layerItemId, [
-		{ label: `centerPoint`, position: centerPoint },
-		{ label: `startPoint`, position: arc.startPoint },
-		{ label: `endPoint`, position: arc.endPoint },
-		{ label: `P1`, position: P1 },
-	])
-}
-
 export function arcTest04(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
 	const centerPoint: Vector2 = new Vector2(10, 0)
@@ -134,35 +125,23 @@ export function arcTest05(webCanvas: WebCanvas, layerItemId: string): void {
 	const strokeWidth: number = 10
 	const radius: number = 50
 	const startRadian: number = 0
-	const endRadian: number = Math.PI * 1
+	const endRadian: number = (Math.PI * 5) / 4
 	d2ElementController.createD2ArcElementShapeItem(layerItemId, centerPoint, radius, startRadian, endRadian, SWEEP.CCW, {
 		isEnableSelect: false,
 		strokeWidth,
-		strokeColor: Color.RED,
 	})
 	/**
-	 * 圆弧镜像
+	 * 圆弧中点
 	 */
-	console.log('%c <T: 圆弧镜像>', 'color: #ff6600')
+	console.log('%c <T: 圆弧中点>', 'color: #ff6600')
 	const [arc]: [Arc] = [new Arc(radius, centerPoint, startRadian, endRadian - startRadian)]
 	console.log(arc)
-	const [arc1, arc2, arc3]: [Arc, Arc, Arc] = [arc.mirrorX(1), arc.mirrorY(1), arc.mirrorO(new Vector2(1, 1))]
-	d2ElementController.createD2ArcElementShapeItem(layerItemId, arc1.centerPoint, arc1.radius, arc1.startRadian, arc1.endRadian, arc1.sweep, {
-		isEnableSelect: false,
-		strokeWidth,
-		strokeColor: Color.GOLDEN,
-	})
-	d2ElementController.createD2ArcElementShapeItem(layerItemId, arc2.centerPoint, arc2.radius, arc2.startRadian, arc2.endRadian, arc2.sweep, {
-		isEnableSelect: false,
-		strokeWidth,
-		strokeColor: Color.YELLOW_GREEN,
-	})
-	d2ElementController.createD2ArcElementShapeItem(layerItemId, arc3.centerPoint, arc3.radius, arc3.startRadian, arc3.endRadian, arc3.sweep, {
-		isEnableSelect: false,
-		strokeWidth,
-		strokeColor: Color.BLUE,
-	})
-	console.log(arc1, arc2, arc3)
-	console.log('%c </T>', 'color: #ff6600')
-	console.log(d2ElementController.getAllD2ElementShapeResults())
+	const P1: Vector2 = arc.getMiddlePoint()
+	/* ... */
+	createPoints(webCanvas, layerItemId, [
+		{ label: `centerPoint`, position: centerPoint },
+		{ label: `startPoint`, position: arc.startPoint },
+		{ label: `endPoint`, position: arc.endPoint },
+		{ label: `P1`, position: P1 },
+	])
 }

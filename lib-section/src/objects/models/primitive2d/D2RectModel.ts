@@ -27,9 +27,9 @@ export type TBuildD2RectModelOptionalParam = {
 export function createBuildD2RectModelOptionalParam(optional: Partial<TBuildD2RectModelOptionalParam> = {}): TBuildD2RectModelOptionalParam {
 	return {
 		strokeWidth: 1,
-		strokeColor: Color.WHITE,
+		strokeColor: Color.SILVER,
 		isFill: false,
-		fillColor: Color.WHITE,
+		fillColor: Color.GAINSBORO,
 		alpha: 1.0,
 		isSolid: true,
 		borderRadius: 0,

@@ -4,7 +4,6 @@ import { Vector2 } from '../../../engine/algorithm/geometry/vector/Vector2'
 import { DoubleKit } from '../../../engine/math/Doublekit'
 import { ESweep } from '../../../engine/config/CommonProfile'
 import { ECanvasD2LineCap } from '../../../engine/config/PrimitiveProfile'
-import { Arc } from './Arc'
 import { Polyline } from './Polyline'
 import { Primitive } from './Primitive'
 
@@ -113,10 +112,6 @@ export class Line extends Primitive {
 		return [this.startPoint, this.endPoint]
 	}
 
-	public reverse(): Primitive {
-		return new Line(this.endPoint, this.startPoint)
-	}
-
 	public isPoint(): boolean {
 		if ((this, this.startPoint.distance(this.endPoint) <= DoubleKit.eps1)) {
 			return true
@@ -171,50 +166,6 @@ export class Line extends Primitive {
 	}
 
 	public stroke(width: number, cap: ECanvasD2LineCap, sweep: ESweep): Polyline {
-		// let origin: Vector2 = null!
-		// let [xOff, yOff]: [number, number] = [undefined!, undefined!]
-		// if (this.endPoint.x < this.startPoint.x) {
-		// 	xOff = this.startPoint.x - this.endPoint.x
-		// 	yOff = this.startPoint.y - this.endPoint.y
-		// 	origin = this.endPoint
-		// } else {
-		// 	xOff = this.endPoint.x - this.startPoint.x
-		// 	yOff = this.endPoint.y - this.startPoint.y
-		// 	origin = this.startPoint
-		// }
-		// const length: number = Math.sqrt(xOff * xOff + yOff * yOff)
-		// const halfWidth: number = width / 2
-		// let pl: Polyline = null!
-		// let [left, right]: [number, number] = [undefined!, undefined!]
-		// if (cap === ECanvasD2LineCap.SQUARE) {
-		// 	left = -halfWidth
-		// 	right = length + halfWidth
-		// } else {
-		// 	left = 0
-		// 	right = length
-		// }
-		// if (cap === ECanvasD2LineCap.BUTT || cap === ECanvasD2LineCap.SQUARE) {
-		// 	if (sweep === ESweep.CW) {
-		// 		pl = Polyline.build3([left, -halfWidth, left, halfWidth, right, halfWidth, right, -halfWidth])
-		// 	} else {
-		// 		pl = Polyline.build3([left, halfWidth, left, -halfWidth, right, -halfWidth, right, halfWidth])
-		// 	}
-		// } else {
-		// 	if (sweep === ESweep.CW) {
-		// 		pl = Polyline.build1([
-		// 			Arc.build3(new Vector2(left, 0), -Math.PI / 2, -Math.PI, halfWidth),
-		// 			Arc.build3(new Vector2(right, 0), Math.PI / 2, -Math.PI, halfWidth),
-		// 		])
-		// 	} else {
-		// 		pl = Polyline.build1([
-		// 			Arc.build3(new Vector2(left, 0), Math.PI / 2, Math.PI, halfWidth),
-		// 			Arc.build3(new Vector2(right, 0), -Math.PI / 2, Math.PI, halfWidth),
-		// 		])
-		// 	}
-		// }
-		// const orientation: number = Math.atan2(yOff, xOff)
-		// pl = pl.asClose()
-		// return pl.multiplyMatrix3(Matrix3.rotate(orientation).multiply3(Matrix3.translate(origin.x, origin.y)))
 		throw new Error(`algorithm error.`)
 	}
 }
