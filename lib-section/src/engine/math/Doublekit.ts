@@ -1,10 +1,11 @@
 export class DoubleKit {
 	public static eps1: number = 1e-8
 	public static eps2: number = 1e-6
-	public static precision: number = 1e8
+	public static precision1: number = 1e8
+	public static precision2: number = 1e10
 
 	public static regular(dis: number = 0): number {
-		return Math.round(dis * this.precision) / this.precision
+		return Math.round(dis * this.precision1) / this.precision1
 	}
 
 	public static eq(a: number, b: number, eps: number = this.eps1): boolean {

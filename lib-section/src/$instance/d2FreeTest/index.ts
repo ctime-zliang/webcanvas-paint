@@ -45,7 +45,7 @@ import { d2CircleToolkitTest01 } from './modules/d2CircleToolkitTest'
 import { d2ArcToolkitTest01, d2ArcToolkitTest02, d2ArcToolkitTest03, d2ArcToolkitTest04, d2ArcToolkitTest05 } from './modules/d2ArcToolkitTest'
 import { vector2Test01 } from './modules/vector2Test'
 import { lineTest01, lineTest02, lineTest03 } from './modules/lineTest'
-import { arcTest01, arcTest02, arcTest03, arcTest04, arcTest05 } from './modules/arcTest'
+import { arcTest01, arcTest02, arcTest03, arcTest04, arcTest05, arcTest06 } from './modules/arcTest'
 
 async function initMessageHandle(webCanvas: WebCanvas): Promise<void> {
 	const { messageTool, drawLayerController, d2ElementController, operationController } = webCanvas
@@ -246,6 +246,7 @@ export function main(): void {
 		// arcTest03(webCanvas, layerItem01Id)
 		// arcTest04(webCanvas, layerItem01Id)
 		// arcTest05(webCanvas, layerItem01Id)
+		arcTest06(webCanvas, layerItem01Id)
 
 		// d2LineToolkitTest01(webCanvas, layerItem01Id)
 		// d2LineToolkitTest02(webCanvas, layerItem01Id)

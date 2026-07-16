@@ -8,8 +8,8 @@ export function d2ArcToolkitTest01(webCanvas: WebCanvas, layerItemId: string): v
 	const centerPoint: Vector2 = new Vector2(0, 0)
 	const radius: number = 50
 	const startRadian: number = 0
-	const sweepRadian: number = Math.PI
-	d2ElementController.createD2ArcElementShapeItem(layerItemId, centerPoint, radius, startRadian, startRadian + sweepRadian, SWEEP.CCW, {
+	const endRadian: number = Math.PI
+	d2ElementController.createD2ArcElementShapeItem(layerItemId, centerPoint, radius, startRadian, endRadian, SWEEP.CCW, {
 		isEnableSelect: false,
 		isFill: true,
 		fillColor: new Color(255, 0, 0, 0.5),
@@ -18,7 +18,7 @@ export function d2ArcToolkitTest01(webCanvas: WebCanvas, layerItemId: string): v
 	 * 判断点是否位于圆弧上
 	 */
 	console.log('%c <T: 判断点是否位于圆弧上>', 'color: #ff6600')
-	const arc: Arc = new Arc(radius, centerPoint, startRadian, sweepRadian)
+	const arc: Arc = new Arc(radius, centerPoint, startRadian, endRadian)
 	const a1: boolean = D2ArcToolkit.isPointOnArc(arc, pointA)
 	console.log(a1)
 	console.log('%c </T>', 'color: #ff6600')

@@ -43,7 +43,7 @@ export function intersectionTest02(webCanvas: WebCanvas, layerItemId: string): v
 	})
 	/* ... */
 	const lineA: Line = new Line(lineAStartPoint, lineAEndPoint)
-	const arcA: Arc = new Arc(arcRadiusA, arcCenterA, startRadianA, endRadianA - startRadianA)
+	const arcA: Arc = new Arc(arcRadiusA, arcCenterA, startRadianA, endRadianA)
 	console.log(lineA, arcA)
 	const intersections: { count: number; points: Array<Vector2> } = D2Intersection.getIntersectionsOfPrimitives(lineA, arcA)
 	console.log(intersections)
@@ -63,8 +63,8 @@ export function intersectionTest03(webCanvas: WebCanvas, layerItemId: string): v
 		strokeColor: Color.GREEN,
 	})
 	/* ... */
-	const arcA: Arc = new Arc(arcRadiusA, arcCenterA, startRadianA, endRadianA - startRadianA)
-	const arcB: Arc = new Arc(arcRadiusB, arcCenterB, startRadianB, endRadianB - startRadianB)
+	const arcA: Arc = new Arc(arcRadiusA, arcCenterA, startRadianA, endRadianA)
+	const arcB: Arc = new Arc(arcRadiusB, arcCenterB, startRadianB, endRadianB)
 	console.log(arcA, arcB)
 	const intersections: { count: number; points: Array<Vector2> } = D2Intersection.getIntersectionsOfPrimitives(arcA, arcB)
 	console.log(intersections)
