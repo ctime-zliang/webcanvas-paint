@@ -1,15 +1,4 @@
-import {
-	Angles,
-	BuildD2TextModelOptionalStyleSettingParam,
-	Color,
-	D2FONT_STYLE,
-	D2TextVertexData,
-	Element2DTextJSONViewData,
-	ElementJSONData,
-	nextFrameTick,
-	Vector2,
-	WebCanvas,
-} from '../../../Main'
+import { Angles, BuildD2TextModelOptionalStyleSettingParam, Color, D2FONT_STYLE, D2TextVertexData, Element2DTextJSONViewData, ElementJSONData, nextFrameTick, Vector2, WebCanvas } from '../../../Main'
 
 const M_TEST_TXT1: string = `
 	龘 齉爨麤齾靐 你好 世界
@@ -76,15 +65,10 @@ export async function drawTestTextItemStd(webCanvas: WebCanvas, layerItemId: str
 		)
 		.then((d2TextVertexData: D2TextVertexData): void => {
 			console.log(`D2TextVertexData: `, d2TextVertexData)
-			const shapeElementItemId1: string = d2TextElementController.createD2TextElementItemByVertexData(
-				defaultLayerItemId,
-				d2TextVertexData,
-				new Vector2(-50, -50),
-				{
-					strokeColor: Color.RED,
-					styleSetting,
-				}
-			)
+			const shapeElementItemId1: string = d2TextElementController.createD2TextElementItemByVertexData(defaultLayerItemId, d2TextVertexData, new Vector2(-50, -50), {
+				strokeColor: Color.RED,
+				styleSetting,
+			})
 			const jsonData: ElementJSONData = d2ElementController.getD2ElementShapeItemJSONData(shapeElementItemId1)
 			console.log(`D2TextShape: ${shapeElementItemId1}: `, jsonData)
 		})

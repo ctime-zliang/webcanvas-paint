@@ -41,9 +41,7 @@ export class D2PolygonToolkit {
 						continue
 					}
 					const swp2: number = pt.sweepRadian / 2
-					pl = new Polyline(
-						[Arc.build3(pt.centerPoint, 0, swp2, pt.rx, pt.ry)].concat([Arc.build3(pt.centerPoint, swp2, swp2, pt.rx, pt.ry)])
-					)
+					pl = new Polyline([Arc.build3(pt.centerPoint, 0, swp2, pt.rx, pt.ry)].concat([Arc.build3(pt.centerPoint, swp2, swp2, pt.rx, pt.ry)]))
 				}
 			}
 			const path: Array<string | number> = []
@@ -85,16 +83,7 @@ export class D2PolygonToolkit {
 		for (let k: number = 0; k < paths2.length; k++) {
 			const polygon: Array<string | number> = paths2[k]
 			if (polygon[0] === 'CIRCLE') {
-				const pl: Polyline = new Polyline([
-					Arc.build2(
-						new Vector2(polygon[1] as number, polygon[2] as number),
-						0,
-						Math.PI * 2,
-						polygon[3] as number,
-						polygon[3] as number,
-						ESweep.CW
-					),
-				])
+				const pl: Polyline = new Polyline([Arc.build2(new Vector2(polygon[1] as number, polygon[2] as number), 0, Math.PI * 2, polygon[3] as number, polygon[3] as number, ESweep.CW)])
 				result[k] = pl
 				continue
 			}
@@ -117,11 +106,7 @@ export class D2PolygonToolkit {
 						radian = ((polygon[i + 1] as number) / 180) * Math.PI
 						endPoint = new Vector2(polygon[i + 2] as number, polygon[i + 3] as number)
 						if (Math.abs(radian) > 1e-8 && !startPoint.equalsWithPoint(endPoint)) {
-							const { centerPoint, radius, startRadian, endRadian, sweep } = D2ArcToolkit.calculateD2ArcProfileTwoPointsAndRadian(
-								radian,
-								startPoint,
-								endPoint
-							)
+							const { centerPoint, radius, startRadian, endRadian, sweep } = D2ArcToolkit.calculateD2ArcProfileTwoPointsAndRadian(radian, startPoint, endPoint)
 							pt = Arc.build2(centerPoint, (startRadian / Math.PI) * 180, (endRadian / Math.PI) * 180, radius, radius, sweep)
 							pts.addLastValue(pt)
 						}

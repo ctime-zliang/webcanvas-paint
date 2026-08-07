@@ -21,14 +21,7 @@ export class TextGraphicTemplate {
 	private _fontFamily: string
 	private _fontStyle: ED2FontStyle
 	private _fontWeight: number
-	constructor(
-		triangleVertexData: TFontTriangleVertexData,
-		fontPolygonBbox2: TFontPolygonBbox2,
-		fontCanvasRenderMetrics: TFontCanvasRenderMetrics,
-		fontFamily: string,
-		fontStyle: ED2FontStyle,
-		fontWeight: number
-	) {
+	constructor(triangleVertexData: TFontTriangleVertexData, fontPolygonBbox2: TFontPolygonBbox2, fontCanvasRenderMetrics: TFontCanvasRenderMetrics, fontFamily: string, fontStyle: ED2FontStyle, fontWeight: number) {
 		this._triangleVertexData = this.createTriangleVertexData(triangleVertexData)
 		this._fontPolygonBbox2 = this.createFontPolygonBbox2(fontPolygonBbox2)
 		this._fontCanvasRenderMetrics = this.createFontCanvasRenderMetrics(fontCanvasRenderMetrics)
@@ -106,23 +99,14 @@ export class TextGraphicsManager extends BaseManager<Array<TextGraphicTemplate>>
 		this.items.set(textStr, textGraphicCacheList)
 	}
 
-	public getTextGraphicCache(
-		textStr: string,
-		fontFamily: string = 'auto',
-		fontStyle: ED2FontStyle = ED2FontStyle.NORMAL,
-		fontWeight: number = 100
-	): TextGraphicTemplate {
+	public getTextGraphicCache(textStr: string, fontFamily: string = 'auto', fontStyle: ED2FontStyle = ED2FontStyle.NORMAL, fontWeight: number = 100): TextGraphicTemplate {
 		let textGraphicCacheList: Array<TextGraphicTemplate> = this.items.get(textStr)!
 		if (!textGraphicCacheList) {
 			return null!
 		}
 		for (let i: number = 0; i < textGraphicCacheList.length; i++) {
 			const textGraphicCache: TextGraphicTemplate = textGraphicCacheList[i]
-			if (
-				textGraphicCache.fontFamily === fontFamily &&
-				textGraphicCache.fontStyle === fontStyle &&
-				textGraphicCache.fontWeight === fontWeight
-			) {
+			if (textGraphicCache.fontFamily === fontFamily && textGraphicCache.fontStyle === fontStyle && textGraphicCache.fontWeight === fontWeight) {
 				return textGraphicCache
 			}
 		}

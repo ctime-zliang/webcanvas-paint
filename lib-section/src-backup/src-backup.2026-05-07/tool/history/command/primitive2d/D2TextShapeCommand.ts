@@ -61,12 +61,7 @@ export class D2TextShapeCommand extends ElementCommand<TElement2DTextJSONViewDat
 		if (elementItem.fontWeight !== fontWeight) {
 			elementItem.fontWeight = fontWeight
 		}
-		if (
-			elementItem.strokeColor.r !== strokeColorData.r ||
-			elementItem.strokeColor.g !== strokeColorData.g ||
-			elementItem.strokeColor.b !== strokeColorData.b ||
-			elementItem.strokeColor.a !== strokeColorData.a
-		) {
+		if (elementItem.strokeColor.r !== strokeColorData.r || elementItem.strokeColor.g !== strokeColorData.g || elementItem.strokeColor.b !== strokeColorData.b || elementItem.strokeColor.a !== strokeColorData.a) {
 			elementItem.strokeColor = new Color(strokeColorData.r, strokeColorData.g, strokeColorData.b, strokeColorData.a)
 		}
 		this.itemData = elementItemNowData
@@ -94,18 +89,12 @@ export class D2TextShapeCommand extends ElementCommand<TElement2DTextJSONViewDat
 			fontSize,
 			fontWeight,
 		} = this.itemData
-		const targetShapeItem: D2TextShape = D2TextShapeManager.getInstance().createShapeItem(
-			elementItemId,
-			layerItemId,
-			new Vector2(position.x, position.y),
-			content,
-			{
-				fontFamily,
-				fontStyle,
-				fontSize,
-				strokeColor: new Color(strokeColorData.r, strokeColorData.g, strokeColorData.b, strokeColorData.a),
-			}
-		)
+		const targetShapeItem: D2TextShape = D2TextShapeManager.getInstance().createShapeItem(elementItemId, layerItemId, new Vector2(position.x, position.y), content, {
+			fontFamily,
+			fontStyle,
+			fontSize,
+			strokeColor: new Color(strokeColorData.r, strokeColorData.g, strokeColorData.b, strokeColorData.a),
+		})
 		targetShapeItem.elementItemName = elementItemName
 	}
 

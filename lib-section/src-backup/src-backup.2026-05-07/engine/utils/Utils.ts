@@ -43,13 +43,7 @@ export function isEqualOfArray<T>(a1: ReadonlyArray<T> | Array<T>, a2: ReadonlyA
 	return true
 }
 
-export function arrayCopy(
-	sourceArray: Array<number>,
-	sourceIndex: number,
-	resultArray: Array<number>,
-	resultIndex: number,
-	copyLength: number
-): void {
+export function arrayCopy(sourceArray: Array<number>, sourceIndex: number, resultArray: Array<number>, resultIndex: number, copyLength: number): void {
 	if (sourceArray.length >= sourceIndex + copyLength && resultArray.length >= resultIndex + copyLength) {
 		while (copyLength-- > 0) {
 			resultArray[resultIndex++] = sourceArray[sourceIndex++]

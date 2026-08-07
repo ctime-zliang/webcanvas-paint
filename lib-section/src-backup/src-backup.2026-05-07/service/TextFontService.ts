@@ -16,13 +16,7 @@ type TtaskDataItem = {
 	optional?: Record<keyof TOptional, any>
 }
 
-type TFlushCallback = (params: {
-	textStrId: string
-	width: number
-	height: number
-	initBbox2: BBox2
-	vertexDataArray: Array<Array<TFontTriangleVertexData>>
-}) => void
+type TFlushCallback = (params: { textStrId: string; width: number; height: number; initBbox2: BBox2; vertexDataArray: Array<Array<TFontTriangleVertexData>> }) => void
 
 export const POINT_ARRAY_OCCUPY_SIZE: number = 2
 
@@ -48,13 +42,7 @@ export class TextFontService extends BaseInterface {
 		this._worker.onmessage = this.workerMessageHandler.bind(this)
 	}
 
-	public addVectorizeTextTask<K extends keyof TOptional>(
-		textStrId: string,
-		textContent: string,
-		profile: TTextLayoutFontProfile,
-		optional?: Record<K, any>,
-		flushCallback?: TFlushCallback
-	): void {
+	public addVectorizeTextTask<K extends keyof TOptional>(textStrId: string, textContent: string, profile: TTextLayoutFontProfile, optional?: Record<K, any>, flushCallback?: TFlushCallback): void {
 		this._taskDataList.push({
 			textStrId,
 			textContent,
@@ -77,12 +65,7 @@ export class TextFontService extends BaseInterface {
 		this._workerId = undefined!
 	}
 
-	private vectorizeText<K extends keyof TOptional>(
-		textStrId: string,
-		textContent: string,
-		profile: TTextLayoutFontProfile,
-		optional?: Record<K, any>
-	): void {
+	private vectorizeText<K extends keyof TOptional>(textStrId: string, textContent: string, profile: TTextLayoutFontProfile, optional?: Record<K, any>): void {
 		this._isRuning = true
 		const taskId: string = Constant.globalIdenManager.getHashIden()
 		const iOptional: TOptional = {
@@ -109,12 +92,7 @@ export class TextFontService extends BaseInterface {
 			}
 			for (let colIndex: number = 0; colIndex < colSize; colIndex++) {
 				const text: string = textArray[rowIndex][colIndex]
-				const textGraphicTemplate: TextGraphicTemplate = TextGraphicsManager.getInstance().getTextGraphicCache(
-					text,
-					iOptional.fontFamily,
-					iOptional.fontStyle,
-					iOptional.fontWeight
-				)
+				const textGraphicTemplate: TextGraphicTemplate = TextGraphicsManager.getInstance().getTextGraphicCache(text, iOptional.fontFamily, iOptional.fontStyle, iOptional.fontWeight)
 				if (textGraphicTemplate) {
 					textPolygonBbox2Arrays[rowIndex][colIndex] = textGraphicTemplate.fontPolygonBbox2
 					textCanvasRenderMetricsArray[rowIndex][colIndex] = textGraphicTemplate.fontCanvasRenderMetrics
@@ -200,14 +178,7 @@ export class TextFontService extends BaseInterface {
 				TextGraphicsManager.getInstance().addTextGraphicCache(textArray[rowIndex][colIndex], textGraphicTemplate)
 			}
 		}
-		this.flushLayout(
-			payload.data.textStrId,
-			payload.data.textArray,
-			payload.data.textPolygonBbox2Arrays,
-			payload.data.textCanvasRenderMetricsArray,
-			payload.data.vertexDataArray,
-			payload.data.profile
-		)
+		this.flushLayout(payload.data.textStrId, payload.data.textArray, payload.data.textPolygonBbox2Arrays, payload.data.textCanvasRenderMetricsArray, payload.data.vertexDataArray, payload.data.profile)
 	}
 
 	private flushLayout(
@@ -218,12 +189,7 @@ export class TextFontService extends BaseInterface {
 		vertexDataArray: Array<Array<TFontTriangleVertexData>>,
 		profile: TTextLayoutFontProfile
 	): void {
-		const {
-			width,
-			height,
-			initBbox2,
-			vertexDataArray: vertexDataArrayUpdated,
-		} = TextLayout.worldComposing(textArray, textPolygonBbox2Arrays, textCanvasRenderMetricsArray, vertexDataArray, profile)
+		const { width, height, initBbox2, vertexDataArray: vertexDataArrayUpdated } = TextLayout.worldComposing(textArray, textPolygonBbox2Arrays, textCanvasRenderMetricsArray, vertexDataArray, profile)
 		this._isRuning = false
 		const flushCallback: TFlushCallback = this._flushCallbacks.shift()!
 		if (flushCallback instanceof Function) {

@@ -17,12 +17,7 @@ export class D2PointModelManager extends BaseManager<D2PointModel> {
 		super()
 	}
 
-	public createModelItem(
-		elementItemId: string,
-		layerItemId: string,
-		centerPoint: Vector2,
-		optional: Partial<TBuildD2PointModelOptionalParam> = {}
-	): D2PointModel {
+	public createModelItem(elementItemId: string, layerItemId: string, centerPoint: Vector2, optional: Partial<TBuildD2PointModelOptionalParam> = {}): D2PointModel {
 		const locSetting: TBuildD2PointModelOptionalParam = {
 			size: 1.0,
 			shape: ED2PointShape.DOT,

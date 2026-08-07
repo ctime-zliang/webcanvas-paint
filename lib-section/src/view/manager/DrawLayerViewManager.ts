@@ -37,23 +37,10 @@ export class DrawLayerViewManager extends BaseManager<DrawLayerView> {
 		}
 	}
 
-	public modifyItem(
-		scene: Scene,
-		drawLayerItemId: string,
-		drawLayerItemType: number,
-		drawLayerStatus: EPlaneStatus,
-		drawLayerItemData: TPlaneJSONData
-	): void {
+	public modifyItem(scene: Scene, drawLayerItemId: string, drawLayerItemType: number, drawLayerStatus: EPlaneStatus, drawLayerItemData: TPlaneJSONData): void {
 		const drawLayerItem: DrawLayerView = this.items.get(drawLayerItemId) as DrawLayerView
 		if (!drawLayerItem) {
-			const drawLayerViewItem: DrawLayerView = new DrawLayerView(
-				scene,
-				drawLayerItemId,
-				drawLayerItemType,
-				drawLayerItemData.layerItemName,
-				drawLayerItemData.layerItemOpacity,
-				drawLayerItemData.groupId
-			)
+			const drawLayerViewItem: DrawLayerView = new DrawLayerView(scene, drawLayerItemId, drawLayerItemType, drawLayerItemData.layerItemName, drawLayerItemData.layerItemOpacity, drawLayerItemData.groupId)
 			this.items.set(drawLayerViewItem.layerItemId, drawLayerViewItem)
 			return
 		}

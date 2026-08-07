@@ -15,14 +15,7 @@ export class D2RectModelManager extends BaseManager<D2RectModel> {
 		super()
 	}
 
-	public createModelItem(
-		elementItemId: string,
-		layerItemId: string,
-		position: Vector2,
-		width: number,
-		height: number,
-		optional: Partial<TBuildD2RectModelOptionalParam> = {}
-	): D2RectModel {
+	public createModelItem(elementItemId: string, layerItemId: string, position: Vector2, width: number, height: number, optional: Partial<TBuildD2RectModelOptionalParam> = {}): D2RectModel {
 		const locSetting: TBuildD2RectModelOptionalParam = createBuildD2RectModelOptionalParam(optional)
 		const elementModelItem: D2RectModel = new D2RectModel(
 			elementItemId,

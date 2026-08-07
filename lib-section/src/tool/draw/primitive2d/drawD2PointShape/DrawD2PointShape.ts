@@ -26,15 +26,10 @@ export class DrawD2PointShape extends DrawD2Shape {
 			for (let i: number = 0; i < this.shapeInstances.length; i++) {
 				const targetShapeItem: D2PointShape = this.shapeInstances[i]
 				const elementItemId: string = Constant.globalIdenManager.getElementIden()
-				const newTargetShapeItem: D2PointShape = D2PointShapeManager.getInstance().createShapeItem(
-					elementItemId,
-					this.selectedDrawLayerShapeItem.model.layerItemId,
-					targetShapeItem.centerPoint,
-					{
-						...targetShapeItem.toJSON(),
-						isEnableScale: true,
-					}
-				)
+				const newTargetShapeItem: D2PointShape = D2PointShapeManager.getInstance().createShapeItem(elementItemId, this.selectedDrawLayerShapeItem.model.layerItemId, targetShapeItem.centerPoint, {
+					...targetShapeItem.toJSON(),
+					isEnableScale: true,
+				})
 				drawedItems.push(newTargetShapeItem)
 				targetShapeItem.setDelete()
 			}

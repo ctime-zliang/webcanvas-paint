@@ -5,12 +5,7 @@ import { EPrimitiveStatus } from '../../../engine/config/PrimitiveProfile'
 import { TElement2DTextJSONViewData, TElementShapeType } from '../../../types/Element'
 import { Camera } from '../../../engine/common/Camera'
 import { D2TextShape } from '../../shapes/primitive2d/D2TextShape'
-import {
-	buildD2TextModel,
-	D2TextModel,
-	TBuildD2TextModelOptionalStyleSettingParam,
-	TBuildD2TextModelOptionalParam,
-} from '../../models/primitive2d/D2TextModel'
+import { buildD2TextModel, D2TextModel, TBuildD2TextModelOptionalStyleSettingParam, TBuildD2TextModelOptionalParam } from '../../models/primitive2d/D2TextModel'
 import { Constant } from '../../../Constant'
 import { EFrameCommand } from '../../../config/CommandEnum'
 

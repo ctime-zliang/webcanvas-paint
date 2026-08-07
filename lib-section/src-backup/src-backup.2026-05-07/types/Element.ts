@@ -1,15 +1,7 @@
 import { ED2ElementType } from '../config/D2ElementProfile'
 import { BBox2 } from '../engine/algorithm/geometry/bbox/BBox2'
 import { ED2FontStyle } from '../engine/config/PrimitiveProfile'
-import {
-	TElementD2ArcJSONData,
-	TElementD2CircleJSONData,
-	TElementD2ImageJSONData,
-	TElementD2LineJSONData,
-	TElementD2RectJSONData,
-	TElementD2TextJSONData,
-	TElementD2PointJSONData,
-} from '../engine/types/Primitive'
+import { TElementD2ArcJSONData, TElementD2CircleJSONData, TElementD2ImageJSONData, TElementD2LineJSONData, TElementD2RectJSONData, TElementD2TextJSONData, TElementD2PointJSONData } from '../engine/types/Primitive'
 import { TFontTriangleVertexData } from '../manager/TextGraphicsManager'
 import { D2AssistLineShape } from '../objects/assist/primitive2d/D2AssistLineShape'
 import { D2AssistPointShape } from '../objects/assist/primitive2d/D2AssistPointShape'

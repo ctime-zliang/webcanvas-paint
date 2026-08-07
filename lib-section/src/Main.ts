@@ -58,14 +58,13 @@ export * from './engine/algorithm/geometry/matrix/CanvasMatrix4'
 export { getHashIden, nextFrameTick } from './engine/utils/Utils'
 export * from './engine/algorithm/geometry/bbox/BBox2'
 
+export * from './algorithm/geometry/primitives/Primitive'
 export * from './algorithm/geometry/primitives/Arc'
 export * from './algorithm/geometry/primitives/Line'
 export * from './algorithm/geometry/primitives/Polyline'
-export * from './algorithm/geometry/primitives/PolylineGroup'
 export * from './algorithm/geometry/primitives/Triangle'
 export * from './algorithm/geometry/D2ArcToolkit'
 export * from './algorithm/geometry/D2CircleToolkit'
-export * from './algorithm/geometry/D2Distance'
 export * from './algorithm/geometry/D2Intersection'
 export * from './algorithm/geometry/D2LineToolkit'
 export * from './algorithm/geometry/D2RectToolkit'
@@ -222,10 +221,7 @@ export class WebCanvas {
 	 * 设置画布缩放倍率
 	 */
 	public setCanvasZoomRatioByCanvasSourceNativePixelPos(ratio: number, canvasDomSourceNativePixelPosition?: Vector2): void {
-		Constant.canvasController.setCanvasZoomRatioByCanvasSourceNativePixelPos(
-			ratio,
-			canvasDomSourceNativePixelPosition ? canvasDomSourceNativePixelPosition.toVector3() : undefined
-		)
+		Constant.canvasController.setCanvasZoomRatioByCanvasSourceNativePixelPos(ratio, canvasDomSourceNativePixelPosition ? canvasDomSourceNativePixelPosition.toVector3() : undefined)
 		OutProfileMessage.dispatchCanvasProfileChangeMessage()
 	}
 	public setCanvasZoomRatioByScenePhysicsPos(ratio: number, scenePhysicsPosition?: Vector2): void {

@@ -1,16 +1,5 @@
 import { TEarNode } from './Earcut'
-import {
-	cureLocalIntersections,
-	equals,
-	filterPoints,
-	indexCurve,
-	insertNode,
-	isEar,
-	isEarHashed,
-	removeNode,
-	signedArea,
-	splitEarcut,
-} from './Utils'
+import { cureLocalIntersections, equals, filterPoints, indexCurve, insertNode, isEar, isEarHashed, removeNode, signedArea, splitEarcut } from './Utils'
 
 /**
  * create a circular doubly linked list from polygon points in the specified winding order

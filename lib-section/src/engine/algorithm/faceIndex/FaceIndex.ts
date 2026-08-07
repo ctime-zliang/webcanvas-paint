@@ -2,8 +2,46 @@ import { TD2TriangleIndicesItem } from '../../types/Common'
 import { Triangulation } from '../triangulation/Triangulation'
 
 /**
- * 传入一组三角形顶点索引, 输出三角形顶点索引
- * 		将索引列表的第一项设置为最小值
+ * FaceIndex - 面分类算法(约束三角剖分的内外判定)
+ *
+ * 核心问题:
+ * 		给定一个约束 Delaunay 三角剖分(包含多边形内部和外部的三角形),
+ * 		判定哪些三角形在多边形内部, 哪些在外部
+ *
+ * 算法思想 - 洪水填充 + 约束边阻断:
+ * 		- 建立三角形的邻接图(哪些三角形共享边)
+ * 		- 标记约束边(多边形的边界)
+ * 		- 从外部三角形开始(那些没有邻接的三角形在凸包边界上)
+ * 		- 使用类似洪水填充的方式传播标记:
+ *    		- 通过非约束边可以传播相同的内/外标记
+ *    		- 遇到约束边时翻转标记(约束边是内外边界)
+ * 		- 最终 flags[i] = 1 表示外部三角形, flags[i] = -1 表示内部三角形
+ *
+ * 案例 - 正方形的三角剖分:
+ * 		- 正方形顶点: (0, 0), (1, 0), (1, 1), (0, 1)
+ * 		- 凸包三角剖分可能产生:
+ *   		- △A(0, 1, 2), △B(0, 2, 3) — 内部三角形
+ *   		- △C, △D — 凸包边界外的辅助三角形
+ * 		分类后:
+ *   		flags[A] = -1 (内部), flags[B] = -1 (内部)
+ *   		flags[C] = 1 (外部), flags[D] = 1 (外部)
+ * 		最终 createCells 返回 flags === -1 的三角形列表
+ */
+
+/**
+ * 标准化三角形顶点索引: 将最小顶点索引旋转到第一个位置
+ *
+ * 目的:
+ * 		三角形 (a, b, c), (b, c, a), (c, a, b) 描述的是同一个三角形
+ * 		标准化后统一为最小索引在前的形式, 便于查找和去重
+ *
+ * 算法保持顶点的循环顺序(不改变绕向), 仅旋转使最小值在首位
+ *
+ * 案例:
+ * 		- arrangement(3, 1, 2)
+ * 			返回 {p: 1, q: 2, r: 3}  // (1 最小, 旋转 [3, 1, 2] 至 [1, 2, 3])
+ * 		- arrangement(5, 7, 2)
+ * 			返回 {p: 2, q: 5, r: 7}  // (2 最小, 旋转 [5, 7, 2] 至 [2, 5, 7])
  */
 function arrangement(a: number, b: number, c: number): { p: number; q: number; r: number } {
 	let p: number = a
@@ -105,9 +143,7 @@ function indexCells(triangulation: Triangulation): {
 			/**
 			 * faceIndex.neighbor[m] === -1, 即表示边 [ai, bi] 没有邻接三角形 B
 			 * 此时, 边 [ai, bi] 即为虚拟凸多边形的轮廓边
-			 * 		如果边 [ai, bi] 在此前提下被检测为约束边
-			 * 			则该边为该实际多边形的轮廓边
-			 * 		否则该多边形在该边对应的两点处出现了"内凹"
+			 * 如果边 [ai, bi] 在此前提下被检测为约束边, 则该边为该实际多边形的轮廓边, 否则该多边形在该边对应的两点处出现了"内凹"
 			 */
 			if (faceIndex.neighbor[m] < 0) {
 				if (faceIndex.constraint[m]) {
@@ -185,13 +221,7 @@ class FaceIndex {
 	 * 边界三角形顶点索引列表
 	 */
 	private _boundary: Array<TD2TriangleIndicesItem>
-	constructor(
-		cells: Array<TD2TriangleIndicesItem>,
-		neighbor: Array<number>,
-		constraint: Array<boolean>,
-		flags: Array<number>,
-		boundary: Array<TD2TriangleIndicesItem>
-	) {
+	constructor(cells: Array<TD2TriangleIndicesItem>, neighbor: Array<number>, constraint: Array<boolean>, flags: Array<number>, boundary: Array<TD2TriangleIndicesItem>) {
 		this._cells = cells
 		this._neighbor = neighbor
 		this._constraint = constraint

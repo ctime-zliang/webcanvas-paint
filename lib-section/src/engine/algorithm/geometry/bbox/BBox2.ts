@@ -62,7 +62,7 @@ export class BBox2Fac {
 		if (!this.isValid()) {
 			return new BBox2(0, 0, 0, 0)
 		}
-		return new BBox2(this._minX, this._maxX, this._minY, this._maxY)
+		return new BBox2(this._minX, this._minY, this._maxX, this._maxY)
 	}
 
 	private isValid(): boolean {
@@ -70,16 +70,38 @@ export class BBox2Fac {
 	}
 }
 
+/**
+ * BBox2 - 二维轴对齐包围盒 (Axis-Aligned Bounding Box, AABB)
+ *
+ * 定义:
+ * 		- AABB 是平行于坐标轴的最小矩形, 由四个标量定义:
+ * 			(minX, minY) 为左下角
+ * 			(maxX, maxY) 为右上角
+ *
+ * 几何意义:
+ * 		- AABB 是包含某个几何体的最紧凑的轴对齐矩形
+ * 		- 虽然不如 OBB (有向包围盒)紧凑, 但碰撞检测更快(仅需比较标量)
+ *
+ * 碰撞检测案例:
+ * 		BBox1: (0, 0, 4, 3) 与 BBox2: (2, 1, 5, 4)
+ *   			+-------+      BBox2
+ *   			|  BBox1|----+
+ *   			|   +===|====|===+ ← 交集区域 (2, 1, 4, 3)
+ *   			+---|---++   |
+ *       			+--------+
+ * 			isIntersect: true (有重叠)
+ * 			getIntersection: BBox2(2, 1, 4, 3)
+ */
 export class BBox2 {
 	public static extend1(bbox2: BBox2, point: Vector2): BBox2 {
 		if (!bbox2) {
-			return new BBox2(point.x, point.x, point.y, point.y)
+			return new BBox2(point.x, point.y, point.x, point.y)
 		}
 		const minX: number = Math.min(bbox2.minX, point.x)
 		const maxX: number = Math.max(bbox2.maxX, point.x)
 		const minY: number = Math.min(bbox2.minY, point.y)
 		const maxY: number = Math.max(bbox2.maxY, point.y)
-		return new BBox2(minX, maxX, minY, maxY)
+		return new BBox2(minX, minY, maxX, maxY)
 	}
 
 	public static extend2(bbox2_1: BBox2, bbox2_2: BBox2): BBox2 {
@@ -87,7 +109,7 @@ export class BBox2 {
 		const maxX: number = Math.max(bbox2_1.maxX, bbox2_2.maxX)
 		const minY: number = Math.min(bbox2_1.minY, bbox2_2.minY)
 		const maxY: number = Math.max(bbox2_1.maxY, bbox2_2.maxY)
-		return new BBox2(minX, maxX, minY, maxY)
+		return new BBox2(minX, minY, maxX, maxY)
 	}
 
 	public static extend3(point1: Vector2, point2: Vector2): BBox2 {
@@ -95,7 +117,7 @@ export class BBox2 {
 		const maxX: number = Math.max(point1.x, point2.x)
 		const minY: number = Math.min(point1.y, point2.y)
 		const maxY: number = Math.max(point1.y, point2.y)
-		return new BBox2(minX, maxX, minY, maxY)
+		return new BBox2(minX, minY, maxX, maxY)
 	}
 
 	public static extend4(center: Vector2, width: number, height: number): BBox2 {
@@ -142,7 +164,7 @@ export class BBox2 {
 		return this._minY
 	}
 	public set minY(value: number) {
-		this._minX = value
+		this._minY = value
 	}
 
 	public get maxX(): number {
@@ -224,12 +246,12 @@ export class BBox2 {
 
 	public isIntersect(bbox2: BBox2): boolean {
 		const _minX: number = Math.max(this.minX, bbox2.minX)
-		const _maxX: number = Math.max(this.maxX, bbox2.maxX)
+		const _maxX: number = Math.min(this.maxX, bbox2.maxX)
 		if (_minX > _maxX) {
 			return false
 		}
 		const _minY: number = Math.max(this.minY, bbox2.minY)
-		const _maxY: number = Math.max(this.maxY, bbox2.maxY)
+		const _maxY: number = Math.min(this.maxY, bbox2.maxY)
 		if (_minY > _maxY) {
 			return false
 		}
@@ -269,17 +291,6 @@ export class BBox2 {
 
 	public isContainsY(y: number): boolean {
 		return y >= this.minY && y <= this.maxY
-	}
-
-	public zoom(ratio: number): BBox2 {
-		let w: number = this.width
-		let h: number = this.height
-		let c: Vector2 = this.CenterPoint
-		if (ratio !== 0) {
-			w /= ratio / 2
-			h /= ratio / 2
-		}
-		return new BBox2(c.x - w, c.x + w, c.y - h, c.y + h)
 	}
 
 	public reset(): void {

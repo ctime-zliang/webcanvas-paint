@@ -1,7 +1,4 @@
-export async function calculateFileHash(
-	file: File,
-	algorithm: string = 'SHA-256'
-): Promise<{ hashId: string; file: File; success: boolean; error: any }> {
+export async function calculateFileHash(file: File, algorithm: string = 'SHA-256'): Promise<{ hashId: string; file: File; success: boolean; error: any }> {
 	return new Promise((resolve, reject): void => {
 		const reader: FileReader = new FileReader()
 		reader.onload = async (e: ProgressEvent<FileReader>): Promise<void> => {

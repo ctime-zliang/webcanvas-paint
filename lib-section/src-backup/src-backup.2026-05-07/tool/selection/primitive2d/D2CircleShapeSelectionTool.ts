@@ -47,13 +47,7 @@ export class D2CircleShapeSelectionTool extends D2SelectionTool {
 	}
 
 	public mouseLeftDownSelect(inputInfo: InputInfo): TAllElementShapeType {
-		const allControlAssistPoints: Array<D2AssistPointShape> = [
-			this._pointCenter,
-			this._pointTop,
-			this._pointRight,
-			this._pointBottom,
-			this._pointLeft,
-		]
+		const allControlAssistPoints: Array<D2AssistPointShape> = [this._pointCenter, this._pointTop, this._pointRight, this._pointBottom, this._pointLeft]
 		let hitItem: D2AssistPointShape = null!
 		for (let i: number = 0; i < allControlAssistPoints.length; i++) {
 			if (allControlAssistPoints[i].isSelect(inputInfo.moveScenePhysicsX, inputInfo.moveScenePhysicsY)) {
@@ -92,11 +86,7 @@ export class D2CircleShapeSelectionTool extends D2SelectionTool {
 		this.moveScenePhysicsX = inputInfo.leftDownScenePhysicsX
 		this.moveScenePhysicsY = inputInfo.leftDownScenePhysicsY
 		if (this._selectedItem) {
-			this._shapeItemCommand = CommandProxy.getCommandInstance(
-				this._selectedItem.elementItemId,
-				ECommandAction.MODIFY,
-				Constant.globalIdenManager.getCommandIden()
-			) as D2CircleShapeCommand
+			this._shapeItemCommand = CommandProxy.getCommandInstance(this._selectedItem.elementItemId, ECommandAction.MODIFY, Constant.globalIdenManager.getCommandIden()) as D2CircleShapeCommand
 		}
 		this._isSelectedPointCenter = this._pointCenter.isSelect(inputInfo.leftDownScenePhysicsX, inputInfo.leftDownScenePhysicsY)
 		this._isSelectedPointTop = this._pointTop.isSelect(inputInfo.leftDownScenePhysicsX, inputInfo.leftDownScenePhysicsY)
@@ -138,13 +128,7 @@ export class D2CircleShapeSelectionTool extends D2SelectionTool {
 	}
 
 	public mouseUpMoveHandler(inputInfo: InputInfo): void {
-		const allControlAssistPoints: Array<D2AssistPointShape> = [
-			this._pointCenter,
-			this._pointTop,
-			this._pointRight,
-			this._pointBottom,
-			this._pointLeft,
-		]
+		const allControlAssistPoints: Array<D2AssistPointShape> = [this._pointCenter, this._pointTop, this._pointRight, this._pointBottom, this._pointLeft]
 		let hit: boolean = false
 		for (let i: number = 0; i < allControlAssistPoints.length; i++) {
 			if (this.isSelectAssistPoint(allControlAssistPoints[i], inputInfo.moveScenePhysicsX, inputInfo.moveScenePhysicsY)) {

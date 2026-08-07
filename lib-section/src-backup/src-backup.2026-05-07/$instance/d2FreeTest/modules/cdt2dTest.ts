@@ -43,11 +43,7 @@ export function cdt2dTest01(webCanvas: WebCanvas, layerItemId: string): void {
 			strokeColor: Color.YELLOW,
 		})
 		d2TextElementController.createD2TextVertexDataItem(`${String(i)} (${POINTS[i][0]}, ${POINTS[i][1]})`, {}).then((d2textVertexData): void => {
-			const shapeElementItemId1: string = d2TextElementController.createD2TextElementItemByVertexData(
-				layerItemAId,
-				d2textVertexData,
-				new Vector2(POINTS[i][0] + 2.5, POINTS[i][1])
-			)
+			const shapeElementItemId1: string = d2TextElementController.createD2TextElementItemByVertexData(layerItemAId, d2textVertexData, new Vector2(POINTS[i][0] + 2.5, POINTS[i][1]))
 		})
 	}
 	for (let i: number = 0; i < EDGES.length; i++) {

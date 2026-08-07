@@ -32,15 +32,7 @@ export function createBuildD2ImageModelOptionalParam(optional: Partial<TBuildD2I
 	}
 }
 
-export function buildD2ImageModel(
-	layerItemId: string,
-	position: Vector2,
-	fileHashUuid: string,
-	imageDataURL: string,
-	width: number,
-	height: number,
-	optional: Partial<TBuildD2ImageModelOptionalParam> = {}
-): D2ImageModel {
+export function buildD2ImageModel(layerItemId: string, position: Vector2, fileHashUuid: string, imageDataURL: string, width: number, height: number, optional: Partial<TBuildD2ImageModelOptionalParam> = {}): D2ImageModel {
 	const locSetting: TBuildD2ImageModelOptionalParam = createBuildD2ImageModelOptionalParam(optional)
 	const elementItemId: string = Constant.globalIdenManager.getElementIden()
 	const elementModelItem: D2ImageModel = new D2ImageModel(

@@ -227,10 +227,7 @@ export class WebCanvas {
 	 * 设置画布缩放倍率
 	 */
 	public setCanvasZoomRatioByCanvasSourceNativePixelPos(ratio: number, canvasDomSourceNativePixelPosition?: Vector2): void {
-		Constant.canvasController.setCanvasZoomRatioByCanvasSourceNativePixelPos(
-			ratio,
-			canvasDomSourceNativePixelPosition ? canvasDomSourceNativePixelPosition.toVector3() : undefined
-		)
+		Constant.canvasController.setCanvasZoomRatioByCanvasSourceNativePixelPos(ratio, canvasDomSourceNativePixelPosition ? canvasDomSourceNativePixelPosition.toVector3() : undefined)
 		OutProfileMessage.dispatchCanvasProfileChangeMessage()
 	}
 	public setCanvasZoomRatioByScenePhysicsPos(ratio: number, scenePhysicsPosition?: Vector2): void {

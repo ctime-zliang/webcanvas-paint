@@ -17,13 +17,7 @@ export class D2TextProgramGL extends ProgramGL {
 		this._u_matrix = this.getWebGLUniformLocation(`u_matrix`)
 	}
 
-	public render(
-		ptsDataBuf: DataBufferGL,
-		indicesDataBuf: DataBufferGL,
-		indicesNums: number,
-		viewMatrix4Data: Float32Array,
-		zoomRatio: number
-	): void {
+	public render(ptsDataBuf: DataBufferGL, indicesDataBuf: DataBufferGL, indicesNums: number, viewMatrix4Data: Float32Array, zoomRatio: number): void {
 		const gl: WebGL2RenderingContext = this.webGL.gl
 		gl.useProgram(this.webGLProgram)
 		this.setEnable()

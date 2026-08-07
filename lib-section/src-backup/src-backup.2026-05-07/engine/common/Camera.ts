@@ -174,12 +174,7 @@ export class Camera {
 			const scaleMatrix4: Matrix4 = CanvasMatrix4.setScaleByValue(this._scaleRatio, this._scaleRatio, this._scaleRatio)
 			projectionMatrix4 = projectionMatrix4.multiply4(scaleMatrix4)
 		} else {
-			projectionMatrix4 = CanvasMatrix4.setPerspective(
-				this._persProjection.fovy,
-				this._persProjection.aspect,
-				this._persProjection.near,
-				this._persProjection.far
-			)
+			projectionMatrix4 = CanvasMatrix4.setPerspective(this._persProjection.fovy, this._persProjection.aspect, this._persProjection.near, this._persProjection.far)
 		}
 		return projectionMatrix4
 	}
@@ -199,14 +194,7 @@ export class Camera {
 	 * 获取 Canvas 透视矩阵
 	 */
 	public getRectProjectionMatrix4(): Matrix4 {
-		return CanvasMatrix4.setOrtho(
-			this._orthoProjection.left,
-			this._orthoProjection.right,
-			this._orthoProjection.bottom,
-			this._orthoProjection.top,
-			this._orthoProjection.near,
-			this._orthoProjection.far
-		)
+		return CanvasMatrix4.setOrtho(this._orthoProjection.left, this._orthoProjection.right, this._orthoProjection.bottom, this._orthoProjection.top, this._orthoProjection.near, this._orthoProjection.far)
 	}
 
 	public quit(): void {

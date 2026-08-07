@@ -718,11 +718,7 @@ export class CanvasMatrix4 {
 			sourceMatrix4.data[4] * sourceMatrix4.data[2] * sourceMatrix4.data[9] +
 			sourceMatrix4.data[8] * sourceMatrix4.data[1] * sourceMatrix4.data[6] -
 			sourceMatrix4.data[8] * sourceMatrix4.data[2] * sourceMatrix4.data[5]
-		let det: number =
-			sourceMatrix4.data[0] * invMatrix4.data[0] +
-			sourceMatrix4.data[1] * invMatrix4.data[4] +
-			sourceMatrix4.data[2] * invMatrix4.data[8] +
-			sourceMatrix4.data[3] * invMatrix4.data[12]
+		let det: number = sourceMatrix4.data[0] * invMatrix4.data[0] + sourceMatrix4.data[1] * invMatrix4.data[4] + sourceMatrix4.data[2] * invMatrix4.data[8] + sourceMatrix4.data[3] * invMatrix4.data[12]
 		if (det === 0) {
 			return resultMatrix4
 		}

@@ -13,10 +13,7 @@ import { Constant } from '../Constant'
  */
 export function updateMouseInputInfo(inputInfo: InputInfo): void {
 	const DPI: [number, number] = InsConfig.DPI
-	const [scenePixelPosX, scenePixelPosY] = Constant.d2CoordinateUtils.setCanvasSourceNativePixelPos2ScenePixelPos([
-		inputInfo.moveSourceNativePixelX,
-		-inputInfo.moveSourceNativePixelY,
-	])
+	const [scenePixelPosX, scenePixelPosY] = Constant.d2CoordinateUtils.setCanvasSourceNativePixelPos2ScenePixelPos([inputInfo.moveSourceNativePixelX, -inputInfo.moveSourceNativePixelY])
 	inputInfo.moveScenePixelX = scenePixelPosX
 	inputInfo.moveScenePixelY = scenePixelPosY
 	inputInfo.moveRealScenePhysicsX = inputInfo.moveScenePhysicsX = px2mm(inputInfo.moveScenePixelX, DPI[0])

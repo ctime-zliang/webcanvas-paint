@@ -25,11 +25,7 @@ export class DrawLayerModelManager extends BaseManager<DrawLayerBaseItemModel> {
 	}
 
 	public createContentItem(layerItemName: string): DrawLayerModel {
-		const newLayerModelItem: DrawLayerModel = new DrawLayerModel(
-			Constant.globalIdenManager.getDrawLayerIden(),
-			layerItemName,
-			EPlaneType.ContentPlane
-		)
+		const newLayerModelItem: DrawLayerModel = new DrawLayerModel(Constant.globalIdenManager.getDrawLayerIden(), layerItemName, EPlaneType.ContentPlane)
 		this.items.set(newLayerModelItem.layerItemId, newLayerModelItem)
 		return newLayerModelItem
 	}

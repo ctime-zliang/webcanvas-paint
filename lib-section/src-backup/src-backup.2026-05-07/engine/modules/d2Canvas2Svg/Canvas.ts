@@ -162,8 +162,7 @@ export class Canvas {
 			const metrics: TextMetrics = this._ctx.measureText(this._fillTextStr)
 			// console.log(metrics)
 			const fontCanvasRenderWidthRatio: number = metrics.width / this._fillTextStr.length / this._canvasBaseFontPixelSize
-			const fontCanvasRenderHeightRatio: number =
-				(metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent) / this._canvasBaseFontPixelSize
+			const fontCanvasRenderHeightRatio: number = (metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent) / this._canvasBaseFontPixelSize
 			// const fontCanvasRenderBoxLeftRatio: number = metrics.actualBoundingBoxLeft / this._canvasBaseFontPixelSize
 			this._text2RectMap.set(this._fillTextStr, {
 				fontCanvasRenderWidthRatio,

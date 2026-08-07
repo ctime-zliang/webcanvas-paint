@@ -99,12 +99,7 @@ export class TextLayout {
 		vertexDataArray: Array<Array<TFontTriangleVertexData>>
 	} {
 		const vertexDataArray2: Array<Array<TFontTriangleVertexData>> = []
-		let [d2TextShapeBboxMinX, d2TextShapeBboxMaxX, d2TextShapeBboxMinY, d2TextShapeBboxMaxY]: [number, number, number, number] = [
-			undefined!,
-			undefined!,
-			undefined!,
-			undefined!,
-		]
+		let [d2TextShapeBboxMinX, d2TextShapeBboxMaxX, d2TextShapeBboxMinY, d2TextShapeBboxMaxY]: [number, number, number, number] = [undefined!, undefined!, undefined!, undefined!]
 		for (let rowIndex: number = 0; rowIndex < vertexDataArray.length; rowIndex++) {
 			vertexDataArray2[rowIndex] = []
 			for (let colIndex: number = 0; colIndex < vertexDataArray[rowIndex].length; colIndex++) {
@@ -154,23 +149,14 @@ class Bbox2Calculator {
 			Bbox2Calculator.cache.d2TextShapeBboxMinX = Bbox2Calculator.cache.d2TextShapeBboxMaxX = initX
 			Bbox2Calculator.cache.d2TextShapeBboxMinY = Bbox2Calculator.cache.d2TextShapeBboxMaxY = initY
 		}
-		Bbox2Calculator.cache.d2TextShapeBboxMinX =
-			Bbox2Calculator.cache.d2TextShapeBboxMinX >= setX ? setX : Bbox2Calculator.cache.d2TextShapeBboxMinX
-		Bbox2Calculator.cache.d2TextShapeBboxMaxX =
-			Bbox2Calculator.cache.d2TextShapeBboxMaxX <= setX ? setX : Bbox2Calculator.cache.d2TextShapeBboxMaxX
-		Bbox2Calculator.cache.d2TextShapeBboxMinY =
-			Bbox2Calculator.cache.d2TextShapeBboxMinY >= setY ? setY : Bbox2Calculator.cache.d2TextShapeBboxMinY
-		Bbox2Calculator.cache.d2TextShapeBboxMaxY =
-			Bbox2Calculator.cache.d2TextShapeBboxMaxY <= setY ? setY : Bbox2Calculator.cache.d2TextShapeBboxMaxY
+		Bbox2Calculator.cache.d2TextShapeBboxMinX = Bbox2Calculator.cache.d2TextShapeBboxMinX >= setX ? setX : Bbox2Calculator.cache.d2TextShapeBboxMinX
+		Bbox2Calculator.cache.d2TextShapeBboxMaxX = Bbox2Calculator.cache.d2TextShapeBboxMaxX <= setX ? setX : Bbox2Calculator.cache.d2TextShapeBboxMaxX
+		Bbox2Calculator.cache.d2TextShapeBboxMinY = Bbox2Calculator.cache.d2TextShapeBboxMinY >= setY ? setY : Bbox2Calculator.cache.d2TextShapeBboxMinY
+		Bbox2Calculator.cache.d2TextShapeBboxMaxY = Bbox2Calculator.cache.d2TextShapeBboxMaxY <= setY ? setY : Bbox2Calculator.cache.d2TextShapeBboxMaxY
 	}
 
 	public static generateBbox2(): BBox2 {
-		return new BBox2(
-			Bbox2Calculator.cache.d2TextShapeBboxMinX,
-			Bbox2Calculator.cache.d2TextShapeBboxMinY,
-			Bbox2Calculator.cache.d2TextShapeBboxMaxX,
-			Bbox2Calculator.cache.d2TextShapeBboxMaxY
-		)
+		return new BBox2(Bbox2Calculator.cache.d2TextShapeBboxMinX, Bbox2Calculator.cache.d2TextShapeBboxMinY, Bbox2Calculator.cache.d2TextShapeBboxMaxX, Bbox2Calculator.cache.d2TextShapeBboxMaxY)
 	}
 
 	public static clear(): void {

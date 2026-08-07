@@ -35,9 +35,7 @@ export class D2CoordinateUtils {
 	 * 		场景像素坐标
 	 */
 	public setCanvasSourceNativePixelPos2ScenePixelPos(canvasDomSourceNativePixelPoint: TD2PointItem): TD2PointItem {
-		const V1: Vector3 = new Vector3(canvasDomSourceNativePixelPoint[0], canvasDomSourceNativePixelPoint[1], 0).sub(
-			this._camera.getCenterSourceNativePixelPosition()
-		)
+		const V1: Vector3 = new Vector3(canvasDomSourceNativePixelPoint[0], canvasDomSourceNativePixelPoint[1], 0).sub(this._camera.getCenterSourceNativePixelPosition())
 		const M: Matrix4 = this._camera.getLookMatrix4().multiply4(this._camera.getZoomMatrix4())
 		const VR: Vector3 = V1.multiplyMatrix4(M.getInverseMatrix())
 		return [VR.x, VR.y]

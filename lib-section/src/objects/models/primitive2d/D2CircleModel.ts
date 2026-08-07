@@ -40,11 +40,7 @@ export function createBuildD2CircleModelOptionalParam(optional: Partial<TBuildD2
 	}
 }
 
-export function buildD2CircleModel(
-	layerItemId: string,
-	centerPoint: Vector2,
-	optional: Partial<TBuildD2CircleModelOptionalParam> = {}
-): D2CircleModel {
+export function buildD2CircleModel(layerItemId: string, centerPoint: Vector2, optional: Partial<TBuildD2CircleModelOptionalParam> = {}): D2CircleModel {
 	const locSetting: TBuildD2CircleModelOptionalParam = createBuildD2CircleModelOptionalParam(optional)
 	const elementItemId: string = Constant.globalIdenManager.getElementIden()
 	const elementModelItem: D2CircleModel = new D2CircleModel(

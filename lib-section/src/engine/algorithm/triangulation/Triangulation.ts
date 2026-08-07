@@ -1,5 +1,18 @@
 import { TD2EdgeItem, TD2TriangleIndicesItem } from '../../types/Common'
 
+/**
+ * 从邻接列表中移除一对相邻顶点 (j, k)
+ *
+ * 		输入:
+ * 			list: 某个顶点的邻接顶点列表(平铺的成对存储)
+ * 			j: 要移除的第一个顶点索引
+ * 			k: 要移除的第二个顶点索引
+ *
+ * 算法说明:
+ * 		- stars 中每个顶点的邻接列表以 [v1, v2, v3, v4, ...] 格式存储,
+ * 		- 其中 (v1, v2) 表示一个三角形的另外两个顶点, (v3, v4) 表示另一个三角形, 依此类推
+ * 		- 移除时, 用列表末尾的一对替换被删除的一对 (O(1) 删除, 类似 swap - remove)
+ */
 function removePair(list: Array<number>, j: number, k: number): void {
 	for (let i: number = 1, n: number = list.length; i < n; i += 2) {
 		if (list[i - 1] === j && list[i] === k) {
@@ -11,6 +24,47 @@ function removePair(list: Array<number>, j: number, k: number): void {
 	}
 }
 
+/**
+ * Triangulation - 约束 Delaunay 三角剖分数据结构
+ *
+ * 概述:
+ * 管理三角剖分的拓扑结构, 支持:
+ * 		- 邻接查询(给定一条边, 找对面的三角形)
+ * 		- 三角形的增删操作
+ * 		- 边翻转(Delaunay 优化的核心操作)
+ * 		- 约束边标记
+ *
+ * 数据结构 - Star 邻接表:
+ * 		- stars[i] 存储与顶点 i 相关的所有三角形信息
+ * 		- 格式为平铺的成对列表: [a1, b1, a2, b2, ...]
+ * 			其中 (i, a_k, b_k) 构成一个三角形
+ *
+ * 案例:
+ * 		假设有三角形 (0, 1, 2) 和 (0, 2, 3):
+ * 			stars[0] = [1, 2, 2, 3]
+ * 				顶点 0 参与: △(0, 1, 2) 和 △(0, 2, 3)
+ * 			stars[1] = [2, 0]
+ * 				顶点 1 参与: △(1, 2, 0)
+ * 			stars[2] = [0, 1, 3, 0]
+ * 				顶点 2 参与: △(2, 0, 1) 和 △(2, 3, 0)
+ * 			stars[3] = [0, 2]
+ * 				顶点 3 参与: △(3, 0, 2)
+ *
+ * 边翻转操作案例 (Flip):
+ * 		翻转边 (i, j):
+ * 			将共享边 ij 的两个三角形 △(i, j, a) 和 △(j, i, b) 替换为 △(i, b, a) 和 △(j, a, b)
+ *
+ *    		翻转前:          翻转后:
+ *      	    a                a
+ *     		   /|\              / \
+ *    		  / | \            /   \
+ *   		 i--+--j    →    i  ×  j
+ *    		  \ | /            \   /
+ *     		   \|/              \ /
+ *      		b                b
+ *
+ * 			边从 i - j 变为 a - b, 改善局部 Delaunay 性质
+ */
 export class Triangulation {
 	/**
 	 * 顶点 i 所连接的所有三角形的邻接顶点(除去当前顶点 i 之外的另外两个顶点)列表(平铺)
@@ -116,6 +170,20 @@ export class Triangulation {
 	}
 }
 
+/**
+ * 创建三角剖分实例的工厂函数
+ *
+ * 		输入:
+ * 			numVerts 顶点总数
+ * 			edges 约束边列表 [[v1, v2], ...]
+ * 		返回:
+ * 			初始化好的 Triangulation 实例(尚未包含三角形, 需后续填充)
+ *
+ * 算法说明:
+ * 		- 将所有约束边标准化: 确保 edge[0] < edge[1](便于后续二分查找或线性查找)
+ * 		- 按字典序排序约束边数组
+ * 		- 初始化空的邻接表 stars (每个顶点一个空数组)
+ */
 export function createTriangulation(numVerts: number, edges: Array<TD2EdgeItem>): Triangulation {
 	const filterEdges: Array<TD2EdgeItem> = edges
 		.map((e: TD2EdgeItem): TD2EdgeItem => {

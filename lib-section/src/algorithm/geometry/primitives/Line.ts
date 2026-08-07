@@ -113,7 +113,7 @@ export class Line extends Primitive {
 	}
 
 	public isPoint(): boolean {
-		if ((this, this.startPoint.distance(this.endPoint) <= DoubleKit.eps1)) {
+		if ((this, this.startPoint.distance(this.endPoint) <= DoubleKit.eps2)) {
 			return true
 		}
 		return this.startPoint.equalsWithVector2(this.endPoint)
@@ -132,10 +132,7 @@ export class Line extends Primitive {
 	}
 
 	public mirrorO(origin: Vector2 = Vector2.ORIGIN): Line {
-		return new Line(
-			this.startPoint.mirrorSurroundY(origin.x).mirrorSurroundX(origin.y),
-			this.endPoint.mirrorSurroundY(origin.x).mirrorSurroundX(origin.y)
-		)
+		return new Line(this.startPoint.mirrorSurroundY(origin.x).mirrorSurroundX(origin.y), this.endPoint.mirrorSurroundY(origin.x).mirrorSurroundX(origin.y))
 	}
 
 	public isParallel(stLine: Line, needSameDir: boolean = false): boolean {

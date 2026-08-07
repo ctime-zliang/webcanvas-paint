@@ -323,10 +323,7 @@ export class D2PolylineToolkit {
 				prev.push(prevEnd)
 				next.unshift(nextStart)
 			} else if (pt instanceof Arc) {
-				const [prevEnd, nextStart]: [Arc, Arc] = [
-					Arc.build4(pt.startPoint, breakPoint, pt.centerPoint, pt.rx, pt.ry, pt.sweep),
-					Arc.build4(breakPoint, pt.endPoint, pt.centerPoint, pt.rx, pt.ry, pt.sweep),
-				]
+				const [prevEnd, nextStart]: [Arc, Arc] = [Arc.build4(pt.startPoint, breakPoint, pt.centerPoint, pt.rx, pt.ry, pt.sweep), Arc.build4(breakPoint, pt.endPoint, pt.centerPoint, pt.rx, pt.ry, pt.sweep)]
 				prev.push(prevEnd)
 				next.unshift(nextStart)
 			}

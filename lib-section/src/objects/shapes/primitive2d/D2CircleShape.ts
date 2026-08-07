@@ -7,11 +7,7 @@ import { TElement2DCircleJSONViewData } from '../../../types/Element'
 import { buildD2CircleModel, D2CircleModel, TBuildD2CircleModelOptionalParam } from '../../models/primitive2d/D2CircleModel'
 import { D2ElementShapeItemBase } from './elementBase/D2ElementShapeItemBase'
 
-export function buildD2CircleShape(
-	layerItemId: string,
-	centerPoint: Vector2,
-	optional: Partial<TBuildD2CircleModelOptionalParam> = {}
-): D2CircleShape {
+export function buildD2CircleShape(layerItemId: string, centerPoint: Vector2, optional: Partial<TBuildD2CircleModelOptionalParam> = {}): D2CircleShape {
 	const elementModelItem: D2CircleModel = buildD2CircleModel(layerItemId, centerPoint, optional)
 	const elementShapeItem: D2CircleShape = new D2CircleShape(elementModelItem)
 	return elementShapeItem

@@ -39,11 +39,7 @@ export class D2TextView extends D2ShapeElementViewBase {
 		if (this._mainPrimitive) {
 			this._mainPrimitive.modify(shapeObjectItemJson)
 		}
-		const radius: number = Math.min(
-			shapeObjectItemJson.styleSetting.borderRadius,
-			Math.abs(shapeObjectItemJson.width / 2),
-			Math.abs(shapeObjectItemJson.height / 2)
-		)
+		const radius: number = Math.min(shapeObjectItemJson.styleSetting.borderRadius, Math.abs(shapeObjectItemJson.width / 2), Math.abs(shapeObjectItemJson.height / 2))
 		const leftUp: Vector2 = Vector2.createByJSONData(shapeObjectItemJson.leftUp)
 		const rightUp: Vector2 = Vector2.createByJSONData(shapeObjectItemJson.rightUp)
 		const rightDown: Vector2 = Vector2.createByJSONData(shapeObjectItemJson.rightDown)

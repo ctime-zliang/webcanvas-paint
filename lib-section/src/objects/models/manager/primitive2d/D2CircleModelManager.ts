@@ -15,12 +15,7 @@ export class D2CircleModelManager extends BaseManager<D2CircleModel> {
 		super()
 	}
 
-	public createModelItem(
-		elementItemId: string,
-		layerItemId: string,
-		centerPoint: Vector2,
-		optional: Partial<TBuildD2CircleModelOptionalParam> = {}
-	): D2CircleModel {
+	public createModelItem(elementItemId: string, layerItemId: string, centerPoint: Vector2, optional: Partial<TBuildD2CircleModelOptionalParam> = {}): D2CircleModel {
 		const locSetting: TBuildD2CircleModelOptionalParam = createBuildD2CircleModelOptionalParam(optional)
 		const elementModelItem: D2CircleModel = new D2CircleModel(
 			elementItemId,

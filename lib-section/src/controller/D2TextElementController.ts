@@ -4,13 +4,7 @@ import { Color } from '../engine/common/Color'
 import { ED2FontStyle } from '../engine/config/PrimitiveProfile'
 import { D2TextShapeManager } from '../objects/shapes/manager/primitive2d/D2TextShapeManager'
 import { D2TextShape } from '../objects/shapes/primitive2d/D2TextShape'
-import {
-	D2TextModel,
-	TBuildD2TextModelOptionalStyleSettingParam,
-	TBuildD2TextModelOptionalParam,
-	createD2TextModelStyleDefaultSetting,
-	DEFAULT_FONT_SIZE,
-} from '../objects/models/primitive2d/D2TextModel'
+import { D2TextModel, TBuildD2TextModelOptionalStyleSettingParam, TBuildD2TextModelOptionalParam, createD2TextModelStyleDefaultSetting, DEFAULT_FONT_SIZE } from '../objects/models/primitive2d/D2TextModel'
 import { getHashIden } from '../engine/utils/Utils'
 import { Helper } from '../utils/Helper'
 import { TextLayout } from '../algorithm/geometry/TextLayout'
@@ -41,14 +35,7 @@ export class D2TextElementController extends BaseInterface {
 			return null!
 		}
 		const elementItemId: string = Constant.globalIdenManager.getElementIden()
-		const targetShapeItem: D2TextShape = D2TextShapeManager.getInstance().createShapeItem(
-			elementItemId,
-			layerItemId,
-			position,
-			content,
-			optional,
-			callback
-		)
+		const targetShapeItem: D2TextShape = D2TextShapeManager.getInstance().createShapeItem(elementItemId, layerItemId, position, content, optional, callback)
 		Constant.messageTool.messageBus.publish(EFrameCommand.RENDER_FRAME, null)
 		OutProfileMessage.dispatchOperationProfileChangeMessage(EOperationAction.CREATE_ELEMENT, {})
 		return targetShapeItem.model.elementItemId
@@ -158,11 +145,7 @@ export class D2TextElementController extends BaseInterface {
 	/**
 	 * 设置文本图元字符串内容
 	 */
-	public updateD2TextElementItemContent(
-		elementItemId: string,
-		elementItemContent: string,
-		callback?: (jsonData: TElement2DTextJSONViewData) => void
-	): void {
+	public updateD2TextElementItemContent(elementItemId: string, elementItemContent: string, callback?: (jsonData: TElement2DTextJSONViewData) => void): void {
 		let targetElement: D2TextShape = null!
 		targetElement = D2TextShapeManager.getInstance().getItemById(elementItemId)
 		if (!targetElement) {

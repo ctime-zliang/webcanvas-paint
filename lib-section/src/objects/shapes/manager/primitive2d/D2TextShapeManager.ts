@@ -32,33 +32,15 @@ export class D2TextShapeManager extends BaseManager<D2TextShape> {
 		optional: Partial<TBuildD2TextModelOptionalParam> = {},
 		callback?: (jsonData: TElement2DTextJSONViewData) => void
 	): D2TextShape {
-		const elementModelItem: D2TextModel = D2TextModelManager.getInstance().createModelItem(
-			elementItemId,
-			layerItemId,
-			position,
-			content,
-			optional
-		)
+		const elementModelItem: D2TextModel = D2TextModelManager.getInstance().createModelItem(elementItemId, layerItemId, position, content, optional)
 		const elementShapeItem: D2TextShape = new D2TextShape(elementModelItem)
 		const op: boolean = this.addCache(elementShapeItem)
 		this.refreshGraphicsPostions(elementModelItem, callback)
 		return elementShapeItem
 	}
 
-	public createShapeItemByVertexData(
-		elementItemId: string,
-		layerItemId: string,
-		position: Vector2,
-		textVertexData: TD2TextVertexData,
-		optional: Partial<TBuildD2TextModelOptionalParam> = {}
-	): D2TextShape {
-		const elementModelItem: D2TextModel = D2TextModelManager.getInstance().createModelItem(
-			elementItemId,
-			layerItemId,
-			position,
-			textVertexData.content,
-			{ ...optional, ...textVertexData }
-		)
+	public createShapeItemByVertexData(elementItemId: string, layerItemId: string, position: Vector2, textVertexData: TD2TextVertexData, optional: Partial<TBuildD2TextModelOptionalParam> = {}): D2TextShape {
+		const elementModelItem: D2TextModel = D2TextModelManager.getInstance().createModelItem(elementItemId, layerItemId, position, textVertexData.content, { ...optional, ...textVertexData })
 		const elementShapeItem: D2TextShape = new D2TextShape(elementModelItem)
 		const op: boolean = this.addCache(elementShapeItem)
 		elementShapeItem.setContentReadyStatus(true)

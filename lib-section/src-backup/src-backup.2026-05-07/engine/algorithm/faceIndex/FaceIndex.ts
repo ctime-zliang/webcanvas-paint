@@ -185,13 +185,7 @@ class FaceIndex {
 	 * 边界三角形顶点索引列表
 	 */
 	private _boundary: Array<TD2TriangleIndicesItem>
-	constructor(
-		cells: Array<TD2TriangleIndicesItem>,
-		neighbor: Array<number>,
-		constraint: Array<boolean>,
-		flags: Array<number>,
-		boundary: Array<TD2TriangleIndicesItem>
-	) {
+	constructor(cells: Array<TD2TriangleIndicesItem>, neighbor: Array<number>, constraint: Array<boolean>, flags: Array<number>, boundary: Array<TD2TriangleIndicesItem>) {
 		this._cells = cells
 		this._neighbor = neighbor
 		this._constraint = constraint

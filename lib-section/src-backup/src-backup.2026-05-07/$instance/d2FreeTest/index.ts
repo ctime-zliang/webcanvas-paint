@@ -1,19 +1,4 @@
-import {
-	WebCanvas,
-	DRAW_D2TOOL_COMMAND,
-	DrawLayerItemResult,
-	getHashIden,
-	OpeartionProfileData,
-	OPERATION_ACRION,
-	HISTORY_CMD_ACTION,
-	Helper,
-	Color,
-	px2mm,
-	nextFrameTick,
-	Vector2,
-	Vector3,
-	D2POINT_SHAPE,
-} from '../../Main'
+import { WebCanvas, DRAW_D2TOOL_COMMAND, DrawLayerItemResult, getHashIden, OpeartionProfileData, OPERATION_ACRION, HISTORY_CMD_ACTION, Helper, Color, px2mm, nextFrameTick, Vector2, Vector3, D2POINT_SHAPE } from '../../Main'
 import { initEventHandle } from '../public/initEventHandle'
 import { initFloatPanel } from '../public/initFloatPanel'
 import { initWebCanvas } from '../public/initWebCanvas'
@@ -29,14 +14,7 @@ import { drawTestPointItemStd } from './modules/drawTestPoint'
 import { drawTestRectItems, drawTestRectItemStd } from './modules/drawTestRect'
 import { drawTestTextItemSim, drawTestTextItemStd } from './modules/drawTestText'
 import { initWebSystemConfig } from './utils/initWebSystemConfig'
-import {
-	d2LineToolkitTest01,
-	d2LineToolkitTest02,
-	d2LineToolkitTest03,
-	d2LineToolkitTest04,
-	d2LineToolkitTest05,
-	d2LineToolkitTest06,
-} from './modules/d2LineToolkitTest'
+import { d2LineToolkitTest01, d2LineToolkitTest02, d2LineToolkitTest03, d2LineToolkitTest04, d2LineToolkitTest05, d2LineToolkitTest06 } from './modules/d2LineToolkitTest'
 import { d2CircleToolkitTest01 } from './modules/d2CircleToolkitTest'
 import { d2ArcToolkitTest01, d2ArcToolkitTest02, d2ArcToolkitTest03, d2ArcToolkitTest04, d2ArcToolkitTest05 } from './modules/d2ArcToolkitTest'
 

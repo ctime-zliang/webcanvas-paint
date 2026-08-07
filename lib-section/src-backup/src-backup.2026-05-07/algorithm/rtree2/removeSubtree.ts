@@ -56,10 +56,7 @@ export function removeSubtree(rect: TSimpleRect, obj: any, root: TRtreeNodeItem,
 					 * 		- C2: 当前未指定必须删除的对象 && (C1-1: itemTree 为叶子节点 ||C1-2: itemTree 的尺寸范围包含于传入的尺寸范围内)
 					 * 则将 itemTree 从所在的 nodes 列表中删除
 					 */
-					if (
-						(handleObj.target && 'leaf' in itemTree && itemTree.leaf === handleObj.target) ||
-						(!handleObj.target && ('leaf' in itemTree || Rectangle.containsRectangle(itemTree, handleObj)))
-					) {
+					if ((handleObj.target && 'leaf' in itemTree && itemTree.leaf === handleObj.target) || (!handleObj.target && ('leaf' in itemTree || Rectangle.containsRectangle(itemTree, handleObj)))) {
 						const rmSelectedList: Array<TRtreeNodeItem> = tree.nodes.splice(lastItemIndex, 1)
 						/**
 						 * 基于上述判断条件, 此处需要再次判断 itemTree 是否为叶子节点

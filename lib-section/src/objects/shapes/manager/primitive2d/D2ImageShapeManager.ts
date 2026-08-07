@@ -34,16 +34,7 @@ export class D2ImageShapeManager extends BaseManager<D2ImageShape> {
 		height: number,
 		optional: Partial<TBuildD2ImageModelOptionalParam> = {}
 	): D2ImageShape {
-		const elementModelItem: D2ImageModel = D2ImageModelManager.getInstance().createModelItem(
-			elementItemId,
-			layerItemId,
-			fileHashUuid,
-			imageDataURL,
-			position,
-			width,
-			height,
-			optional
-		)
+		const elementModelItem: D2ImageModel = D2ImageModelManager.getInstance().createModelItem(elementItemId, layerItemId, fileHashUuid, imageDataURL, position, width, height, optional)
 		const elementShapeItem: D2ImageShape = new D2ImageShape(elementModelItem)
 		const op: boolean = this.addCache(elementShapeItem)
 		this.refreshTexImageSource(elementModelItem, fileHashUuid)
@@ -86,29 +77,24 @@ export class D2ImageShapeManager extends BaseManager<D2ImageShape> {
 	}
 
 	public refreshTexImageSource(elementModelItem: D2ImageModel, fileHashUuid: string): void {
-		Constant.imageReSourceService.addImageLoadTaskItem(
-			elementModelItem.elementItemId,
-			fileHashUuid,
-			elementModelItem.imageDataURL,
-			(imageId: string, fileHashUuid: string, texImageSource: TexImageSource): void => {
-				const elementShapeItem: D2ImageShape = this.items.get(imageId)!
-				if (!elementShapeItem) {
-					return
-				}
-				elementShapeItem.setContentReadyStatus(true)
-				elementShapeItem.flushTexImageSource(texImageSource)
-				elementShapeItem.updateCacheTransform()
-				if (elementShapeItem.isContentReady()) {
-					const rtreeItem: RtreeItem = new RtreeItem(elementShapeItem)
-					this._rteeItems.set(elementShapeItem.model.elementItemId, rtreeItem)
-					Constant.rtree.insertItemData(RtreeItem.getSimpleRectFromModelBbox2(elementShapeItem), rtreeItem)
-				}
-				nextFrameTick((): void => {
-					elementShapeItem.updateRender()
-					Constant.messageTool.messageBus.publish(EFrameCommand.RENDER_FRAME, null)
-				})
+		Constant.imageReSourceService.addImageLoadTaskItem(elementModelItem.elementItemId, fileHashUuid, elementModelItem.imageDataURL, (imageId: string, fileHashUuid: string, texImageSource: TexImageSource): void => {
+			const elementShapeItem: D2ImageShape = this.items.get(imageId)!
+			if (!elementShapeItem) {
+				return
 			}
-		)
+			elementShapeItem.setContentReadyStatus(true)
+			elementShapeItem.flushTexImageSource(texImageSource)
+			elementShapeItem.updateCacheTransform()
+			if (elementShapeItem.isContentReady()) {
+				const rtreeItem: RtreeItem = new RtreeItem(elementShapeItem)
+				this._rteeItems.set(elementShapeItem.model.elementItemId, rtreeItem)
+				Constant.rtree.insertItemData(RtreeItem.getSimpleRectFromModelBbox2(elementShapeItem), rtreeItem)
+			}
+			nextFrameTick((): void => {
+				elementShapeItem.updateRender()
+				Constant.messageTool.messageBus.publish(EFrameCommand.RENDER_FRAME, null)
+			})
+		})
 	}
 
 	public quit(): void {

@@ -64,10 +64,7 @@ export class D2RectToolkit {
 	): {
 		maxtrix4: Matrix4
 	} {
-		const effectMatrix: Matrix4 = CanvasMatrix4.setFlipByLine(
-			leftUp.add(rightUp).mul(0.5).toVector3(0),
-			leftDown.add(rightDown).mul(0.5).toVector3(0)
-		)
+		const effectMatrix: Matrix4 = CanvasMatrix4.setFlipByLine(leftUp.add(rightUp).mul(0.5).toVector3(0), leftDown.add(rightDown).mul(0.5).toVector3(0))
 		return {
 			maxtrix4: effectMatrix,
 		}
@@ -81,10 +78,7 @@ export class D2RectToolkit {
 	): {
 		maxtrix4: Matrix4
 	} {
-		const effectMatrix: Matrix4 = CanvasMatrix4.setFlipByLine(
-			leftUp.add(leftDown).mul(0.5).toVector3(0),
-			rightUp.add(rightDown).mul(0.5).toVector3(0)
-		)
+		const effectMatrix: Matrix4 = CanvasMatrix4.setFlipByLine(leftUp.add(leftDown).mul(0.5).toVector3(0), rightUp.add(rightDown).mul(0.5).toVector3(0))
 		return {
 			maxtrix4: effectMatrix,
 		}
@@ -105,10 +99,7 @@ export class D2RectToolkit {
 			const [prev, cur, next]: [Vector2, Vector2, Vector2] = [rectPoints[(i + 3) % 4], rectPoints[i], rectPoints[(i + 1) % 4]]
 			const [v1, v2]: [Vector2, Vector2] = [new Vector2(cur.x - prev.x, cur.y - prev.y), new Vector2(next.x - cur.x, next.y - cur.y)]
 			const [n1, n2]: [Vector2, Vector2] = [new Vector2(-v1.y, v1.x).normalize(), new Vector2(-v2.y, v2.x).normalize()]
-			const [p1, p2]: [Vector2, Vector2] = [
-				new Vector2(cur.x + n1.x * cornerRadius, cur.y + n1.y * cornerRadius),
-				new Vector2(cur.x + n2.x * cornerRadius, cur.y + n2.y * cornerRadius),
-			]
+			const [p1, p2]: [Vector2, Vector2] = [new Vector2(cur.x + n1.x * cornerRadius, cur.y + n1.y * cornerRadius), new Vector2(cur.x + n2.x * cornerRadius, cur.y + n2.y * cornerRadius)]
 			insetRect.push(lineIntersection(p1, v1, p2, v2))
 		}
 		if (isPointInRect(insetRect, point)) {
@@ -124,15 +115,7 @@ export class D2RectToolkit {
 		return false
 	}
 
-	public static getRectCornerArcs(
-		width: number,
-		height: number,
-		leftUp: Vector2,
-		leftLow: Vector2,
-		rightUp: Vector2,
-		rightLow: Vector2,
-		radius: number
-	): Array<Arc> {
+	public static getRectCornerArcs(width: number, height: number, leftUp: Vector2, leftLow: Vector2, rightUp: Vector2, rightLow: Vector2, radius: number): Array<Arc> {
 		const arcs: Array<Arc> = []
 		if (radius <= 0) {
 			return arcs
@@ -162,29 +145,12 @@ export class D2RectToolkit {
 		const cs: Array<Vector2> = [c1, c2, c3, c4]
 		for (let i: number = 0; i < cs.length; i++) {
 			const c: Vector2 = cs[i]
-			arcs.push(
-				Arc.build2(
-					c,
-					Angles.radianToDegree(ps[i * 2].getRadianByVector2(c)),
-					Angles.radianToDegree(ps[i * 2 + 1].getRadianByVector2(c)),
-					realCornerRadius,
-					realCornerRadius,
-					ESweep.CCW
-				)
-			)
+			arcs.push(Arc.build2(c, Angles.radianToDegree(ps[i * 2].getRadianByVector2(c)), Angles.radianToDegree(ps[i * 2 + 1].getRadianByVector2(c)), realCornerRadius, realCornerRadius, ESweep.CCW))
 		}
 		return arcs
 	}
 
-	public static getRectArcCenters(
-		width: number,
-		height: number,
-		leftUp: Vector2,
-		leftLow: Vector2,
-		rightUp: Vector2,
-		rightLow: Vector2,
-		radius: number
-	): Array<Vector2> {
+	public static getRectArcCenters(width: number, height: number, leftUp: Vector2, leftLow: Vector2, rightUp: Vector2, rightLow: Vector2, radius: number): Array<Vector2> {
 		const centerPoints: Array<Vector2> = []
 		if (radius <= 0) {
 			return centerPoints

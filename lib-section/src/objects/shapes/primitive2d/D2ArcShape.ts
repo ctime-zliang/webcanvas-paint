@@ -9,15 +9,7 @@ import { TElement2DArcJSONViewData } from '../../../types/Element'
 import { buildD2ArcModel, D2ArcModel, TBuildD2ArcModelOptionalParam } from '../../models/primitive2d/D2ArcModel'
 import { D2ElementShapeItemBase } from './elementBase/D2ElementShapeItemBase'
 
-export function buildD2ArcShape(
-	layerItemId: string,
-	centerPoint: Vector2,
-	radius: number,
-	startRadian: number,
-	endRadian: number,
-	sweep: ESweep,
-	optional: Partial<TBuildD2ArcModelOptionalParam> = {}
-): D2ArcShape {
+export function buildD2ArcShape(layerItemId: string, centerPoint: Vector2, radius: number, startRadian: number, endRadian: number, sweep: ESweep, optional: Partial<TBuildD2ArcModelOptionalParam> = {}): D2ArcShape {
 	const elementModelItem: D2ArcModel = buildD2ArcModel(layerItemId, centerPoint, radius, startRadian, endRadian, sweep, optional)
 	const elementShapeItem: D2ArcShape = new D2ArcShape(elementModelItem)
 	return elementShapeItem

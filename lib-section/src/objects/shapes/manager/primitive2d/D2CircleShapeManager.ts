@@ -22,12 +22,7 @@ export class D2CircleShapeManager extends BaseManager<D2CircleShape> {
 		this._rteeItems = new Map()
 	}
 
-	public createShapeItem(
-		elementItemId: string,
-		layerItemId: string,
-		centerPoint: Vector2,
-		optional: Partial<TBuildD2CircleModelOptionalParam> = {}
-	): D2CircleShape {
+	public createShapeItem(elementItemId: string, layerItemId: string, centerPoint: Vector2, optional: Partial<TBuildD2CircleModelOptionalParam> = {}): D2CircleShape {
 		const elementModelItem: D2CircleModel = D2CircleModelManager.getInstance().createModelItem(elementItemId, layerItemId, centerPoint, optional)
 		const elementShapeItem: D2CircleShape = new D2CircleShape(elementModelItem)
 		const op: boolean = this.addCache(elementShapeItem)

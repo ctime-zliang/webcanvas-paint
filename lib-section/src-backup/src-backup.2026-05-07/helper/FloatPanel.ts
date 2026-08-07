@@ -103,11 +103,7 @@ export class FloatPanel {
 				this.lastUpdateTimeStamp = performance.now()
 				const jsMemoryElement: HTMLElement = document.getElementById('jsMemory') as HTMLElement
 				const memory = (performance as any).memory || {}
-				jsMemoryElement.innerHTML = `${toFixed(memory.usedJSHeapSize / Math.pow(1024, 2), 2, true)}/${toFixed(
-					memory.totalJSHeapSize / Math.pow(1024, 2),
-					2,
-					true
-				)}`
+				jsMemoryElement.innerHTML = `${toFixed(memory.usedJSHeapSize / Math.pow(1024, 2), 2, true)}/${toFixed(memory.totalJSHeapSize / Math.pow(1024, 2), 2, true)}`
 			}
 		},
 	}

@@ -291,11 +291,7 @@ export function getLeftmost(start: TEarNode): TEarNode {
  * check if a point lies within a convex triangle
  */
 export function pointInTriangle(ax: number, ay: number, bx: number, by: number, cx: number, cy: number, px: number, py: number): boolean {
-	return (
-		(cx - px) * (ay - py) >= (ax - px) * (cy - py) &&
-		(ax - px) * (by - py) >= (bx - px) * (ay - py) &&
-		(bx - px) * (cy - py) >= (cx - px) * (by - py)
-	)
+	return (cx - px) * (ay - py) >= (ax - px) * (cy - py) && (ax - px) * (by - py) >= (bx - px) * (ay - py) && (bx - px) * (cy - py) >= (cx - px) * (by - py)
 }
 
 /**
@@ -528,29 +524,11 @@ export function isEarHashed(ear: TEarNode, minX: number, minY: number, invSize: 
 	 * look for points inside the triangle in both directions
 	 */
 	while (p && p.z >= minZ && n && n.z <= maxZ) {
-		if (
-			p.x >= x0 &&
-			p.x <= x1 &&
-			p.y >= y0 &&
-			p.y <= y1 &&
-			p !== a &&
-			p !== c &&
-			pointInTriangleExceptFirst(ax, ay, bx, by, cx, cy, p.x, p.y) &&
-			area(p.prev, p, p.next) >= 0
-		) {
+		if (p.x >= x0 && p.x <= x1 && p.y >= y0 && p.y <= y1 && p !== a && p !== c && pointInTriangleExceptFirst(ax, ay, bx, by, cx, cy, p.x, p.y) && area(p.prev, p, p.next) >= 0) {
 			return false
 		}
 		p = p.prevZ
-		if (
-			n.x >= x0 &&
-			n.x <= x1 &&
-			n.y >= y0 &&
-			n.y <= y1 &&
-			n !== a &&
-			n !== c &&
-			pointInTriangleExceptFirst(ax, ay, bx, by, cx, cy, n.x, n.y) &&
-			area(n.prev, n, n.next) >= 0
-		) {
+		if (n.x >= x0 && n.x <= x1 && n.y >= y0 && n.y <= y1 && n !== a && n !== c && pointInTriangleExceptFirst(ax, ay, bx, by, cx, cy, n.x, n.y) && area(n.prev, n, n.next) >= 0) {
 			return false
 		}
 		n = n.nextZ
@@ -559,16 +537,7 @@ export function isEarHashed(ear: TEarNode, minX: number, minY: number, invSize: 
 	 * look for remaining points in decreasing z-order
 	 */
 	while (p && p.z >= minZ) {
-		if (
-			p.x >= x0 &&
-			p.x <= x1 &&
-			p.y >= y0 &&
-			p.y <= y1 &&
-			p !== a &&
-			p !== c &&
-			pointInTriangleExceptFirst(ax, ay, bx, by, cx, cy, p.x, p.y) &&
-			area(p.prev, p, p.next) >= 0
-		) {
+		if (p.x >= x0 && p.x <= x1 && p.y >= y0 && p.y <= y1 && p !== a && p !== c && pointInTriangleExceptFirst(ax, ay, bx, by, cx, cy, p.x, p.y) && area(p.prev, p, p.next) >= 0) {
 			return false
 		}
 		p = p.prevZ
@@ -577,16 +546,7 @@ export function isEarHashed(ear: TEarNode, minX: number, minY: number, invSize: 
 	 * look for remaining points in increasing z-order
 	 */
 	while (n && n.z <= maxZ) {
-		if (
-			n.x >= x0 &&
-			n.x <= x1 &&
-			n.y >= y0 &&
-			n.y <= y1 &&
-			n !== a &&
-			n !== c &&
-			pointInTriangleExceptFirst(ax, ay, bx, by, cx, cy, n.x, n.y) &&
-			area(n.prev, n, n.next) >= 0
-		) {
+		if (n.x >= x0 && n.x <= x1 && n.y >= y0 && n.y <= y1 && n !== a && n !== c && pointInTriangleExceptFirst(ax, ay, bx, by, cx, cy, n.x, n.y) && area(n.prev, n, n.next) >= 0) {
 			return false
 		}
 		n = n.nextZ
@@ -625,14 +585,7 @@ export function isEar(ear: TEarNode): boolean {
 	const y1: number = Math.max(ay, by, cy)
 	let p: TEarNode = c.next
 	while (p !== a) {
-		if (
-			p.x >= x0 &&
-			p.x <= x1 &&
-			p.y >= y0 &&
-			p.y <= y1 &&
-			pointInTriangleExceptFirst(ax, ay, bx, by, cx, cy, p.x, p.y) &&
-			area(p.prev, p, p.next) >= 0
-		) {
+		if (p.x >= x0 && p.x <= x1 && p.y >= y0 && p.y <= y1 && pointInTriangleExceptFirst(ax, ay, bx, by, cx, cy, p.x, p.y) && area(p.prev, p, p.next) >= 0) {
 			return false
 		}
 		p = p.next

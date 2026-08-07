@@ -57,25 +57,14 @@ export class D2ElementController extends BaseInterface {
 	/**
 	 * 创建 D2-Line-Shape
 	 */
-	public createD2LineElementShapeItem(
-		layerItemId: string,
-		startPoint: Vector2,
-		endPoint: Vector2,
-		optional: Partial<TBuildD2LineModelOptionalParam> = {}
-	): string {
+	public createD2LineElementShapeItem(layerItemId: string, startPoint: Vector2, endPoint: Vector2, optional: Partial<TBuildD2LineModelOptionalParam> = {}): string {
 		const checkResult: { code: number; title: string } = Helper.checkDrawLayer(layerItemId)
 		if (checkResult.code !== 0) {
 			console.error(`error: target layer does not exist or has been deleted.`)
 			return null!
 		}
 		const elementItemId: string = Constant.globalIdenManager.getElementIden()
-		const targetShapeItem: D2LineShape = D2LineShapeManager.getInstance().createShapeItem(
-			elementItemId,
-			layerItemId,
-			startPoint,
-			endPoint,
-			optional
-		)
+		const targetShapeItem: D2LineShape = D2LineShapeManager.getInstance().createShapeItem(elementItemId, layerItemId, startPoint, endPoint, optional)
 		Constant.messageTool.messageBus.publish(EFrameCommand.RENDER_FRAME, null)
 		OutProfileMessage.dispatchOperationProfileChangeMessage(EOperationAction.CREATE_ELEMENT, {})
 		return targetShapeItem.model.elementItemId
@@ -84,11 +73,7 @@ export class D2ElementController extends BaseInterface {
 	/**
 	 * 创建 D2-Circle-Shape
 	 */
-	public createD2CircleElementShapeItem(
-		layerItemId: string,
-		centerPoint: Vector2,
-		optional: Partial<TBuildD2CircleModelOptionalParam> = {}
-	): string {
+	public createD2CircleElementShapeItem(layerItemId: string, centerPoint: Vector2, optional: Partial<TBuildD2CircleModelOptionalParam> = {}): string {
 		const checkResult: { code: number; title: string } = Helper.checkDrawLayer(layerItemId)
 		if (checkResult.code !== 0) {
 			console.error(`error: target layer does not exist or has been deleted.`)
@@ -120,31 +105,14 @@ export class D2ElementController extends BaseInterface {
 	/**
 	 * 创建 D2-Arc-Shape
 	 */
-	public createD2ArcElementShapeItem(
-		layerItemId: string,
-		centerPoint: Vector2,
-		radius: number,
-		startRadian: number,
-		endRadian: number,
-		sweep: ESweep,
-		optional: Partial<TBuildD2ArcModelOptionalParam> = {}
-	): string {
+	public createD2ArcElementShapeItem(layerItemId: string, centerPoint: Vector2, radius: number, startRadian: number, endRadian: number, sweep: ESweep, optional: Partial<TBuildD2ArcModelOptionalParam> = {}): string {
 		const checkResult: { code: number; title: string } = Helper.checkDrawLayer(layerItemId)
 		if (checkResult.code !== 0) {
 			console.error(`error: target layer does not exist or has been deleted.`)
 			return null!
 		}
 		const elementItemId: string = Constant.globalIdenManager.getElementIden()
-		const targetShapeItem: D2ArcShape = D2ArcShapeManager.getInstance().createShapeItem(
-			elementItemId,
-			layerItemId,
-			centerPoint,
-			radius,
-			startRadian,
-			endRadian,
-			sweep,
-			optional
-		)
+		const targetShapeItem: D2ArcShape = D2ArcShapeManager.getInstance().createShapeItem(elementItemId, layerItemId, centerPoint, radius, startRadian, endRadian, sweep, optional)
 		Constant.messageTool.messageBus.publish(EFrameCommand.RENDER_FRAME, null)
 		OutProfileMessage.dispatchOperationProfileChangeMessage(EOperationAction.CREATE_ELEMENT, {})
 		return targetShapeItem.model.elementItemId
@@ -153,31 +121,14 @@ export class D2ElementController extends BaseInterface {
 	/**
 	 * 创建 D2-Image-Shape
 	 */
-	public createD2ImageElementItem(
-		layerItemId: string,
-		position: Vector2,
-		fileHashUuid: string,
-		imageDataURL: string,
-		width: number,
-		height: number,
-		optional: Partial<TBuildD2ImageModelOptionalParam> = {}
-	): string {
+	public createD2ImageElementItem(layerItemId: string, position: Vector2, fileHashUuid: string, imageDataURL: string, width: number, height: number, optional: Partial<TBuildD2ImageModelOptionalParam> = {}): string {
 		const checkResult: { code: number; title: string } = Helper.checkDrawLayer(layerItemId)
 		if (checkResult.code !== 0) {
 			console.error(`error: target layer does not exist or has been deleted.`)
 			return null!
 		}
 		const elementItemId: string = Constant.globalIdenManager.getElementIden()
-		const targetShapeItem: D2ImageShape = D2ImageShapeManager.getInstance().createShapeItem(
-			elementItemId,
-			layerItemId,
-			position,
-			fileHashUuid,
-			imageDataURL,
-			width,
-			height,
-			optional
-		)
+		const targetShapeItem: D2ImageShape = D2ImageShapeManager.getInstance().createShapeItem(elementItemId, layerItemId, position, fileHashUuid, imageDataURL, width, height, optional)
 		Constant.messageTool.messageBus.publish(EFrameCommand.RENDER_FRAME, null)
 		OutProfileMessage.dispatchOperationProfileChangeMessage(EOperationAction.CREATE_ELEMENT, {})
 		return targetShapeItem.model.elementItemId
@@ -186,27 +137,14 @@ export class D2ElementController extends BaseInterface {
 	/**
 	 * 创建 D2-Rect-Shape
 	 */
-	public createD2RectElementShapeItem(
-		layerItemId: string,
-		position: Vector2,
-		width: number,
-		height: number,
-		optional: Partial<TBuildD2RectModelOptionalParam> = {}
-	): string {
+	public createD2RectElementShapeItem(layerItemId: string, position: Vector2, width: number, height: number, optional: Partial<TBuildD2RectModelOptionalParam> = {}): string {
 		const checkResult: { code: number; title: string } = Helper.checkDrawLayer(layerItemId)
 		if (checkResult.code !== 0) {
 			console.error(`error: target layer does not exist or has been deleted.`)
 			return null!
 		}
 		const elementItemId: string = Constant.globalIdenManager.getElementIden()
-		const targetShapeItem: D2RectShape = D2RectShapeManager.getInstance().createShapeItem(
-			elementItemId,
-			layerItemId,
-			position,
-			width,
-			height,
-			optional
-		)
+		const targetShapeItem: D2RectShape = D2RectShapeManager.getInstance().createShapeItem(elementItemId, layerItemId, position, width, height, optional)
 		Constant.messageTool.messageBus.publish(EFrameCommand.RENDER_FRAME, null)
 		OutProfileMessage.dispatchOperationProfileChangeMessage(EOperationAction.CREATE_ELEMENT, {})
 		return targetShapeItem.model.elementItemId
@@ -288,11 +226,7 @@ export class D2ElementController extends BaseInterface {
 	/**
 	 * 更新图元属性
 	 */
-	public updateD2ElementShapeItemAttrByJSONData(
-		elementItemId: string,
-		jsonData: Partial<{ [key in ED2ElementUpdateAttr]: any }>,
-		markShapeType?: ED2ElementType
-	): void {
+	public updateD2ElementShapeItemAttrByJSONData(elementItemId: string, jsonData: Partial<{ [key in ED2ElementUpdateAttr]: any }>, markShapeType?: ED2ElementType): void {
 		let targetElement: TElementShapeType = null!
 		if (!markShapeType) {
 			targetElement = Helper.getAllElementShapes().filter((elementItem: TElementShapeType): boolean => {
@@ -380,11 +314,7 @@ export class D2ElementController extends BaseInterface {
 	/**
 	 * 更新图元特征属性
 	 */
-	public updateD2ElementShapeItemPropertyByJSONData(
-		elementItemId: string,
-		jsonData: Partial<{ [key in ED2ElementUpdateProperty]: any }>,
-		markShapeType?: ED2ElementType
-	): void {
+	public updateD2ElementShapeItemPropertyByJSONData(elementItemId: string, jsonData: Partial<{ [key in ED2ElementUpdateProperty]: any }>, markShapeType?: ED2ElementType): void {
 		let targetElement: TElementShapeType = null!
 		if (!markShapeType) {
 			targetElement = Helper.getAllElementShapes().filter((elementItem: TElementShapeType): boolean => {

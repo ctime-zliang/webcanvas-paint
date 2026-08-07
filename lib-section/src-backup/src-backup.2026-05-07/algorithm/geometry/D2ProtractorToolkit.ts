@@ -34,10 +34,7 @@ export class D2ProtractorToolkit {
 		const [startEdge, endEdge]: [Line, Line] = [new Line(centerPoint, startPoint), new Line(centerPoint, endPoint)]
 		results.push(startEdge, endEdge)
 		const [direct1, direct2]: [Vector2, Vector2] = [startPoint.sub(centerPoint), endPoint.sub(centerPoint)]
-		let [startRadian, endRadian]: [number, number] = [
-			(Math.atan2(direct1.y, direct1.x) * 180) / Math.PI,
-			(Math.atan2(direct2.y, direct2.x) * 180) / Math.PI,
-		]
+		let [startRadian, endRadian]: [number, number] = [(Math.atan2(direct1.y, direct1.x) * 180) / Math.PI, (Math.atan2(direct2.y, direct2.x) * 180) / Math.PI]
 		if (startRadian === endRadian) {
 			endRadian += 1e-8
 		}

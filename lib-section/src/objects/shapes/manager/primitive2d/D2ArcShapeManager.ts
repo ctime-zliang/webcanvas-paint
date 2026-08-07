@@ -33,16 +33,7 @@ export class D2ArcShapeManager extends BaseManager<D2ArcShape> {
 		sweep: ESweep,
 		optional: Partial<TBuildD2ArcModelOptionalParam> = {}
 	): D2ArcShape {
-		const elementModelItem: D2ArcModel = D2ArcModelManager.getInstance().createModelItem(
-			elementItemId,
-			layerItemId,
-			centerPoint,
-			radius,
-			startRadian,
-			endRadian,
-			sweep,
-			optional
-		)
+		const elementModelItem: D2ArcModel = D2ArcModelManager.getInstance().createModelItem(elementItemId, layerItemId, centerPoint, radius, startRadian, endRadian, sweep, optional)
 		const elementShapeItem: D2ArcShape = new D2ArcShape(elementModelItem)
 		const op: boolean = this.addCache(elementShapeItem)
 		return elementShapeItem

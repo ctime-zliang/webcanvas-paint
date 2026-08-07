@@ -260,14 +260,7 @@ export class Arc extends Primitive {
 		if (this.startPoint.equalsWithVector2(this.endPoint)) {
 			return Arc.build3(this.centerPoint.mirrorSurroundY(), 0, Math.PI * 2, this.rx, this.ry)
 		}
-		return Arc.build1(
-			this.startPoint.mirrorSurroundY(origin),
-			this.endPoint.mirrorSurroundY(origin),
-			this.rx,
-			this.ry,
-			this.isOverHalfCircle,
-			this.sweepRadian >= 0 ? ESweep.CW : ESweep.CCW
-		)
+		return Arc.build1(this.startPoint.mirrorSurroundY(origin), this.endPoint.mirrorSurroundY(origin), this.rx, this.ry, this.isOverHalfCircle, this.sweepRadian >= 0 ? ESweep.CW : ESweep.CCW)
 	}
 
 	public sectorArea(): number {
@@ -339,20 +332,9 @@ export class Arc extends Primitive {
 		switch (cap) {
 			case ECanvasD2LineCap.ROUND: {
 				const sweepRadian: number = sweep === ESweep.CCW ? Math.PI : -Math.PI
-				const [c1, c2]: [Vector2, Vector2] = [
-					sweep === this.sweep ? this.pointOn(this.endRadian) : this.pointOn(this.startRadian),
-					sweep === this.sweep ? this.pointOn(this.startRadian) : this.pointOn(this.endRadian),
-				]
-				const [startRadian1, startRadian2]: [number, number] = [
-					Angles.radianToDegree(a1.pointOn(a1.endRadian).getRadianByVector2(c1)),
-					Angles.radianToDegree(a2.pointOn(a2.endRadian).getRadianByVector2(c2)),
-				]
-				return Polyline.build2([
-					a1,
-					Arc.build3(c1, startRadian1, sweepRadian, halfWidth, halfWidth),
-					a2,
-					Arc.build3(c2, startRadian2, sweepRadian, halfWidth, halfWidth),
-				])
+				const [c1, c2]: [Vector2, Vector2] = [sweep === this.sweep ? this.pointOn(this.endRadian) : this.pointOn(this.startRadian), sweep === this.sweep ? this.pointOn(this.startRadian) : this.pointOn(this.endRadian)]
+				const [startRadian1, startRadian2]: [number, number] = [Angles.radianToDegree(a1.pointOn(a1.endRadian).getRadianByVector2(c1)), Angles.radianToDegree(a2.pointOn(a2.endRadian).getRadianByVector2(c2))]
+				return Polyline.build2([a1, Arc.build3(c1, startRadian1, sweepRadian, halfWidth, halfWidth), a2, Arc.build3(c2, startRadian2, sweepRadian, halfWidth, halfWidth)])
 			}
 			default: {
 				return Polyline.build2([a1, a2])
@@ -492,10 +474,7 @@ export class Arc extends Primitive {
 	private getSvgEnd(startRadian: number, sweepRadian: number, startPoint: Vector2, endPoint: Vector2): Vector2 {
 		let step: number = sweepRadian >= 0 ? -0.01 : 0.01
 		let endRadian: number = startRadian + sweepRadian
-		while (
-			((sweepRadian >= 0 && endRadian > startRadian) || (sweepRadian < 0 && endRadian < startRadian)) &&
-			startPoint.distance(endPoint) < 0.0002
-		) {
+		while (((sweepRadian >= 0 && endRadian > startRadian) || (sweepRadian < 0 && endRadian < startRadian)) && startPoint.distance(endPoint) < 0.0002) {
 			step *= 2
 			endRadian += step
 			endPoint = this.pointOn(endRadian)

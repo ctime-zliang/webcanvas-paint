@@ -61,14 +61,8 @@ export class D2ImageView extends D2ShapeElementViewBase {
 			this._maskPrimitive.modify({
 				status: shapeObjectItemJson.status,
 				layerItemId: this._maskPrimitive.layerItemId,
-				startPoint: new Vector2(
-					(shapeObjectItemJson.leftUp.x + shapeObjectItemJson.leftDown.x) / 2,
-					(shapeObjectItemJson.leftUp.y + shapeObjectItemJson.leftDown.y) / 2
-				).toJSON(),
-				endPoint: new Vector2(
-					(shapeObjectItemJson.rightUp.x + shapeObjectItemJson.rightDown.x) / 2,
-					(shapeObjectItemJson.rightUp.y + shapeObjectItemJson.rightDown.y) / 2
-				).toJSON(),
+				startPoint: new Vector2((shapeObjectItemJson.leftUp.x + shapeObjectItemJson.leftDown.x) / 2, (shapeObjectItemJson.leftUp.y + shapeObjectItemJson.leftDown.y) / 2).toJSON(),
+				endPoint: new Vector2((shapeObjectItemJson.rightUp.x + shapeObjectItemJson.rightDown.x) / 2, (shapeObjectItemJson.rightUp.y + shapeObjectItemJson.rightDown.y) / 2).toJSON(),
 				strokeWidth: shapeObjectItemJson.height,
 				strokeColorData: MaskColor.createStrokeColor().toRGBAJSON(),
 				alpha: 0.35,
@@ -83,8 +77,7 @@ export class D2ImageView extends D2ShapeElementViewBase {
 		const rightBorderLinePrimitive: StructureItemBase = this._rightBorderLinePrimitiveNormal || this._rightBorderLinePrimitiveHightlight
 		const bottomBorderLinePrimitive: StructureItemBase = this._bottomBorderLinePrimitiveNormal || this._bottomBorderLinePrimitiveHightlight
 		const leftBorderLinePrimitive: StructureItemBase = this._leftBorderLinePrimitiveNormal || this._leftBorderLinePrimitiveHightlight
-		const lineLayerItemId: string =
-			this.hightlight && this._topBorderLinePrimitiveHightlight ? this._topBorderLinePrimitiveHightlight.layerItemId : this.layerItemId
+		const lineLayerItemId: string = this.hightlight && this._topBorderLinePrimitiveHightlight ? this._topBorderLinePrimitiveHightlight.layerItemId : this.layerItemId
 		const lineColor: Color = this.hightlight ? Color.GREEN_YELLOW : new Color(102, 248, 247)
 		if (topBorderLinePrimitive) {
 			topBorderLinePrimitive.modify({

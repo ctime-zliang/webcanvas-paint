@@ -27,14 +27,11 @@ export function messageHandle(): Array<MessageBusTask> {
 		)
 	)
 	taskItems.push(
-		messageTool.messageBus.subscribe(
-			`CAS2UI_EVT-UPDATE_DRAWLAYER_LIST`,
-			(params: { allDrawLayers: ReadonlyArray<TDrawLayerItemResult>; selectedDrawLayerItemId: string }): void => {
-				const { allDrawLayers, selectedDrawLayerItemId } = params
-				valtioAction.setAllDrawLayers(allDrawLayers)
-				valtioAction.setSelectedDrawLayerItemId(selectedDrawLayerItemId)
-			}
-		)
+		messageTool.messageBus.subscribe(`CAS2UI_EVT-UPDATE_DRAWLAYER_LIST`, (params: { allDrawLayers: ReadonlyArray<TDrawLayerItemResult>; selectedDrawLayerItemId: string }): void => {
+			const { allDrawLayers, selectedDrawLayerItemId } = params
+			valtioAction.setAllDrawLayers(allDrawLayers)
+			valtioAction.setSelectedDrawLayerItemId(selectedDrawLayerItemId)
+		})
 	)
 	return taskItems
 }

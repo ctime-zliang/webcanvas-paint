@@ -52,19 +52,11 @@ export function d2ArcToolkitTest02(webCanvas: WebCanvas, layerItemId: string): v
 		console.error(`当前三点无法生成唯一圆弧`)
 		return
 	}
-	d2ElementController.createD2ArcElementShapeItem(
-		defaultLayerItemId,
-		arcParams.centerPoint,
-		arcParams.radius,
-		arcParams.startRadian,
-		arcParams.endRadian,
-		arcParams.sweep,
-		{
-			isEnableSelect: false,
-			isFill: true,
-			fillColor: new Color(255, 0, 0, 0.5),
-		}
-	)
+	d2ElementController.createD2ArcElementShapeItem(defaultLayerItemId, arcParams.centerPoint, arcParams.radius, arcParams.startRadian, arcParams.endRadian, arcParams.sweep, {
+		isEnableSelect: false,
+		isFill: true,
+		fillColor: new Color(255, 0, 0, 0.5),
+	})
 	/* ... */
 	createPoints(webCanvas, layerItemId, [
 		{ label: `StartPoint`, position: startPoint },
@@ -146,19 +138,11 @@ export function d2ArcToolkitTest05(webCanvas: WebCanvas, layerItemId: string): v
 		console.error(`当前参数无法生成唯一圆弧`)
 		return
 	}
-	d2ElementController.createD2ArcElementShapeItem(
-		defaultLayerItemId,
-		arcParams.centerPoint,
-		arcParams.radius,
-		arcParams.startRadian,
-		arcParams.startRadian + sweepRadian,
-		arcParams.sweep,
-		{
-			isEnableSelect: false,
-			isFill: true,
-			fillColor: new Color(255, 0, 0, 0.5),
-		}
-	)
+	d2ElementController.createD2ArcElementShapeItem(defaultLayerItemId, arcParams.centerPoint, arcParams.radius, arcParams.startRadian, arcParams.startRadian + sweepRadian, arcParams.sweep, {
+		isEnableSelect: false,
+		isFill: true,
+		fillColor: new Color(255, 0, 0, 0.5),
+	})
 	/* ... */
 	createPoints(webCanvas, layerItemId, [
 		{ label: `StartPoint`, position: startPoint },

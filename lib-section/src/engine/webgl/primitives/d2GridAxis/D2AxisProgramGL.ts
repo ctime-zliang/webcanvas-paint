@@ -131,13 +131,9 @@ export class D2AxisProgramGL extends ProgramGL {
 		const distX: number = baseOrigin.x - (baseOrigin.x % (this._axisParamInstance.axisStepX * scaleRatio))
 		const distY: number = baseOrigin.y - (baseOrigin.y % (this._axisParamInstance.axisStepY * scaleRatio))
 		this._origin = baseOrigin.multiplyMatrix4(camraProjectionMatrix4)
-		const transform: Matrix4 = baseMatrix4
-			.multiply4(CanvasMatrix4.setTranslateByVector3(new Vector3(-distX, -distY, 0)))
-			.multiply4(camraProjectionMatrix4)
+		const transform: Matrix4 = baseMatrix4.multiply4(CanvasMatrix4.setTranslateByVector3(new Vector3(-distX, -distY, 0))).multiply4(camraProjectionMatrix4)
 		const axisStepTransform: Vector2 = new Vector2(this._axisParamInstance.axisStepX, this._axisParamInstance.axisStepY).multiplyMatrix4(
-			CanvasMatrix4.setScaleByValue(this._ratio, this._ratio, 1.0)
-				.multiply4(CanvasMatrix4.setScaleByValue(scale, scale, 1.0))
-				.multiply4(camraProjectionMatrix4)
+			CanvasMatrix4.setScaleByValue(this._ratio, this._ratio, 1.0).multiply4(CanvasMatrix4.setScaleByValue(scale, scale, 1.0)).multiply4(camraProjectionMatrix4)
 		)
 		return {
 			matrix: transform,
@@ -150,49 +146,17 @@ export class D2AxisProgramGL extends ProgramGL {
 		const gl: WebGL2RenderingContext = this.webGL.gl
 		const { matrix, moveCountX, moveCountY } = this.calcTransform(scene)
 		/* ... */
-		gl.uniform2fv(
-			this._u_antialias,
-			new Float32Array([this._axisParamInstance.isAntialias ? 1.5 : 0.5, this._axisParamInstance.isAntialias ? 0.0 : 1.0])
-		)
+		gl.uniform2fv(this._u_antialias, new Float32Array([this._axisParamInstance.isAntialias ? 1.5 : 0.5, this._axisParamInstance.isAntialias ? 0.0 : 1.0]))
 		gl.uniform2fv(this._u_gridSize, new Float32Array([this._axisParamInstance.axisStepX, this._axisParamInstance.axisStepY]))
 		gl.uniform2fv(this._u_moveCount, new Float32Array([moveCountX, moveCountY]))
 		gl.uniform2fv(this._u_origin, new Float32Array([this._origin.x, this._origin.y]))
-		gl.uniform4fv(
-			this._u_gridColor,
-			new Float32Array([
-				this._axisParamInstance.gridColor.r,
-				this._axisParamInstance.gridColor.g,
-				this._axisParamInstance.gridColor.b,
-				this._axisParamInstance.gridAlpha,
-			])
-		)
+		gl.uniform4fv(this._u_gridColor, new Float32Array([this._axisParamInstance.gridColor.r, this._axisParamInstance.gridColor.g, this._axisParamInstance.gridColor.b, this._axisParamInstance.gridAlpha]))
 		gl.uniform4fv(
 			this._u_multiGridColor,
-			new Float32Array([
-				this._axisParamInstance.multiGridColor.r,
-				this._axisParamInstance.multiGridColor.g,
-				this._axisParamInstance.multiGridColor.b,
-				this._axisParamInstance.multiGridAlpha,
-			])
+			new Float32Array([this._axisParamInstance.multiGridColor.r, this._axisParamInstance.multiGridColor.g, this._axisParamInstance.multiGridColor.b, this._axisParamInstance.multiGridAlpha])
 		)
-		gl.uniform4fv(
-			this._u_gridDotColor,
-			new Float32Array([
-				this._axisParamInstance.gridDotColor.r,
-				this._axisParamInstance.gridDotColor.g,
-				this._axisParamInstance.gridDotColor.b,
-				this._axisParamInstance.gridDotAlpha,
-			])
-		)
-		gl.uniform4fv(
-			this._u_axisColor,
-			new Float32Array([
-				this._axisParamInstance.axisColor.r,
-				this._axisParamInstance.axisColor.g,
-				this._axisParamInstance.axisColor.b,
-				this._axisParamInstance.axisAlpha,
-			])
-		)
+		gl.uniform4fv(this._u_gridDotColor, new Float32Array([this._axisParamInstance.gridDotColor.r, this._axisParamInstance.gridDotColor.g, this._axisParamInstance.gridDotColor.b, this._axisParamInstance.gridDotAlpha]))
+		gl.uniform4fv(this._u_axisColor, new Float32Array([this._axisParamInstance.axisColor.r, this._axisParamInstance.axisColor.g, this._axisParamInstance.axisColor.b, this._axisParamInstance.axisAlpha]))
 		gl.uniform1f(this._u_multiRatio, this._axisParamInstance.multiRatio)
 		gl.uniform1f(this._u_isShowGrid, this._axisParamInstance.isShowGrid ? 1.0 : 0.0)
 		gl.uniform1f(this._u_isShowMultiGrid, this._axisParamInstance.isShowMultiGrid ? 1.0 : 0.0)

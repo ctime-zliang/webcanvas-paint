@@ -58,11 +58,7 @@ function checkArcResult2(arc1: Arc, arc2: Arc, points: Array<Vector2>): Array<Ve
 }
 
 function endpointIsOn(endPoint: Vector2, arc: Arc, nearPoint: Vector2, farPoint: Vector2): boolean {
-	return (
-		DoubleKit.eq(endPoint.distance(arc.centerPoint), arc.radius) &&
-		D2ArcToolkit.isPointOnArc(arc, endPoint) &&
-		endPoint.distanceSquare(nearPoint) < endPoint.distanceSquare(farPoint)
-	)
+	return DoubleKit.eq(endPoint.distance(arc.centerPoint), arc.radius) && D2ArcToolkit.isPointOnArc(arc, endPoint) && endPoint.distanceSquare(nearPoint) < endPoint.distanceSquare(farPoint)
 }
 
 export class D2Intersection {
@@ -106,20 +102,14 @@ export class D2Intersection {
 		/**
 		 * 向量叉积 判断线段 n(p3-p4) 是否跨越线段 m(p1, p2)
 		 */
-		const [cross1, cross2]: [number, number] = [
-			lineB.startPoint.sub(lineA.startPoint).cross(lineB.endPoint.sub(lineB.startPoint)),
-			lineB.startPoint.sub(lineA.endPoint).cross(lineB.endPoint.sub(lineB.startPoint)),
-		]
+		const [cross1, cross2]: [number, number] = [lineB.startPoint.sub(lineA.startPoint).cross(lineB.endPoint.sub(lineB.startPoint)), lineB.startPoint.sub(lineA.endPoint).cross(lineB.endPoint.sub(lineB.startPoint))]
 		if (cross1 * cross2 > 0 && !DoubleKit.eq(cross1, 0) && !DoubleKit.eq(cross2, 0)) {
 			return { count: 0, points: [] }
 		}
 		/**
 		 * 向量叉积 判断线段 m(p1, p2) 是否跨越线段 n(p3-p4)
 		 */
-		const [cross3, cross4]: [number, number] = [
-			lineA.startPoint.sub(lineB.startPoint).cross(lineA.endPoint.sub(lineA.startPoint)),
-			lineA.startPoint.sub(lineB.endPoint).cross(lineA.endPoint.sub(lineA.startPoint)),
-		]
+		const [cross3, cross4]: [number, number] = [lineA.startPoint.sub(lineB.startPoint).cross(lineA.endPoint.sub(lineA.startPoint)), lineA.startPoint.sub(lineB.endPoint).cross(lineA.endPoint.sub(lineA.startPoint))]
 		if (cross3 * cross4 > 0 && !DoubleKit.eq(cross3, 0) && !DoubleKit.eq(cross4, 0)) {
 			return { count: 0, points: [] }
 		}
@@ -142,10 +132,7 @@ export class D2Intersection {
 				result.points.push(inters.rightUp)
 				result.count += 2
 			} else {
-				const [ulArea, urArea]: [number, number] = [
-					Triangle.getArea(inters.leftUp, new Vector2(x3, y3), new Vector2(x4, y4)),
-					Triangle.getArea(inters.rightUp, new Vector2(x3, y3), new Vector2(x4, y4)),
-				]
+				const [ulArea, urArea]: [number, number] = [Triangle.getArea(inters.leftUp, new Vector2(x3, y3), new Vector2(x4, y4)), Triangle.getArea(inters.rightUp, new Vector2(x3, y3), new Vector2(x4, y4))]
 				if (ulArea < urArea) {
 					result.points.push(inters.leftUp)
 					result.points.push(inters.rightDown)
@@ -251,29 +238,18 @@ export class D2Intersection {
 					result.count += 1
 				}
 			} else {
-				const closedPoint: Vector2 = D2LineToolkit.getClosedPointOnLineWithPoint(
-					new Line(new Vector2(x1, y1), new Vector2(x2, y2)),
-					new Vector2(cx, cy)
-				)
+				const closedPoint: Vector2 = D2LineToolkit.getClosedPointOnLineWithPoint(new Line(new Vector2(x1, y1), new Vector2(x2, y2)), new Vector2(cx, cy))
 				const closedD: number = Vector.distance({ x: cx, y: cy }, { x: closedPoint.x, y: closedPoint.y })
 				if (DoubleKit.eq(closedD, r)) {
 					result.points.push(closedPoint)
 					result.count += 1
 				} else if (closedD < r) {
-					const points1: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(
-						r,
-						new Line(new Vector2(x1, y1), closedPoint),
-						new Vector2(cx, cy)
-					)
+					const points1: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(r, new Line(new Vector2(x1, y1), closedPoint), new Vector2(cx, cy))
 					for (let i: number = 0; i < points1.length; i++) {
 						result.points.push(points1[i])
 						result.count += 1
 					}
-					const points2: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(
-						r,
-						new Line(closedPoint, new Vector2(x2, y2)),
-						new Vector2(cx, cy)
-					)
+					const points2: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(r, new Line(closedPoint, new Vector2(x2, y2)), new Vector2(cx, cy))
 					for (let i: number = 0; i < points2.length; i++) {
 						result.points.push(points2[i])
 						result.count += 1
@@ -283,11 +259,7 @@ export class D2Intersection {
 				}
 			}
 		} else if (state1 === -1 || state2 === -1) {
-			const points: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(
-				r,
-				new Line(new Vector2(x1, y1), new Vector2(x2, y2)),
-				new Vector2(cx, cy)
-			)
+			const points: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(r, new Line(new Vector2(x1, y1), new Vector2(x2, y2)), new Vector2(cx, cy))
 			for (let i: number = 0; i < points.length; i++) {
 				result.points.push(points[i])
 				result.count += 1
@@ -315,21 +287,13 @@ export class D2Intersection {
 						return result
 					}
 					if (d1 <= r) {
-						const points: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(
-							r,
-							new Line(foot, new Vector2(x2, y2)),
-							new Vector2(cx, cy)
-						)
+						const points: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(r, new Line(foot, new Vector2(x2, y2)), new Vector2(cx, cy))
 						for (let i: number = 0; i < points.length; i++) {
 							result.points.push(points[i])
 							result.count += 1
 						}
 					} else if (distance < r) {
-						const points1: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(
-							r,
-							new Line(foot, new Vector2(x2, y2)),
-							new Vector2(cx, cy)
-						)
+						const points1: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(r, new Line(foot, new Vector2(x2, y2)), new Vector2(cx, cy))
 						if (points1.length === 1 && isInterPoint(points1[0])) {
 							for (let i: number = 0; i < points1.length; i++) {
 								result.points.push(points1[i])
@@ -337,11 +301,7 @@ export class D2Intersection {
 							}
 							return result
 						}
-						const points2: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(
-							r,
-							new Line(foot, new Vector2(x1, y1)),
-							new Vector2(cx, cy)
-						)
+						const points2: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(r, new Line(foot, new Vector2(x1, y1)), new Vector2(cx, cy))
 						for (let i: number = 0; i < points2.length; i++) {
 							result.points.push(points2[i])
 							result.count += 1
@@ -360,21 +320,13 @@ export class D2Intersection {
 						return result
 					}
 					if (d2 <= r) {
-						const points: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(
-							r,
-							new Line(foot, new Vector2(x1, y1)),
-							new Vector2(cx, cy)
-						)
+						const points: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(r, new Line(foot, new Vector2(x1, y1)), new Vector2(cx, cy))
 						for (let i: number = 0; i < points.length; i++) {
 							result.points.push(points[i])
 							result.count += 1
 						}
 					} else if (distance < r) {
-						const points1: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(
-							r,
-							new Line(foot, new Vector2(x1, y1)),
-							new Vector2(cx, cy)
-						)
+						const points1: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(r, new Line(foot, new Vector2(x1, y1)), new Vector2(cx, cy))
 						if (points1.length === 1 && isInterPoint(points1[0])) {
 							for (let i: number = 0; i < points1.length; i++) {
 								result.points.push(points1[i])
@@ -382,11 +334,7 @@ export class D2Intersection {
 							}
 							return result
 						}
-						const points2: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(
-							r,
-							new Line(foot, new Vector2(x2, y2)),
-							new Vector2(cx, cy)
-						)
+						const points2: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(r, new Line(foot, new Vector2(x2, y2)), new Vector2(cx, cy))
 						for (let i: number = 0; i < points2.length; i++) {
 							result.points.push(points2[i])
 							result.count += 1
@@ -398,11 +346,7 @@ export class D2Intersection {
 				result.points.push(p)
 				result.count += 1
 				if ((x1 - foot.x) * (x2 - foot.x) + (y1 - foot.y) * (y2 - foot.y) < 0) {
-					const points: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(
-						r,
-						new Line(foot, new Vector2(x2, y2)),
-						new Vector2(cx, cy)
-					)
+					const points: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(r, new Line(foot, new Vector2(x2, y2)), new Vector2(cx, cy))
 					for (let i: number = 0; i < points.length; i++) {
 						result.points.push(points[i])
 						result.count += 1
@@ -413,11 +357,7 @@ export class D2Intersection {
 				result.points.push(p)
 				result.count += 1
 				if ((x1 - foot.x) * (x2 - foot.x) + (y1 - foot.y) * (y2 - foot.y) < 0) {
-					const points: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(
-						r,
-						new Line(foot, new Vector2(x1, y1)),
-						new Vector2(cx, cy)
-					)
+					const points: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(r, new Line(foot, new Vector2(x1, y1)), new Vector2(cx, cy))
 					for (let i: number = 0; i < points.length; i++) {
 						result.points.push(points[i])
 						result.count += 1
@@ -430,12 +370,7 @@ export class D2Intersection {
 			let count: number = 0
 			for (let i: number = 0; i < result.count; i++) {
 				const point: Vector2 = result.points[i]
-				if (
-					Number.isFinite(point.x) &&
-					Number.isFinite(point.y) &&
-					inters.isContainsValue(point.x, point.y) &&
-					D2ArcToolkit.isPointOnArc(arc, new Vector2(point.x, point.y))
-				) {
+				if (Number.isFinite(point.x) && Number.isFinite(point.y) && inters.isContainsValue(point.x, point.y) && D2ArcToolkit.isPointOnArc(arc, new Vector2(point.x, point.y))) {
 					points.push(point)
 					count += 1
 				}
@@ -503,29 +438,18 @@ export class D2Intersection {
 					result.count += 1
 				}
 			} else {
-				const closedPoint: Vector2 = D2LineToolkit.getClosedPointOnLineWithPoint(
-					new Line(new Vector2(x1, y1), new Vector2(x2, y2)),
-					new Vector2(cx, cy)
-				)
+				const closedPoint: Vector2 = D2LineToolkit.getClosedPointOnLineWithPoint(new Line(new Vector2(x1, y1), new Vector2(x2, y2)), new Vector2(cx, cy))
 				const closedD: number = Vector.distance({ x: cx, y: cy }, { x: closedPoint.x, y: closedPoint.y })
 				if (DoubleKit.eq(closedD, r)) {
 					result.points.push(closedPoint)
 					result.count += 1
 				} else if (closedD < r) {
-					const points1: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(
-						r,
-						new Line(new Vector2(x1, y1), closedPoint),
-						new Vector2(cx, cy)
-					)
+					const points1: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(r, new Line(new Vector2(x1, y1), closedPoint), new Vector2(cx, cy))
 					for (let i: number = 0; i < points1.length; i++) {
 						result.points.push(points1[i])
 						result.count += 1
 					}
-					const points2: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(
-						r,
-						new Line(closedPoint, new Vector2(x2, y2)),
-						new Vector2(cx, cy)
-					)
+					const points2: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(r, new Line(closedPoint, new Vector2(x2, y2)), new Vector2(cx, cy))
 					for (let i: number = 0; i < points2.length; i++) {
 						result.points.push(points2[i])
 						result.count += 1
@@ -535,11 +459,7 @@ export class D2Intersection {
 				}
 			}
 		} else if (state1 === -1 || state2 === -1) {
-			const points: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(
-				r,
-				new Line(new Vector2(x1, y1), new Vector2(x2, y2)),
-				new Vector2(cx, cy)
-			)
+			const points: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(r, new Line(new Vector2(x1, y1), new Vector2(x2, y2)), new Vector2(cx, cy))
 			for (let i: number = 0; i < points.length; i++) {
 				result.points.push(points[i])
 				result.count += 1
@@ -553,11 +473,7 @@ export class D2Intersection {
 				result.points.push(line.startPoint)
 				result.count += 1
 				if (DoubleKit.neq(foot.distanceSquare(line.startPoint), 0) && (x1 - foot.x) * (x2 - foot.x) + (y1 - foot.y) * (y2 - foot.y) < 0) {
-					const points: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(
-						r,
-						new Line(foot, new Vector2(x2, y2)),
-						new Vector2(cx, cy)
-					)
+					const points: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(r, new Line(foot, new Vector2(x2, y2)), new Vector2(cx, cy))
 					for (let i: number = 0; i < points.length; i++) {
 						result.points.push(points[i])
 						result.count += 1
@@ -567,11 +483,7 @@ export class D2Intersection {
 				result.points.push(line.endPoint)
 				result.count += 1
 				if (DoubleKit.neq(foot.distanceSquare(line.endPoint), 0) && (x1 - foot.x) * (x2 - foot.x) + (y1 - foot.y) * (y2 - foot.y) < 0) {
-					const points: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(
-						r,
-						new Line(foot, new Vector2(x1, y1)),
-						new Vector2(cx, cy)
-					)
+					const points: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(r, new Line(foot, new Vector2(x1, y1)), new Vector2(cx, cy))
 					for (let i: number = 0; i < points.length; i++) {
 						result.points.push(points[i])
 						result.count += 1
@@ -733,20 +645,12 @@ export class D2Intersection {
 			yr = y + offset
 			xr = k * yr + b
 		}
-		const points1: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(
-			r1,
-			new Line(new Vector2(xl, yl), new Vector2(x, y)),
-			new Vector2(x1, y1)
-		)
+		const points1: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(r1, new Line(new Vector2(xl, yl), new Vector2(x, y)), new Vector2(x1, y1))
 		for (let i: number = 0; i < points1.length; i++) {
 			result.points.push(points1[i])
 			result.count += 1
 		}
-		const points2: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(
-			r1,
-			new Line(new Vector2(x, y), new Vector2(xr, yr)),
-			new Vector2(x1, y1)
-		)
+		const points2: Array<Vector2> = D2LineToolkit.getPointsOnLineWithDistance(r1, new Line(new Vector2(x, y), new Vector2(xr, yr)), new Vector2(x1, y1))
 		for (let i: number = 0; i < points2.length; i++) {
 			result.points.push(points2[i])
 			result.count += 1
@@ -850,12 +754,7 @@ export class D2Intersection {
 		}
 		result.points = []
 		result.count = 0
-		const cPoints: Array<Vector2> = ([] as Array<Vector2>).concat(
-			check(arcA.startPoint, arcB),
-			check(arcA.endPoint, arcB),
-			check(arcB.startPoint, arcA),
-			check(arcB.endPoint, arcA)
-		)
+		const cPoints: Array<Vector2> = ([] as Array<Vector2>).concat(check(arcA.startPoint, arcB), check(arcA.endPoint, arcB), check(arcB.startPoint, arcA), check(arcB.endPoint, arcA))
 		for (let i: number = 0; i < cPoints.length; i++) {
 			result.points.push(cPoints[i])
 			result.count += 1
@@ -932,12 +831,7 @@ export class D2Intersection {
 			const pt1: Primitive = pl.primitives[i]
 			for (let j: number = i + 1; j < pl.primitives.length; j++) {
 				const pt2: Primitive = pl.primitives[j]
-				const intersPoint: Vector2 = D2Intersection.getStictIntersectionPointOfSegment(
-					pt1.startPoint.mul(0.1),
-					pt1.endPoint.mul(0.1),
-					pt2.startPoint.mul(0.1),
-					pt2.endPoint.mul(0.1)
-				)
+				const intersPoint: Vector2 = D2Intersection.getStictIntersectionPointOfSegment(pt1.startPoint.mul(0.1), pt1.endPoint.mul(0.1), pt2.startPoint.mul(0.1), pt2.endPoint.mul(0.1))
 				if (intersPoint) {
 					intersPoints.push(intersPoint)
 				}

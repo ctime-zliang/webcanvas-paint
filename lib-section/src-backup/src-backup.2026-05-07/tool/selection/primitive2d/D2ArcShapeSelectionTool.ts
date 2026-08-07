@@ -85,11 +85,7 @@ export class D2ArcShapeSelectionTool extends D2SelectionTool {
 		this.moveScenePhysicsX = inputInfo.leftDownScenePhysicsX
 		this.moveScenePhysicsY = inputInfo.leftDownScenePhysicsY
 		if (this._selectedItem) {
-			this._shapeItemCommand = CommandProxy.getCommandInstance(
-				this._selectedItem.elementItemId,
-				ECommandAction.MODIFY,
-				Constant.globalIdenManager.getCommandIden()
-			) as D2ArcShapeCommand
+			this._shapeItemCommand = CommandProxy.getCommandInstance(this._selectedItem.elementItemId, ECommandAction.MODIFY, Constant.globalIdenManager.getCommandIden()) as D2ArcShapeCommand
 		}
 		this._isSelectedPointCenter = this._pointCenter.isSelect(inputInfo.leftDownScenePhysicsX, inputInfo.leftDownScenePhysicsY)
 		this._isSelectedPointStart = this._pointStart.isSelect(inputInfo.leftDownScenePhysicsX, inputInfo.leftDownScenePhysicsY)
@@ -116,11 +112,7 @@ export class D2ArcShapeSelectionTool extends D2SelectionTool {
 			this.moveSelectedItem(diffX, diffY)
 		} else if (this._isSelectedPointStart) {
 			const newStartPoint: Vector2 = this._pointStart.centerPoint.add(diffVector2)
-			const arcResultParmas = D2ArcToolkit.calculateD2ArcProfileByThreePoint(
-				newStartPoint,
-				this._pointEnd.centerPoint,
-				this._pointMiddle.centerPoint
-			)
+			const arcResultParmas = D2ArcToolkit.calculateD2ArcProfileByThreePoint(newStartPoint, this._pointEnd.centerPoint, this._pointMiddle.centerPoint)
 			this._selectedItem.radius = arcResultParmas.radius
 			this._selectedItem.centerPoint = arcResultParmas.centerPoint
 			this._selectedItem.startRadian = arcResultParmas.startRadian
@@ -128,11 +120,7 @@ export class D2ArcShapeSelectionTool extends D2SelectionTool {
 			this._selectedItem.sweep = arcResultParmas.sweep
 		} else if (this._isSelectedPointEnd) {
 			const newEndPoint: Vector2 = this._pointEnd.centerPoint.add(diffVector2)
-			const arcResultParmas = D2ArcToolkit.calculateD2ArcProfileByThreePoint(
-				this._pointStart.centerPoint,
-				newEndPoint,
-				this._pointMiddle.centerPoint
-			)
+			const arcResultParmas = D2ArcToolkit.calculateD2ArcProfileByThreePoint(this._pointStart.centerPoint, newEndPoint, this._pointMiddle.centerPoint)
 			this._selectedItem.radius = arcResultParmas.radius
 			this._selectedItem.centerPoint = arcResultParmas.centerPoint
 			this._selectedItem.startRadian = arcResultParmas.startRadian
@@ -142,16 +130,9 @@ export class D2ArcShapeSelectionTool extends D2SelectionTool {
 			/**
 			 * 计算鼠标位移向量在圆弧端点连线的垂线向量上的投影向量
 			 */
-			const P: Vector2 = D2LineToolkit.calculateVectorProjection(
-				this._pointEnd.centerPoint.sub(this._pointStart.centerPoint),
-				new Vector2(diffX, diffY)
-			)
+			const P: Vector2 = D2LineToolkit.calculateVectorProjection(this._pointEnd.centerPoint.sub(this._pointStart.centerPoint), new Vector2(diffX, diffY))
 			const newMiddlePoint: Vector2 = this._pointMiddle.centerPoint.add(P)
-			const arcResultParmas = D2ArcToolkit.calculateD2ArcProfileByThreePoint(
-				this._pointStart.centerPoint,
-				this._pointEnd.centerPoint,
-				newMiddlePoint
-			)
+			const arcResultParmas = D2ArcToolkit.calculateD2ArcProfileByThreePoint(this._pointStart.centerPoint, this._pointEnd.centerPoint, newMiddlePoint)
 			this._selectedItem.radius = arcResultParmas.radius
 			this._selectedItem.centerPoint = arcResultParmas.centerPoint
 			this._selectedItem.startRadian = arcResultParmas.startRadian
@@ -229,11 +210,7 @@ export class D2ArcShapeSelectionTool extends D2SelectionTool {
 			this._pointMiddle.setDelete()
 		}
 		const arcCenterPoint: Vector2 = this._selectedItem.centerPoint
-		const { startPoint, endPoint, middlePoint } = D2ArcToolkit.calculateThreePointByArcProfile(
-			this._selectedItem.radius,
-			this._selectedItem.startRadian,
-			this._selectedItem.endRadian
-		)
+		const { startPoint, endPoint, middlePoint } = D2ArcToolkit.calculateThreePointByArcProfile(this._selectedItem.radius, this._selectedItem.startRadian, this._selectedItem.endRadian)
 		this._pointCenter = buildD2AssistPointShape(arcCenterPoint.copy(), { strokeColor: Color.GREEN })
 		this._pointStart = buildD2AssistPointShape(arcCenterPoint.add(startPoint), { strokeColor: Color.GREEN })
 		this._pointEnd = buildD2AssistPointShape(arcCenterPoint.add(endPoint), { strokeColor: Color.GREEN })
@@ -246,11 +223,7 @@ export class D2ArcShapeSelectionTool extends D2SelectionTool {
 
 	private updateAssistShapes(): void {
 		const arcCenterPoint: Vector2 = this._selectedItem.centerPoint
-		const { startPoint, endPoint, middlePoint } = D2ArcToolkit.calculateThreePointByArcProfile(
-			this._selectedItem.radius,
-			this._selectedItem.startRadian,
-			this._selectedItem.endRadian
-		)
+		const { startPoint, endPoint, middlePoint } = D2ArcToolkit.calculateThreePointByArcProfile(this._selectedItem.radius, this._selectedItem.startRadian, this._selectedItem.endRadian)
 		this._pointCenter.centerPoint = this._selectedItem.centerPoint.copy()
 		this._pointStart.centerPoint = arcCenterPoint.add(startPoint)
 		this._pointEnd.centerPoint = arcCenterPoint.add(endPoint)

@@ -84,10 +84,8 @@ export class D2LineToolkit {
 	 */
 	public static calcFootOfPoint2Line(line: Line, point: Vector2): { point: Vector2; t: number } {
 		const t: number =
-			((point.x - line.startPoint.x) * (line.endPoint.x - line.startPoint.x) +
-				(point.y - line.startPoint.y) * (line.endPoint.y - line.startPoint.y)) /
-			((line.endPoint.x - line.startPoint.x) * (line.endPoint.x - line.startPoint.x) +
-				(line.endPoint.y - line.startPoint.y) * (line.endPoint.y - line.startPoint.y))
+			((point.x - line.startPoint.x) * (line.endPoint.x - line.startPoint.x) + (point.y - line.startPoint.y) * (line.endPoint.y - line.startPoint.y)) /
+			((line.endPoint.x - line.startPoint.x) * (line.endPoint.x - line.startPoint.x) + (line.endPoint.y - line.startPoint.y) * (line.endPoint.y - line.startPoint.y))
 		if (line.isPoint()) {
 			return { point: line.startPoint, t }
 		}
@@ -115,7 +113,7 @@ export class D2LineToolkit {
 	/**
 	 * 判断点 point 是否位于线段 line 上
 	 */
-	public static isPointOnLine(line: Line, point: Vector2, place: number = DoubleKit.eps1): boolean {
+	public static isPointOnLine(line: Line, point: Vector2, place: number = DoubleKit.eps2): boolean {
 		if (!line.bbox2.extendByDist(1e-8).isContainsPoint(point)) {
 			/**
 			 * IF:
@@ -143,15 +141,14 @@ export class D2LineToolkit {
 	 * 判断点 point 是否位于线段 line 上
 	 */
 	public static isPointOnLine2(line: Line, point: Vector2, place: number = 0.5): boolean {
-		const eps: number = DoubleKit.eps1
+		const eps: number = DoubleKit.eps2
 		const [maxX, maxY, minX, minY]: [number, number, number, number] = [
 			line.startPoint.x - line.endPoint.x > 0 ? line.startPoint.x : line.endPoint.x,
 			line.startPoint.y - line.endPoint.y > 0 ? line.startPoint.y : line.endPoint.y,
 			line.startPoint.x - line.endPoint.x > 0 ? line.endPoint.x : line.startPoint.x,
 			line.startPoint.y - line.endPoint.y > 0 ? line.endPoint.y : line.startPoint.y,
 		]
-		const flg: boolean =
-			point.x <= maxX + eps + place && point.x >= minX - eps - place && point.y <= maxY + eps + place && point.y >= minY - eps - place
+		const flg: boolean = point.x <= maxX + eps + place && point.x >= minX - eps - place && point.y <= maxY + eps + place && point.y >= minY - eps - place
 		if (!flg) {
 			return false
 		}
@@ -162,28 +159,15 @@ export class D2LineToolkit {
 	/**
 	 * 判断点 point 是否位于有宽线段 stroke-line 上
 	 */
-	public static isPointOnStrokeLine(
-		point: Vector2,
-		startPoint: Vector2,
-		endPoint: Vector2,
-		strokeWidth: number,
-		isRound: boolean = false,
-		rectBorderRadius: number = 0
-	): boolean {
-		const [startPoint2Point, endPoint2Point, lineDirect]: [Vector2, Vector2, Vector2] = [
-			point.sub(startPoint),
-			point.sub(endPoint),
-			endPoint.sub(startPoint),
-		]
+	public static isPointOnStrokeLine(point: Vector2, startPoint: Vector2, endPoint: Vector2, strokeWidth: number, isRound: boolean = false, rectBorderRadius: number = 0): boolean {
+		const [startPoint2Point, endPoint2Point, lineDirect]: [Vector2, Vector2, Vector2] = [point.sub(startPoint), point.sub(endPoint), endPoint.sub(startPoint)]
 		// const lineLength: number = Math.sqrt(lineDirect.x * lineDirect.x + lineDirect.y * lineDirect.y)
 		/**
 		 * 当前点击位置 point 与线段起点的连线向量(线段起点到当前点击点) startPoint2Point 在线段向量 lineDirect 上的投影向量
 		 */
 		const cl: Vector2 = new Vector2(
-			((startPoint2Point.x * lineDirect.x + startPoint2Point.y * lineDirect.y) * lineDirect.x) /
-				(lineDirect.x * lineDirect.x + lineDirect.y * lineDirect.y),
-			((startPoint2Point.x * lineDirect.x + startPoint2Point.y * lineDirect.y) * lineDirect.y) /
-				(lineDirect.x * lineDirect.x + lineDirect.y * lineDirect.y)
+			((startPoint2Point.x * lineDirect.x + startPoint2Point.y * lineDirect.y) * lineDirect.x) / (lineDirect.x * lineDirect.x + lineDirect.y * lineDirect.y),
+			((startPoint2Point.x * lineDirect.x + startPoint2Point.y * lineDirect.y) * lineDirect.y) / (lineDirect.x * lineDirect.x + lineDirect.y * lineDirect.y)
 		)
 		const norLineDirect: Vector2 = lineDirect.normalize()
 		const halfWidthDirect: Vector2 = new Vector2(-norLineDirect.y, norLineDirect.x).scale(strokeWidth / 2)
@@ -193,11 +177,7 @@ export class D2LineToolkit {
 			startPoint2Point.x * startPoint2Point.x + startPoint2Point.y * startPoint2Point.y,
 			endPoint2Point.x * endPoint2Point.x + endPoint2Point.y * endPoint2Point.y,
 		]
-		if (
-			startPoint2Point.sub(cl).length <= strokeWidth / 2 &&
-			startPoint2PointLengthSqu <= lineCornerLengthSqu &&
-			endPoint2PointLengthSqu <= lineCornerLengthSqu
-		) {
+		if (startPoint2Point.sub(cl).length <= strokeWidth / 2 && startPoint2PointLengthSqu <= lineCornerLengthSqu && endPoint2PointLengthSqu <= lineCornerLengthSqu) {
 			if (rectBorderRadius > 0) {
 				const [lineMiddle, lineDirect]: [Vector2, Vector2] = [startPoint.add(endPoint).scale(0.5), endPoint.sub(startPoint)]
 				const [norLineDirect, point2LineMiddle]: [Vector2, Vector2] = [lineDirect.normalize(), point.sub(lineMiddle)]
@@ -259,7 +239,7 @@ export class D2LineToolkit {
 	 * 			P = A + t * (B - A)
 	 */
 	public static isSegmentIntered(line1: Line, line2: Line): Vector2 {
-		const eps: number = DoubleKit.eps1
+		const eps: number = DoubleKit.eps2
 		/**
 		 * orient(A, B, C) = (B − A) × (C − A)
 		 * 		即 (xB​ − xA​) * (yC ​− yA​) − (yB ​− yA​) * (xC ​− xA​)
@@ -338,10 +318,7 @@ export class D2LineToolkit {
 			/**
 			 * 向量点积 AB · BP 和 BA · AP
 			 */
-			const [dp1, dp2]: [number, number] = [
-				line.endPoint.sub(line.startPoint).dot(point.sub(line.endPoint)),
-				line.startPoint.sub(line.endPoint).dot(point.sub(line.startPoint)),
-			]
+			const [dp1, dp2]: [number, number] = [line.endPoint.sub(line.startPoint).dot(point.sub(line.endPoint)), line.startPoint.sub(line.endPoint).dot(point.sub(line.startPoint))]
 			if (dp1 < 0 && dp2 < 0) {
 				/**
 				 * IF:
@@ -378,8 +355,8 @@ export class D2LineToolkit {
 			if (startDS === endDS || (startCut.x === Q.x && startCut.y === Q.y) || (endCut.x === Q.x && endCut.y === Q.y)) {
 				/**
 				 * IF:
-				 * 		1. 线段 L 上的截取端点 S/E 与点 Q 的距离相等(即无法再将两个端点拆分)
-				 * 		2. 线段 L 上的任意动点 Q 与左右端点中的其中一个重合
+				 * 		- 线段 L 上的截取端点 S / E 与点 Q 的距离相等(即无法再将两个端点拆分)
+				 * 		- 线段 L 上的任意动点 Q 与左右端点中的其中一个重合
 				 *
 				 * 		即表示此时的点 Q 为线段 L 上最靠近点 P 的点
 				 **/
@@ -389,9 +366,7 @@ export class D2LineToolkit {
 			/**
 			 * 向量 SQ 点乘向量 QP
 			 */
-			const dp: number = new Vector2(Q.x, Q.y)
-				.sub(new Vector2(startCut.x, startCut.y))
-				.dot(new Vector2(point.x, point.y).sub(new Vector2(Q.x, Q.y)))
+			const dp: number = new Vector2(Q.x, Q.y).sub(new Vector2(startCut.x, startCut.y)).dot(new Vector2(point.x, point.y).sub(new Vector2(Q.x, Q.y)))
 			if (dp === 0) {
 				break
 			}
@@ -504,17 +479,12 @@ export class D2LineToolkit {
 	 * 判别式:
 	 * 		Δ = B * B - 4 * A * C
 	 */
-	public static getPointsOnLineWithDistance(d: number, line: Line, point: Vector2, epsilon: number = DoubleKit.eps1): Array<Vector2> {
+	public static getPointsOnLineWithDistance(d: number, line: Line, point: Vector2, epsilon: number = DoubleKit.eps2): Array<Vector2> {
 		const result: Array<Vector2> = []
 		if (!Number.isFinite(d) || d < 0) {
 			return result
 		}
-		const [startX, startY, endX, endY]: [number, number, number, number] = [
-			line.startPoint.x,
-			line.startPoint.y,
-			line.endPoint.x,
-			line.endPoint.y,
-		]
+		const [startX, startY, endX, endY]: [number, number, number, number] = [line.startPoint.x, line.startPoint.y, line.endPoint.x, line.endPoint.y]
 		const [dx, dy]: [number, number] = [endX - startX, endY - startY]
 		const appendPoint = (t: number): void => {
 			if (t < -epsilon || t > 1 + epsilon) {
@@ -623,10 +593,7 @@ export class D2LineToolkit {
 		const perpendicular: { v1: Vector2; v2: Vector2 } = D2LineToolkit.calculatePerpendicular(lineVector2)
 		const B: Vector2 = perpendicular.v1
 		const A: Vector2 = moveDiffVector2
-		const C: Vector2 = new Vector2(
-			((A.x * B.x + A.y * B.y) * B.x) / (B.x * B.x + B.y * B.y),
-			((A.x * B.x + A.y * B.y) * B.y) / (B.x * B.x + B.y * B.y)
-		)
+		const C: Vector2 = new Vector2(((A.x * B.x + A.y * B.y) * B.x) / (B.x * B.x + B.y * B.y), ((A.x * B.x + A.y * B.y) * B.y) / (B.x * B.x + B.y * B.y))
 		return C
 	}
 

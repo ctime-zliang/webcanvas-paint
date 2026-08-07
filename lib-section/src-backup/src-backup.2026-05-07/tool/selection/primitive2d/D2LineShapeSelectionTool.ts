@@ -80,11 +80,7 @@ export class D2LineShapeSelectionTool extends D2SelectionTool {
 		this.moveScenePhysicsX = inputInfo.leftDownScenePhysicsX
 		this.moveScenePhysicsY = inputInfo.leftDownScenePhysicsY
 		if (this._selectedItem) {
-			this._shapeItemCommand = CommandProxy.getCommandInstance(
-				this._selectedItem.elementItemId,
-				ECommandAction.MODIFY,
-				Constant.globalIdenManager.getCommandIden()
-			) as D2LineShapeCommand
+			this._shapeItemCommand = CommandProxy.getCommandInstance(this._selectedItem.elementItemId, ECommandAction.MODIFY, Constant.globalIdenManager.getCommandIden()) as D2LineShapeCommand
 		}
 		this._isSelectedPointStart = this._pointStart.isSelect(inputInfo.leftDownScenePhysicsX, inputInfo.leftDownScenePhysicsY)
 		this._isSelectedPointMiddle = this._pointMiddle.isSelect(inputInfo.leftDownScenePhysicsX, inputInfo.leftDownScenePhysicsY)
@@ -115,10 +111,7 @@ export class D2LineShapeSelectionTool extends D2SelectionTool {
 			/**
 			 * 计算鼠标位移向量在线段垂线向量上的投影向量
 			 */
-			const P: Vector2 = D2LineToolkit.calculateVectorProjection(
-				this._selectedItem.endPoint.sub(this._selectedItem.startPoint),
-				new Vector2(diffX, diffY)
-			)
+			const P: Vector2 = D2LineToolkit.calculateVectorProjection(this._selectedItem.endPoint.sub(this._selectedItem.startPoint), new Vector2(diffX, diffY))
 			this._selectedItem.startPoint = this._selectedItem.startPoint.add(P)
 			this._selectedItem.endPoint = this._selectedItem.endPoint.add(P)
 		} else if (this._isSelectedPointEnd) {

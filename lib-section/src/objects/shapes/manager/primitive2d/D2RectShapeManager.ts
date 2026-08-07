@@ -22,22 +22,8 @@ export class D2RectShapeManager extends BaseManager<D2RectShape> {
 		this._rteeItems = new Map()
 	}
 
-	public createShapeItem(
-		elementItemId: string,
-		layerItemId: string,
-		position: Vector2,
-		width: number,
-		height: number,
-		optional: Partial<TBuildD2RectModelOptionalParam> = {}
-	): D2RectShape {
-		const elementModelItem: D2RectModel = D2RectModelManager.getInstance().createModelItem(
-			elementItemId,
-			layerItemId,
-			position,
-			width,
-			height,
-			optional
-		)
+	public createShapeItem(elementItemId: string, layerItemId: string, position: Vector2, width: number, height: number, optional: Partial<TBuildD2RectModelOptionalParam> = {}): D2RectShape {
+		const elementModelItem: D2RectModel = D2RectModelManager.getInstance().createModelItem(elementItemId, layerItemId, position, width, height, optional)
 		const elementShapeItem: D2RectShape = new D2RectShape(elementModelItem)
 		const op: boolean = this.addCache(elementShapeItem)
 		return elementShapeItem

@@ -85,10 +85,7 @@ export class D2Distance {
 	}
 
 	private minLineForArcAndLine(arc: Arc, shortestLine: Line, point: Vector2): Line {
-		const [start1, start2]: [Vector2, Vector2] = [
-			arc.pointOn(point.getRadianByVector2(arc.centerPoint)),
-			arc.pointOn(arc.centerPoint.getRadianByVector2(point)),
-		]
+		const [start1, start2]: [Vector2, Vector2] = [arc.pointOn(point.getRadianByVector2(arc.centerPoint)), arc.pointOn(arc.centerPoint.getRadianByVector2(point))]
 		shortestLine = this.arcShortestLine(arc, shortestLine, point, start1)
 		shortestLine = this.arcShortestLine(arc, shortestLine, point, start2)
 		return shortestLine
@@ -97,10 +94,7 @@ export class D2Distance {
 	private arcInnerLineFootSegment(arc: Arc, l: Line, point: Vector2): Line {
 		let distance: number = point.distance(arc.centerPoint)
 		if (distance !== 0) {
-			const [x, y]: [number, number] = [
-				(arc.rx * (point.y - arc.centerPoint.y)) / distance + arc.centerPoint.y,
-				(arc.rx * (point.x - arc.centerPoint.x)) / distance + arc.centerPoint.x,
-			]
+			const [x, y]: [number, number] = [(arc.rx * (point.y - arc.centerPoint.y)) / distance + arc.centerPoint.y, (arc.rx * (point.x - arc.centerPoint.x)) / distance + arc.centerPoint.x]
 			const l1: Line = new Line(new Vector2(x, y), point)
 			distance = arc.rx - distance
 			if (distance < this._minDist) {
@@ -119,10 +113,7 @@ export class D2Distance {
 	}
 
 	private shortestLineForArcs(arc1: Arc, arc2: Arc, shortestLine: Line): Line {
-		const [radian1, radian2]: [number, number] = [
-			arc1.centerPoint.getRadianByVector2(arc2.centerPoint),
-			arc2.centerPoint.getRadianByVector2(arc1.centerPoint),
-		]
+		const [radian1, radian2]: [number, number] = [arc1.centerPoint.getRadianByVector2(arc2.centerPoint), arc2.centerPoint.getRadianByVector2(arc1.centerPoint)]
 		const [arc1Start1, arc1Start2]: [Vector2, Vector2] = [arc1.pointOn(radian1), arc1.pointOn(radian2)]
 		const [arc2End1, arc2End2]: [Vector2, Vector2] = [arc2.pointOn(radian1), arc2.pointOn(radian2)]
 		if (D2ArcToolkit.isPointOnArc(arc1, arc1Start1)) {

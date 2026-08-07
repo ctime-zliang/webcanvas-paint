@@ -42,13 +42,7 @@ export function createBuildD2RectModelOptionalParam(optional: Partial<TBuildD2Re
 	}
 }
 
-export function buildD2RectModel(
-	layerItemId: string,
-	position: Vector2,
-	width: number,
-	height: number,
-	optional: Partial<TBuildD2RectModelOptionalParam> = {}
-): D2RectModel {
+export function buildD2RectModel(layerItemId: string, position: Vector2, width: number, height: number, optional: Partial<TBuildD2RectModelOptionalParam> = {}): D2RectModel {
 	const locSetting: TBuildD2RectModelOptionalParam = createBuildD2RectModelOptionalParam(optional)
 	const elementItemId: string = Constant.globalIdenManager.getElementIden()
 	const elementModelItem: D2RectModel = new D2RectModel(

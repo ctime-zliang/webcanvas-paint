@@ -34,8 +34,7 @@ export class D2TextModelManager extends BaseManager<D2TextModel> {
 			...createD2TextModelStyleDefaultSetting(fontSize),
 			...(optional.styleSetting || {}),
 		}
-		const locSetting: TBuildD2TextModelOptionalParam & Partial<{ styleSetting: TBuildD2TextModelOptionalStyleSettingParam }> =
-			createBuildD2TextModelOptionalParam(optional, fontSize, styleSetting)
+		const locSetting: TBuildD2TextModelOptionalParam & Partial<{ styleSetting: TBuildD2TextModelOptionalStyleSettingParam }> = createBuildD2TextModelOptionalParam(optional, fontSize, styleSetting)
 		const elementModelItem: D2TextModel = new D2TextModel(
 			elementItemId,
 			layerItemId,

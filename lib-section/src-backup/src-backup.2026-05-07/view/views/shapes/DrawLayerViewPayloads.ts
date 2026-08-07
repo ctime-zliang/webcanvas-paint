@@ -1,13 +1,6 @@
 import { Constant } from '../../../Constant'
 import { Plane } from '../../../engine/common/Plane'
-import {
-	TElement2DArcJSONViewData,
-	TElement2DCircleJSONViewData,
-	TElement2DImageJSONViewData,
-	TElement2DLineJSONViewData,
-	TElement2DPointJSONViewData,
-	TElement2DTextJSONViewData,
-} from '../../../types/Element'
+import { TElement2DArcJSONViewData, TElement2DCircleJSONViewData, TElement2DImageJSONViewData, TElement2DLineJSONViewData, TElement2DPointJSONViewData, TElement2DTextJSONViewData } from '../../../types/Element'
 import { DrawLayerView } from './DrawLayerView'
 
 export class DrawLayerViewPayloads {

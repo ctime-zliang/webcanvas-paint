@@ -15,13 +15,7 @@ export class D2LineModelManager extends BaseManager<D2LineModel> {
 		super()
 	}
 
-	public createModelItem(
-		elementItemId: string,
-		layerItemId: string,
-		startPoint: Vector2,
-		endPoint: Vector2,
-		optional: Partial<TBuildD2LineModelOptionalParam> = {}
-	): D2LineModel {
+	public createModelItem(elementItemId: string, layerItemId: string, startPoint: Vector2, endPoint: Vector2, optional: Partial<TBuildD2LineModelOptionalParam> = {}): D2LineModel {
 		const locSetting: TBuildD2LineModelOptionalParam = createBuildD2LineModelOptionalParam(optional)
 		const elementModelItem: D2LineModel = new D2LineModel(
 			elementItemId,

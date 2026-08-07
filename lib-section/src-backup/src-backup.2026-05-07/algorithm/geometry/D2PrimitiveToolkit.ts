@@ -89,16 +89,10 @@ export class D2PrimitiveToolkit {
 		if (pt instanceof Arc) {
 			if (Math.abs(pt.sweepRadian) === Math.PI * 2) {
 				const mid: Vector2 = pt.centerPoint.sub(point).mul(2).add(point)
-				const [pt1, pt2]: [Arc, Arc] = [
-					Arc.build4(mid, point, pt.centerPoint, pt.rx, pt.rx, pt.sweep),
-					Arc.build4(point, mid, pt.centerPoint, pt.rx, pt.rx, pt.sweep),
-				]
+				const [pt1, pt2]: [Arc, Arc] = [Arc.build4(mid, point, pt.centerPoint, pt.rx, pt.rx, pt.sweep), Arc.build4(point, mid, pt.centerPoint, pt.rx, pt.rx, pt.sweep)]
 				return [pt1, pt2]
 			}
-			let [pt1, pt2]: [Arc | Line, Arc | Line] = [
-				Arc.build4(pt.startPoint, point, pt.centerPoint, pt.rx, pt.rx, pt.sweep),
-				Arc.build4(point, pt.endPoint, pt.centerPoint, pt.rx, pt.rx, pt.sweep),
-			]
+			let [pt1, pt2]: [Arc | Line, Arc | Line] = [Arc.build4(pt.startPoint, point, pt.centerPoint, pt.rx, pt.rx, pt.sweep), Arc.build4(point, pt.endPoint, pt.centerPoint, pt.rx, pt.rx, pt.sweep)]
 			if (pt1.startPoint.equalsWithVector2(pt1.endPoint)) {
 				pt1 = new Line(pt.startPoint, point)
 			}

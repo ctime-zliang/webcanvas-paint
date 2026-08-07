@@ -67,11 +67,7 @@ export class D2RectView extends D2ShapeElementViewBase {
 		} else {
 			this.normalview(shapeObjectItem, shapeObjectItemJson.isFill)
 		}
-		const radius: number = Math.min(
-			shapeObjectItemJson.borderRadius,
-			Math.abs(shapeObjectItemJson.width / 2),
-			Math.abs(shapeObjectItemJson.height / 2)
-		)
+		const radius: number = Math.min(shapeObjectItemJson.borderRadius, Math.abs(shapeObjectItemJson.width / 2), Math.abs(shapeObjectItemJson.height / 2))
 		const leftUp: Vector2 = Vector2.createByJSONData(shapeObjectItemJson.leftUp)
 		const rightUp: Vector2 = Vector2.createByJSONData(shapeObjectItemJson.rightUp)
 		const rightDown: Vector2 = Vector2.createByJSONData(shapeObjectItemJson.rightDown)
@@ -242,18 +238,8 @@ export class D2RectView extends D2ShapeElementViewBase {
 				isFixedStrokeWidth: shapeObjectItemJson.isFixedStrokeWidth,
 			})
 		}
-		const { startRadian: leftUpArcStartRadian, endRadian: leftUpArcEndRadian } = D2ArcToolkit.calculateRadianProfileByPoint(
-			leftUpBorderArcCenterPoint,
-			topBorderLineStartPoint,
-			leftBorderLineEndPoint,
-			ESweep.CCW
-		)
-		const { startRadian: rightUpArcStartRadian, endRadian: rightUpArcEndRadian } = D2ArcToolkit.calculateRadianProfileByPoint(
-			rightUpBorderArcCenterPoint,
-			rightBorderLineStartPoint,
-			topBorderLineEndPoint,
-			ESweep.CCW
-		)
+		const { startRadian: leftUpArcStartRadian, endRadian: leftUpArcEndRadian } = D2ArcToolkit.calculateRadianProfileByPoint(leftUpBorderArcCenterPoint, topBorderLineStartPoint, leftBorderLineEndPoint, ESweep.CCW)
+		const { startRadian: rightUpArcStartRadian, endRadian: rightUpArcEndRadian } = D2ArcToolkit.calculateRadianProfileByPoint(rightUpBorderArcCenterPoint, rightBorderLineStartPoint, topBorderLineEndPoint, ESweep.CCW)
 		const { startRadian: rightBottomArcStartRadian, endRadian: rightBottomArcEndRadian } = D2ArcToolkit.calculateRadianProfileByPoint(
 			rightBottomBorderArcCenterPoint,
 			bottomBorderLineStartPoint,

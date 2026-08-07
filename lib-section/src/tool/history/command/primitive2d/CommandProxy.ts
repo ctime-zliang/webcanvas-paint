@@ -19,11 +19,7 @@ import { D2RectShapeCommand } from './D2RectShapeCommand'
 import { D2RectShapeManager } from '../../../../objects/shapes/manager/primitive2d/D2RectShapeManager'
 
 export class CommandProxy {
-	public static getCommandInstance(
-		elementItemId: string,
-		action: ECommandAction,
-		groupId: string = String(performance.now())
-	): ElementCommand<TElementJSONData> {
+	public static getCommandInstance(elementItemId: string, action: ECommandAction, groupId: string = String(performance.now())): ElementCommand<TElementJSONData> {
 		const elementItem: TElementShapeType = Helper.getElementShapeItemById(elementItemId)
 		if (!elementItem) {
 			throw new Error(`error in determining the type of occurrence in instantiating entity history records.`)

@@ -351,10 +351,7 @@ function orientation3Exact(...args: Array<Array<number>>) {
 	const m0: Array<number> = arguments[0]
 	const m1: Array<number> = arguments[1]
 	const m2: Array<number> = arguments[2]
-	let p: Array<number> = linearExpansionSum(
-		linearExpansionSum(Twos.twoProduct(m1[1], m2[0]), Twos.twoProduct(-m2[1], m1[0])),
-		linearExpansionSum(Twos.twoProduct(m0[1], m1[0]), Twos.twoProduct(-m1[1], m0[0]))
-	)
+	let p: Array<number> = linearExpansionSum(linearExpansionSum(Twos.twoProduct(m1[1], m2[0]), Twos.twoProduct(-m2[1], m1[0])), linearExpansionSum(Twos.twoProduct(m0[1], m1[0]), Twos.twoProduct(-m1[1], m0[0])))
 	let n: Array<number> = linearExpansionSum(Twos.twoProduct(m0[1], m2[0]), Twos.twoProduct(-m2[1], m0[0]))
 	let d: Array<number> = robustSubtract(p, n)
 	return d[d.length - 1]

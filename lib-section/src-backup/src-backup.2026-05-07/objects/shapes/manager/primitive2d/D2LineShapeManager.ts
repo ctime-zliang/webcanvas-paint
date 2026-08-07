@@ -22,20 +22,8 @@ export class D2LineShapeManager extends BaseManager<D2LineShape> {
 		this._rteeItems = new Map()
 	}
 
-	public createShapeItem(
-		elementItemId: string,
-		layerItemId: string,
-		startPoint: Vector2,
-		endPoint: Vector2,
-		optional: Partial<TBuildD2LineModelOptionalParam> = {}
-	): D2LineShape {
-		const elementModelItem: D2LineModel = D2LineModelManager.getInstance().createModelItem(
-			elementItemId,
-			layerItemId,
-			startPoint,
-			endPoint,
-			optional
-		)
+	public createShapeItem(elementItemId: string, layerItemId: string, startPoint: Vector2, endPoint: Vector2, optional: Partial<TBuildD2LineModelOptionalParam> = {}): D2LineShape {
+		const elementModelItem: D2LineModel = D2LineModelManager.getInstance().createModelItem(elementItemId, layerItemId, startPoint, endPoint, optional)
 		const elementShapeItem: D2LineShape = new D2LineShape(elementModelItem)
 		const op: boolean = this.addCache(elementShapeItem)
 		return elementShapeItem

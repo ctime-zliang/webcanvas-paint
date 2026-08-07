@@ -19,21 +19,7 @@ function createHandleParam(order: Array<number>): ICreateSurfaceExtractorArgs {
 		phase: function (p: number, a: number, b: number, c: number): number {
 			return +(p > c) | 0
 		},
-		vertex: function (
-			d0: number,
-			d1: number,
-			v0: number,
-			v1: number,
-			v2: number,
-			v3: number,
-			p0: number,
-			p1: number,
-			p2: number,
-			p3: number,
-			a: Array<Array<number>>,
-			b: Array<Array<number>>,
-			c: number
-		): void {
+		vertex: function (d0: number, d1: number, v0: number, v1: number, v2: number, v3: number, p0: number, p1: number, p2: number, p3: number, a: Array<Array<number>>, b: Array<Array<number>>, c: number): void {
 			const m: number = ((p0 << 0) + (p1 << 1) + (p2 << 2) + (p3 << 3)) | 0
 			if (m === 0 || m === 15) {
 				return
@@ -66,10 +52,7 @@ function createHandleParam(order: Array<number>): ICreateSurfaceExtractorArgs {
 					break
 				}
 				case 6: {
-					a.push([
-						d0 - 0.5 - (0.25 * (-v1 - v0 + v3 + v2)) / (v1 - v0 + v2 - v3),
-						(d1 - 0.5 - (0.25 * (-v2 - v0 + v3 + v1)) / (v2 - v0 + v1 - v3)) * yFlip,
-					])
+					a.push([d0 - 0.5 - (0.25 * (-v1 - v0 + v3 + v2)) / (v1 - v0 + v2 - v3), (d1 - 0.5 - (0.25 * (-v2 - v0 + v3 + v1)) / (v2 - v0 + v1 - v3)) * yFlip])
 					break
 				}
 				case 7: {
@@ -81,10 +64,7 @@ function createHandleParam(order: Array<number>): ICreateSurfaceExtractorArgs {
 					break
 				}
 				case 9: {
-					a.push([
-						d0 - 0.5 - (0.25 * (v1 + v0 + -v3 - v2)) / (v0 - v1 + v3 - v2),
-						(d1 - 0.5 - (0.25 * (v2 + v0 + -v3 - v1)) / (v0 - v2 + v3 - v1)) * yFlip,
-					])
+					a.push([d0 - 0.5 - (0.25 * (v1 + v0 + -v3 - v2)) / (v0 - v1 + v3 - v2), (d1 - 0.5 - (0.25 * (v2 + v0 + -v3 - v1)) / (v0 - v2 + v3 - v1)) * yFlip])
 					break
 				}
 				case 10: {
@@ -113,17 +93,7 @@ function createHandleParam(order: Array<number>): ICreateSurfaceExtractorArgs {
 				}
 			}
 		},
-		cell: function (
-			v0: number,
-			v1: number,
-			c0: number,
-			c1: number,
-			p0: number,
-			p1: number,
-			a: Array<Array<number>>,
-			b: Array<Array<number>>,
-			c: number
-		): void {
+		cell: function (v0: number, v1: number, c0: number, c1: number, p0: number, p1: number, a: Array<Array<number>>, b: Array<Array<number>>, c: number): void {
 			if (p0) {
 				b.push([v0, v1])
 			} else {
@@ -134,13 +104,7 @@ function createHandleParam(order: Array<number>): ICreateSurfaceExtractorArgs {
 	return handleParam
 }
 
-function fillVertexData(
-	handleParam: ICreateSurfaceExtractorArgs,
-	pixels: View3DUint8Clamped,
-	verts: Array<Array<number>>,
-	cells: Array<Array<number>>,
-	level: number
-): void {
+function fillVertexData(handleParam: ICreateSurfaceExtractorArgs, pixels: View3DUint8Clamped, verts: Array<Array<number>>, cells: Array<Array<number>>, level: number): void {
 	const shape0: number = pixels.shape[0] | 0
 	const shape1: number = pixels.shape[1] | 0
 	const pixelData: Uint8ClampedArray = pixels.data

@@ -51,12 +51,7 @@ export class D2PointShapeCommand extends ElementCommand<TElement2DPointJSONViewD
 		if (elementItem.shape !== shape) {
 			elementItem.shape = shape
 		}
-		if (
-			elementItem.strokeColor.r !== strokeColorData.r ||
-			elementItem.strokeColor.g !== strokeColorData.g ||
-			elementItem.strokeColor.b !== strokeColorData.b ||
-			elementItem.strokeColor.a !== strokeColorData.a
-		) {
+		if (elementItem.strokeColor.r !== strokeColorData.r || elementItem.strokeColor.g !== strokeColorData.g || elementItem.strokeColor.b !== strokeColorData.b || elementItem.strokeColor.a !== strokeColorData.a) {
 			elementItem.strokeColor = new Color(strokeColorData.r, strokeColorData.g, strokeColorData.b, strokeColorData.a)
 		}
 		if (elementItem.elementItemName !== elementItemName) {
@@ -92,19 +87,14 @@ export class D2PointShapeCommand extends ElementCommand<TElement2DPointJSONViewD
 			isEnableScale,
 			isEnableSelect,
 		} = this.itemData
-		const targetShapeItem: D2PointShape = D2PointShapeManager.getInstance().createShapeItem(
-			elementItemId,
-			layerItemId,
-			new Vector2(centerPoint.x, centerPoint.y),
-			{
-				size,
-				shape,
-				strokeColor: new Color(strokeColorData.r, strokeColorData.g, strokeColorData.b, strokeColorData.a),
-				alpha,
-				isEnableScale,
-				isEnableSelect,
-			}
-		)
+		const targetShapeItem: D2PointShape = D2PointShapeManager.getInstance().createShapeItem(elementItemId, layerItemId, new Vector2(centerPoint.x, centerPoint.y), {
+			size,
+			shape,
+			strokeColor: new Color(strokeColorData.r, strokeColorData.g, strokeColorData.b, strokeColorData.a),
+			alpha,
+			isEnableScale,
+			isEnableSelect,
+		})
 		targetShapeItem.elementItemName = elementItemName
 	}
 

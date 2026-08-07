@@ -50,12 +50,7 @@ export class D2LineShapeCommand extends ElementCommand<TElement2DLineJSONViewDat
 		if (elementItem.strokeWidth !== strokeWidth) {
 			elementItem.strokeWidth = strokeWidth
 		}
-		if (
-			elementItem.strokeColor.r !== strokeColorData.r ||
-			elementItem.strokeColor.g !== strokeColorData.g ||
-			elementItem.strokeColor.b !== strokeColorData.b ||
-			elementItem.strokeColor.a !== strokeColorData.a
-		) {
+		if (elementItem.strokeColor.r !== strokeColorData.r || elementItem.strokeColor.g !== strokeColorData.g || elementItem.strokeColor.b !== strokeColorData.b || elementItem.strokeColor.a !== strokeColorData.a) {
 			elementItem.strokeColor = new Color(strokeColorData.r, strokeColorData.g, strokeColorData.b, strokeColorData.a)
 		}
 		if (elementItem.elementItemName !== elementItemName) {
@@ -90,16 +85,10 @@ export class D2LineShapeCommand extends ElementCommand<TElement2DLineJSONViewDat
 			lineCap,
 			isSolid,
 		} = this.itemData
-		const targetShapeItem: D2LineShape = D2LineShapeManager.getInstance().createShapeItem(
-			elementItemId,
-			layerItemId,
-			new Vector2(startPoint.x, startPoint.y),
-			new Vector2(endPoint.x, endPoint.y),
-			{
-				strokeWidth,
-				strokeColor: new Color(strokeColorData.r, strokeColorData.g, strokeColorData.b, strokeColorData.a),
-			}
-		)
+		const targetShapeItem: D2LineShape = D2LineShapeManager.getInstance().createShapeItem(elementItemId, layerItemId, new Vector2(startPoint.x, startPoint.y), new Vector2(endPoint.x, endPoint.y), {
+			strokeWidth,
+			strokeColor: new Color(strokeColorData.r, strokeColorData.g, strokeColorData.b, strokeColorData.a),
+		})
 		targetShapeItem.elementItemName = elementItemName
 		targetShapeItem.lineCap = lineCap
 		targetShapeItem.isSolid = isSolid

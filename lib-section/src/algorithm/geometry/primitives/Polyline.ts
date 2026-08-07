@@ -12,38 +12,25 @@ export class Polyline extends StructPrimitive<Polyline> {
 		let prev: Vector2 = null!
 		for (let i: number = 0; i < primitives.length; i++) {
 			const p: Primitive = primitives[i]
+			if (p instanceof Arc && p.isCicle) {
+				ps.push(p)
+				continue
+			}
 			const start: Vector2 = p.startPoint
 			if (prev !== null && !start.equalsWithVector2(prev)) {
 				ps.push(new Line(prev, start))
 			}
 			ps.push(p)
-			prev = p.endPoint
+			if (p instanceof Arc) {
+				prev = p.svgEnd
+			} else {
+				prev = p.endPoint
+			}
 		}
 		if (ps.length === 0 && prev !== null) {
 			ps.push(new Line(prev, prev))
 		}
 		return new Polyline(ps)
-	}
-
-	public static build2(points: Array<Vector2>): Polyline {
-		const ps: Array<Primitive> = []
-		let prev: Vector2 = null!
-		for (let i: number = 0; i < points.length; i++) {
-			const p: Vector2 = points[i]
-			if (prev !== null) {
-				ps.push(new Line(prev, p))
-			}
-			prev = p
-		}
-		return new Polyline(ps)
-	}
-
-	public static build3(xys: Array<number>): Polyline {
-		const vs: Array<Vector2> = []
-		for (let i: number = 0; i < xys.length; i += 2) {
-			vs.push(new Vector2(xys[i], xys[i + 1]))
-		}
-		return this.build2(vs)
 	}
 
 	private _primitives: Array<Primitive>
@@ -70,13 +57,8 @@ export class Polyline extends StructPrimitive<Polyline> {
 	}
 
 	public get bbox2(): BBox2 {
-		if (this._bbox2 === null!) {
-			let bbox2: BBox2 = new BBox2(0, 0, 0, 0)
-			for (let i: number = 0; i < this.primitives.length; i++) {
-				const pt: Primitive = this.primitives[i]
-				bbox2 = BBox2.extend2(bbox2, pt.bbox2)
-			}
-			this._bbox2 = bbox2
+		if (this._bbox2 === null) {
+			this._bbox2 = this.buildBBox2()
 		}
 		return this._bbox2
 	}
@@ -109,34 +91,17 @@ export class Polyline extends StructPrimitive<Polyline> {
 		return start.startPoint.equalsWithVector2(end.endPoint, place)
 	}
 
-	public asClose(): Polyline {
+	public isClose(place: number): boolean {
+		if (this.primitives.length <= 1 && !(this.primitives[0] instanceof Arc)) {
+			return false
+		}
 		const start: Primitive = this.primitives[0]
 		const end: Primitive = this.primitives[this.primitives.length - 1]
-		const [startPoint, endPoint]: [Vector2, Vector2] = [start.startPoint, end.endPoint]
-		if (!startPoint.equalsWithVector2(endPoint)) {
-			const pts: Array<Primitive> = []
-			for (let i: number = 0; i < this.primitives.length; i++) {
-				pts.push(this.primitives[i])
-			}
-			pts.push(new Line(endPoint, startPoint))
-			return Polyline.build1(pts)
-		}
-		return this
+		return start.startPoint.equalsWithVector2(end.endPoint, place)
 	}
 
-	public closeEndPooint(): Polyline {
-		const start: Primitive = this.primitives[0]
-		const end: Primitive = this.primitives[this.primitives.length - 1]
-		const [startPoint, endPoint]: [Vector2, Vector2] = [start.startPoint, end.endPoint]
-		if (!startPoint.equalsWithVector2(endPoint)) {
-			const pts: Array<Primitive> = []
-			for (let i: number = 0; i < this.primitives.length; i++) {
-				pts.push(this.primitives[i])
-			}
-			pts.push(new Line(endPoint, startPoint))
-			return new Polyline(pts)
-		}
-		return this
+	public asClose(): Polyline {
+		throw new Error(`algorithm error.`)
 	}
 
 	public reverse(): Polyline {
@@ -148,8 +113,6 @@ export class Polyline extends StructPrimitive<Polyline> {
 				nPt = new Line(pt.endPoint, pt.startPoint)
 			} else if (pt instanceof Arc) {
 				nPt = pt.exchangeSweep()
-			} else {
-				continue
 			}
 			if (nPt) {
 				pts[i] = nPt
@@ -159,41 +122,11 @@ export class Polyline extends StructPrimitive<Polyline> {
 	}
 
 	public mirrorX(yValue: number = 0): Polyline {
-		const pts: Array<Primitive> = []
-		for (let i: number = 0; i < this.primitives.length; i++) {
-			const pt: Primitive = this.primitives[i]
-			let nPt: Primitive = null!
-			if (pt instanceof Line) {
-				nPt = pt.mirrorX(yValue)
-			} else if (pt instanceof Arc) {
-				nPt = pt.mirrorX(yValue)
-			} else {
-				continue
-			}
-			if (nPt) {
-				pts[i] = nPt
-			}
-		}
-		return new Polyline(pts)
+		throw new Error(`algorithm error.`)
 	}
 
 	public mirrorY(xValue: number = 0): Polyline {
-		const pts: Array<Primitive> = []
-		for (let i: number = 0; i < this.primitives.length; i++) {
-			const pt: Primitive = this.primitives[i]
-			let nPt: Primitive = null!
-			if (pt instanceof Line) {
-				nPt = pt.mirrorY(xValue)
-			} else if (pt instanceof Arc) {
-				nPt = pt.mirrorY(xValue)
-			} else {
-				continue
-			}
-			if (nPt) {
-				pts[i] = nPt
-			}
-		}
-		return new Polyline(pts)
+		throw new Error(`algorithm error.`)
 	}
 
 	public points(resolution: number, calback: (vec: Vector2) => void): void {
@@ -221,33 +154,18 @@ export class Polyline extends StructPrimitive<Polyline> {
 		return Polyline.build1(pts)
 	}
 
-	public isClose(place: number): boolean {
-		if (this.primitives.length <= 1 && !(this.primitives[0] instanceof Arc)) {
-			return false
-		}
-		const start: Primitive = this.primitives[0]
-		const end: Primitive = this.primitives[this.primitives.length - 1]
-		return start.startPoint.equalsWithVector2(end.endPoint, place)
-	}
-
-	public isEqual(pl: Polyline): boolean {
-		if (!(pl instanceof Polyline)) {
-			return false
-		}
-		if (pl.primitives.length !== this.primitives.length) {
-			return false
-		}
-		for (let i: number = 0; i < pl.primitives.length; i++) {
-			const pt1: Primitive = pl.primitives[i]
-			const pt2: Primitive = this.primitives[i]
-			if (JSON.stringify(pt1) !== JSON.stringify(pt2)) {
-				return false
-			}
-		}
-		return true
-	}
-
 	public clone(): Polyline {
 		return Polyline.build1(this.primitives)
+	}
+
+	public buildBBox2(): BBox2 {
+		if (this._primitives.length === 0) {
+			return new BBox2(0, 0, 0, 0)
+		}
+		let result: BBox2 = this._primitives[0].bbox2
+		for (let i: number = 1; i < this._primitives.length; i++) {
+			result = BBox2.extend2(result, this._primitives[i].bbox2)
+		}
+		return result
 	}
 }

@@ -56,11 +56,7 @@ export class D2PointShapeSelectionTool extends D2SelectionTool {
 		this.moveScenePhysicsX = inputInfo.leftDownScenePhysicsX
 		this.moveScenePhysicsY = inputInfo.leftDownScenePhysicsY
 		if (this._selectedItem) {
-			this._shapeItemCommand = CommandProxy.getCommandInstance(
-				this._selectedItem.elementItemId,
-				ECommandAction.MODIFY,
-				Constant.globalIdenManager.getCommandIden()
-			) as D2PointShapeCommand
+			this._shapeItemCommand = CommandProxy.getCommandInstance(this._selectedItem.elementItemId, ECommandAction.MODIFY, Constant.globalIdenManager.getCommandIden()) as D2PointShapeCommand
 		}
 	}
 

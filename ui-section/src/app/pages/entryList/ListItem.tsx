@@ -20,14 +20,7 @@ export function ListItem(props: TListItemProps): React.ReactElement {
 					{menus.map((menuItem: TMenuItem, index: number): React.ReactElement => {
 						return (
 							<div className={styles['listitem-content-item']} key={menuItem.id}>
-								<MenuItem
-									key={menuItem.id}
-									title={menuItem.title}
-									id={menuItem.id}
-									description={menuItem.description}
-									iframeUrl={menuItem.iframeUrl}
-									onClick={onClick}
-								/>
+								<MenuItem key={menuItem.id} title={menuItem.title} id={menuItem.id} description={menuItem.description} iframeUrl={menuItem.iframeUrl} onClick={onClick} />
 							</div>
 						)
 					})}

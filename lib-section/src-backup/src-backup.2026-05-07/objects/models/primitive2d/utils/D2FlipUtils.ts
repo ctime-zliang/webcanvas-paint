@@ -18,36 +18,21 @@ export class D2FlipUtils {
 						matrix4: d2ModelItem.matrix,
 					}
 				}
-				const { maxtrix4 } = D2RectToolkit.flipXTranslate(
-					d2ModelItem.leftUp,
-					d2ModelItem.rightUp,
-					d2ModelItem.leftDown,
-					d2ModelItem.rightDown
-				)
+				const { maxtrix4 } = D2RectToolkit.flipXTranslate(d2ModelItem.leftUp, d2ModelItem.rightUp, d2ModelItem.leftDown, d2ModelItem.rightDown)
 				return {
 					matrix4: d2ModelItem.matrix.multiply4(maxtrix4),
 				}
 			}
 			case ED2ElementType.D2Rect: {
 				const d2ModelItem: D2RectModel = d2ElementItemModel as D2RectModel
-				const { maxtrix4 } = D2RectToolkit.flipXTranslate(
-					d2ModelItem.leftUp,
-					d2ModelItem.rightUp,
-					d2ModelItem.leftDown,
-					d2ModelItem.rightDown
-				)
+				const { maxtrix4 } = D2RectToolkit.flipXTranslate(d2ModelItem.leftUp, d2ModelItem.rightUp, d2ModelItem.leftDown, d2ModelItem.rightDown)
 				return {
 					matrix4: d2ModelItem.matrix.multiply4(maxtrix4),
 				}
 			}
 			case ED2ElementType.D2Image: {
 				const d2ModelItem: D2ImageModel = d2ElementItemModel as D2ImageModel
-				const { maxtrix4 } = D2RectToolkit.flipXTranslate(
-					d2ModelItem.leftUp,
-					d2ModelItem.rightUp,
-					d2ModelItem.leftDown,
-					d2ModelItem.rightDown
-				)
+				const { maxtrix4 } = D2RectToolkit.flipXTranslate(d2ModelItem.leftUp, d2ModelItem.rightUp, d2ModelItem.leftDown, d2ModelItem.rightDown)
 				return {
 					matrix4: d2ModelItem.matrix.multiply4(maxtrix4),
 				}
@@ -69,36 +54,21 @@ export class D2FlipUtils {
 						matrix4: d2ModelItem.matrix,
 					}
 				}
-				const { maxtrix4 } = D2RectToolkit.flipYTranslate(
-					d2ModelItem.leftUp,
-					d2ModelItem.rightUp,
-					d2ModelItem.leftDown,
-					d2ModelItem.rightDown
-				)
+				const { maxtrix4 } = D2RectToolkit.flipYTranslate(d2ModelItem.leftUp, d2ModelItem.rightUp, d2ModelItem.leftDown, d2ModelItem.rightDown)
 				return {
 					matrix4: d2ModelItem.matrix.multiply4(maxtrix4),
 				}
 			}
 			case ED2ElementType.D2Rect: {
 				const d2ModelItem: D2RectModel = d2ElementItemModel as D2RectModel
-				const { maxtrix4 } = D2RectToolkit.flipYTranslate(
-					d2ModelItem.leftUp,
-					d2ModelItem.rightUp,
-					d2ModelItem.leftDown,
-					d2ModelItem.rightDown
-				)
+				const { maxtrix4 } = D2RectToolkit.flipYTranslate(d2ModelItem.leftUp, d2ModelItem.rightUp, d2ModelItem.leftDown, d2ModelItem.rightDown)
 				return {
 					matrix4: d2ModelItem.matrix.multiply4(maxtrix4),
 				}
 			}
 			case ED2ElementType.D2Image: {
 				const d2ModelItem: D2ImageModel = d2ElementItemModel as D2ImageModel
-				const { maxtrix4 } = D2RectToolkit.flipYTranslate(
-					d2ModelItem.leftUp,
-					d2ModelItem.rightUp,
-					d2ModelItem.leftDown,
-					d2ModelItem.rightDown
-				)
+				const { maxtrix4 } = D2RectToolkit.flipYTranslate(d2ModelItem.leftUp, d2ModelItem.rightUp, d2ModelItem.leftDown, d2ModelItem.rightDown)
 				return {
 					matrix4: d2ModelItem.matrix.multiply4(maxtrix4),
 				}

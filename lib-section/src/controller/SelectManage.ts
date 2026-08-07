@@ -166,10 +166,7 @@ export class SelectManager extends BaseManager<D2ElementShapeItemBase> {
 	 * 获取点选图元集合(已过滤)
 	 */
 	private pointSelect(inputInfo: InputInfo): Set<D2ElementShapeItemBase> {
-		const sourceResults: Set<D2ElementShapeItemBase> = Constant.d2FilterController.pointSelectBeforeFilter(
-			inputInfo.leftDownRealScenePhysicsX,
-			inputInfo.leftDownRealScenePhysicsY
-		)
+		const sourceResults: Set<D2ElementShapeItemBase> = Constant.d2FilterController.pointSelectBeforeFilter(inputInfo.leftDownRealScenePhysicsX, inputInfo.leftDownRealScenePhysicsY)
 		return sourceResults
 	}
 
@@ -177,12 +174,7 @@ export class SelectManager extends BaseManager<D2ElementShapeItemBase> {
 	 * 获取框选图元集合(已过滤)
 	 */
 	private boxSelect(inputInfo: InputInfo): Set<D2ElementShapeItemBase> {
-		const rangeBBox2: BBox2 = new BBox2(
-			this._leftDownRealScenePhysicsX,
-			this._leftDownRealScenePhysicsY,
-			inputInfo.moveRealScenePhysicsX,
-			inputInfo.moveRealScenePhysicsY
-		)
+		const rangeBBox2: BBox2 = new BBox2(this._leftDownRealScenePhysicsX, this._leftDownRealScenePhysicsY, inputInfo.moveRealScenePhysicsX, inputInfo.moveRealScenePhysicsY)
 		const sourceResults: Set<D2ElementShapeItemBase> = Constant.d2FilterController.boxSelectBeforeFilter(rangeBBox2)
 		return sourceResults
 	}

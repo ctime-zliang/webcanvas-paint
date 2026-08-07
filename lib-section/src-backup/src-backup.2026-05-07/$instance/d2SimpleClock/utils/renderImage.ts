@@ -10,12 +10,7 @@ function getTodayProgress(): number {
 	end.setDate(end.getDate() + 1)
 	return (now.getTime() - start.getTime()) / (end.getTime() - start.getTime())
 }
-export function appendImageElement(
-	d2ElementController: D2ElementController,
-	imageLayerItemId: string,
-	renderSize: number,
-	RUN_PROFILE: Partial<any>
-): void {
+export function appendImageElement(d2ElementController: D2ElementController, imageLayerItemId: string, renderSize: number, RUN_PROFILE: Partial<any>): void {
 	fetchFileByURL(earth01, 'earth-01.jpg').then((file: File): void => {
 		readFileAsImage(file).then((readResult: { imageDataURL: string; fileHashUuid: string; width: number; height: number }): void => {
 			const shapeElementItemIdA1: string = d2ElementController.createD2ImageElementItem(

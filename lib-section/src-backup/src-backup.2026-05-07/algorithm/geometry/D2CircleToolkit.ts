@@ -38,10 +38,7 @@ export class D2CircleToolkit {
 	 */
 	public static isPointOnStrokeCircle(point: Vector2, radius: number, circleCenter: Vector2, strokeWidth: number, isFill: boolean): boolean {
 		const circleDirLine: Vector2 = point.sub(circleCenter)
-		const [isOuter, isInner]: [boolean, boolean] = [
-			circleDirLine.length > radius + strokeWidth / 2,
-			circleDirLine.length < radius - strokeWidth / 2,
-		]
+		const [isOuter, isInner]: [boolean, boolean] = [circleDirLine.length > radius + strokeWidth / 2, circleDirLine.length < radius - strokeWidth / 2]
 		if (isOuter) {
 			return false
 		}

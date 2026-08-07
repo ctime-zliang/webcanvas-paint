@@ -16,14 +16,7 @@ export class DrawD2ImageShapeTool extends DrawD2ShapeTool {
 		this._drawShapeHandler = new DrawD2ImageShape()
 		window.setTimeout((): void => {
 			this.isDrawing = true
-			this._drawShapeHandler.createShapes(
-				0,
-				0,
-				this.toolData.fileHashUuid,
-				this.toolData.imageDataURL,
-				this.toolData.width,
-				this.toolData.height
-			)
+			this._drawShapeHandler.createShapes(0, 0, this.toolData.fileHashUuid, this.toolData.imageDataURL, this.toolData.width, this.toolData.height)
 		})
 	}
 
@@ -92,14 +85,7 @@ export class DrawD2ImageShapeTool extends DrawD2ShapeTool {
 		this._drawShapeHandler.inputInfo = inputInfo
 		if (!this.isDrawing) {
 			this.isDrawing = true
-			this._drawShapeHandler.createShapes(
-				inputInfo.moveRealScenePhysicsX,
-				inputInfo.moveRealScenePhysicsY,
-				this.toolData.fileHashUuid,
-				this.toolData.imageDataURL,
-				this.toolData.width,
-				this.toolData.height
-			)
+			this._drawShapeHandler.createShapes(inputInfo.moveRealScenePhysicsX, inputInfo.moveRealScenePhysicsY, this.toolData.fileHashUuid, this.toolData.imageDataURL, this.toolData.width, this.toolData.height)
 		} else {
 			if (this._drawShapeHandler && this._drawShapeHandler.isShapeInsatncesContentReady()) {
 				this.isDrawing = false
@@ -110,14 +96,7 @@ export class DrawD2ImageShapeTool extends DrawD2ShapeTool {
 				OutProfileMessage.dispatchOperationProfileChangeMessage(EOperationAction.CREATE_ELEMENT, {})
 				window.setTimeout((): void => {
 					this.isDrawing = true
-					this._drawShapeHandler.createShapes(
-						inputInfo.moveRealScenePhysicsX,
-						inputInfo.moveRealScenePhysicsY,
-						this.toolData.fileHashUuid,
-						this.toolData.imageDataURL,
-						this.toolData.width,
-						this.toolData.height
-					)
+					this._drawShapeHandler.createShapes(inputInfo.moveRealScenePhysicsX, inputInfo.moveRealScenePhysicsY, this.toolData.fileHashUuid, this.toolData.imageDataURL, this.toolData.width, this.toolData.height)
 				})
 			} else {
 				console.warn(`the data is being initialized and the element cannot be placed.`)

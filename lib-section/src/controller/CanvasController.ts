@@ -53,18 +53,14 @@ export class CanvasController extends BaseInterface {
 		const newRatio: number = ratio <= MIN_ZOOM_RATIO ? MIN_ZOOM_RATIO : ratio >= MAX_ZOOM_RATIO ? MAX_ZOOM_RATIO : ratio
 		this._camera.setZoomRatio(newRatio)
 		const cameraZoomRatio: number = this._camera.getZoomRatio()
-		this._camera.setMoveIncrement(
-			new Vector3(moveOffsetVector3.x / cameraZoomRatio, moveOffsetVector3.y / cameraZoomRatio, moveOffsetVector3.z / cameraZoomRatio)
-		)
+		this._camera.setMoveIncrement(new Vector3(moveOffsetVector3.x / cameraZoomRatio, moveOffsetVector3.y / cameraZoomRatio, moveOffsetVector3.z / cameraZoomRatio))
 		Constant.messageTool.messageBus.publish(EFrameCommand.RENDER_FRAME, null)
 	}
 	public setCanvasZoomRatioByScenePhysicsPos(ratio: number, scenePhysicsPosition?: Vector3): void {
 		if (!scenePhysicsPosition) {
 			scenePhysicsPosition = Vector3.ORIGIN
 		}
-		const d2R: TD2PointItem = Constant.d2CoordinateUtils.setScenePhysicsPos2CanvasSourceNativePixelPos(
-			scenePhysicsPosition.toArray() as TD2PointItem
-		)
+		const d2R: TD2PointItem = Constant.d2CoordinateUtils.setScenePhysicsPos2CanvasSourceNativePixelPos(scenePhysicsPosition.toArray() as TD2PointItem)
 		this.setCanvasZoomRatioByCanvasSourceNativePixelPos(ratio, Vector3.createByArray(d2R))
 	}
 
@@ -83,21 +79,13 @@ export class CanvasController extends BaseInterface {
 		return moveOffsetVector3
 	}
 	public setCameraCenterByScenePhysicsPos(scenePhysicsPosition: Vector3): Vector3 {
-		const d2R: TD2PointItem = Constant.d2CoordinateUtils.setScenePhysicsPos2CanvasSourceNativePixelPos(
-			scenePhysicsPosition.toArray() as TD2PointItem
-		)
+		const d2R: TD2PointItem = Constant.d2CoordinateUtils.setScenePhysicsPos2CanvasSourceNativePixelPos(scenePhysicsPosition.toArray() as TD2PointItem)
 		return this.setCameraCenterByCanvasSourceNativePixelPos(Vector3.createByArray(d2R))
 	}
 
 	public moveCameraCenterByCanvasPosition(canvasDomSourceNativePixelPosition: Vector3): void {
 		const cameraZoomRatio: number = this._camera.getZoomRatio()
-		this._camera.setMoveTo(
-			new Vector3(
-				-(canvasDomSourceNativePixelPosition.x - this._camera.width / 2) / cameraZoomRatio,
-				(canvasDomSourceNativePixelPosition.y - this._camera.height / 2) / cameraZoomRatio,
-				0
-			)
-		)
+		this._camera.setMoveTo(new Vector3(-(canvasDomSourceNativePixelPosition.x - this._camera.width / 2) / cameraZoomRatio, (canvasDomSourceNativePixelPosition.y - this._camera.height / 2) / cameraZoomRatio, 0))
 		Constant.messageTool.messageBus.publish(EFrameCommand.RENDER_FRAME, null)
 	}
 

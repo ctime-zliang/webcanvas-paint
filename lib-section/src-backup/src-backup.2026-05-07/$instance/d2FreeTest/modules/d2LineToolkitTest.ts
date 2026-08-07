@@ -129,16 +129,11 @@ export function d2LineToolkitTest04(webCanvas: WebCanvas, layerItemId: string): 
 		isSolid: false,
 		strokeWidth: 0.5,
 	})
-	d2TextElementController.createD2TextElementItem(
-		defaultLayerItemId,
-		new Vector2(closedRes.point.x, closedRes.point.y - 5),
-		`min-dist = ${closedRes.d}`,
-		{
-			fontSize: 5,
-			strokeColor: Color.GOLDEN,
-			isEnableSelect: false,
-		}
-	)
+	d2TextElementController.createD2TextElementItem(defaultLayerItemId, new Vector2(closedRes.point.x, closedRes.point.y - 5), `min-dist = ${closedRes.d}`, {
+		fontSize: 5,
+		strokeColor: Color.GOLDEN,
+		isEnableSelect: false,
+	})
 	/* ... */
 	createPoints(webCanvas, layerItemId, [
 		{ label: `lineAStartPoint`, position: lineAStartPoint },

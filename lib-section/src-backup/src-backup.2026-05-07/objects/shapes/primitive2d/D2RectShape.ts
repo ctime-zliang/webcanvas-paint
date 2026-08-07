@@ -7,13 +7,7 @@ import { TElement2DRectJSONViewData } from '../../../types/Element'
 import { buildD2RectModel, D2RectModel, TBuildD2RectModelOptionalParam } from '../../models/primitive2d/D2RectModel'
 import { D2ElementShapeItemBase } from './elementBase/D2ElementShapeItemBase'
 
-export function buildD2RectShape(
-	layerItemId: string,
-	position: Vector2,
-	width: number,
-	height: number,
-	optional: Partial<TBuildD2RectModelOptionalParam> = {}
-): D2RectShape {
+export function buildD2RectShape(layerItemId: string, position: Vector2, width: number, height: number, optional: Partial<TBuildD2RectModelOptionalParam> = {}): D2RectShape {
 	const elementModelItem: D2RectModel = buildD2RectModel(layerItemId, position, width, height, optional)
 	const elementShapeItem: D2RectShape = new D2RectShape(elementModelItem)
 	return elementShapeItem

@@ -24,12 +24,7 @@ export class D2PointShapeManager extends BaseManager<D2PointShape> {
 		this._rteeItems = new Map()
 	}
 
-	public createShapeItem(
-		elementItemId: string,
-		layerItemId: string,
-		centerPoint: Vector2,
-		optional: Partial<TBuildD2PointModelOptionalParam> = {}
-	): D2PointShape {
+	public createShapeItem(elementItemId: string, layerItemId: string, centerPoint: Vector2, optional: Partial<TBuildD2PointModelOptionalParam> = {}): D2PointShape {
 		const elementModelItem: D2PointModel = D2PointModelManager.getInstance().createModelItem(elementItemId, layerItemId, centerPoint, optional)
 		const elementShapeItem: D2PointShape = new D2PointShape(elementModelItem)
 		const op: boolean = this.addCache(elementShapeItem)

@@ -90,24 +90,13 @@ export class SceneGL extends Scene {
 		if (texture) {
 			return texture
 		}
-		texture = this._webGL.createRGBATexture(
-			texImageSource,
-			this._webGL.gl.LINEAR,
-			this._webGL.gl.LINEAR,
-			this._webGL.gl.CLAMP_TO_EDGE,
-			this._webGL.gl.CLAMP_TO_EDGE
-		)
+		texture = this._webGL.createRGBATexture(texImageSource, this._webGL.gl.LINEAR, this._webGL.gl.LINEAR, this._webGL.gl.CLAMP_TO_EDGE, this._webGL.gl.CLAMP_TO_EDGE)
 		this._textureMap.set(texImageSource, texture)
 		return texture
 	}
 
 	public render(timeStamp: number): void {
-		this._webGL.gl.clearColor(
-			this.canvasBackgroundColor.r,
-			this.canvasBackgroundColor.g,
-			this.canvasBackgroundColor.b,
-			this.canvasBackgroundColor.a
-		)
+		this._webGL.gl.clearColor(this.canvasBackgroundColor.r, this.canvasBackgroundColor.g, this.canvasBackgroundColor.b, this.canvasBackgroundColor.a)
 		this._webGL.gl.clear(this._webGL.gl.COLOR_BUFFER_BIT | this._webGL.gl.DEPTH_BUFFER_BIT | this._webGL.gl.STENCIL_BUFFER_BIT)
 		this._webGL.gl.viewport(0, 0, this._webGL.width, this._webGL.height)
 		this._d2AnyTestProgram.render(this)

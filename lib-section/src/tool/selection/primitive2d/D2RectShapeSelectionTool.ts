@@ -61,16 +61,7 @@ export class D2RectShapeSelectionTool extends D2SelectionTool {
 	}
 
 	public mouseLeftDownSelect(inputInfo: InputInfo): TAllElementShapeType {
-		const allControlAssistPoints: Array<D2AssistPointShape> = [
-			this._pointLeftUp,
-			this._pointUp,
-			this._pointRightUp,
-			this._pointRight,
-			this._pointRightBottom,
-			this._pointBottom,
-			this._pointLeftBottom,
-			this._pointLeft,
-		]
+		const allControlAssistPoints: Array<D2AssistPointShape> = [this._pointLeftUp, this._pointUp, this._pointRightUp, this._pointRight, this._pointRightBottom, this._pointBottom, this._pointLeftBottom, this._pointLeft]
 		let hitItem: D2AssistPointShape = null!
 		for (let i: number = 0; i < allControlAssistPoints.length; i++) {
 			if (allControlAssistPoints[i].isSelect(inputInfo.moveScenePhysicsX, inputInfo.moveScenePhysicsY)) {
@@ -109,11 +100,7 @@ export class D2RectShapeSelectionTool extends D2SelectionTool {
 		this.moveScenePhysicsX = inputInfo.leftDownScenePhysicsX
 		this.moveScenePhysicsY = inputInfo.leftDownScenePhysicsY
 		if (this._selectedItem) {
-			this._shapeItemCommand = CommandProxy.getCommandInstance(
-				this._selectedItem.elementItemId,
-				ECommandAction.MODIFY,
-				Constant.globalIdenManager.getCommandIden()
-			) as D2RectShapeCommand
+			this._shapeItemCommand = CommandProxy.getCommandInstance(this._selectedItem.elementItemId, ECommandAction.MODIFY, Constant.globalIdenManager.getCommandIden()) as D2RectShapeCommand
 		}
 		this._isSelectedPointLeftUp = this._pointLeftUp.isSelect(inputInfo.leftDownScenePhysicsX, inputInfo.leftDownScenePhysicsY)
 		this._isSelectedPointUp = this._pointUp.isSelect(inputInfo.leftDownScenePhysicsX, inputInfo.leftDownScenePhysicsY)
@@ -144,76 +131,52 @@ export class D2RectShapeSelectionTool extends D2SelectionTool {
 		const diffY: number = inputInfo.moveScenePhysicsY - this.moveScenePhysicsY
 		const moveDiffVector2: Vector2 = new Vector2(diffX, diffY)
 		if (this._isSelectedPointLeftUp) {
-			const LINE_Y: Vector2 = isHeightPos
-				? this._selectedItem.leftUp.sub(this._selectedItem.leftDown)
-				: this._selectedItem.leftDown.sub(this._selectedItem.leftUp)
+			const LINE_Y: Vector2 = isHeightPos ? this._selectedItem.leftUp.sub(this._selectedItem.leftDown) : this._selectedItem.leftDown.sub(this._selectedItem.leftUp)
 			const P_Y: Vector2 = D2LineToolkit.calculateVectorProjection(LINE_Y, moveDiffVector2)
-			const LINE_X: Vector2 = isWidthPos
-				? this._selectedItem.rightUp.sub(this._selectedItem.leftUp)
-				: this._selectedItem.leftUp.sub(this._selectedItem.rightUp)
+			const LINE_X: Vector2 = isWidthPos ? this._selectedItem.rightUp.sub(this._selectedItem.leftUp) : this._selectedItem.leftUp.sub(this._selectedItem.rightUp)
 			const P_X: Vector2 = D2LineToolkit.calculateVectorProjection(LINE_X, moveDiffVector2)
 			this._selectedItem.position = this._selectedItem.position.add(P_Y)
 			this._selectedItem.width += P_Y.length * Math.sign(Vector2.calculateRadianCCWByTwoVector2(LINE_Y, moveDiffVector2))
 			this._selectedItem.position = this._selectedItem.position.add(P_X)
 			this._selectedItem.height += P_X.length * Math.sign(Vector2.calculateRadianCCWByTwoVector2(LINE_X, moveDiffVector2))
 		} else if (this._isSelectedPointUp) {
-			const LINE_X: Vector2 = isWidthPos
-				? this._selectedItem.rightUp.sub(this._selectedItem.leftUp)
-				: this._selectedItem.leftUp.sub(this._selectedItem.rightUp)
+			const LINE_X: Vector2 = isWidthPos ? this._selectedItem.rightUp.sub(this._selectedItem.leftUp) : this._selectedItem.leftUp.sub(this._selectedItem.rightUp)
 			const P_X: Vector2 = D2LineToolkit.calculateVectorProjection(LINE_X, moveDiffVector2)
 			this._selectedItem.position = this._selectedItem.position.add(P_X)
 			this._selectedItem.height += P_X.length * Math.sign(Vector2.calculateRadianCCWByTwoVector2(LINE_X, moveDiffVector2))
 		} else if (this._isSelectedPointRightUp) {
-			const LINE_Y: Vector2 = isHeightPos
-				? this._selectedItem.rightDown.sub(this._selectedItem.rightUp)
-				: this._selectedItem.rightUp.sub(this._selectedItem.rightDown)
+			const LINE_Y: Vector2 = isHeightPos ? this._selectedItem.rightDown.sub(this._selectedItem.rightUp) : this._selectedItem.rightUp.sub(this._selectedItem.rightDown)
 			const P_Y: Vector2 = D2LineToolkit.calculateVectorProjection(LINE_Y, moveDiffVector2)
-			const LINE_X: Vector2 = isWidthPos
-				? this._selectedItem.rightUp.sub(this._selectedItem.leftUp)
-				: this._selectedItem.leftUp.sub(this._selectedItem.rightUp)
+			const LINE_X: Vector2 = isWidthPos ? this._selectedItem.rightUp.sub(this._selectedItem.leftUp) : this._selectedItem.leftUp.sub(this._selectedItem.rightUp)
 			const P_X: Vector2 = D2LineToolkit.calculateVectorProjection(LINE_X, moveDiffVector2)
 			this._selectedItem.width += P_Y.length * Math.sign(Vector2.calculateRadianCCWByTwoVector2(LINE_Y, moveDiffVector2))
 			this._selectedItem.position = this._selectedItem.position.add(P_X)
 			this._selectedItem.height += P_X.length * Math.sign(Vector2.calculateRadianCCWByTwoVector2(LINE_X, moveDiffVector2))
 		} else if (this._isSelectedPointRight) {
-			const LINE_Y: Vector2 = isHeightPos
-				? this._selectedItem.rightDown.sub(this._selectedItem.rightUp)
-				: this._selectedItem.rightUp.sub(this._selectedItem.rightDown)
+			const LINE_Y: Vector2 = isHeightPos ? this._selectedItem.rightDown.sub(this._selectedItem.rightUp) : this._selectedItem.rightUp.sub(this._selectedItem.rightDown)
 			const P_Y: Vector2 = D2LineToolkit.calculateVectorProjection(LINE_Y, moveDiffVector2)
 			this._selectedItem.width += P_Y.length * Math.sign(Vector2.calculateRadianCCWByTwoVector2(LINE_Y, moveDiffVector2))
 		} else if (this._isSelectedPointRightBottom) {
-			const LINE_Y: Vector2 = isHeightPos
-				? this._selectedItem.rightDown.sub(this._selectedItem.rightUp)
-				: this._selectedItem.rightUp.sub(this._selectedItem.rightDown)
+			const LINE_Y: Vector2 = isHeightPos ? this._selectedItem.rightDown.sub(this._selectedItem.rightUp) : this._selectedItem.rightUp.sub(this._selectedItem.rightDown)
 			const P_Y: Vector2 = D2LineToolkit.calculateVectorProjection(LINE_Y, moveDiffVector2)
-			const LINE_X: Vector2 = isWidthPos
-				? this._selectedItem.leftDown.sub(this._selectedItem.rightDown)
-				: this._selectedItem.rightDown.sub(this._selectedItem.leftDown)
+			const LINE_X: Vector2 = isWidthPos ? this._selectedItem.leftDown.sub(this._selectedItem.rightDown) : this._selectedItem.rightDown.sub(this._selectedItem.leftDown)
 			const P_X: Vector2 = D2LineToolkit.calculateVectorProjection(LINE_X, moveDiffVector2)
 			this._selectedItem.width += P_Y.length * Math.sign(Vector2.calculateRadianCCWByTwoVector2(LINE_Y, moveDiffVector2))
 			this._selectedItem.height += P_X.length * Math.sign(Vector2.calculateRadianCCWByTwoVector2(LINE_X, moveDiffVector2))
 		} else if (this._isSelectedPointBottom) {
-			const LINE_X: Vector2 = isWidthPos
-				? this._selectedItem.leftDown.sub(this._selectedItem.rightDown)
-				: this._selectedItem.rightDown.sub(this._selectedItem.leftDown)
+			const LINE_X: Vector2 = isWidthPos ? this._selectedItem.leftDown.sub(this._selectedItem.rightDown) : this._selectedItem.rightDown.sub(this._selectedItem.leftDown)
 			const P_X: Vector2 = D2LineToolkit.calculateVectorProjection(LINE_X, moveDiffVector2)
 			this._selectedItem.height += P_X.length * Math.sign(Vector2.calculateRadianCCWByTwoVector2(LINE_X, moveDiffVector2))
 		} else if (this._isSelectedPointLeftBottom) {
-			const LINE_Y: Vector2 = isHeightPos
-				? this._selectedItem.leftUp.sub(this._selectedItem.leftDown)
-				: this._selectedItem.leftDown.sub(this._selectedItem.leftUp)
+			const LINE_Y: Vector2 = isHeightPos ? this._selectedItem.leftUp.sub(this._selectedItem.leftDown) : this._selectedItem.leftDown.sub(this._selectedItem.leftUp)
 			const P_Y: Vector2 = D2LineToolkit.calculateVectorProjection(LINE_Y, moveDiffVector2)
-			const LINE_X: Vector2 = isWidthPos
-				? this._selectedItem.leftDown.sub(this._selectedItem.rightDown)
-				: this._selectedItem.rightDown.sub(this._selectedItem.leftDown)
+			const LINE_X: Vector2 = isWidthPos ? this._selectedItem.leftDown.sub(this._selectedItem.rightDown) : this._selectedItem.rightDown.sub(this._selectedItem.leftDown)
 			const P_X: Vector2 = D2LineToolkit.calculateVectorProjection(LINE_X, moveDiffVector2)
 			this._selectedItem.position = this._selectedItem.position.add(P_Y)
 			this._selectedItem.width += P_Y.length * Math.sign(Vector2.calculateRadianCCWByTwoVector2(LINE_Y, moveDiffVector2))
 			this._selectedItem.height += P_X.length * Math.sign(Vector2.calculateRadianCCWByTwoVector2(LINE_X, moveDiffVector2))
 		} else if (this._isSelectedPointLeft) {
-			const LINE_Y: Vector2 = isHeightPos
-				? this._selectedItem.leftUp.sub(this._selectedItem.leftDown)
-				: this._selectedItem.leftDown.sub(this._selectedItem.leftUp)
+			const LINE_Y: Vector2 = isHeightPos ? this._selectedItem.leftUp.sub(this._selectedItem.leftDown) : this._selectedItem.leftDown.sub(this._selectedItem.leftUp)
 			const P_Y: Vector2 = D2LineToolkit.calculateVectorProjection(LINE_Y, moveDiffVector2)
 			this._selectedItem.position = this._selectedItem.position.add(P_Y)
 			this._selectedItem.width += P_Y.length * Math.sign(Vector2.calculateRadianCCWByTwoVector2(LINE_Y, moveDiffVector2))

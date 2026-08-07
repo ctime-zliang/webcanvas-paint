@@ -1,5 +1,8 @@
 import { Matrix4 } from './matrix/Matrix4'
 
+/**
+ * 欧拉角旋转顺序枚举
+ */
 export enum EEulerOrder {
 	XYZ = 'XYZ',
 	YXZ = 'YXZ',
@@ -9,11 +12,28 @@ export enum EEulerOrder {
 	XZY = 'XZY',
 }
 
+/**
+ * Euler - 欧拉角类
+ *
+ * 欧拉角定义:
+ * 		欧拉角用三个标量 (x, y, z) 表示绕三个坐标轴的旋转角度(弧度):
+ * 			- x: 绕 X 轴的旋转角(俯仰 / pitch)
+ * 			- y: 绕 Y 轴的旋转角(偏航 / yaw)
+ * 			- z: 绕 Z 轴的旋转角(翻滚 / roll)
+ *
+ * 万向节锁问题 (Gimbal Lock):
+ * 		- 当某个轴的旋转角接近 ±90° 时, 另外两个轴的旋转效果退化为同一个轴,
+ * 		- 丢失一个自由度例如 XYZ 顺序中, 当 Y 旋转 90° 时, X 和 Z 的旋转等价
+ * 		- 这是欧拉角的固有缺陷, 可通过四元数避免
+ */
 export class Euler {
 	public static initEuler(): Euler {
 		return new Euler()
 	}
 
+	/**
+	 * 从旋转矩阵提取欧拉角
+	 */
 	public static setFromRotationMatrix(matrix4: Matrix4, order: EEulerOrder): Euler {
 		const euler: Euler = new Euler()
 		const clamp = (value: number, min: number, max: number): number => {

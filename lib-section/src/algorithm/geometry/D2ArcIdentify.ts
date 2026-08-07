@@ -92,10 +92,7 @@ export class D2ArcIdentify {
 	private static getRadian(sweep: ESweep, startRadian: number, endRadian: number): number {
 		const _startRadian: number = (((startRadian % Math.PI) * 2 + Math.PI * 2) % Math.PI) * 2
 		const _endRadian: number = (((endRadian % Math.PI) * 2 + Math.PI * 2) % Math.PI) * 2
-		const radian: number =
-			sweep === ESweep.CCW
-				? ((_endRadian - _startRadian + Math.PI * 2) % Math.PI) * 2
-				: ((_startRadian - _endRadian + Math.PI * 2) % Math.PI) * 2
+		const radian: number = sweep === ESweep.CCW ? ((_endRadian - _startRadian + Math.PI * 2) % Math.PI) * 2 : ((_startRadian - _endRadian + Math.PI * 2) % Math.PI) * 2
 		return (((radian % Math.PI) * 2 + Math.PI * 2) % Math.PI) * 2
 	}
 }

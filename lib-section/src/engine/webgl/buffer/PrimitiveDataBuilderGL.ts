@@ -158,10 +158,7 @@ export class PrimitiveDataBuilderGL {
 		/* ... */
 		if (localIndex === blockItem.ptIdsBuilder.arrItemSize) {
 			blockItem.ptIdsBuilder.setValueByIndex(blockItem.ptIdsBuilder.getUpperItemIndex() + 1, globalIndex)
-			blockItem.ptDatasRecordBuilder.setValueByIndex(
-				blockItem.ptDatasRecordBuilder.getUpperItemIndex() + 1,
-				blockItem.ptDatasBuilder.arrItemSize
-			)
+			blockItem.ptDatasRecordBuilder.setValueByIndex(blockItem.ptDatasRecordBuilder.getUpperItemIndex() + 1, blockItem.ptDatasBuilder.arrItemSize)
 			blockItem.ptDatasRecordBuilder.setValueByIndex(blockItem.ptDatasRecordBuilder.getUpperItemIndex() + 1, ptData.length)
 			blockItem.ptDatasBuilder.setArrByIndex(blockItem.ptDatasBuilder.getUpperItemIndex() + 1, ptData)
 			if (typeof indices !== 'undefined') {
@@ -195,9 +192,7 @@ export class PrimitiveDataBuilderGL {
 		if (localIndex === 0) {
 			nowStartIndex = 0
 		} else {
-			nowStartIndex =
-				blockItem.ptDatasRecordBuilder.getItemByIndex((localIndex - 1) * 2) +
-				blockItem.ptDatasRecordBuilder.getItemByIndex((localIndex - 1) * 2 + 1)
+			nowStartIndex = blockItem.ptDatasRecordBuilder.getItemByIndex((localIndex - 1) * 2) + blockItem.ptDatasRecordBuilder.getItemByIndex((localIndex - 1) * 2 + 1)
 		}
 		if (typeof nextStartIndex !== 'undefined' && nextStartIndex > nowStartIndex && nowUseSize > nextStartIndex - nowStartIndex) {
 			const stretchSize: number = blockItem.ptDatasBuilder.stretchArr(nowStartIndex, nextStartIndex, nowUseSize)
@@ -245,8 +240,7 @@ export class PrimitiveDataBuilderGL {
 				idsUpperIndex--
 				continue
 			}
-			ptsUpperIndex =
-				blockItem.ptDatasRecordBuilder.getItemByIndex(localIndex * 2) + blockItem.ptDatasRecordBuilder.getItemByIndex(localIndex * 2 + 1) - 1
+			ptsUpperIndex = blockItem.ptDatasRecordBuilder.getItemByIndex(localIndex * 2) + blockItem.ptDatasRecordBuilder.getItemByIndex(localIndex * 2 + 1) - 1
 			break
 		}
 		if (ptsUpperIndex >= -1) {
@@ -263,30 +257,10 @@ export class PrimitiveDataBuilderGL {
 			isEnableIndices: false,
 			blockSize: PRIMITIVE_BLOCK_PTTYPE_MAXNUM[ptType],
 			texture: null!,
-			ptIdsBuilder: new BufferBuilderGL(
-				Float32Array,
-				new DataBufferGL(this._webGL, arrSize1, 'ARRAY_BUFFER', this._webGL.gl.STATIC_DRAW),
-				new Float32Array(arrSize1),
-				arrSize1
-			),
-			indicesBuilder: new BufferBuilderGL(
-				Uint16Array,
-				new DataBufferGL(this._webGL, arrSize3, 'ELEMENT_ARRAY_BUFFER', this._webGL.gl.STATIC_DRAW),
-				new Uint16Array(arrSize3),
-				arrSize3
-			),
-			ptDatasRecordBuilder: new BufferBuilderGL(
-				Float32Array,
-				new DataBufferGL(this._webGL, arrSize2, 'ARRAY_BUFFER', this._webGL.gl.STATIC_DRAW),
-				new Float32Array(arrSize2),
-				arrSize2
-			),
-			ptDatasBuilder: new BufferBuilderGL(
-				Float32Array,
-				new DataBufferGL(this._webGL, arrSize3, 'ARRAY_BUFFER', this._webGL.gl.STATIC_DRAW),
-				new Float32Array(arrSize3),
-				arrSize3
-			),
+			ptIdsBuilder: new BufferBuilderGL(Float32Array, new DataBufferGL(this._webGL, arrSize1, 'ARRAY_BUFFER', this._webGL.gl.STATIC_DRAW), new Float32Array(arrSize1), arrSize1),
+			indicesBuilder: new BufferBuilderGL(Uint16Array, new DataBufferGL(this._webGL, arrSize3, 'ELEMENT_ARRAY_BUFFER', this._webGL.gl.STATIC_DRAW), new Uint16Array(arrSize3), arrSize3),
+			ptDatasRecordBuilder: new BufferBuilderGL(Float32Array, new DataBufferGL(this._webGL, arrSize2, 'ARRAY_BUFFER', this._webGL.gl.STATIC_DRAW), new Float32Array(arrSize2), arrSize2),
+			ptDatasBuilder: new BufferBuilderGL(Float32Array, new DataBufferGL(this._webGL, arrSize3, 'ARRAY_BUFFER', this._webGL.gl.STATIC_DRAW), new Float32Array(arrSize3), arrSize3),
 		}
 		return blockItem
 	}

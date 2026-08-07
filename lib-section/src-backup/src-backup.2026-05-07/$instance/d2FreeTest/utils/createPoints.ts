@@ -18,16 +18,11 @@ export function createPoints(
 		pIds: [],
 	}
 	for (let i: number = 0; i < points.length; i++) {
-		const tId: string = d2TextElementController.createD2TextElementItem(
-			layerItemId,
-			points[i].position,
-			`${points[i].label}(${points[i].position.x}, ${points[i].position.y})`,
-			{
-				isEnableSelect: false,
-				strokeColor: points[i].labelColor || Color.GOLDEN,
-				fontSize: points[i].labelSize || 5,
-			}
-		)
+		const tId: string = d2TextElementController.createD2TextElementItem(layerItemId, points[i].position, `${points[i].label}(${points[i].position.x}, ${points[i].position.y})`, {
+			isEnableSelect: false,
+			strokeColor: points[i].labelColor || Color.GOLDEN,
+			fontSize: points[i].labelSize || 5,
+		})
 		const pId: string = d2ElementController.createD2PointElementShapeItem(layerItemId, points[i].position, {
 			strokeColor: points[i].pointColor || Color.GOLDEN,
 			isEnableScale: true,

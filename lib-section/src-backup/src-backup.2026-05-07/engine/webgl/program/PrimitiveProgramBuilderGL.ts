@@ -52,13 +52,7 @@ export class PrimitiveProgramBuilderGL {
 				break
 			}
 			case PtType.D2_TEXT: {
-				this._textManager.render(
-					blockItem.ptDatasBuilder.dataBuffer,
-					blockItem.indicesBuilder.dataBuffer,
-					indicesNums,
-					viewMatrix4Data,
-					zoomRatio
-				)
+				this._textManager.render(blockItem.ptDatasBuilder.dataBuffer, blockItem.indicesBuilder.dataBuffer, indicesNums, viewMatrix4Data, zoomRatio)
 				break
 			}
 		}

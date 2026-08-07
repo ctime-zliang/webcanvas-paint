@@ -40,11 +40,7 @@ export class SimplifyPath {
 						if (arc !== null) {
 							if (lastData !== null) {
 								const [dot, cos]: [number, number] = [pt1.direct.dot(pt2.direct), (arc.radius - 0.01) / arc.radius]
-								if (
-									(dot > 0 && this.isEqual(dot, 1)) ||
-									Math.abs(Math.abs(cos) - Math.abs(Math.abs(Math.acos(dot) / 2))) < 1 ||
-									pt2.length < 1e-4
-								) {
+								if ((dot > 0 && this.isEqual(dot, 1)) || Math.abs(Math.abs(cos) - Math.abs(Math.abs(Math.acos(dot) / 2))) < 1 || pt2.length < 1e-4) {
 									const dir: Vector2 = new Vector2(Math.cos(lastData.startRadian), Math.sin(lastData.startRadian))
 									const start: Vector2 = dir.mul(lastData.radius).add(lastData.centerPoint)
 									let direct: Vector2 = null!
@@ -239,14 +235,7 @@ export class SimplifyPath {
 				}
 			}
 			if (this.canSimplify(simplifyPrimitives) && lastData !== null) {
-				let arc: Arc = Arc.build2(
-					lastData.centerPoint,
-					Angles.toQuarterRadian(lastData.startRadian),
-					Angles.toQuarterRadian(lastData.endRadian),
-					lastData.radius,
-					lastData.radius,
-					lastData.sweep
-				)
+				let arc: Arc = Arc.build2(lastData.centerPoint, Angles.toQuarterRadian(lastData.startRadian), Angles.toQuarterRadian(lastData.endRadian), lastData.radius, lastData.radius, lastData.sweep)
 				pts.push(arc)
 				i = i + simplifyPrimitives.length - 1
 			} else {
@@ -325,13 +314,7 @@ export class SimplifyPath {
 	}
 
 	private createArc3(arc1: Arc, arc2: Arc): TArcDescData {
-		if (
-			this.isEqual(arc1.centerPoint.x, arc2.centerPoint.x) &&
-			this.isEqual(arc1.centerPoint.y, arc2.centerPoint.y) &&
-			this.isEqual(arc1.rx, arc2.rx) &&
-			this.isEqual(arc1.ry, arc2.ry) &&
-			arc1.sweep === arc2.sweep
-		) {
+		if (this.isEqual(arc1.centerPoint.x, arc2.centerPoint.x) && this.isEqual(arc1.centerPoint.y, arc2.centerPoint.y) && this.isEqual(arc1.rx, arc2.rx) && this.isEqual(arc1.ry, arc2.ry) && arc1.sweep === arc2.sweep) {
 			return {
 				centerPoint: arc1.centerPoint,
 				radius: arc1.rx,

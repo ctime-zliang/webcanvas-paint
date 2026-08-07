@@ -17,13 +17,7 @@ export class D2TextModelVertex extends D2ElementModelItemBase {
 	private _fontFamily: string
 	private _fontStyle: ED2FontStyle
 	private _fontWeight: number
-	constructor(
-		content: string,
-		fontSize: number = 10,
-		fontFamily: string = 'auto',
-		fontStyle: ED2FontStyle = ED2FontStyle.NORMAL,
-		fontWeight: number = 100
-	) {
+	constructor(content: string, fontSize: number = 10, fontFamily: string = 'auto', fontStyle: ED2FontStyle = ED2FontStyle.NORMAL, fontWeight: number = 100) {
 		super(undefined!, undefined!)
 		this._contentReady = false
 		this._vertexData = {

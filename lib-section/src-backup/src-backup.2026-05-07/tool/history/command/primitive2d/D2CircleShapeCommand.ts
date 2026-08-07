@@ -52,20 +52,10 @@ export class D2CircleShapeCommand extends ElementCommand<TElement2DCircleJSONVie
 		if (elementItem.strokeWidth !== strokeWidth) {
 			elementItem.strokeWidth = strokeWidth
 		}
-		if (
-			elementItem.strokeColor.r !== strokeColorData.r ||
-			elementItem.strokeColor.g !== strokeColorData.g ||
-			elementItem.strokeColor.b !== strokeColorData.b ||
-			elementItem.strokeColor.a !== strokeColorData.a
-		) {
+		if (elementItem.strokeColor.r !== strokeColorData.r || elementItem.strokeColor.g !== strokeColorData.g || elementItem.strokeColor.b !== strokeColorData.b || elementItem.strokeColor.a !== strokeColorData.a) {
 			elementItem.strokeColor = new Color(strokeColorData.r, strokeColorData.g, strokeColorData.b, strokeColorData.a)
 		}
-		if (
-			elementItem.fillColor.r !== fillColorData.r ||
-			elementItem.fillColor.g !== fillColorData.g ||
-			elementItem.fillColor.b !== fillColorData.b ||
-			elementItem.fillColor.a !== fillColorData.a
-		) {
+		if (elementItem.fillColor.r !== fillColorData.r || elementItem.fillColor.g !== fillColorData.g || elementItem.fillColor.b !== fillColorData.b || elementItem.fillColor.a !== fillColorData.a) {
 			elementItem.fillColor = new Color(fillColorData.r, fillColorData.g, fillColorData.b, fillColorData.a)
 		}
 		if (elementItem.elementItemName !== elementItemName) {
@@ -105,18 +95,13 @@ export class D2CircleShapeCommand extends ElementCommand<TElement2DCircleJSONVie
 			isFill,
 			isSolid,
 		} = this.itemData
-		const targetShapeItem: D2CircleShape = D2CircleShapeManager.getInstance().createShapeItem(
-			elementItemId,
-			layerItemId,
-			new Vector2(centerPoint.x, centerPoint.y),
-			{
-				radius,
-				strokeWidth,
-				strokeColor: new Color(strokeColorData.r, strokeColorData.g, strokeColorData.b, strokeColorData.a),
-				isFill,
-				fillColor: new Color(fillColorData.r, fillColorData.g, fillColorData.b, fillColorData.a),
-			}
-		)
+		const targetShapeItem: D2CircleShape = D2CircleShapeManager.getInstance().createShapeItem(elementItemId, layerItemId, new Vector2(centerPoint.x, centerPoint.y), {
+			radius,
+			strokeWidth,
+			strokeColor: new Color(strokeColorData.r, strokeColorData.g, strokeColorData.b, strokeColorData.a),
+			isFill,
+			fillColor: new Color(fillColorData.r, fillColorData.g, fillColorData.b, fillColorData.a),
+		})
 		targetShapeItem.elementItemName = elementItemName
 		targetShapeItem.lineCap = lineCap
 		targetShapeItem.isSolid = isSolid

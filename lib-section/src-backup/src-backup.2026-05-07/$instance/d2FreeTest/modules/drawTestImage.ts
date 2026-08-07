@@ -1,15 +1,4 @@
-import {
-	Angles,
-	Color,
-	D2POINT_SHAPE,
-	Element2DImageJSONViewData,
-	ElementJSONData,
-	getHashIden,
-	nextFrameTick,
-	POINT_EVENT_NAME,
-	Vector2,
-	WebCanvas,
-} from '../../../Main'
+import { Angles, Color, D2POINT_SHAPE, Element2DImageJSONViewData, ElementJSONData, getHashIden, nextFrameTick, POINT_EVENT_NAME, Vector2, WebCanvas } from '../../../Main'
 import { sleep } from '../utils/sleep'
 import image01 from '../../public/asserts/dS0vD9wJ5eT7mR9zO2nB6zR8vI2xJ2.jpg'
 import image02 from '../../public/asserts/kA2cK1qT4oT6vX4pW5mC8vK2iT0iD9.png'
@@ -31,21 +20,13 @@ export async function drawTestImageItemStd(webCanvas: WebCanvas, layerItemId: st
 	const sImageHeight: number = readResult.height * 0.1
 	const { d2ElementController, d2TextElementController } = webCanvas
 	const defaultLayerItemId: string = layerItemId
-	const shapeElementItemIdA1: string = d2ElementController.createD2ImageElementItem(
-		defaultLayerItemId,
-		new Vector2(-50, 50),
-		readResult.fileHashUuid,
-		readResult.imageDataURL,
-		sImageWidth,
-		sImageHeight,
-		{
-			isFlipX: true,
-			isFlipY: true,
-			rotation: Angles.degreeToRadian(150),
-			isShowStroke: false,
-			strokeWidth: 1,
-		}
-	)
+	const shapeElementItemIdA1: string = d2ElementController.createD2ImageElementItem(defaultLayerItemId, new Vector2(-50, 50), readResult.fileHashUuid, readResult.imageDataURL, sImageWidth, sImageHeight, {
+		isFlipX: true,
+		isFlipY: true,
+		rotation: Angles.degreeToRadian(150),
+		isShowStroke: false,
+		strokeWidth: 1,
+	})
 	const jsonData: Element2DImageJSONViewData = d2ElementController.getD2ElementShapeItemJSONData(shapeElementItemIdA1) as Element2DImageJSONViewData
 	console.log(jsonData)
 	// let angle: number = 0
@@ -124,110 +105,46 @@ export async function drawTestImageItems(webCanvas: WebCanvas, layerItemId: stri
 	const sImageHeight: number = readResult.height * 0.05
 	const { d2ElementController } = webCanvas
 	const defaultLayerItemId: string = layerItemId
-	const shapeElementItemIdA1: string = d2ElementController.createD2ImageElementItem(
-		defaultLayerItemId,
-		new Vector2(-150, 70),
-		readResult.fileHashUuid,
-		readResult.imageDataURL,
-		sImageWdith,
-		sImageHeight,
-		{
-			isFlipX: false,
-			isFlipY: false,
-			rotation: Angles.degreeToRadian(0),
-		}
-	)
-	const shapeElementItemIdA2: string = d2ElementController.createD2ImageElementItem(
-		defaultLayerItemId,
-		new Vector2(-50, 70),
-		readResult.fileHashUuid,
-		readResult.imageDataURL,
-		sImageWdith,
-		sImageHeight,
-		{
-			isFlipX: false,
-			isFlipY: false,
-			rotation: Angles.degreeToRadian(30),
-		}
-	)
-	const shapeElementItemIdA3: string = d2ElementController.createD2ImageElementItem(
-		defaultLayerItemId,
-		new Vector2(50, 70),
-		readResult.fileHashUuid,
-		readResult.imageDataURL,
-		sImageWdith,
-		sImageHeight,
-		{
-			isFlipX: false,
-			isFlipY: false,
-			rotation: Angles.degreeToRadian(90),
-		}
-	)
-	const shapeElementItemIdA4: string = d2ElementController.createD2ImageElementItem(
-		defaultLayerItemId,
-		new Vector2(150, 70),
-		readResult.fileHashUuid,
-		readResult.imageDataURL,
-		sImageWdith,
-		sImageHeight,
-		{
-			isFlipX: false,
-			isFlipY: false,
-			rotation: Angles.degreeToRadian(120),
-		}
-	)
-	const shapeElementItemIdB1: string = d2ElementController.createD2ImageElementItem(
-		defaultLayerItemId,
-		new Vector2(-150, -70),
-		readResult.fileHashUuid,
-		readResult.imageDataURL,
-		sImageWdith,
-		sImageHeight,
-		{
-			isFlipX: true,
-			isFlipY: true,
-			rotation: Angles.degreeToRadian(0),
-		}
-	)
-	const shapeElementItemIdB2: string = d2ElementController.createD2ImageElementItem(
-		defaultLayerItemId,
-		new Vector2(-50, -70),
-		readResult.fileHashUuid,
-		readResult.imageDataURL,
-		sImageWdith,
-		sImageHeight,
-		{
-			isFlipX: true,
-			isFlipY: true,
-			rotation: Angles.degreeToRadian(30),
-		}
-	)
-	const shapeElementItemIdB3: string = d2ElementController.createD2ImageElementItem(
-		defaultLayerItemId,
-		new Vector2(50, -70),
-		readResult.fileHashUuid,
-		readResult.imageDataURL,
-		sImageWdith,
-		sImageHeight,
-		{
-			isFlipX: true,
-			isFlipY: true,
-			rotation: Angles.degreeToRadian(90),
-		}
-	)
-	const shapeElementItemIdB4: string = d2ElementController.createD2ImageElementItem(
-		defaultLayerItemId,
-		new Vector2(150, -70),
-		readResult.fileHashUuid,
-		readResult.imageDataURL,
-		sImageWdith,
-		sImageHeight,
-		{
-			isFlipX: true,
-			isFlipY: true,
-			rotation: Angles.degreeToRadian(120),
-		}
-	)
+	const shapeElementItemIdA1: string = d2ElementController.createD2ImageElementItem(defaultLayerItemId, new Vector2(-150, 70), readResult.fileHashUuid, readResult.imageDataURL, sImageWdith, sImageHeight, {
+		isFlipX: false,
+		isFlipY: false,
+		rotation: Angles.degreeToRadian(0),
+	})
+	const shapeElementItemIdA2: string = d2ElementController.createD2ImageElementItem(defaultLayerItemId, new Vector2(-50, 70), readResult.fileHashUuid, readResult.imageDataURL, sImageWdith, sImageHeight, {
+		isFlipX: false,
+		isFlipY: false,
+		rotation: Angles.degreeToRadian(30),
+	})
+	const shapeElementItemIdA3: string = d2ElementController.createD2ImageElementItem(defaultLayerItemId, new Vector2(50, 70), readResult.fileHashUuid, readResult.imageDataURL, sImageWdith, sImageHeight, {
+		isFlipX: false,
+		isFlipY: false,
+		rotation: Angles.degreeToRadian(90),
+	})
+	const shapeElementItemIdA4: string = d2ElementController.createD2ImageElementItem(defaultLayerItemId, new Vector2(150, 70), readResult.fileHashUuid, readResult.imageDataURL, sImageWdith, sImageHeight, {
+		isFlipX: false,
+		isFlipY: false,
+		rotation: Angles.degreeToRadian(120),
+	})
+	const shapeElementItemIdB1: string = d2ElementController.createD2ImageElementItem(defaultLayerItemId, new Vector2(-150, -70), readResult.fileHashUuid, readResult.imageDataURL, sImageWdith, sImageHeight, {
+		isFlipX: true,
+		isFlipY: true,
+		rotation: Angles.degreeToRadian(0),
+	})
+	const shapeElementItemIdB2: string = d2ElementController.createD2ImageElementItem(defaultLayerItemId, new Vector2(-50, -70), readResult.fileHashUuid, readResult.imageDataURL, sImageWdith, sImageHeight, {
+		isFlipX: true,
+		isFlipY: true,
+		rotation: Angles.degreeToRadian(30),
+	})
+	const shapeElementItemIdB3: string = d2ElementController.createD2ImageElementItem(defaultLayerItemId, new Vector2(50, -70), readResult.fileHashUuid, readResult.imageDataURL, sImageWdith, sImageHeight, {
+		isFlipX: true,
+		isFlipY: true,
+		rotation: Angles.degreeToRadian(90),
+	})
+	const shapeElementItemIdB4: string = d2ElementController.createD2ImageElementItem(defaultLayerItemId, new Vector2(150, -70), readResult.fileHashUuid, readResult.imageDataURL, sImageWdith, sImageHeight, {
+		isFlipX: true,
+		isFlipY: true,
+		rotation: Angles.degreeToRadian(120),
+	})
 	// const jsonData: Element2DImageJSONViewData = d2ElementController.getD2ElementShapeItemJSONData(shapeElementItemId1) as Element2DImageJSONViewData
 	// console.log(jsonData)
 	// d2ElementController.bindD2ElementShapeItemEvent(shapeElementItemId1, POINT_EVENT_NAME.POINTER_LEFTDOWN, (event: any): void => {

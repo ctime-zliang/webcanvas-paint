@@ -28,10 +28,7 @@ export class D2CrossAssist extends BaseAuxiliary {
 
 	public create(): void {
 		const [leftTopScenePhysicsX, leftTopScenePhysicsY] = Constant.d2CoordinateUtils.setCanvasSourceNativePixelPos2ScenePhysicsPos([0, 0])
-		const [rightBottomScenePhysicsX, rightBottomScenePhysicsY] = Constant.d2CoordinateUtils.setCanvasSourceNativePixelPos2ScenePhysicsPos([
-			Constant.environment.canvasWidth,
-			-Constant.environment.canvasHeight,
-		])
+		const [rightBottomScenePhysicsX, rightBottomScenePhysicsY] = Constant.d2CoordinateUtils.setCanvasSourceNativePixelPos2ScenePhysicsPos([Constant.environment.canvasWidth, -Constant.environment.canvasHeight])
 		this._xLineShape = buildD2AssistLineShape(new Vector2(leftTopScenePhysicsX, 0), new Vector2(rightBottomScenePhysicsX, 0), {
 			strokeColor: Color.LIGHT_STEE_BLUE,
 			strokeWidth: this._strokeWidth,
@@ -50,10 +47,7 @@ export class D2CrossAssist extends BaseAuxiliary {
 
 	public update(inputInfo: InputInfo): void {
 		const [leftTopScenePhysicsX, leftTopScenePhysicsY] = Constant.d2CoordinateUtils.setCanvasSourceNativePixelPos2ScenePhysicsPos([0, 0])
-		const [rightBottomScenePhysicsX, rightBottomScenePhysicsY] = Constant.d2CoordinateUtils.setCanvasSourceNativePixelPos2ScenePhysicsPos([
-			Constant.environment.canvasWidth,
-			-Constant.environment.canvasHeight,
-		])
+		const [rightBottomScenePhysicsX, rightBottomScenePhysicsY] = Constant.d2CoordinateUtils.setCanvasSourceNativePixelPos2ScenePhysicsPos([Constant.environment.canvasWidth, -Constant.environment.canvasHeight])
 		if (this._xLineShape) {
 			this._xLineShape.startPoint = new Vector2(leftTopScenePhysicsX, inputInfo.moveScenePhysicsY)
 			this._xLineShape.endPoint = new Vector2(rightBottomScenePhysicsX, inputInfo.moveScenePhysicsY)

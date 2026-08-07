@@ -39,15 +39,7 @@ export function createBuildD2ArcModelOptionalParam(optional: Partial<TBuildD2Arc
 	}
 }
 
-export function buildD2ArcModel(
-	layerItemId: string,
-	centerPoint: Vector2,
-	radius: number,
-	startRadian: number,
-	endRadian: number,
-	sweep: ESweep,
-	optional: Partial<TBuildD2ArcModelOptionalParam> = {}
-): D2ArcModel {
+export function buildD2ArcModel(layerItemId: string, centerPoint: Vector2, radius: number, startRadian: number, endRadian: number, sweep: ESweep, optional: Partial<TBuildD2ArcModelOptionalParam> = {}): D2ArcModel {
 	const locSetting: TBuildD2ArcModelOptionalParam = createBuildD2ArcModelOptionalParam(optional)
 	const elementItemId: string = Constant.globalIdenManager.getElementIden()
 	const elementModelItem: D2ArcModel = new D2ArcModel(
@@ -275,15 +267,6 @@ export class D2ArcModel extends D2ElementModelItemBase {
 		if (this.isEnableSelect === false) {
 			return false
 		}
-		return D2ArcToolkit.isPointOnStrokeArc(
-			new Vector2(x, y),
-			this.startRadian,
-			this.endRadian,
-			this.sweep,
-			this.radius,
-			this.centerPoint,
-			this.strokeWidth,
-			this.isFill
-		)
+		return D2ArcToolkit.isPointOnStrokeArc(new Vector2(x, y), this.startRadian, this.endRadian, this.sweep, this.radius, this.centerPoint, this.strokeWidth, this.isFill)
 	}
 }

@@ -25,13 +25,7 @@ function recount(node: RBTreeNode) {
 	node.count = 1 + (node.left ? node.left.count : 0) + (node.right ? node.right.count : 0)
 }
 
-function doVisit(
-	lo: RBTreeNode,
-	hi: RBTreeNode,
-	compare: (k1: RBTreeNode, k2: RBTreeNode) => number,
-	visit: (k: RBTreeNode, v: RBTreeNode) => RBTreeNode | void,
-	node: RBTreeNode
-) {
+function doVisit(lo: RBTreeNode, hi: RBTreeNode, compare: (k1: RBTreeNode, k2: RBTreeNode) => number, visit: (k: RBTreeNode, v: RBTreeNode) => RBTreeNode | void, node: RBTreeNode) {
 	let l: number = compare(lo, node.key)
 	let h: number = compare(hi, node.key)
 	let v: RBTreeNode = undefined!
@@ -54,12 +48,7 @@ function doVisit(
 	}
 }
 
-function doVisitHalf(
-	lo: RBTreeNode,
-	compare: (k1: any, k2: any) => number,
-	visit: (k: RBTreeNode, v: RBTreeNode) => RBTreeNode | void,
-	node: RBTreeNode
-): RBTreeNode | void {
+function doVisitHalf(lo: RBTreeNode, compare: (k1: any, k2: any) => number, visit: (k: RBTreeNode, v: RBTreeNode) => RBTreeNode | void, node: RBTreeNode): RBTreeNode | void {
 	const l: number = compare(lo, node.key)
 	if (l <= 0) {
 		if (node.left) {

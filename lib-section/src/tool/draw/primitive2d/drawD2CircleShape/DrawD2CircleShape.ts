@@ -26,18 +26,13 @@ export class DrawD2CircleShape extends DrawD2Shape {
 			for (let i: number = 0; i < this.shapeInstances.length; i++) {
 				const targetShapeItem: D2CircleShape = this.shapeInstances[i]
 				const elementItemId: string = Constant.globalIdenManager.getElementIden()
-				const newTargetShapeItem: D2CircleShape = D2CircleShapeManager.getInstance().createShapeItem(
-					elementItemId,
-					this.selectedDrawLayerShapeItem.model.layerItemId,
-					targetShapeItem.centerPoint,
-					{
-						...targetShapeItem.toJSON(),
-						strokeWidth: this.strokeWidth,
-						strokeColor: this.strokeColor,
-						isFill: this.isFill,
-						fillColor: this.fillColor,
-					}
-				)
+				const newTargetShapeItem: D2CircleShape = D2CircleShapeManager.getInstance().createShapeItem(elementItemId, this.selectedDrawLayerShapeItem.model.layerItemId, targetShapeItem.centerPoint, {
+					...targetShapeItem.toJSON(),
+					strokeWidth: this.strokeWidth,
+					strokeColor: this.strokeColor,
+					isFill: this.isFill,
+					fillColor: this.fillColor,
+				})
 				drawedItems.push(newTargetShapeItem)
 				targetShapeItem.setDelete()
 			}

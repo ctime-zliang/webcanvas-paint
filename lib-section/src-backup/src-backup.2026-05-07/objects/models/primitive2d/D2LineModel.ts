@@ -36,12 +36,7 @@ export function createBuildD2LineModelOptionalParam(optional: Partial<TBuildD2Li
 	}
 }
 
-export function buildD2LineModel(
-	layerItemId: string,
-	startPoint: Vector2,
-	endPoint: Vector2,
-	optional: Partial<TBuildD2LineModelOptionalParam> = {}
-): D2LineModel {
+export function buildD2LineModel(layerItemId: string, startPoint: Vector2, endPoint: Vector2, optional: Partial<TBuildD2LineModelOptionalParam> = {}): D2LineModel {
 	const locSetting: TBuildD2LineModelOptionalParam = createBuildD2LineModelOptionalParam(optional)
 	const elementItemId: string = Constant.globalIdenManager.getElementIden()
 	const elementModelItem: D2LineModel = new D2LineModel(
@@ -232,13 +227,6 @@ export class D2LineModel extends D2ElementModelItemBase {
 		if (this.isEnableSelect === false) {
 			return false
 		}
-		return D2LineToolkit.isPointOnStrokeLine(
-			new Vector2(x, y),
-			this.startPoint,
-			this.endPoint,
-			this.strokeWidth,
-			this.lineCap === ECanvasD2LineCap.ROUND,
-			this.rectBorderRadius
-		)
+		return D2LineToolkit.isPointOnStrokeLine(new Vector2(x, y), this.startPoint, this.endPoint, this.strokeWidth, this.lineCap === ECanvasD2LineCap.ROUND, this.rectBorderRadius)
 	}
 }

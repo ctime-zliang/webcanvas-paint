@@ -74,8 +74,27 @@ export class Vector2 extends Vector {
 	}
 
 	/**
-	 * 计算两向量组成的夹角对应的弧度值
-	 * 即 将 vector2_1 逆时针旋转到 vector2_2 所需要的旋转弧度值
+	 * 计算两向量组成的夹角对应的弧度值(有向角)
+	 * 		即将 vector2_1 逆时针旋转到 vector2_2 所需要的旋转弧度值
+	 *
+	 * 数学公式:
+	 * 		利用点积和叉积的几何意义:
+	 *   		dot = |v₁| · |v₂| · cos(θ) = x₁x₂ + y₁y₂
+	 *   		cross = |v₁| · |v₂| · sin(θ) = x₁y₂ - y₁x₂
+	 *  		θ = atan2(cross, dot)
+	 *
+	 * 返回值范围 (-π, π]:
+	 * 		- 正值: 从 v1 到 v2 需要逆时针旋转
+	 * 		- 负值: 从 v1 到 v2 需要顺时针旋转
+	 *
+	 * 案例:
+	 * 		v1 = (1, 0), v2 = (0, 1)
+	 * 			dot = 0, cross = 1
+	 * 			θ = atan2(1, 0) = π / 2 (逆时针 90°)
+	 *
+	 * 		v1 = (1, 0), v2 = (0, -1)
+	 * 			dot = 0, cross = -1
+	 * 			θ = atan2(-1, 0) = -π / 2 (顺时针 90°)
 	 */
 	public static calculateRadianCCWByTwoVector2(vector2_1: Vector2, vector2_2: Vector2): number {
 		const { x: x1, y: y1 } = vector2_1
@@ -266,10 +285,23 @@ export class Vector2 extends Vector {
 	}
 
 	/**
-	 * 向量旋转 - 绕起点旋转 radian(弧度) 后的结果向量
-	 * 		将向量 v0(x0, y0) 旋转 θ 角度后
-	 * 			x = x0 * cos(θ) - y0 * sin(θ)
-	 * 			y = x0 * sin(θ) + x0 * cos(θ)
+	 * 向量旋转 - 绕原点旋转 radian(弧度) 后的结果向量
+	 *
+	 * 数学公式 - 2D 旋转矩阵:
+	 * 		将向量 (x₀, y₀) 绕原点逆时针旋转角度 θ:
+	 *   		| x' |   | cos(θ)  -sin(θ) |   | x₀ |
+	 *   		| y' | = | sin(θ)   cos(θ) | × | y₀ |
+	 *
+	 * 		展开为:
+	 *  		x' = x₀ · cos(θ) - y₀ · sin(θ)
+	 *   		y' = x₀ · sin(θ) + y₀ · cos(θ)
+	 *
+	 * 案例:
+	 * 		- v = (1, 0), θ = π / 2 (90°)
+	 * 			v' = (1 × 0 - 0 × 1, 1 × 1 + 0 × 0) = (0, 1), 即逆时针旋转 90°
+	 *
+	 * 		- v = (1, 1), θ = π / 4 (45°)
+	 * 			v' = (1 × 0.707 - 1 × 0.707, 1 × 0.707 + 1 × 0.707) = (0, 1.414), 即指向正上方
 	 */
 	public rotate(radian: number): Vector2 {
 		const c: number = Math.cos(radian)
@@ -291,9 +323,20 @@ export class Vector2 extends Vector {
 
 	/**
 	 * 向量关于 origin2 坐标点的中心对称向量
+	 *
+	 * 数学公式 - 中心对称(点对称):
+	 * 		给定点 P 和对称中心 O, 对称点 P' 满足:
+	 *   		P' = 2 · O - P
+	 * 		即:
+	 *   		P'.x = 2 · O.x - P.x
+	 *   		P'.y = 2 · O.y - P.y
+	 *
+	 * 案例:
+	 * 		- P = (3, 1), O = (1, 2)
+	 * 			P' = (2×1 - 3, 2 × 2 - 1) = (-1, 3)
 	 */
 	public mirrorSurround(origin2: Vector2 = Vector2.ORIGIN): Vector2 {
-		return new Vector2(2 * origin2.x, 2 * origin2.y - this.y)
+		return new Vector2(2 * origin2.x - this.x, 2 * origin2.y - this.y)
 	}
 
 	/**

@@ -26,10 +26,7 @@ export class RtreeService extends BaseInterface {
 		for (let i: number = 0; i < updatedRtreeItems.length; i++) {
 			const rtreeItem: RtreeItem = updatedRtreeItems[i]
 			const oldBBox2: BBox2 = rtreeItem.getBBox2()
-			const r: Array<TRtreeNodeItem> = Constant.rtree.remove(
-				{ x: oldBBox2.minX, y: oldBBox2.minY, w: oldBBox2.width, h: oldBBox2.height },
-				rtreeItem
-			)
+			const r: Array<TRtreeNodeItem> = Constant.rtree.remove({ x: oldBBox2.minX, y: oldBBox2.minY, w: oldBBox2.width, h: oldBBox2.height }, rtreeItem)
 			// console.log(r)
 		}
 		for (let i: number = 0; i < updatedRtreeItems.length; i++) {

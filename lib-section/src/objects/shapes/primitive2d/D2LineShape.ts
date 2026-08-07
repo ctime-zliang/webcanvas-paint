@@ -7,12 +7,7 @@ import { TElement2DLineJSONViewData } from '../../../types/Element'
 import { buildD2LineModel, D2LineModel, TBuildD2LineModelOptionalParam } from '../../models/primitive2d/D2LineModel'
 import { D2ElementShapeItemBase } from './elementBase/D2ElementShapeItemBase'
 
-export function buildD2LineShape(
-	layerItemId: string,
-	startPoint: Vector2,
-	endPoint: Vector2,
-	optional: Partial<TBuildD2LineModelOptionalParam> = {}
-): D2LineShape {
+export function buildD2LineShape(layerItemId: string, startPoint: Vector2, endPoint: Vector2, optional: Partial<TBuildD2LineModelOptionalParam> = {}): D2LineShape {
 	const elementModelItem: D2LineModel = buildD2LineModel(layerItemId, startPoint, endPoint, optional)
 	const elementShapeItem: D2LineShape = new D2LineShape(elementModelItem)
 	return elementShapeItem

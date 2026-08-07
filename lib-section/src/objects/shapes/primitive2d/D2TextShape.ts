@@ -6,12 +6,7 @@ import { Color } from '../../../engine/common/Color'
 import { ED2FontStyle, EPrimitiveStatus } from '../../../engine/config/PrimitiveProfile'
 import { TFontTriangleVertexData } from '../../../manager/TextGraphicsManager'
 import { TElement2DTextJSONViewData } from '../../../types/Element'
-import {
-	buildD2TextModel,
-	D2TextModel,
-	TBuildD2TextModelOptionalStyleSettingParam,
-	TBuildD2TextModelOptionalParam,
-} from '../../models/primitive2d/D2TextModel'
+import { buildD2TextModel, D2TextModel, TBuildD2TextModelOptionalStyleSettingParam, TBuildD2TextModelOptionalParam } from '../../models/primitive2d/D2TextModel'
 import { D2ElementShapeItemBase } from './elementBase/D2ElementShapeItemBase'
 
 export function buildD2TextShape(

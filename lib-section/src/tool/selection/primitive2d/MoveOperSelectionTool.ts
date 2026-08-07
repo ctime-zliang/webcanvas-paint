@@ -56,11 +56,7 @@ export class MoveOperSelectionTool extends BaseSelectionTool {
 		const allSelectItems: Array<D2ElementShapeItemBase> = Constant.selectManager.getAllSelectItems()
 		if (allSelectItems.length) {
 			for (let i: number = 0; i < allSelectItems.length; i++) {
-				const shapeItemCommand: ElementCommand<TElementJSONBaseData> = CommandProxy.getCommandInstance(
-					allSelectItems[i].elementItemId,
-					ECommandAction.MODIFY,
-					Constant.globalIdenManager.getCommandIden()
-				)
+				const shapeItemCommand: ElementCommand<TElementJSONBaseData> = CommandProxy.getCommandInstance(allSelectItems[i].elementItemId, ECommandAction.MODIFY, Constant.globalIdenManager.getCommandIden())
 				this._shapeItemCommands.set(allSelectItems[i].elementItemId, shapeItemCommand)
 			}
 		}

@@ -78,8 +78,7 @@ export class View3DUint8Clamped {
 				return (this.data[this.offset + this.stride[0] * arguments[0] + this.stride[1] * arguments[1]] = arguments[arguments.length - 1])
 			}
 			case 4: {
-				return (this.data[this.offset + this.stride[0] * arguments[0] + this.stride[1] * arguments[1] + this.stride[2] * arguments[2]] =
-					arguments[arguments.length - 1])
+				return (this.data[this.offset + this.stride[0] * arguments[0] + this.stride[1] * arguments[1] + this.stride[2] * arguments[2]] = arguments[arguments.length - 1])
 			}
 		}
 		throw new Error('View3DUint8Clamped.Set: arguments error.')
@@ -137,11 +136,7 @@ export class View3DUint8Clamped {
 			case 2: {
 				return new View3DUint8Clamped(
 					this.data,
-					[
-						typeof arguments[0] !== 'number' || arguments[0] < 0 ? this.shape[0] : arguments[0] | 0,
-						typeof arguments[1] !== 'number' || arguments[1] < 0 ? this.shape[1] : arguments[1] | 0,
-						undefined!,
-					],
+					[typeof arguments[0] !== 'number' || arguments[0] < 0 ? this.shape[0] : arguments[0] | 0, typeof arguments[1] !== 'number' || arguments[1] < 0 ? this.shape[1] : arguments[1] | 0, undefined!],
 					[this.stride[0], this.stride[1], undefined!],
 					this.offset
 				)
@@ -337,24 +332,14 @@ export class View3DUint8Clamped {
 				arguments[0] = arguments[0] === undefined ? 0 : arguments[0] | 0
 				const shape: Array<number> = this.shape
 				const stride: Array<number> = this.stride
-				return new View3DUint8Clamped(
-					this.data,
-					[shape[arguments[0]], undefined!, undefined!],
-					[stride[arguments[0]], undefined!, undefined!],
-					this.offset
-				)
+				return new View3DUint8Clamped(this.data, [shape[arguments[0]], undefined!, undefined!], [stride[arguments[0]], undefined!, undefined!], this.offset)
 			}
 			case 2: {
 				arguments[0] = arguments[0] === undefined ? 0 : arguments[0] | 0
 				arguments[1] = arguments[1] === undefined ? 1 : arguments[1] | 0
 				const shape: Array<number> = this.shape
 				const stride: Array<number> = this.stride
-				return new View3DUint8Clamped(
-					this.data,
-					[shape[arguments[0]], shape[arguments[1]], undefined!],
-					[stride[arguments[0]], stride[arguments[1]], undefined!],
-					this.offset
-				)
+				return new View3DUint8Clamped(this.data, [shape[arguments[0]], shape[arguments[1]], undefined!], [stride[arguments[0]], stride[arguments[1]], undefined!], this.offset)
 			}
 			case 3: {
 				arguments[0] = arguments[0] === undefined ? 0 : arguments[0] | 0
@@ -362,12 +347,7 @@ export class View3DUint8Clamped {
 				arguments[2] = arguments[2] === undefined ? 2 : arguments[2] | 0
 				const shape: Array<number> = this.shape
 				const stride: Array<number> = this.stride
-				return new View3DUint8Clamped(
-					this.data,
-					[shape[arguments[0]], shape[arguments[1]], shape[arguments[2]]],
-					[stride[arguments[0]], stride[arguments[1]], stride[arguments[2]]],
-					this.offset
-				)
+				return new View3DUint8Clamped(this.data, [shape[arguments[0]], shape[arguments[1]], shape[arguments[2]]], [stride[arguments[0]], stride[arguments[1]], stride[arguments[2]]], this.offset)
 			}
 		}
 		throw new Error('View3DUint8Clamped.Transpose: arguments error.')

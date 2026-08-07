@@ -25,14 +25,7 @@ export class D2RotationUtils {
 						matrix4: d2ElementItemModel.matrix,
 					}
 				}
-				const { rotation, maxtrix4 } = D2RectToolkit.rotationTranslate(
-					newRotation,
-					d2ModelItem.rotation,
-					d2ModelItem.leftUp,
-					d2ModelItem.rightUp,
-					d2ModelItem.leftDown,
-					d2ModelItem.rightDown
-				)
+				const { rotation, maxtrix4 } = D2RectToolkit.rotationTranslate(newRotation, d2ModelItem.rotation, d2ModelItem.leftUp, d2ModelItem.rightUp, d2ModelItem.leftDown, d2ModelItem.rightDown)
 				const allPositions: Array<number> = d2ModelItem.getVertexData().positions
 				for (let j: number = 0; j < allPositions.length; j += POINT_ARRAY_OCCUPY_SIZE) {
 					const v2: Vector2 = new Vector2(allPositions[j], allPositions[j + 1]).multiplyMatrix4(maxtrix4)
@@ -46,14 +39,7 @@ export class D2RotationUtils {
 			}
 			case ED2ElementType.D2Rect: {
 				const d2ModelItem: D2RectModel = d2ElementItemModel as D2RectModel
-				const { rotation, maxtrix4 } = D2RectToolkit.rotationTranslate(
-					newRotation,
-					d2ModelItem.rotation,
-					d2ModelItem.leftUp,
-					d2ModelItem.rightUp,
-					d2ModelItem.leftDown,
-					d2ModelItem.rightDown
-				)
+				const { rotation, maxtrix4 } = D2RectToolkit.rotationTranslate(newRotation, d2ModelItem.rotation, d2ModelItem.leftUp, d2ModelItem.rightUp, d2ModelItem.leftDown, d2ModelItem.rightDown)
 				return {
 					rotation,
 					matrix4: d2ModelItem.matrix.multiply4(maxtrix4),
@@ -61,14 +47,7 @@ export class D2RotationUtils {
 			}
 			case ED2ElementType.D2Image: {
 				const d2ModelItem: D2ImageModel = d2ElementItemModel as D2ImageModel
-				const { rotation, maxtrix4 } = D2RectToolkit.rotationTranslate(
-					newRotation,
-					d2ModelItem.rotation,
-					d2ModelItem.leftUp,
-					d2ModelItem.rightUp,
-					d2ModelItem.leftDown,
-					d2ModelItem.rightDown
-				)
+				const { rotation, maxtrix4 } = D2RectToolkit.rotationTranslate(newRotation, d2ModelItem.rotation, d2ModelItem.leftUp, d2ModelItem.rightUp, d2ModelItem.leftDown, d2ModelItem.rightDown)
 				return {
 					rotation,
 					matrix4: d2ModelItem.matrix.multiply4(maxtrix4),

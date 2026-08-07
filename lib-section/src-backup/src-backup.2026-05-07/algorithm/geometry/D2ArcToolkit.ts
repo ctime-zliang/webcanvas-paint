@@ -108,16 +108,7 @@ export class D2ArcToolkit {
 	/**
 	 * 判断点 point 是否位于圆弧 arc 上
 	 */
-	public static isPointOnStrokeArc(
-		point: Vector2,
-		sRadian: number,
-		eRadian: number,
-		sweep: ESweep,
-		radius: number,
-		circleCenter: Vector2,
-		strokeWidth: number,
-		isFill: boolean
-	): boolean {
+	public static isPointOnStrokeArc(point: Vector2, sRadian: number, eRadian: number, sweep: ESweep, radius: number, circleCenter: Vector2, strokeWidth: number, isFill: boolean): boolean {
 		const [R, r]: [number, number] = [radius + strokeWidth / 2, radius - strokeWidth / 2]
 		const [sng, eng]: [number, number] = [sRadian % (Math.PI * 2), eRadian % (Math.PI * 2)]
 		const [sng1, eng1]: [number, number] = [sweep === ESweep.CCW ? sng : eng, sweep === ESweep.CCW ? eng : sng]
@@ -139,10 +130,7 @@ export class D2ArcToolkit {
 		 * 圆心到 startRadian 对应的圆上的点的向量, 并计算其单位向量
 		 * 圆心到 endRadian 对应的圆上的点的向量, 并计算其单位向量
 		 */
-		const [circleStartLine, circleEndLine]: [Vector2, Vector2] = [
-			new Vector2(radius * Math.cos(startRadian), radius * Math.sin(startRadian)),
-			new Vector2(radius * Math.cos(endRadian), radius * Math.sin(endRadian)),
-		]
+		const [circleStartLine, circleEndLine]: [Vector2, Vector2] = [new Vector2(radius * Math.cos(startRadian), radius * Math.sin(startRadian)), new Vector2(radius * Math.cos(endRadian), radius * Math.sin(endRadian))]
 		const [norCircleStartLine, norCircleEndLine]: [Vector2, Vector2] = [circleStartLine.normalize(), circleEndLine.normalize()]
 		/**
 		 * startRadian 对应的角度在圆上的坐标(相对于坐标原点)
@@ -298,10 +286,7 @@ export class D2ArcToolkit {
 		endPoint: Vector2
 		middlePoint: Vector2
 	} {
-		const [arcStartPoint, arcEndPoint]: [Vector2, Vector2] = [
-			new Vector2(radius * Math.cos(startRadian), radius * Math.sin(startRadian)),
-			new Vector2(radius * Math.cos(endRadian), radius * Math.sin(endRadian)),
-		]
+		const [arcStartPoint, arcEndPoint]: [Vector2, Vector2] = [new Vector2(radius * Math.cos(startRadian), radius * Math.sin(startRadian)), new Vector2(radius * Math.cos(endRadian), radius * Math.sin(endRadian))]
 		const addPoint: Vector2 = arcStartPoint.add(arcEndPoint)
 		const dir: number = Math.abs(endRadian - startRadian) > Math.PI ? -1 : 1
 		return {
@@ -402,14 +387,7 @@ export class D2ArcToolkit {
 		return { centerPoint, radius, startRadian, endRadian: startRadian + sweepRadian, sweep }
 	}
 
-	public static getArcBBox2(
-		centerPoint: Vector2,
-		radius: number,
-		storkeWidth: number,
-		startRadian: number,
-		endRadian: number,
-		sweep: ESweep
-	): BBox2 {
+	public static getArcBBox2(centerPoint: Vector2, radius: number, storkeWidth: number, startRadian: number, endRadian: number, sweep: ESweep): BBox2 {
 		if (storkeWidth < 0) {
 			return null!
 		}
@@ -634,11 +612,7 @@ export class D2ArcToolkit {
 		} = D2Intersection.getIntersectionsOfPrimitives(line1, line2)
 		if (interRes.count > 0) {
 			const centerPoint: Vector2 = interRes.points[0]
-			const [radius, startRadian, endRadian]: [number, number, number] = [
-				centerPoint.distance(startPoint),
-				startPoint.getRadianByVector2(centerPoint),
-				endPoint.getRadianByVector2(centerPoint),
-			]
+			const [radius, startRadian, endRadian]: [number, number, number] = [centerPoint.distance(startPoint), startPoint.getRadianByVector2(centerPoint), endPoint.getRadianByVector2(centerPoint)]
 			return {
 				centerPoint,
 				radius,
@@ -648,11 +622,7 @@ export class D2ArcToolkit {
 			}
 		}
 		const centerPoint: Vector2 = startPoint.add(v1.mul(100000))
-		const [radius, startRadian, endRadian]: [number, number, number] = [
-			centerPoint.distance(startPoint),
-			startPoint.getRadianByVector2(centerPoint),
-			endPoint.getRadianByVector2(centerPoint),
-		]
+		const [radius, startRadian, endRadian]: [number, number, number] = [centerPoint.distance(startPoint), startPoint.getRadianByVector2(centerPoint), endPoint.getRadianByVector2(centerPoint)]
 		return {
 			centerPoint,
 			radius,

@@ -82,25 +82,18 @@ export class D2RectShapeCommand extends ElementCommand<TElement2DRectJSONViewDat
 			borderRadius,
 			isFixedStrokeWidth,
 		} = this.itemData
-		const targetShapeItem: D2RectShape = D2RectShapeManager.getInstance().createShapeItem(
-			elementItemId,
-			layerItemId,
-			new Vector2(position.x, position.y),
-			width,
-			height,
-			{
-				strokeWidth,
-				strokeColor: new Color(strokeColorData.r, strokeColorData.g, strokeColorData.b, strokeColorData.a),
-				isFill,
-				alpha,
-				isSolid,
-				borderRadius,
-				isFixedStrokeWidth,
-				isFlipX,
-				isFlipY,
-				rotation,
-			}
-		)
+		const targetShapeItem: D2RectShape = D2RectShapeManager.getInstance().createShapeItem(elementItemId, layerItemId, new Vector2(position.x, position.y), width, height, {
+			strokeWidth,
+			strokeColor: new Color(strokeColorData.r, strokeColorData.g, strokeColorData.b, strokeColorData.a),
+			isFill,
+			alpha,
+			isSolid,
+			borderRadius,
+			isFixedStrokeWidth,
+			isFlipX,
+			isFlipY,
+			rotation,
+		})
 		targetShapeItem.elementItemName = elementItemName
 	}
 

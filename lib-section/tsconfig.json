@@ -26,6 +26,6 @@
 		"baseUrl": "./",
 		"paths": {}
 	},
-	"include": ["./src/**/*"],
+	"include": ["./src/**/*", "experiment/instance", "./experiment/index.ts"],
 	"exclude": ["./config/**"]
 }

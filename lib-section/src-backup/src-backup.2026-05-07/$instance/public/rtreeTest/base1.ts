@@ -1,9 +1,5 @@
 import { RtreeDebug_profile } from '../../../algorithm/rtree2/config'
-import {
-	RtreeDebug_appendContainerViewArea,
-	RtreeDebug_appendRectViewSection,
-	RtreeDebug_updateRectangleAuxiliary,
-} from '../../../algorithm/rtree2/debug'
+import { RtreeDebug_appendContainerViewArea, RtreeDebug_appendRectViewSection, RtreeDebug_updateRectangleAuxiliary } from '../../../algorithm/rtree2/debug'
 import { RTree } from '../../../algorithm/rtree2/Rtree'
 
 export function rtreeTest1() {

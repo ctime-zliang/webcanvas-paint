@@ -1,14 +1,7 @@
 import { Camera } from '../common/Camera'
 import { Matrix4 } from '../algorithm/geometry/matrix/Matrix4'
 import { Plane } from '../common/Plane'
-import {
-	TElementD2LineJSONData,
-	TElementD2ArcJSONData,
-	TElementD2CircleJSONData,
-	TElementD2ImageJSONData,
-	TElementD2PointJSONData,
-	TElementD2TextJSONData,
-} from '../types/Primitive'
+import { TElementD2LineJSONData, TElementD2ArcJSONData, TElementD2CircleJSONData, TElementD2ImageJSONData, TElementD2PointJSONData, TElementD2TextJSONData } from '../types/Primitive'
 import { PrimitiveBlock, PrimitiveDataBuilderGL } from './buffer/PrimitiveDataBuilderGL'
 import { D2ArcDataGL } from './primitives/d2Arc/D2ArcDataGL'
 import { D2CircleDataGL } from './primitives/d2Circle/D2CircleDataGL'

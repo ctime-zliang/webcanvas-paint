@@ -1,5 +1,8 @@
 import { ED2FontStyle } from '../../config/PrimitiveProfile'
 
+/**
+ * Canvas 绘制文本的标准像素基准尺寸
+ */
 export const CANVAS_DRAW_TEXT_STD_MM: number = 100
 
 export type TOptional = {

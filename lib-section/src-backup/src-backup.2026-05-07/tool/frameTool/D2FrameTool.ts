@@ -157,12 +157,7 @@ export class D2FrameTool extends BaseFrameTool {
 				mousePrevSourceNativePixelX = this.mouseRightPrevSourceNativePixelX
 				mousePrevSourceNativePixelY = this.mouseRightPrevSourceNativePixelY
 			}
-			if (
-				!isF &&
-				Constant.systemConfig.interactive.enableCanvasTranslateByLeftDownMove &&
-				this.isMouseLeftDwon &&
-				!Constant.systemConfig.interactive.enableCanvasSelection
-			) {
+			if (!isF && Constant.systemConfig.interactive.enableCanvasTranslateByLeftDownMove && this.isMouseLeftDwon && !Constant.systemConfig.interactive.enableCanvasSelection) {
 				isF = true
 				mousePrevSourceNativePixelX = this.mouseLeftPrevSourceNativePixelX
 				mousePrevSourceNativePixelY = this.mouseLeftPrevSourceNativePixelY
@@ -181,14 +176,8 @@ export class D2FrameTool extends BaseFrameTool {
 			this.camera.setMoveIncrement(new Vector3(offsetX / cameraZoomRatio, -offsetY / cameraZoomRatio, 0))
 			OutProfileMessage.dispatchCanvasProfileChangeMessage()
 		}
-		this.mouseRightPrevSourceNativePixelX =
-			this.mouseMiddlePrevSourceNativePixelX =
-			this.mouseLeftPrevSourceNativePixelX =
-				inputInfo.moveSourceNativePixelX
-		this.mouseRightPrevSourceNativePixelY =
-			this.mouseMiddlePrevSourceNativePixelY =
-			this.mouseLeftPrevSourceNativePixelY =
-				inputInfo.moveSourceNativePixelY
+		this.mouseRightPrevSourceNativePixelX = this.mouseMiddlePrevSourceNativePixelX = this.mouseLeftPrevSourceNativePixelX = inputInfo.moveSourceNativePixelX
+		this.mouseRightPrevSourceNativePixelY = this.mouseMiddlePrevSourceNativePixelY = this.mouseLeftPrevSourceNativePixelY = inputInfo.moveSourceNativePixelY
 		OutProfileMessage.dispatchInputsChangeMessage(inputInfo)
 		this.handler(handlerAction)
 	}
@@ -275,10 +264,7 @@ export class D2FrameTool extends BaseFrameTool {
 		} else {
 			scale = 1 / MOUSE_WHEEL_ZOOM_RATIO
 		}
-		Constant.canvasController.setCanvasZoomRatioByCanvasSourceNativePixelPos(
-			scale * this.camera.getZoomRatio(),
-			new Vector3(inputInfo.moveSourceNativePixelX, -inputInfo.moveSourceNativePixelY, 0)
-		)
+		Constant.canvasController.setCanvasZoomRatioByCanvasSourceNativePixelPos(scale * this.camera.getZoomRatio(), new Vector3(inputInfo.moveSourceNativePixelX, -inputInfo.moveSourceNativePixelY, 0))
 		Constant.messageTool.messageBus.publish(EFrameCommand.RENDER_FRAME, null)
 		OutProfileMessage.dispatchCanvasProfileChangeMessage()
 	}

@@ -77,18 +77,9 @@ export class D2ImageShapeCommand extends ElementCommand<TElement2DImageJSONViewD
 			width,
 			height,
 		} = this.itemData
-		const targetShapeItem: D2ImageShape = D2ImageShapeManager.getInstance().createShapeItem(
-			elementItemId,
-			layerItemId,
-			new Vector2(position.x, position.y),
-			imageDataURL,
-			fileHashUuid,
-			width,
-			height,
-			{
-				alpha,
-			}
-		)
+		const targetShapeItem: D2ImageShape = D2ImageShapeManager.getInstance().createShapeItem(elementItemId, layerItemId, new Vector2(position.x, position.y), imageDataURL, fileHashUuid, width, height, {
+			alpha,
+		})
 		targetShapeItem.elementItemName = elementItemName
 	}
 

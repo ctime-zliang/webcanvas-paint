@@ -2,11 +2,16 @@ import { arrayCopy } from '../../../utils/Utils'
 
 export class Matrix {
 	/**
-	 * 计算矩阵 A 与矩阵 B 的乘积
-	 * 		mA - 矩阵 A 的行数
-	 * 		nA - 矩阵 A 的列数
-	 * 		mB - 矩阵 B 的行数
-	 * 		nB - 矩阵 B 的列数
+	 * 计算矩阵 A 与矩阵 B 的乘积 C = A × B
+	 * 		输入:
+	 * 			mA 矩阵 A 的行数
+	 * 			nA 矩阵 A 的列数
+	 * 			mB 矩阵 B 的行数(必须等于 nA)
+	 * 			nB 矩阵 B 的列数
+	 * 			A 矩阵 A 的行主序数据
+	 * 			B 矩阵 B 的行主序数据
+	 * 		返回:
+	 * 			结果矩阵 C 的行主序数据
 	 */
 	public static matrixMul(mA: number, nA: number, mB: number, nB: number, A: Array<number>, B: Array<number>): Array<number> {
 		if (nA !== mB) {
@@ -40,18 +45,25 @@ export class Matrix {
 	}
 
 	/**
-	 * 依据某个数值在矩阵中的"坐标"参数, 获取其在数组中的真实索引
-	 *      例如
-	 *          A =
-	 * 			    1  2  3
-	 *    		    4  5  6
-	 *      需要获取矩阵 A 中第 2 行第 2 列的项(item = 5)在数组中的索引
-	 *      即 index = Matrix.matrixAt(3, 1, 1)
+	 * 依据某个数值在矩阵中的"坐标"参数, 获取其在一维数组中的真实索引
 	 */
 	public static matrixAt(colLen: number, rowIndex: number, columnIndex: number): number {
 		return colLen * rowIndex + columnIndex
 	}
 
+	/**
+	 * 通过高斯-约旦消元法计算矩阵的秩
+	 *
+	 * 算法 - 高斯消元(部分选主元):
+	 * 		- 对角线上如果为 0, 向下找非零行并交换(部分选主元)
+	 * 		- 用对角线元素消去同一列的其他行(行变换使矩阵趋于行阶梯形)
+	 * 		- 如果某列找不到非零主元, 秩减 1
+	 *
+	 * 矩阵秩的意义:
+	 * 		- 秩 = 线性无关行/列的最大数量
+	 * 		- 满秩(rank = min(m, n)): 矩阵可逆(方阵时)
+	 * 		- 秩亏: 方程组有无穷多解或无解
+	 */
 	public static getMatrixRankResult(
 		matrixArr: Array<number>,
 		rowLen: number,
@@ -135,6 +147,16 @@ export class Matrix {
 
 	/**
 	 * 计算当前矩阵(满足条件时)的逆矩阵
+	 *
+	 * 算法 - 增广矩阵法 (Gauss - Jordan Elimination)
+	 * 		- 构造增广矩阵 [A | I] (原矩阵拼接单位矩阵)
+	 * 		- 对增广矩阵进行高斯-约旦消元(行变换使左半部分变为单位矩阵)
+	 * 		- 消元完成后, 右半部分即为 A⁻¹
+	 * 		- 最后将对角线归一化(每行除以主元)
+	 *
+	 * 前提条件
+	 * 		- 矩阵必须为方阵 (m === n)
+	 * 		- 矩阵必须满秩 (rank === m), 否则不可逆
 	 */
 	public getInverseMatrix(): Matrix {
 		const matrixArr: Array<number> = this.data.slice(0)
@@ -166,9 +188,6 @@ export class Matrix {
 		return sum
 	}
 
-	/**
-	 * 以平铺模式生成矩阵字符串值
-	 */
 	public toString(): string {
 		let b: Array<string> = []
 		b.push(`Matrix (`)
@@ -183,9 +202,6 @@ export class Matrix {
 		return b.join('')
 	}
 
-	/**
-	 * 以格式化模式生成矩阵字符串值
-	 */
 	public toStringFormat(): string {
 		let b: Array<string> = []
 		b.push(`Matrix (`)
@@ -212,6 +228,15 @@ export class Matrix {
 
 	/**
 	 * 矩阵转置
+	 *
+	 * 定义:
+	 * 			A^T[i][j] = A[j][i]
+	 * 		将行变为列, 列变为行 m × n 矩阵转置后变为 n × m 矩阵
+	 *
+	 * 性质:
+	 * 		- (A^T)^T = A
+	 * 		- (AB)^T = B^T × A^T
+	 * 		- 正交矩阵: A^T = A⁻¹
 	 */
 	public transpose(): Matrix {
 		const colLen: number = this.n

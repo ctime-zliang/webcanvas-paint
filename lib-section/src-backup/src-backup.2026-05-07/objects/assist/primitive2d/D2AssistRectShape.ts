@@ -19,10 +19,7 @@ export function buildD2AssistRectShape(
 ): D2AssistRectShape {
 	const layerItemId: string = optional.layerItemId || EDrawLayerCode.MaskLayer
 	const elementModelItem: D2RectModel = buildD2RectModel(layerItemId, position, width, height, optional)
-	const elementShapeItem: D2AssistRectShape = new D2AssistRectShape(
-		elementModelItem,
-		typeof optional.isSolid !== 'undefined' ? optional.isSolid : false
-	)
+	const elementShapeItem: D2AssistRectShape = new D2AssistRectShape(elementModelItem, typeof optional.isSolid !== 'undefined' ? optional.isSolid : false)
 	return elementShapeItem
 }
 

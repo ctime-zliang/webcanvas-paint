@@ -48,11 +48,7 @@ export const valtioAction = {
 			}
 			case EDrwaAction.DELETE_DRAWLAYER_ITEM: {
 				topRightInfoToast(`Delete Draw-Layer: ${cmd}`)
-				messageTool.windowMessageBridge.publish(
-					`UI2CAS_EVT-SET_DRAW_LAYER`,
-					{ cmd, targetItemId: valtioStore.selectedDrawLayerItemId },
-					iframeContentWindow
-				)
+				messageTool.windowMessageBridge.publish(`UI2CAS_EVT-SET_DRAW_LAYER`, { cmd, targetItemId: valtioStore.selectedDrawLayerItemId }, iframeContentWindow)
 				break
 			}
 			case EDrwaAction.SWITCH_ACTIVE_DRAWLAYER_ITEM: {
@@ -140,11 +136,7 @@ export const valtioAction = {
 			}
 			case EDrwaAction.CLEAR_DRAWLAYER_ELEMENTS: {
 				topRightInfoToast(`Perform an action: ${cmd}`)
-				messageTool.windowMessageBridge.publish(
-					`UI2CAS_EVT-SET_TOOL`,
-					{ cmd, targetItemId: valtioStore.selectedDrawLayerItemId },
-					iframeContentWindow
-				)
+				messageTool.windowMessageBridge.publish(`UI2CAS_EVT-SET_TOOL`, { cmd, targetItemId: valtioStore.selectedDrawLayerItemId }, iframeContentWindow)
 				break
 			}
 			case EDrwaAction.CLEAR_CANVAS_ELEMENTS: {
