@@ -51,7 +51,7 @@ export class D2CoordinateUtils {
 	public setCanvasSourceNativePixelPos2ScenePhysicsPos(canvasDomSourceNativePixelPoint: TD2PointItem): TD2PointItem {
 		const [scenePixelX, scenePixelY] = this.setCanvasSourceNativePixelPos2ScenePixelPos(canvasDomSourceNativePixelPoint)
 		const scenePhysicsX: number = px2mm(scenePixelX, InsConfig.DPI[0])
-		const scenePhysicsY: number = px2mm(scenePixelY, InsConfig.DPI[0])
+		const scenePhysicsY: number = px2mm(scenePixelY, InsConfig.DPI[1])
 		return [scenePhysicsX, scenePhysicsY]
 	}
 

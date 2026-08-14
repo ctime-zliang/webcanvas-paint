@@ -109,10 +109,10 @@ export class CanvasAidedDesign extends BaseInterface {
 	}
 
 	public get gridDotAlpha(): number {
-		return AxisParam.getInstance().gridAlpha
+		return AxisParam.getInstance().gridDotAlpha
 	}
 	public set gridDotAlpha(value: number) {
-		AxisParam.getInstance().gridAlpha = value
+		AxisParam.getInstance().gridDotAlpha = value
 	}
 
 	public get axisColor(): Color {

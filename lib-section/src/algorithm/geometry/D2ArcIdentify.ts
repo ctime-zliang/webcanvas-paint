@@ -33,7 +33,7 @@ export class D2ArcIdentify {
 		const [OS, OE]: [Vector2, Vector2] = [start.sub(center).normalize(), end.sub(center).normalize()]
 		const radian: number = Math.acos(OS.dot(OE))
 		if (Math.abs(radius * radian) > D2ArcIdentify.MIN_LENGTH && radian > D2ArcIdentify.DELTA_RADIAN) {
-			return start
+			return end
 		}
 		const minRadian: number = Math.max(D2ArcIdentify.MIN_LENGTH / radius, D2ArcIdentify.DELTA_RADIAN)
 		let [startRadian, endRadian]: [number, number] = [start.getRadianByVector2(center), end.getRadianByVector2(center)]
@@ -55,7 +55,7 @@ export class D2ArcIdentify {
 		if (Math.abs(radius * radian) > D2ArcIdentify.MIN_LENGTH && radian > D2ArcIdentify.DELTA_RADIAN) {
 			return _startRadian
 		}
-		const minRadian: number = Math.max(D2ArcIdentify.MIN_LENGTH / radius)
+		const minRadian: number = Math.max(D2ArcIdentify.MIN_LENGTH / radius, D2ArcIdentify.DELTA_RADIAN)
 		if (Math.abs(sweepRadian) > Math.PI) {
 			if (sweep === ESweep.CCW) {
 				return endRadian + minRadian
@@ -90,9 +90,9 @@ export class D2ArcIdentify {
 	}
 
 	private static getRadian(sweep: ESweep, startRadian: number, endRadian: number): number {
-		const _startRadian: number = (((startRadian % Math.PI) * 2 + Math.PI * 2) % Math.PI) * 2
-		const _endRadian: number = (((endRadian % Math.PI) * 2 + Math.PI * 2) % Math.PI) * 2
-		const radian: number = sweep === ESweep.CCW ? ((_endRadian - _startRadian + Math.PI * 2) % Math.PI) * 2 : ((_startRadian - _endRadian + Math.PI * 2) % Math.PI) * 2
-		return (((radian % Math.PI) * 2 + Math.PI * 2) % Math.PI) * 2
+		const _startRadian: number = ((startRadian % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2)
+		const _endRadian: number = ((endRadian % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2)
+		const radian: number = sweep === ESweep.CCW ? (_endRadian - _startRadian + Math.PI * 2) % (Math.PI * 2) : (_startRadian - _endRadian + Math.PI * 2) % (Math.PI * 2)
+		return ((radian % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2)
 	}
 }

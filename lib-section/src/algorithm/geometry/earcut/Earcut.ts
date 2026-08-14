@@ -18,7 +18,7 @@ import { eliminateHoles } from './Utils'
  *
  * 算法复杂度:
  * 		- 基本版本: O(n²)
- * 		- Z-order 哈希优化版本: 接近 O(n·log(n))(对于大多数实际输入)
+ * 		- Z-order 哈希优化版本: 接近 O(nlog(n))(对于大多数实际输入)
  *
  * 数据结构:
  * 		使用双向循环链表表示多边形顶点:

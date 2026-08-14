@@ -53,7 +53,7 @@ export class Cdt2ds {
 	 * 			每个三角形由3个顶点索引组成, 仅包含约束区域内的三角形
 	 *
 	 * 算法步骤:
-	 *   	- monotoneTriangulates - 单调多边形三角剖分(性能瓶颈) - O(nlogn)
+	 *   	- monotoneTriangulates - 单调多边形三角剖分(性能瓶颈) - O(nlog(n))
 	 *     		将输入多边形分解为单调多边形并三角化
 	 *
 	 *   	- createTriangulation + addTriangle - 构建拓扑结构 - O(n)

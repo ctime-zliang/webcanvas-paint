@@ -12,9 +12,9 @@
  * 		- 从任何节点到其所有后代叶子节点的路径上, 黑色节点数量相同(黑高相等)
  *
  * 时间复杂度:
- * 		- 查找: O(log n)
- * 		- 插入: O(log n)
- * 		- 删除: O(log n)
+ * 		- 查找: O(lo(n))
+ * 		- 插入: O(log(n))
+ * 		- 删除: O(log(n))
  * 		- 遍历: O(n)
  *
  * 本实现特点:
@@ -89,7 +89,7 @@ function defaultCompare(a: number, b: number): number {
  *
  * 需要克隆:
  * 		持久化红黑树要求每次修改都返回新树, 保留旧树不变
- * 		只需要拷贝从根到修改点路径上的节点 (O(log n) 个), 其余节点在新旧树之间共享
+ * 		只需要拷贝从根到修改点路径上的节点 (O(log(n)) 个), 其余节点在新旧树之间共享
  *
  * 案例 - 路径拷贝:
  *     旧树:        新树(插入 X 后):
@@ -122,7 +122,7 @@ function repaint(color: ERBTREE_COLOR, node: RBTreeNode): RBTreeNode {
  * count = 1(自身) + 左子树大小 + 右子树大小
  *
  * 用途:
- * 在旋转操作后, 被旋转节点的子树结构发生变化, 需要重新统计 count 字段使得 O(log n) 的按索引查找 (at) 成为可能
+ * 在旋转操作后, 被旋转节点的子树结构发生变化, 需要重新统计 count 字段使得 O(log(n)) 的按索引查找 (at) 成为可能
  *
  * 案例:
  *       P (count = 5)
@@ -279,7 +279,7 @@ function swapNode(n: RBTreeNode, v: RBTreeNode): void {
  * fixDoubleBlack - 修复删除后的"双重黑色"问题
  *
  * 是双重黑色:
- * 		当删除一个黑色节点后, 该位置的"黑高"减少了 1, 为了维持性质 5(所有路径黑高相等), 将该位置标记为"双重黑色" (Double Black) ——即它贡献了2个黑色计数
+ * 		当删除一个黑色节点后, 该位置的"黑高"减少了 1, 为了维持性质 5(所有路径黑高相等), 将该位置标记为"双重黑色" (Double Black), 即它贡献了 2 个黑色计数
  * 		但双重黑色不是合法状态, 需要通过旋转和重着色来消除
  *
  * 修复策略 - 根据兄弟节点 (sibling) 的颜色和其子节点分情况处理
@@ -291,7 +291,7 @@ function swapNode(n: RBTreeNode, v: RBTreeNode): void {
  * 		Case 1:
  * 			兄弟 s 是黑色, 且 s 有红色子节点(远侄子红色)
  * 			n 是左孩子, s.right 为红色 - 左旋
- *        		p(?)               s(p的原色)
+ *        		p(?)               s (p 的原色)
  *       		/ \                /    \
  *     		n(BB) s(B)    →    	p(B)   z(B)
  *          	/ \          		/ \
@@ -304,15 +304,15 @@ function swapNode(n: RBTreeNode, v: RBTreeNode): void {
  *
  * 		Case 2:
  * 			兄弟 s 是黑色, 且 s 有红色子节点(近侄子红色, 远侄子非红)
- * 			n 是左孩子, s.left 为红色, s.right 非红 - 先右旋s再左旋p
- *        		p(?)               z(p的原色)
+ * 			n 是左孩子, s.left 为红色, s.right 非红 - 先右旋 s 再左旋 p
+ *        		p(?)               z (p 的原色)
  *       		/ \                /    \
  *     		 n(BB) s(B)    →    p(B)   s(B)
  *            /            		/ \      \
  *         	z(R)              n(B) zL    zR...
  *        	/ \
  *         zL  zR
- * 			RL 双旋转(先对 s 右旋, 再对 p 左旋
+ * 			RL 双旋转(先对 s 右旋, 再对 p 左旋)
  *
  * 		Case 3:
  * 			兄弟 s 是黑色, s 的两个子节点都是黑色
@@ -323,7 +323,7 @@ function swapNode(n: RBTreeNode, v: RBTreeNode): void {
  * 					将 p 变黑(补偿 n 路径丢失的黑色), s 变红(补偿 s 路径多出的黑色)
  * 					修复完成 ✓
  * 				子情况 3b: 父节点 p 为黑色
- *        				p(B)              p(BB) ← 双重黑色上移！
+ *        				p(B)              p(BB) ← 双重黑色上移
  *       				/ \        →      / \
  *    				 n(BB) s(B)        n(B) s(R)
  * 				s 变红后, p 成为新的双重黑色节点, 继续向上修复 (continue 循环)
@@ -413,9 +413,9 @@ function fixDoubleBlack(stack: Array<RBTreeNode>) {
 				 */
 				return
 			} else if (s.left && s.left.color === ERBTREE_COLOR.RED) {
-			/**
-			 * Case 2: 兄弟的近侄子 (s.left) 为红色 → RL双旋转
-			 **/
+				/**
+				 * Case 2: 兄弟的近侄子 (s.left) 为红色 → RL双旋转
+				 **/
 				s = p.right = cloneNode(s)
 				z = s.left = cloneNode(s.left)
 				/**
@@ -483,9 +483,9 @@ function fixDoubleBlack(stack: Array<RBTreeNode>) {
 					continue
 				}
 			} else {
-			/**
-			 * Case 4: 兄弟 s 为红色 → 左旋 p, 转化为 Case 1 / 2 / 3
-			 **/
+				/**
+				 * Case 4: 兄弟 s 为红色 → 左旋 p, 转化为 Case 1 / 2 / 3
+				 **/
 				s = cloneNode(s)
 				/**
 				 * p 接管 s 的左子
@@ -526,9 +526,9 @@ function fixDoubleBlack(stack: Array<RBTreeNode>) {
 				i = i + 2
 			}
 		} else {
-		/**
-		 * 分支B: n 是 p 的右孩子, 兄弟 s 在左边(镜像对称)
-		 **/
+			/**
+			 * 分支B: n 是 p 的右孩子, 兄弟 s 在左边(镜像对称)
+			 **/
 			s = p.left
 			/**
 			 * Case 1 (镜像): 兄弟的远侄子 (s.left) 为红色 → 右旋 p
@@ -562,9 +562,9 @@ function fixDoubleBlack(stack: Array<RBTreeNode>) {
 				stack[i - 1] = s
 				return
 			} else if (s.right && s.right.color === ERBTREE_COLOR.RED) {
-			/**
-			 * Case 2 (镜像): 兄弟的近侄子 (s.right) 为红色 → LR双旋转
-			 **/
+				/**
+				 * Case 2 (镜像): 兄弟的近侄子 (s.right) 为红色 → LR双旋转
+				 **/
 				s = p.left = cloneNode(s)
 				z = s.right = cloneNode(s.right)
 				p.left = z.right
@@ -608,9 +608,9 @@ function fixDoubleBlack(stack: Array<RBTreeNode>) {
 					continue
 				}
 			} else {
-			/**
-			 * Case 4 (镜像): 兄弟 s 为红色 → 右旋 p
-			 */
+				/**
+				 * Case 4 (镜像): 兄弟 s 为红色 → 右旋 p
+				 */
 				s = cloneNode(s)
 				p.left = s.right
 				s.right = p
@@ -648,12 +648,12 @@ function fixDoubleBlack(stack: Array<RBTreeNode>) {
  * 		- value: 值, 存储的实际数据
  * 		- left:  左子节点引用 (key 小于当前节点的子树)
  * 		- right: 右子节点引用 (key 大于当前节点的子树)
- * 		- count: 以此节点为根的子树节点总数(用于 O(log n) 的索引查找)
+ * 		- count: 以此节点为根的子树节点总数(用于 O(log(n)) 的索引查找)
  *
  * count 字段的作用 - Order Statistic Tree
  * 		count 使红黑树具备了"顺序统计树"的能力:
- * 			- 可以 O(log n) 找到第 k 小的元素
- * 			- 可以 O(log n) 计算某元素的排名
+ * 			- 可以 O(log(n)) 找到第 k 小的元素
+ * 			- 可以 O(log(n)) 计算某元素的排名
  */
 export class RBTreeNode {
 	private _color: ERBTREE_COLOR
@@ -721,7 +721,7 @@ export class RBTreeNode {
  * 		每次 insert/remove 操作都返回一棵新树, 原树保持不变
  * 		通过"路径拷贝"实现的: 只复制从根到修改节点的路径上的节点, 其余节点在新旧树之间共享
  *
- * 空间复杂度: 每次修改 O(log n) 额外空间(路径长度)
+ * 空间复杂度: 每次修改 O(log(n)) 额外空间(路径长度)
  *
  * 使用示例：
  * ```typescript
@@ -894,9 +894,9 @@ export class RBTree {
 	 * 			新节点是红色:
 	 * 				- 插入红色节点不会违反性质5(黑高不变), 只可能违反性质4(连续红色)
 	 * 				- 修复性质 4 比修复性质5简单得多
-	 * 		- 阶段2: 路径拷贝
+	 * 		- 阶段 2: 路径拷贝
 	 * 			从插入点向上, 拷贝路径上的所有节点(持久化要求), 同时将每个祖先节点的 count + 1
-	 * 		- 阶段3: 修复红黑性质
+	 * 		- 阶段 3: 修复红黑性质
 	 * 			从新插入的红色节点开始向上检查, 如果出现"父子都为红色"的违规, 根据叔节点的颜色分情况处理:
 	 * 				情况 A:
 	 * 					叔节点为红色 → 重着色 (Recoloring)
@@ -905,7 +905,7 @@ export class RBTree {
 	 *    			 	p(R)   uncle(R) → p(B)   uncle(B)
 	 *  			 	/                 /
 	 *  		   	  n(R)              n(R)
-	 * 					父和叔变黑, 祖父变红, 然后检查祖父是否违规(s -= 1 继续循环)
+	 * 					父和叔变黑, 祖父变红, 然后检查祖父是否违规 (s -= 1 继续循环)
 	 * 				情况 B:
 	 * 					叔节点为黑色 / null → 旋转 (Rotation)
 	 * 					B1:
@@ -916,7 +916,7 @@ export class RBTree {
 	 *  			 		/                           /  \
 	 *  				 n(R)                         pR   uncle
 	 * 					B2:
-	 * 						LR 型 (n 是 p 的右子, p 是 pp 的左子)→ 先左旋p再右旋pp
+	 * 						LR 型 (n 是 p 的右子, p 是 pp 的左子)→ 先左旋 p 再右旋 pp
 	 *       					pp(B)              n(B)
 	 *     						/    \            /    \
 	 *    					p(R)   uncle  →   p(R)   pp(R)
@@ -925,7 +925,7 @@ export class RBTree {
 	 * 					B3:
 	 * 						RR 型(镜像 LL) → 左旋 pp
 	 * 					B4:
-	 * 						RL 型(镜像 LR) → 先右旋p再左旋pp
+	 * 						RL 型(镜像 LR) → 先右旋 p 再左旋 pp
 	 *
 	 * 			旋转后修复完成 (break), 最后确保根为黑色
 	 */
@@ -993,7 +993,7 @@ export class RBTree {
 			/**
 			 * 当前节点
 			 */
-			let n: RBTreeNode = n_stack[s] //
+			let n: RBTreeNode = n_stack[s]
 			/**
 			 * 如果父是黑色或当前节点是黑色, 不违反性质 4, 停止
 			 */
@@ -1095,9 +1095,9 @@ export class RBTree {
 					}
 				}
 			} else {
-			/**
-			 * p 是 pp 的右孩子(镜像对称)
-			 **/
+				/**
+				 * p 是 pp 的右孩子(镜像对称)
+				 **/
 				if (p.right === n) {
 					/**
 					 * RR 型
@@ -1188,7 +1188,7 @@ export class RBTree {
 	}
 	/**
 	 * 按索引查找 - 返回第 idx 小的元素的迭代器
-	 * 利用每个节点的 count 字段实现 O(log n) 的索引查找
+	 * 利用每个节点的 count 字段实现 O(log(n)) 的索引查找
 	 *
 	 * 算法:
 	 * 		从根开始, 对于当前节点:
@@ -1393,7 +1393,7 @@ export class RBTree {
 
 	/**
 	 * get - 根据 key 获取对应的 value
-	 * 标准 BST 查找, O(log n)
+	 * 标准 BST 查找, O(log(n))
 	 */
 	public get(key: RBTreeNode): any {
 		let n: RBTreeNode = this.root
@@ -1416,13 +1416,13 @@ export class RBTree {
  * RedBlackTreeIterator - 红黑树迭代器
  *
  * 设计思路:
- * 		迭代器通过维护一个从根到当前节点的路径栈(stack)来记录位置
+ * 		迭代器通过维护一个从根到当前节点的路径栈 (stack) 来记录位置
  * 		stack 的最后一个元素就是当前指向的节点
  *
  * 这种设计允许:
  * 		- O(1) 访问当前节点
  * 		- 均摊 O(1) 的 next/prev 操作
- * 		- O(log n) 的 update/remove 操作(需要路径拷贝)
+ * 		- O(log(n)) 的 update/remove 操作(需要路径拷贝)
  *
  * 迭代器遍历案例:
  *       			 20
@@ -1622,12 +1622,12 @@ class RedBlackTreeIterator {
 			}
 			return new RBTree(this.tree.compare, cstack[0])
 		} else {
-		/**
-		 * Case B: 目标是黑色, 且有一个子节点(该子节点必为红色)
-		 **/
-		/**
-		 * 用子节点替换目标, 并将子节点染黑
-		 **/
+			/**
+			 * Case B: 目标是黑色, 且有一个子节点(该子节点必为红色)
+			 **/
+			/**
+			 * 用子节点替换目标, 并将子节点染黑
+			 **/
 			if (n.left || n.right) {
 				if (n.left) {
 					swapNode(n, n.left)
@@ -1640,9 +1640,9 @@ class RedBlackTreeIterator {
 				}
 				return new RBTree(this.tree.compare, cstack[0])
 			} else if (cstack.length === 1) {
-			/**
-			 * Case C: 目标是黑色叶子 → 双重黑色问题
-			 */
+				/**
+				 * Case C: 目标是黑色叶子 → 双重黑色问题
+				 */
 				/**
 				 * 删除的是根节点(也是唯一节点) → 树变空
 				 */
@@ -1683,11 +1683,12 @@ class RedBlackTreeIterator {
 	 *   		  [10]   30    → 10 有右子 15, 进入 15
 	 *   		  /  \         → 15 无左子, 停在 15
 	 *  		 5   15
+	 *
 	 * 		- 从节点 15 移动到下一个:
 	 *       		20
 	 *      	   /  \
 	 *    		  10    30    → 15 无右子, 弹出 15
-	 *   		 /  \         → stack 顶是 10, 10.righ t=== 15, 弹出 10
+	 *   		 /  \         → stack 顶是 10, 10.right === 15, 弹出 10
 	 *  		5  [15]       → stack 顶是 20, 20.left === 10 (不是 right), 停在 20
 	 */
 	public next(): void {
@@ -1752,7 +1753,7 @@ class RedBlackTreeIterator {
 	}
 
 	/**
-	 * update - 更新当前迭代器指向节点的 value(不改变 key)
+	 * update - 更新当前迭代器指向节点的 value (不改变 key)
 	 * 通过路径拷贝实现持久化, 返回一棵新树
 	 */
 	public update(value: any): RBTree {
@@ -1872,11 +1873,11 @@ Object.defineProperty(RedBlackTreeIterator.prototype, 'index', {
 /**
  * createRBTree - 工厂函数, 创建一棵空的红黑树
  *
- * 	输入:
- * 		compare: 自定义比较函数, 决定元素的排序方式
- *   		- 返回负数: a < b
- *   		- 返回正数: a > b
- *   		- 返回 0: a === b
+ * 		输入:
+ * 			compare: 自定义比较函数, 决定元素的排序方式
+ *   			- 返回负数: a < b
+ *   			- 返回正数: a > b
+ *   			- 返回 0: a === b
  *
  * 使用示例:
  * ```typescript

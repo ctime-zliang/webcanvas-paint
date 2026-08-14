@@ -170,7 +170,7 @@ export function earcutLinked(ear: TEarNode, triangles: Array<number>, dim: numbe
  *
  * 使用归并排序
  * 		- 链表不支持随机访问, 归并排序只需顺序遍历
- * 		- 时间复杂度稳定 O(n·log(n))
+ * 		- 时间复杂度稳定 O(nlog(n))
  * 		- 空间复杂度 O(1) (原地排序, 只修改指针)
  *
  * Z-order 排序的作用:

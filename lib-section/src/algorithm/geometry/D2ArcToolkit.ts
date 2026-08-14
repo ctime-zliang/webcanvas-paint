@@ -113,7 +113,7 @@ export class D2ArcToolkit {
 		const [sng, eng]: [number, number] = [sRadian % (Math.PI * 2), eRadian % (Math.PI * 2)]
 		const [sng1, eng1]: [number, number] = [sweep === ESweep.CCW ? sng : eng, sweep === ESweep.CCW ? eng : sng]
 		const [startRadian, endRadian]: [number, number] = [sng1, eng1]
-		const sweepRadian: number = eng1 > sng1 ? eng1 - sng1 : eng1 - sng1 + Math.PI
+		const sweepRadian: number = eng1 > sng1 ? eng1 - sng1 : eng1 - sng1 + Math.PI * 2
 		/**
 		 * 圆心到平面上任意点的向量, 并计算其单位向量
 		 */

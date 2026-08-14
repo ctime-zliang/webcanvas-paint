@@ -23,8 +23,8 @@
  *   	errorWeight(P, A, B) = |cross(PA, PB)| / |AB| = 点 P 到直线 AB 的垂直距离
  *   	该值越小说明顶点 P 越接近其前后两点的连线, 移除后形状变化越小
  *
- * 时间复杂度: O(n log n)
- *   	- 堆操作: O(log n)
+ * 时间复杂度: O(n log(n))
+ *   	- 堆操作: O(log(n))
  *   	- 每个顶点最多被处理一次: O(n)
  */
 
@@ -43,7 +43,7 @@ import { orient } from '../../../algorithm/geometry/Orients'
  *
  * 算法:
  *   	weight = |orient(base, a, b)| / |AB|
- *   		orient() 返回三角形 (base, a, b) 的有符号面积的2倍
+ *   		orient() 返回三角形 (base, a, b) 的有符号面积的 2 倍
  *   		|AB| = sqrt((ax - bx)² + (ay - by)²) 为前驱到后继的距离
  *  		 weight = 面积 / 底边长 = 三角形的高 = 点到线段的距离
  *
@@ -56,7 +56,7 @@ import { orient } from '../../../algorithm/geometry/Orients'
  */
 function errorWeight(base: TD2PointItem, a: Array<number>, b: Array<number>): number {
 	/**
-	 * orient 返回三角形有符号面积的2倍, 取绝对值作为面积度量
+	 * orient 返回三角形有符号面积的 2 倍, 取绝对值作为面积度量
 	 */
 	const area: number = Math.abs(orient(base, a, b))
 	/**
@@ -232,7 +232,7 @@ function unique(cells: Array<Array<number>>): Array<Array<number>> {
  * 轮廓线段简化控制
  *
  * 简化流程:
- *   	- 构建有向图: 从 cells(边) 中提取 inv / outv 关系
+ *   	- 构建有向图: 从 cells (边) 中提取 inv / outv 关系
  *   	- 计算所有顶点权重, 构建最小堆
  *   	- 循环弹出最小权重顶点并消除, 直到最小权重 > minArea
  *   	- 用存活顶点重建紧凑的顶点数组和边数组
@@ -259,9 +259,9 @@ export class Simplifys {
 	 *   		positions: [[0, 0], [1, 0.1], [2, 0], [3, 0.05], [4, 0]]
 	 *   		cells: [[0, 1], [1, 2], [2, 3], [3, 4]]
 	 *   		minArea = 0.15
-	 *   		// 点 1 的权重: 距离(0, 0) - (2, 0)连线 = 0.1 < 0.15  // 消除
-	 *   		// 点 3 的权重: 距离(2, 0) - (4, 0)连线 = 0.05 < 0.15  // 消除
-	 *   		结果: positions = [[0, 0], [2, 0],[4, 0]], edges = [[0, 1], [1, 2]]
+	 *   		// 点 1 的权重: 距离 (0, 0) - (2, 0) 连线 = 0.1 < 0.15  // 消除
+	 *   		// 点 3 的权重: 距离 (2, 0) - (4, 0) 连线 = 0.05 < 0.15  // 消除
+	 *   		结果: positions = [[0, 0], [2, 0], [4, 0]], edges = [[0, 1], [1, 2]]
 	 */
 	public static proecss(
 		cells: Array<TD2EdgeItem>,
@@ -318,7 +318,7 @@ export class Simplifys {
 		/**
 		 * 计算顶点 i 的误差权重
 		 * 		输出:
-		 * 			Infinity 表示不可移除(dead /端点/分叉点)
+		 * 			Infinity 表示不可移除 (dead /端点/分叉点)
 		 */
 		const computeWeight = (i: number): number => {
 			if (dead[i]) {
@@ -517,7 +517,7 @@ export class Simplifys {
 		/**
 		 * 龟兔赛跑路径压缩 (Floyd's Tortoise and Hare + Path Compression)
 		 *
-		 * 沿着 seq[] 链表找到从 start 出发的第一个存活(非dead)节点, 并压缩中间所有 dead 节点的指针(路径压缩优化)
+		 * 沿着 seq[] 链表找到从 start 出发的第一个存活(非 dead )节点, 并压缩中间所有 dead 节点的指针(路径压缩优化)
 		 * 重建边时, 原始边的端点可能已被消除, 需要找到该端点链上最近的存活节点作为替代
 		 *
 		 * 龟兔算法确保: 即使链中存在环也不会无限循环
@@ -526,7 +526,7 @@ export class Simplifys {
 		 *   	- inv = [_, _, 0, 2, 3], dead = [F, T, T, F, F]
 		 *   	- tortoiseHare(inv, 4)  // 寻找4的前驱链中第一个存活节点
 		 *   	- 4 → inv[4] = 3 (alive)  // 返回 3
-		 *   	- tortoiseHare(inv, 3)  // 3 → inv[3] = 2(dead) → inv[2] = 0 (alive) → 返回 0
+		 *   	- tortoiseHare(inv, 3)  // 3 → inv[3] = 2 (dead) → inv[2] = 0 (alive) → 返回 0
 		 */
 		const tortoiseHare = (seq: Array<number>, start: number): number => {
 			if (seq[start] < 0) {
@@ -627,7 +627,7 @@ export class Simplifys {
 				heap.push(i)
 			} else {
 				/**
-				 * 权重无限 = 端点/分叉点/dead, 不加入堆
+				 * 权重无限 = 端点 / 分叉点 / dead, 不加入堆
 				 */
 				index[i] = -1
 			}

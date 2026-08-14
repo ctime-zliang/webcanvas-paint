@@ -187,7 +187,7 @@ export class EventsLoader extends ToolChain<InputInfo> {
 				this.inputInfo.middleDownSourceNativePixelX = sourceOffsetX
 				this.inputInfo.middleDownSourceNativePixelY = sourceOffsetY
 			}
-			if (this.inputInfo.leftMouseDown === false) {
+			if (this.inputInfo.rightMouseDown === false) {
 				this.inputInfo.rightDownSourceNativePixelX = sourceOffsetX
 				this.inputInfo.rightDownSourceNativePixelY = sourceOffsetY
 			}
@@ -207,7 +207,7 @@ export class EventsLoader extends ToolChain<InputInfo> {
 				this.inputInfo.middleDownSourceNativePixelX = null!
 				this.inputInfo.middleDownSourceNativePixelY = null!
 			}
-			if (this.inputInfo.leftMouseDown === false) {
+			if (this.inputInfo.rightMouseDown === false) {
 				this.inputInfo.rightDownSourceNativePixelX = null!
 				this.inputInfo.rightDownSourceNativePixelY = null!
 			}
