@@ -1,7 +1,7 @@
 import { Sweep, Color, D2CircleToolkit, Vector2, WebCanvas } from '../../../../src/Main'
-import { createPoints } from '../utils/createPoints'
+import { createShapePoints } from '../utils/createPrimitives'
 
-export function d2CircleToolkitTest01(webCanvas: WebCanvas, layerItemId: string): void {
+export function circleToolkitTest01(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
 	const [pointA, pointB, pointC]: [Vector2, Vector2, Vector2] = [new Vector2(-50, -50), new Vector2(-40, 30), new Vector2(50, 0)]
 	/**
@@ -26,7 +26,7 @@ export function d2CircleToolkitTest01(webCanvas: WebCanvas, layerItemId: string)
 		isEnableSelect: false,
 	})
 	/* ... */
-	createPoints(webCanvas, layerItemId, [
+	createShapePoints(webCanvas, layerItemId, [
 		{ label: `pointA`, position: pointA },
 		{ label: `pointB`, position: pointB },
 		{ label: `pointC`, position: pointC },

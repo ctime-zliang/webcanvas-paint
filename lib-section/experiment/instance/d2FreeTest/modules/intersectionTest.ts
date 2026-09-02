@@ -1,5 +1,5 @@
 import { Arc, Color, D2Intersection, Line, SWEEP, Vector2, WebCanvas } from '../../../../src/Main'
-import { createPoints } from '../utils/createPoints'
+import { createShapePoints } from '../utils/createPrimitives'
 
 export function intersectionTest01(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
@@ -23,7 +23,7 @@ export function intersectionTest01(webCanvas: WebCanvas, layerItemId: string): v
 		})
 	}
 	/* ... */
-	createPoints(webCanvas, layerItemId, [
+	createShapePoints(webCanvas, layerItemId, [
 		{ label: `lineAStartPoint`, position: lineAStartPoint },
 		{ label: `lineAEndPoint`, position: lineAEndPoint },
 		{ label: `lineBStartPoint`, position: lineBStartPoint },
@@ -48,7 +48,7 @@ export function intersectionTest02(webCanvas: WebCanvas, layerItemId: string): v
 	const intersections: { count: number; points: Array<Vector2> } = D2Intersection.getIntersectionsOfPrimitives(lineA, arcA)
 	console.log(intersections)
 	for (let i: number = 0; i < intersections.points.length; i++) {
-		createPoints(webCanvas, layerItemId, [{ label: `Inter${i}`, position: intersections.points[i] }])
+		createShapePoints(webCanvas, layerItemId, [{ label: `Inter${i}`, position: intersections.points[i] }])
 	}
 }
 
@@ -69,6 +69,6 @@ export function intersectionTest03(webCanvas: WebCanvas, layerItemId: string): v
 	const intersections: { count: number; points: Array<Vector2> } = D2Intersection.getIntersectionsOfPrimitives(arcA, arcB)
 	console.log(intersections)
 	for (let i: number = 0; i < intersections.points.length; i++) {
-		createPoints(webCanvas, layerItemId, [{ label: `Inter${i}`, position: intersections.points[i] }])
+		createShapePoints(webCanvas, layerItemId, [{ label: `Inter${i}`, position: intersections.points[i] }])
 	}
 }

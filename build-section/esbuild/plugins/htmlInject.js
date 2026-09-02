@@ -38,11 +38,14 @@ module.exports = function (publicPath, templatePath, optional = {}) {
 						linkTagList.push(`<link rel="stylesheet" href="${publicPath}${cssFiles[i]}">`)
 					}
 				}
+				const jsFilesSorter = optional.jsFilesSorter || null
+				const filteredJsFiles = jsFiles.filter(jsFilesFilter)
+				if (jsFilesSorter) {
+					filteredJsFiles.sort(jsFilesSorter)
+				}
 				const scriptTagList = []
-				for (let i = 0; i < jsFiles.length; i++) {
-					if (jsFilesFilter(jsFiles[i])) {
-						scriptTagList.push(`<script src="${publicPath}${jsFiles[i]}"></script>`)
-					}
+				for (let i = 0; i < filteredJsFiles.length; i++) {
+					scriptTagList.push(`<script src="${publicPath}${filteredJsFiles[i]}"></script>`)
 				}
 				if (html.includes('</head>')) {
 					html = html.replace('</head>', `  ${linkTagList.join('\n    ')}\n  </head>`)

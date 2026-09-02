@@ -1,4 +1,3 @@
-import { ECanvasD2LineCap } from '../../../engine/config/PrimitiveProfile'
 import { Color, POINT_EVENT_NAME, Sweep, SWEEP, Vector2, WebCanvas } from '../../../../src/Main'
 
 export function drawArcItemsTest01(webCanvas: WebCanvas, layerItemId: string): void {

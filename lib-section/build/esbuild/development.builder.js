@@ -5,6 +5,8 @@ const BASE_DIR = '../lib-section'
 
 const bs = new BuilderService('WebCanvas LIB', {
 	isEnableDevServer: false,
+	libEntryPoints: [{ in: BASE_DIR + '/src/Main.ts', out: 'canvas-lib' }],
+	libGlobalName: 'WebCanvasLib',
 	entryPoints: [{ in: BASE_DIR + '/experiment/index.ts', out: 'index' }],
 	workerEntryPoints: [
 		{

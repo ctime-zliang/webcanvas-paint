@@ -120,7 +120,7 @@ export class Arc extends Primitive {
 	}
 
 	/**
-	 * 求圆/圆弧上对应弧度的点坐标
+	 * 求圆弧上对应弧度的点坐标
 	 */
 	public pointOn(radian: number): Vector2 {
 		radian %= Math.PI * 2
@@ -460,7 +460,8 @@ export class Arc extends Primitive {
 	}
 
 	/**
-	 * 圆弧离散采样, 限制折线与圆弧之间的最大误差不超过 resolution
+	 * 圆弧离散采样
+	 * 		限制折线与圆弧之间的最大误差不超过 resolution
 	 */
 	public toPoints(resolution: number): Array<Vector2> {
 		if (this.radius <= resolution) {

@@ -1,5 +1,5 @@
 import { Vector2, WebCanvas } from '../../../../src/Main'
-import { createPoints } from '../utils/createPoints'
+import { createShapePoints } from '../utils/createPrimitives'
 
 export function vector2Test01(webCanvas: WebCanvas, layerItemId: string): void {
 	const { d2ElementController } = webCanvas
@@ -17,7 +17,7 @@ export function vector2Test01(webCanvas: WebCanvas, layerItemId: string): void {
 	console.log(Vector2.calculateRadianCCWByTwoVector2(pointA, pointB))
 	console.log('%c </T>', 'color: #ff6600')
 	/* ... */
-	createPoints(webCanvas, layerItemId, [
+	createShapePoints(webCanvas, layerItemId, [
 		{ label: `pointA`, position: pointA },
 		{ label: `pointB`, position: pointB },
 	])

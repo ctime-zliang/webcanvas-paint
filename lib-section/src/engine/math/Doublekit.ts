@@ -20,15 +20,15 @@ export class DoubleKit {
 	/**
 	 * 宽松容差: 1e-6, 用于图形级别的粗略比较
 	 */
-	public static eps44: number = 1e-6
+	public static eps3: number = 1e-6
 	/**
-	 * 规整化精度因子: 10^8 (保留 8 位小数)
+	 * 规整化精度因子: 10^10 (保留 10 位小数)
 	 */
-	public static precision1: number = 1e8
+	public static precision1: number = 1e10
 	/**
-	 * 备用精度因子: 10^10 (保留 10 位小数)
+	 * 备用精度因子: 10^8 (保留 8 位小数)
 	 */
-	public static precision2: number = 1e10
+	public static precision2: number = 1e8
 
 	/**
 	 * 数值规整化 - 将浮点数精确到 8 位小数
@@ -46,7 +46,7 @@ export class DoubleKit {
 	 *   	- regular(0)  // 0
 	 */
 	public static regular(dis: number = 0): number {
-		return Math.round(dis * this.precision1) / this.precision1
+		return Math.round(dis * this.precision2) / this.precision2
 	}
 
 	/**

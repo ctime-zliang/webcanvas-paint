@@ -40,13 +40,14 @@ import {
 	d2LineToolkitTest08,
 	d2LineToolkitTest09,
 	d2LineToolkitTest10,
-} from './modules/d2LineToolkitTest'
-import { d2CircleToolkitTest01 } from './modules/d2CircleToolkitTest'
-import { d2ArcToolkitTest01, d2ArcToolkitTest02, d2ArcToolkitTest03, d2ArcToolkitTest04, d2ArcToolkitTest05 } from './modules/d2ArcToolkitTest'
+} from './modules/lineToolkitTest'
+import { circleToolkitTest01 } from './modules/circleToolkitTest'
+import { arcToolkitTest01, arcToolkitTest02, arcToolkitTest03, arcToolkitTest04, arcToolkitTest05 } from './modules/arcToolkitTest'
 import { vector2Test01 } from './modules/vector2Test'
 import { lineTest01, lineTest02, lineTest03 } from './modules/lineTest'
-import { arcTest01, arcTest02, arcTest03, arcTest04, arcTest05, arcTest06, arcTest07 } from './modules/arcTest'
-import { polylineTest01, polylineTest02 } from './modules/polylineTest'
+import { arcTest01, arcTest02, arcTest03, arcTest04, arcTest05, arcTest06, arcTest07, arcTest08, arcTest09, arcTest10 } from './modules/arcTest'
+import { polylineTest01, polylineTest02, polylineTest03, polylineTest04, polylineTest05, polylineTest06, polylineTest07 } from './modules/polylineTest'
+import { triangleTest01, triangleTest02 } from './modules/triangleTest'
 
 async function initMessageHandle(webCanvas: WebCanvas): Promise<void> {
 	const { messageTool, drawLayerController, d2ElementController, operationController } = webCanvas
@@ -242,16 +243,27 @@ export function main(): void {
 		// lineTest02(webCanvas, layerItem01Id)
 		// lineTest03(webCanvas, layerItem01Id)
 
-		//arcTest01(webCanvas, layerItem01Id)
+		// arcTest01(webCanvas, layerItem01Id)
 		// arcTest02(webCanvas, layerItem01Id)
 		// arcTest03(webCanvas, layerItem01Id)
 		// arcTest04(webCanvas, layerItem01Id)
 		// arcTest05(webCanvas, layerItem01Id)
 		// arcTest06(webCanvas, layerItem01Id)
 		// arcTest07(webCanvas, layerItem01Id)
+		// arcTest08(webCanvas, layerItem01Id)
+		// arcTest09(webCanvas, layerItem01Id)
+		// arcTest10(webCanvas, layerItem01Id)
 
 		// polylineTest01(webCanvas, layerItem01Id)
-		polylineTest02(webCanvas, layerItem01Id)
+		// polylineTest02(webCanvas, layerItem01Id)
+		// polylineTest03(webCanvas, layerItem01Id)
+		// polylineTest04(webCanvas, layerItem01Id)
+		// polylineTest05(webCanvas, layerItem01Id)
+		// polylineTest06(webCanvas, layerItem01Id)
+		// polylineTest07(webCanvas, layerItem01Id)
+
+		// triangleTest01(webCanvas, layerItem01Id)
+		triangleTest02(webCanvas, layerItem01Id)
 
 		// d2LineToolkitTest01(webCanvas, layerItem01Id)
 		// d2LineToolkitTest02(webCanvas, layerItem01Id)
@@ -264,13 +276,13 @@ export function main(): void {
 		// d2LineToolkitTest09(webCanvas, layerItem01Id)
 		// d2LineToolkitTest10(webCanvas, layerItem01Id)
 
-		// d2CircleToolkitTest01(webCanvas, layerItem01Id)
+		// circleToolkitTest01(webCanvas, layerItem01Id)
 
-		// d2ArcToolkitTest01(webCanvas, layerItem01Id)
-		// d2ArcToolkitTest02(webCanvas, layerItem01Id)
-		// d2ArcToolkitTest03(webCanvas, layerItem01Id)
-		// d2ArcToolkitTest04(webCanvas, layerItem01Id)
-		// d2ArcToolkitTest05(webCanvas, layerItem01Id)
+		// arcToolkitTest01(webCanvas, layerItem01Id)
+		// arcToolkitTest02(webCanvas, layerItem01Id)
+		// arcToolkitTest03(webCanvas, layerItem01Id)
+		// arcToolkitTest04(webCanvas, layerItem01Id)
+		// arcToolkitTest05(webCanvas, layerItem01Id)
 
 		// intersectionTest01(webCanvas, layerItem01Id)
 		// intersectionTest02(webCanvas, layerItem01Id)

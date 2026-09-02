@@ -63,7 +63,7 @@ function endpointIsOn(endPoint: Vector2, arc: Arc, nearPoint: Vector2, farPoint:
 
 export class D2Intersection {
 	/**
-	 * 计算 primitiveA �?primitiveB 的交点数�?
+	 * 计算图元 primitiveA 与图元 primitiveB 的交点数
 	 */
 	public static getIntersectionsOfPrimitives(primitiveA: Primitive, primitiveB: Primitive): { count: number; points: Array<Vector2> } {
 		if (primitiveA instanceof Line && primitiveB instanceof Line) {
@@ -82,7 +82,7 @@ export class D2Intersection {
 	}
 
 	/**
-	 * 计算线段 lineA 与线�?lineB 的交点数�?
+	 * 计算线段 lineA 与线段 lineB 的交点数
 	 */
 	public static getIntersectionsOfLines(lineA: Line, lineB: Line): { count: number; points: Array<Vector2> } {
 		if (lineA.isPoint()) {
@@ -116,7 +116,7 @@ export class D2Intersection {
 		const result: { count: number; points: Array<Vector2> } = { count: 0, points: [] }
 		if (DoubleKit.eq(cross1, 0) && DoubleKit.eq(cross2, 0)) {
 			/**
-			 * 两线段重�?
+			 * 两线段重合
 			 **/
 			if (DoubleKit.eq(inters.width, 0)) {
 				if (DoubleKit.eq(inters.height, 0)) {
@@ -145,7 +145,7 @@ export class D2Intersection {
 			}
 		} else if (DoubleKit.eq(cross1, 0)) {
 			/**
-			 * 在线段端点相�?
+			 * 在线段端点
 			 **/
 			if (inters.isContainsPoint(new Vector2(x1, y1))) {
 				result.points.push(new Vector2(x1, y1))
@@ -153,7 +153,7 @@ export class D2Intersection {
 			}
 		} else if (DoubleKit.eq(cross2, 0)) {
 			/**
-			 * 在线段端点相�?
+			 * 在线段端点相交
 			 **/
 			if (inters.isContainsPoint(new Vector2(x2, y2))) {
 				result.points.push(new Vector2(x2, y2))
@@ -162,7 +162,7 @@ export class D2Intersection {
 		} else {
 			/**
 			 * 线段不重合且不在端点相交
-			 * 		参数方程求线段交�?
+			 * 		参数方程求线段交点
 			 * 			cross1 = (x3 - x1) * (y4 - y3) - (x4 - x3) * (y3 - y1)
 			 * 			cross2 = (x3 - x2) * (y4 - y3) - (x4 - x3) * (y3 - y2)
 			 **/
@@ -178,7 +178,7 @@ export class D2Intersection {
 	}
 
 	/**
-	 * 计算线段 line 与圆�?arc 的交点数�?
+	 * 计算线段 line 与圆弧 arc 的交点数
 	 */
 	public static getIntersectionsOfLineAndArc(line: Line, arc: Arc): { count: number; points: Array<Vector2> } {
 		let inters: BBox2 = arc.bbox2.getIntersection(line.bbox2)
@@ -196,7 +196,7 @@ export class D2Intersection {
 		const result: { count: number; points: Array<Vector2> } = { count: 0, points: [] }
 		if (state1 === -1 && state2 === -1) {
 			/**
-			 * 线段的两个端点都在圆弧内�? 则不相交
+			 * 线段的两个端点都在圆弧内部, 则不相交
 			 **/
 			return result
 		}
@@ -213,16 +213,16 @@ export class D2Intersection {
 			 * 线段的两个端点都在圆弧外
 			 **/
 			/**
-			 * 过圆弧圆心作垂直于线�?L 的垂�?LO
+			 * 过圆弧圆心作垂直于线段 L 的垂足 LO
 			 */
 			const footPoint: Vector2 = D2LineToolkit.calcFootOfPoint2Line(line, arc.centerPoint).point
 			/**
-			 * 圆弧圆心到线�?L 的距�?
+			 * 圆弧圆心到线段 L 的距离
 			 */
 			const distance: number = footPoint.distance(arc.centerPoint)
 			if (DoubleKit.greater(distance, r)) {
 				/**
-				 * 圆心到线�?或其延长�?的距离大于半�?
+				 * 圆心到线段或其延长线的距离大于半径
 				 **/
 				return result
 			}
@@ -266,11 +266,11 @@ export class D2Intersection {
 			}
 		} else {
 			/**
-			 * 过圆弧圆心作垂直于线�?L 的垂�?LO
+			 * 过圆弧圆心作垂直于线段 L 的垂足 LO
 			 */
 			const foot: Vector2 = D2LineToolkit.calcFootOfPoint2Line(line, arc.centerPoint).point
 			/**
-			 * 圆弧圆心到线�?L 的距�?
+			 * 圆弧圆心到线段 L 的距离?
 			 */
 			const distance: number = foot.distance(arc.centerPoint)
 			if (DoubleKit.eq(distance, r)) {
@@ -383,7 +383,7 @@ export class D2Intersection {
 	}
 
 	/**
-	 * 计算线段 line (含延长线)与圆�?arc 的交点数�?
+	 * 计算线段 line (含延长线)与圆弧 arc 的交点数
 	 */
 	public static getIntersectionsOfExtendLineAndArc(line: Line, arc: Arc): { count: number; points: Array<Vector2> } {
 		const [cx, cy, r, r2]: [number, number, number, number] = [arc.centerPoint.x, arc.centerPoint.y, arc.radius, arc.radius * arc.radius]
@@ -394,7 +394,7 @@ export class D2Intersection {
 		const result: { count: number; points: Array<Vector2> } = { count: 0, points: [] }
 		if (state1 === -1 && state2 === -1) {
 			/**
-			 * 线段的两个端点都在圆弧内�? 则不相交
+			 * 线段的两个端点都在圆弧内部, 则不相交
 			 **/
 			return result
 		}
@@ -411,16 +411,16 @@ export class D2Intersection {
 			 * 线段的两个端点都在圆弧外
 			 **/
 			/**
-			 * 过圆弧圆心作垂直于线�?L 的垂�?LO
+			 * 过圆弧圆心作垂直于线段 L 的垂足 LO
 			 */
 			const foot: Vector2 = D2LineToolkit.calcFootOfPoint2Line(line, arc.centerPoint).point
 			/**
-			 * 圆弧圆心到线�?L 的距�?
+			 * 圆弧圆心到线段 L 的距离
 			 */
 			const distance: number = foot.distanceSquare(arc.centerPoint)
 			if (DoubleKit.greater(distance, r2)) {
 				/**
-				 * 圆心到线�?或其延长�?的距离大于半�?
+				 * 圆心到线段或其延长度的距离大于半径
 				 **/
 				return result
 			}
@@ -466,7 +466,7 @@ export class D2Intersection {
 			}
 		} else {
 			/**
-			 * 过圆弧圆心作垂直于线�?L 的垂�?LO
+			 * 过圆弧圆心作垂直于线段 L 的垂足 LO
 			 */
 			const foot: Vector2 = D2LineToolkit.calcFootOfPoint2Line(line, arc.centerPoint).point
 			if (state1 === 0) {
@@ -509,7 +509,7 @@ export class D2Intersection {
 	}
 
 	/**
-	 * 计算圆弧 arcA 与圆�?arcB 的交点数�?
+	 * 计算圆弧 arcA 与圆弧 arcB 的交点数
 	 */
 	public static getIntersectionsOfArcs(arcA: Arc, arcB: Arc): { count: number; points: Array<Vector2> } {
 		const [x1, y1]: [number, number] = [arcA.centerPoint.x, arcA.centerPoint.y]
@@ -528,7 +528,7 @@ export class D2Intersection {
 		}
 		if (DoubleKit.eq(deltaR, 0) && DoubleKit.eq(d, 0)) {
 			/**
-			 * 两圆弧重�?
+			 * 两圆弧重合
 			 **/
 			let p: Vector2 = null!
 			if (D2ArcToolkit.isPointOnArc(arcA, arcB.startPoint)) {
@@ -564,7 +564,7 @@ export class D2Intersection {
 		}
 		if (DoubleKit.eq(d, R2)) {
 			/**
-			 * 两圆弧外�?
+			 * 两圆弧外切
 			 **/
 			const checkPoints: Array<Vector2> = checkArcEndpoints(arcA, arcB)
 			if (checkPoints.length) {
@@ -597,7 +597,7 @@ export class D2Intersection {
 		}
 		if (DoubleKit.greater(deltaR, 0) && DoubleKit.greater(d, 0) && DoubleKit.eq(d, deltaR)) {
 			/**
-			 * 两圆弧内�?
+			 * 两圆弧内切
 			 **/
 			const checkPoints: Array<Vector2> = checkArcEndpoints(arcA, arcB)
 			if (checkPoints.length) {
@@ -763,7 +763,7 @@ export class D2Intersection {
 	}
 
 	/**
-	 * 计算线段 lineA 与线�?lineB 的交点坐�?
+	 * 计算线段 lineA 与线段 lineB 的交点坐标
 	 * 		排除重叠场景
 	 */
 	public static getStictIntersectionPointOfSegment(A: Vector2, B: Vector2, C: Vector2, D: Vector2): Vector2 {
@@ -802,8 +802,8 @@ export class D2Intersection {
 	}
 
 	/**
-	 * 判断线段 lineA 与线�?lineB 是否相交
-	 * 		包含延长�?
+	 * 判断线段 lineA 与线段 lineB 是否相交
+	 * 		包含延长线
 	 */
 	public static isIntersectOfLines(lineA: Line, lineB: Line): Vector2 {
 		const [A, B, C, D]: [Vector2, Vector2, Vector2, Vector2] = [lineA.startPoint, lineA.endPoint, lineB.startPoint, lineB.endPoint]
@@ -823,7 +823,7 @@ export class D2Intersection {
 	}
 
 	/**
-	 * 判断折线 polyline 是否存在自交�?
+	 * 判断折线 polyline 是否存在自交
 	 */
 	public static isSelfIntersectionOfPolyline(pl: Polyline): Array<Vector2> {
 		const intersPoints: Array<Vector2> = []
